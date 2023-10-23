@@ -1,4 +1,6 @@
-## <center>BigShortBet$ P2P Market</center>
+# BigShortBet$ P2P Market
+
+BigShortBet$ P2P Market is a cutting-edge peer-to-peer marketplace designed to revolutionize the way we buy, sell, and trade goods and services. Built on the principles of decentralization and community governance, our platform provides a secure, user-friendly, and efficient environment for peer-to-peer transactions.
 
 ## Built with:
 
