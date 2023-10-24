@@ -1,0 +1,2 @@
+export const bigshortbetsTokenAddress =
+  '0x0000000000000000000000000000000000000888';

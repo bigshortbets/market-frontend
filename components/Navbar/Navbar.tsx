@@ -1,14 +1,38 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from '../../public/logo.svg';
+import { ConnectButton } from '../ConnectButton';
+import { useAccount, useBalance, useNetwork } from 'wagmi';
+import { bigshortbetsTokenAddress } from '@/blockchain/constants';
 
 export const Navbar = () => {
+  const { chain, chains } = useNetwork();
+  const { address } = useAccount();
+  const { data } = useBalance({
+    address: address,
+    token: bigshortbetsTokenAddress,
+    watch: true,
+    chainId: 2137,
+  });
+
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
-    <nav className="bg-primary-bg w-full h-[80px] flex justify-between items-center px-6">
-      <Image src={logo} alt="BigShortBet$ Logo" width={60} />
-      <button className="bg-[#9BA6F8] font-semibold px-4 py-2 text-lg rounded-xl text-[#01083A]">
-        Connect wallet
-      </button>
-    </nav>
+    <>
+      {isClient && (
+        <nav className="bg-primary-bg w-full h-[80px] flex justify-between items-center px-6">
+          <Image src={logo} alt="BigShortBet$ Logo" width={60} />
+          <div className="flex gap-6 items-center">
+            Balance: {Number(data?.formatted).toFixed(2).toString()}{' '}
+            {data?.symbol}
+            <ConnectButton />
+          </div>
+        </nav>
+      )}
+    </>
   );
 };
