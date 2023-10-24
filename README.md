@@ -10,6 +10,10 @@ BigShortBet$ P2P Market is a cutting-edge peer-to-peer marketplace designed to r
 
 #### [wagmi](https://wagmi.sh/)
 
+#### [Apollo Client](https://www.apollographql.com/docs/react/)
+
+#### [jotai](https://jotai.org/)
+
 ## Installation
 
 Quick guide to run app in development mode:
