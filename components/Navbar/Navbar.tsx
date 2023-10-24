@@ -22,17 +22,19 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <>
+    <nav className="bg-primary-bg w-full h-[80px] flex justify-between items-center px-6">
+      <Image src={logo} alt="BigShortBet$ Logo" width={60} />
       {isClient && (
-        <nav className="bg-primary-bg w-full h-[80px] flex justify-between items-center px-6">
-          <Image src={logo} alt="BigShortBet$ Logo" width={60} />
-          <div className="flex gap-6 items-center">
-            Balance: {Number(data?.formatted).toFixed(2).toString()}{' '}
-            {data?.symbol}
-            <ConnectButton />
-          </div>
-        </nav>
+        <div className="flex gap-6 items-center">
+          {address && (
+            <p>
+              Balance: {Number(data?.formatted).toFixed(2).toString()}{' '}
+              {data?.symbol}
+            </p>
+          )}
+          <ConnectButton />
+        </div>
       )}
-    </>
+    </nav>
   );
 };
