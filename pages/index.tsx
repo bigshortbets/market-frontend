@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google';
 import { Navbar } from '@/components/Navbar/Navbar';
 import { useMarkets } from '@/api/useMarkets';
+import { WhaleLoading } from '@/components/WhaleLoading';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -14,15 +15,20 @@ export default function Home() {
     >
       <Navbar />
       {/* Some empty state for UI */}
-      <div className="h-[calc(100vh-80px)] p-6 flex-col flex gap-y-6">
-        <div className="flex-1 flex gap-6 justify-evenly">
-          <div className="animate-pulse bg-primary-bg w-full rounded-xl"></div>
+      <div className="h-[calc(100vh-80px)] p-6 flex-col flex justify-center items-center">
+        <div className="animate-pulse">
+          <WhaleLoading />
+        </div>
+        {/* <div className="flex-1 flex gap-6 justify-evenly">
+          <div className="animate-pulse bg-primary-bg w-full rounded-xl">
+            <WhaleLoading />
+          </div>
           <div className="animate-pulse bg-primary-bg w-full rounded-xl"></div>
         </div>
         <div className="flex-1 flex gap-6 justify-evenly">
           <div className="animate-pulse bg-primary-bg w-full rounded-xl"></div>
           <div className="animate-pulse bg-primary-bg w-full rounded-xl"></div>
-        </div>
+        </div> */}
       </div>
     </main>
   );
