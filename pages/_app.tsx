@@ -1,5 +1,7 @@
+import { apolloClient } from '@/api/graphql';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import '@/styles/globals.css';
+import { ApolloProvider } from '@apollo/client';
 import type { AppProps } from 'next/app';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
@@ -17,8 +19,10 @@ const config = createConfig({
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <WagmiConfig config={config}>
-      <Component {...pageProps} />
-    </WagmiConfig>
+    <ApolloProvider client={apolloClient}>
+      <WagmiConfig config={config}>
+        <Component {...pageProps} />
+      </WagmiConfig>
+    </ApolloProvider>
   );
 }

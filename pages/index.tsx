@@ -1,11 +1,15 @@
 import { Inter } from 'next/font/google';
 import { Navbar } from '@/components/Navbar/Navbar';
+import { useMarkets } from '@/api/useMarkets';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
+  const { markets, selectedMarket } = useMarkets();
+
   return (
     <main
+      onClick={() => console.log(selectedMarket)}
       className={`min-h-screen  ${inter.className} bg-secondary-bg flex flex-col`}
     >
       <Navbar />
