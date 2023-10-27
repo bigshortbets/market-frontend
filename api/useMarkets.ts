@@ -1,4 +1,4 @@
-import { Market } from '@/types/marketTypes';
+import { MarketType } from '@/types/marketTypes';
 import { gql, useSubscription } from '@apollo/client';
 import { atom, useAtom } from 'jotai';
 import { useEffect, useRef } from 'react';
@@ -21,10 +21,8 @@ const GET_ALL_MARKETS = gql`
 `;
 
 type MarketsQueryResponse = {
-  markets: Market[];
+  markets: MarketType[];
 };
-
-export const selectedMarketAtom = atom<Market | undefined>(undefined);
 
 export const useMarkets = () => {
   const {
@@ -33,18 +31,7 @@ export const useMarkets = () => {
     data,
   } = useSubscription<MarketsQueryResponse>(GET_ALL_MARKETS);
 
-  const hasSetInitialMarket = useRef(false);
-
-  const [selectedMarket, setSelectedMarket] = useAtom(selectedMarketAtom);
-
   const markets = data?.markets;
-
-  useEffect(() => {
-    if (markets && markets.length > 0 && !hasSetInitialMarket.current) {
-      setSelectedMarket(markets[0]);
-      hasSetInitialMarket.current = true;
-    }
-  }, [markets, setSelectedMarket]);
 
   const initialMarket = markets?.[0];
   return {
@@ -52,7 +39,5 @@ export const useMarkets = () => {
     marketsLoading,
     marketsError,
     initialMarket,
-    selectedMarket,
-    setSelectedMarket,
   };
 };

@@ -1,4 +1,4 @@
-export interface Market {
+export interface MarketType {
   id: string;
   ticker: string;
   tickSize: BigInt;
