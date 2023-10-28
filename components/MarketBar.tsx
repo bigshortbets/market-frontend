@@ -2,12 +2,14 @@ import { MarketType } from '@/types/marketTypes';
 import { useAtom } from 'jotai';
 import { selectedMarketIdAtom } from './Market/Market';
 import { findMarketById } from '@/utils/findMarketById';
+import { scaleNumber } from '@/utils/scaleNumber';
 
 interface MarketBarProps {
   markets: MarketType[];
+  oraclePrice?: BigInt;
 }
 
-export const MarketBar = ({ markets }: MarketBarProps) => {
+export const MarketBar = ({ markets, oraclePrice }: MarketBarProps) => {
   const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
 
   const selectedMarket = findMarketById(markets, selectedMarketId);
@@ -52,9 +54,14 @@ export const MarketBar = ({ markets }: MarketBarProps) => {
         <p>Tick size</p>
         <p className="text-xs">{selectedMarket?.tickSize.toString()}</p>
       </div>
+
       <div className="flex flex-col gap-1">
-        <p>Lifetime</p>
-        <p className="text-xs">{selectedMarket?.lifetime.toString()}</p>
+        <p>Oracle price</p>
+        {oraclePrice ? (
+          <p className="text-xs">{scaleNumber(oraclePrice.toString())}</p>
+        ) : (
+          <p className="text-xs">Loading...</p>
+        )}
       </div>
     </div>
   );

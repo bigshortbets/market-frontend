@@ -27,10 +27,12 @@ export const Navbar = () => {
       {isClient && (
         <div className="flex gap-6 items-center">
           {address && (
-            <p>
-              Balance: {Number(data?.formatted).toFixed(2).toString()}{' '}
-              {data?.symbol}
-            </p>
+            <div className="flex flex-col gap-1">
+              <p className="text-sm">Balance</p>
+              <p className="text-xs">
+                {Number(data?.formatted).toFixed(2).toString()} {data?.symbol}
+              </p>
+            </div>
           )}
           <ConnectButton />
         </div>
