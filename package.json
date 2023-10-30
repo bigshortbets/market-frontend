@@ -12,6 +12,7 @@
     "@apollo/client": "^3.8.6",
     "@formkit/auto-animate": "^0.8.0",
     "big.js": "^6.2.1",
+    "date-fns": "^2.30.0",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.14.2",
     "jotai": "^2.5.0",

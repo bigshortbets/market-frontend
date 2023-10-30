@@ -7,6 +7,8 @@ import { scaleNumber } from '@/utils/scaleNumber';
 import { BiSolidDownArrow } from 'react-icons/bi';
 import { BiSolidUpArrow } from 'react-icons/bi';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { formatDate } from '@/utils/formatDate';
+import { addSeconds } from 'date-fns';
 
 interface ContractDetailsProps {
   markets: MarketType[];
@@ -20,6 +22,20 @@ export const ContractDetails = ({
   const selectedMarket = findMarketById(markets, selectedMarketId);
   const [isOpened, setIsOpened] = useState<boolean>(true);
   const [animationParent] = useAutoAnimate();
+
+  /* const lifetimeAndBlockHeightDistinction =
+    Number(selectedMarket?.lifetime) - Number(selectedMarket?.blockHeight); */
+
+  const marketDurationRepresentation = `${formatDate(
+    selectedMarket?.timestamp as unknown as string /* Typing should be fixed on BE */
+  )}-${formatDate(
+    String(
+      addSeconds(
+        new Date(selectedMarket?.timestamp as unknown as string),
+        Number(selectedMarket?.lifetime)
+      )
+    )
+  )}`;
 
   const contractDetailsData = [
     { label: 'Contract name', value: selectedMarket?.ticker },
@@ -35,6 +51,7 @@ export const ContractDetails = ({
       label: 'Initial margin',
       value: `${selectedMarket?.initialMargin?.toString()!}%`,
     },
+    { label: 'Market duration', value: marketDurationRepresentation },
   ];
 
   const toggleIsOpened = () => {
@@ -43,8 +60,14 @@ export const ContractDetails = ({
 
   return (
     <div
-      className="w-[250px] bg-secondary-bg rounded pt-4 font-semibold"
+      className="w-[300px] bg-secondary-bg rounded pt-4 font-semibold"
       ref={animationParent}
+      onClick={() =>
+        console.log(
+          selectedMarket?.lifetime,
+          Number(selectedMarket?.blockHeight)
+        )
+      }
     >
       <div className="justify-between items-center flex  mb-3 px-4">
         <h3 className="text-sm ">CONTRACT DETAILS</h3>
