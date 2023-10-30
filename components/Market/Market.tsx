@@ -4,6 +4,8 @@ import { Navbar } from '../Navbar/Navbar';
 import { MarketType } from '@/types/marketTypes';
 import { atom, useAtom } from 'jotai';
 import { useOraclePrice } from '@/api/useOraclePrice';
+import { ContractDetails } from './ContractDetails/ContractDetails';
+import { findMarketById } from '@/utils/findMarketById';
 
 interface MarketProps {
   markets: MarketType[];
@@ -20,12 +22,14 @@ export const Market = ({ markets }: MarketProps) => {
   }, []);
 
   return (
-    <div
-      className={`min-h-screen bg-primary-bg flex flex-col`}
-      onClick={() => console.log(oraclePrice)}
-    >
+    <div className={`h-screen bg-primary-bg flex flex-col`}>
       <Navbar />
       <MarketBar markets={markets} oraclePrice={oraclePrice!} />
+      <div className="h-[(100vh-120px)] px-6 py-3">
+        <div className="flex justify-end">
+          <ContractDetails markets={markets} oraclePrice={oraclePrice!} />
+        </div>
+      </div>
     </div>
   );
 };

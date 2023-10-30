@@ -14,7 +14,7 @@ export const ConnectButton = () => {
 
   return (
     <button
-      className="bg-[#9BA6F8] font-semibold px-4 py-2 text-lg rounded-xl text-[#01083A]"
+      className="bg-[#9BA6F8] font-semibold px-4 py-2  rounded-xl text-[#01083A] text-sm"
       onClick={handleConnection}
     >
       {isConnected ? 'Connected' : 'Connect wallet'}
