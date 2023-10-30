@@ -8,12 +8,6 @@ import { bigshortbetsTokenAddress } from '@/blockchain/constants';
 export const Navbar = () => {
   const { chain, chains } = useNetwork();
   const { address } = useAccount();
-  const { data } = useBalance({
-    address: address,
-    token: bigshortbetsTokenAddress,
-    watch: true,
-    chainId: 2137,
-  });
 
   const [isClient, setIsClient] = useState(false);
 
@@ -24,19 +18,7 @@ export const Navbar = () => {
   return (
     <nav className="bg-primary-bg w-full h-[60px] flex justify-between items-center px-6">
       <Image src={logo} alt="BigShortBet$ Logo" width={50} priority />
-      {isClient && (
-        <div className="flex gap-6 items-center">
-          {address && (
-            <div className="flex flex-col gap-1">
-              <p className="text-sm">Balance</p>
-              <p className="text-xs">
-                {Number(data?.formatted).toFixed(2).toString()} {data?.symbol}
-              </p>
-            </div>
-          )}
-          <ConnectButton />
-        </div>
-      )}
+      {isClient && <ConnectButton />}
     </nav>
   );
 };

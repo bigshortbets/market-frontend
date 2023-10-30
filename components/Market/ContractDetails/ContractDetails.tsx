@@ -15,13 +15,23 @@ export const ContractDetails = ({
 }: ContractDetailsProps) => {
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const selectedMarket = findMarketById(markets, selectedMarketId);
+
   const contractDetailsData = [
     { label: 'Contract name', value: selectedMarket?.ticker },
     {
       label: 'Oracle price',
       value: oraclePrice && scaleNumber(oraclePrice.toString()),
     },
+    {
+      label: 'Tick size',
+      value: `${scaleNumber(selectedMarket?.tickSize?.toString()!)}$`,
+    },
+    {
+      label: 'Initial margin',
+      value: `${selectedMarket?.initialMargin?.toString()!}%`,
+    },
   ];
+
   return (
     <div className="w-[250px] h-[300px] bg-secondary-bg rounded pt-4 font-semibold">
       <h3 className="text-sm px-4 mb-2">CONTRACT DETAILS</h3>
