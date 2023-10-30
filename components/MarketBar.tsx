@@ -75,12 +75,14 @@ export const MarketBar = ({ markets, oraclePrice }: MarketBarProps) => {
           )}
         </div>
       </div>
-      <div className="flex flex-col gap-1 items-end">
-        <p className="text-sm">Balance</p>
-        <p className="text-xs">
-          {Number(data?.formatted).toFixed(2).toString()} {data?.symbol}
-        </p>
-      </div>
+      {address && (
+        <div className="flex flex-col gap-1 items-end">
+          <p className="text-sm">Balance</p>
+          <p className="text-xs">
+            {Number(data?.formatted).toFixed(2).toString()} {data?.symbol}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
