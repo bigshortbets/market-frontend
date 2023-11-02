@@ -45,33 +45,15 @@ export const MarketBar = ({ markets, oraclePrice }: MarketBarProps) => {
             </option>
           ))}
         </select>
-        <div className="flex flex-col gap-1">
-          <p>Block height</p>
-          <p className="text-xs">{selectedMarket?.blockHeight.toString()}</p>
-        </div>
-        <div className="flex flex-col gap-1">
-          <p>Contract unit</p>
-          <p className="text-xs">{selectedMarket?.contractUnit.toString()}</p>
-        </div>
-        <div className="flex flex-col gap-1">
-          <p>Daily volume</p>
-          <p className="text-xs">{selectedMarket?.dailyVolume.toString()}</p>
-        </div>
-        <div className="flex flex-col gap-1">
-          <p>Initial margin</p>
-          <p className="text-xs">{selectedMarket?.initialMargin.toString()}</p>
-        </div>
-        <div className="flex flex-col gap-1">
-          <p>Tick size</p>
-          <p className="text-xs">{selectedMarket?.tickSize.toString()}</p>
-        </div>
 
-        <div className="flex flex-col gap-1">
-          <p>Oracle price</p>
+        <div className="flex gap-2">
+          <p>Oracle price:</p>
           {oraclePrice ? (
-            <p className="text-xs">{scaleNumber(oraclePrice.toString())}</p>
+            <p className="font-semibold">
+              {scaleNumber(oraclePrice.toString())}
+            </p>
           ) : (
-            <p className="text-xs">Loading...</p>
+            <p className="font-semibold">Loading...</p>
           )}
         </div>
       </div>

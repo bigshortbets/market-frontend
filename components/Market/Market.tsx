@@ -6,6 +6,7 @@ import { atom, useAtom } from 'jotai';
 import { useOraclePrice } from '@/api/useOraclePrice';
 import { ContractDetails } from './ContractDetails/ContractDetails';
 import { findMarketById } from '@/utils/findMarketById';
+import { OrderManager } from './OrderManager/OrderManager';
 
 interface MarketProps {
   markets: MarketType[];
@@ -27,7 +28,10 @@ export const Market = ({ markets }: MarketProps) => {
       <MarketBar markets={markets} oraclePrice={oraclePrice!} />
       <div className="h-[(100vh-120px)] px-6 py-3">
         <div className="flex justify-end">
-          <ContractDetails markets={markets} oraclePrice={oraclePrice!} />
+          <div className="flex flex-col gap-6">
+            <OrderManager />
+            <ContractDetails markets={markets} oraclePrice={oraclePrice!} />
+          </div>
         </div>
       </div>
     </div>

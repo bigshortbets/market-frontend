@@ -9,6 +9,7 @@ import { BiSolidUpArrow } from 'react-icons/bi';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { formatDate } from '@/utils/formatDate';
 import { addSeconds } from 'date-fns';
+import { useNetwork } from 'wagmi';
 
 interface ContractDetailsProps {
   markets: MarketType[];
@@ -26,6 +27,7 @@ export const ContractDetails = ({
   /* const lifetimeAndBlockHeightDistinction =
     Number(selectedMarket?.lifetime) - Number(selectedMarket?.blockHeight); */
 
+  const { chain } = useNetwork();
   const marketDurationRepresentation = `${formatDate(
     selectedMarket?.timestamp as unknown as string /* Typing should be fixed on BE */
   )}-${formatDate(
@@ -39,19 +41,17 @@ export const ContractDetails = ({
 
   const contractDetailsData = [
     { label: 'Contract name', value: selectedMarket?.ticker },
-    {
-      label: 'Oracle price',
-      value: oraclePrice && scaleNumber(oraclePrice.toString()),
-    },
+    { label: 'Market duration', value: marketDurationRepresentation },
     {
       label: 'Tick size',
-      value: `${scaleNumber(selectedMarket?.tickSize?.toString()!)}$`,
+      value: `${scaleNumber(selectedMarket?.tickSize?.toString()!)} ${
+        chain?.nativeCurrency.symbol
+      }`,
     },
     {
       label: 'Initial margin',
-      value: `${selectedMarket?.initialMargin?.toString()!}%`,
+      value: `${selectedMarket?.initialMargin?.toString()!} %`,
     },
-    { label: 'Market duration', value: marketDurationRepresentation },
   ];
 
   const toggleIsOpened = () => {
@@ -62,12 +62,6 @@ export const ContractDetails = ({
     <div
       className="w-[300px] bg-secondary-bg rounded pt-4 font-semibold"
       ref={animationParent}
-      onClick={() =>
-        console.log(
-          selectedMarket?.lifetime,
-          Number(selectedMarket?.blockHeight)
-        )
-      }
     >
       <div className="justify-between items-center flex  mb-3 px-4">
         <h3 className="text-sm ">CONTRACT DETAILS</h3>
