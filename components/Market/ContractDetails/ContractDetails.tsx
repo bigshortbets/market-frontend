@@ -13,19 +13,12 @@ import { useNetwork } from 'wagmi';
 
 interface ContractDetailsProps {
   markets: MarketType[];
-  oraclePrice?: BigInt;
 }
-export const ContractDetails = ({
-  markets,
-  oraclePrice,
-}: ContractDetailsProps) => {
+export const ContractDetails = ({ markets }: ContractDetailsProps) => {
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const selectedMarket = findMarketById(markets, selectedMarketId);
   const [isOpened, setIsOpened] = useState<boolean>(true);
   const [animationParent] = useAutoAnimate();
-
-  /* const lifetimeAndBlockHeightDistinction =
-    Number(selectedMarket?.lifetime) - Number(selectedMarket?.blockHeight); */
 
   const { chain } = useNetwork();
   const marketDurationRepresentation = `${formatDate(
@@ -44,9 +37,7 @@ export const ContractDetails = ({
     { label: 'Market duration', value: marketDurationRepresentation },
     {
       label: 'Tick size',
-      value: `${scaleNumber(selectedMarket?.tickSize?.toString()!)} ${
-        chain?.nativeCurrency.symbol
-      }`,
+      value: `${scaleNumber(selectedMarket?.tickSize?.toString()!)} USDC`,
     },
     {
       label: 'Initial margin',

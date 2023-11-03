@@ -5,6 +5,7 @@ import { findMarketById } from '@/utils/findMarketById';
 import { scaleNumber } from '@/utils/scaleNumber';
 import { useAccount, useBalance } from 'wagmi';
 import { bigshortbetsTokenAddress } from '@/blockchain/constants';
+import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
 
 interface MarketBarProps {
   markets: MarketType[];
@@ -12,22 +13,12 @@ interface MarketBarProps {
 }
 
 export const MarketBar = ({ markets, oraclePrice }: MarketBarProps) => {
-  const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
-
-  const selectedMarket = findMarketById(markets, selectedMarketId);
+  const [_, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
 
   const { address } = useAccount();
-  const { data } = useBalance({
-    address: address,
-    token: bigshortbetsTokenAddress,
-    watch: true,
-    chainId: 2137,
-  });
+  const { data } = useNativeCurrencyBalance(address);
   return (
-    <div
-      className="h-[60px] w-full bg-secondary-bg px-6 py-2 flex items-center justify-between"
-      onClick={() => console.log(selectedMarketId)}
-    >
+    <div className="h-[60px] w-full bg-secondary-bg px-6 py-2 flex items-center justify-between">
       <div className="flex items-center gap-8 justify-between">
         <select
           name="markets"

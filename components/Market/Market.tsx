@@ -30,7 +30,7 @@ export const Market = ({ markets }: MarketProps) => {
         <div className="flex justify-end">
           <div className="flex flex-col gap-6">
             <OrderManager />
-            <ContractDetails markets={markets} oraclePrice={oraclePrice!} />
+            <ContractDetails markets={markets} />
           </div>
         </div>
       </div>
