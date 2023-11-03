@@ -7,6 +7,7 @@ import { useOraclePrice } from '@/api/useOraclePrice';
 import { ContractDetails } from './ContractDetails/ContractDetails';
 import { findMarketById } from '@/utils/findMarketById';
 import { OrderManager } from './OrderManager/OrderManager';
+import { Toaster } from 'react-hot-toast';
 
 interface MarketProps {
   markets: MarketType[];
