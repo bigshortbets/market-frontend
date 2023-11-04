@@ -4,6 +4,7 @@ import { LoadingScreen } from '@/components/LoadingScreen';
 import { Market } from '@/components/Market/Market';
 import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
+import Head from 'next/head';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,6 +25,9 @@ export default function Home() {
 
   return (
     <main className={`${inter.className}`}>
+      <Head>
+        <title>bigshortbet$ P2P Market</title>
+      </Head>
       {isLoading ? <LoadingScreen /> : <Market markets={markets} />}
       <Toaster position="bottom-center" />
     </main>
