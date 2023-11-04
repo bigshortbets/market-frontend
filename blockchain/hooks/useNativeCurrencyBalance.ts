@@ -9,5 +9,7 @@ export const useNativeCurrencyBalance = (address: string | undefined) => {
     chainId: 2137,
   });
 
-  return { data, isLoading, isError };
+  const formattedBalance = data?.formatted;
+
+  return { data, isLoading, isError, formattedBalance };
 };

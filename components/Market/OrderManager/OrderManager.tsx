@@ -9,6 +9,7 @@ import { useAtom } from 'jotai';
 import { selectedMarketIdAtom } from '../Market';
 import { findMarketById } from '@/utils/findMarketById';
 import { MarketType } from '@/types/marketTypes';
+import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
 
 export enum OrderSideEnum {
   LONG,
@@ -24,6 +25,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   const selectedMarket = findMarketById(markets, selectedMarketId);
 
   const { address } = useAccount();
+  const { formattedBalance } = useNativeCurrencyBalance(address);
   const [price, setPrice] = useState<number>(1);
   const [quantity, setQuantity] = useState<number>(1);
 
@@ -38,13 +40,13 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
 
   const loading = isShortLoading || isLongLoading;
 
-  const isActionDisabled = price === 0;
-
   const orderCost =
-    (Number(selectedMarket?.initialMargin) / 100) * (price * quantity * 1000);
+    (Number(selectedMarket?.initialMargin) / 100) *
+    (price * quantity * Number(selectedMarket?.contractUnit));
 
-  const orderValue = price * quantity * 1000;
+  const orderValue = price * quantity * Number(selectedMarket?.contractUnit);
 
+  const isActionDisabled = price === 0 || orderCost > Number(formattedBalance);
   return (
     <div
       className={`w-[300px] h-[300px] bg-secondary-bg rounded p-3 flex flex-col justify-between transition ease-in-out ${
