@@ -8,6 +8,7 @@ import { ContractDetails } from './ContractDetails/ContractDetails';
 import { findMarketById } from '@/utils/findMarketById';
 import { OrderManager } from './OrderManager/OrderManager';
 import { Toaster } from 'react-hot-toast';
+import { TradingHub } from './TradingHub/TradingHub';
 
 interface MarketProps {
   markets: MarketType[];
@@ -27,8 +28,9 @@ export const Market = ({ markets }: MarketProps) => {
     <div className={`h-screen bg-primary-bg flex flex-col`}>
       <Navbar />
       <MarketBar markets={markets} oraclePrice={oraclePrice!} />
-      <div className="h-[(100vh-120px)] px-6 py-3">
-        <div className="flex justify-end">
+      <div className="h-[(100vh-120px)] px-6 py-6">
+        <div className="flex justify-between gap-6">
+          <TradingHub />
           <div className="flex flex-col gap-6">
             <OrderManager markets={markets} />
             <ContractDetails markets={markets} />

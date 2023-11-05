@@ -21,22 +21,18 @@ interface OrderManagerProps {
 }
 
 export const OrderManager = ({ markets }: OrderManagerProps) => {
+  const [price, setPrice] = useState<number>(1);
+  const [quantity, setQuantity] = useState<number>(1);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const selectedMarket = findMarketById(markets, selectedMarketId);
 
   const { address } = useAccount();
   const { formattedBalance } = useNativeCurrencyBalance(address);
-  const [price, setPrice] = useState<number>(1);
-  const [quantity, setQuantity] = useState<number>(1);
 
   const { write: writeShortOrder, isLoading: isShortLoading } =
     useCreateOrderWrite(price, quantity, OrderSideEnum.SHORT);
   const { write: writeLongOrder, isLoading: isLongLoading } =
     useCreateOrderWrite(price, quantity, OrderSideEnum.LONG);
-
-  const loadingStateStyle = 'opacity-50 pointer-events-none';
-
-  const disabledStyle = 'bg-gray-300 pointer-events-none';
 
   const loading = isShortLoading || isLongLoading;
 
@@ -47,6 +43,10 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   const orderValue = price * quantity * Number(selectedMarket?.contractUnit);
 
   const isActionDisabled = price === 0 || orderCost > Number(formattedBalance);
+
+  const loadingStateStyle = 'opacity-50 pointer-events-none';
+  const disabledStyle = 'bg-gray-300 pointer-events-none';
+
   return (
     <div
       className={`w-[300px] h-[300px] bg-secondary-bg rounded p-3 flex flex-col justify-between transition ease-in-out ${
