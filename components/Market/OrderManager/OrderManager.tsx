@@ -50,8 +50,8 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   return (
     <div
       className={`w-[300px] h-[300px] bg-secondary-bg rounded p-3 flex flex-col justify-between transition ease-in-out ${
-        loading || (!address && loadingStateStyle)
-      } relative`}
+        !address && loadingStateStyle
+      } ${loading && loadingStateStyle} relative`}
     >
       {loading && (
         <ReactLoading

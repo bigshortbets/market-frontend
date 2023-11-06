@@ -6,12 +6,14 @@ import { selectedMarketIdAtom } from '@/components/Market/Market';
 import { parseEther } from 'viem';
 import { OrderSideEnum } from '@/components/Market/OrderManager/OrderManager';
 import toast from 'react-hot-toast';
+import { tradingHubStateAtom } from '@/components/Market/TradingHub/TradingHub';
 
 export const useCreateOrderWrite = (
   price: number,
   quantity: number,
   side: OrderSideEnum
 ) => {
+  const [, setTradingHubState] = useAtom(tradingHubStateAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const { data, isLoading, isSuccess, write } = useContractWrite({
     address: marketContract as `0x${string}`,
@@ -33,6 +35,7 @@ export const useCreateOrderWrite = (
       toast.success('Order created!', {
         duration: 4000,
       });
+      setTradingHubState('orders');
     },
   });
 

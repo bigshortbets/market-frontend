@@ -17,6 +17,7 @@ export const USER_ORDERS_SUBSCRIPTION = gql`
       status
       market {
         id
+        ticker
       }
     }
   }
