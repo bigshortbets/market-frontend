@@ -9,7 +9,8 @@ import { BiSolidUpArrow } from 'react-icons/bi';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { formatDate } from '@/utils/formatDate';
 import { addSeconds } from 'date-fns';
-import { useNetwork } from 'wagmi';
+import { useAccount, useNetwork } from 'wagmi';
+import { disabledStyle } from '@/utils/sharedStyles';
 
 interface ContractDetailsProps {
   markets: MarketType[];
@@ -21,6 +22,8 @@ export const ContractDetails = ({ markets }: ContractDetailsProps) => {
   const [animationParent] = useAutoAnimate();
 
   const { chain } = useNetwork();
+  const { address } = useAccount();
+
   const marketDurationRepresentation = `${formatDate(
     selectedMarket?.timestamp as unknown as string /* Typing should be fixed on BE */
   )}-${formatDate(
@@ -51,7 +54,9 @@ export const ContractDetails = ({ markets }: ContractDetailsProps) => {
 
   return (
     <div
-      className="w-[300px] bg-secondary-bg rounded pt-4 font-semibold"
+      className={`w-[300px] bg-secondary-bg rounded pt-4 font-semibold ${
+        !address && disabledStyle
+      }`}
       ref={animationParent}
     >
       <div className="justify-between items-center flex  mb-3 px-4">

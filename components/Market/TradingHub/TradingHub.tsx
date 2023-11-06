@@ -6,14 +6,13 @@ import { useSubscription } from '@apollo/client';
 import { USER_ORDERS_SUBSCRIPTION } from '@/api/queries';
 import { convertToSS58 } from '@/utils/convertToSS58';
 import { TradingHubContentContainer } from './TradingHubContentContainer';
+import { disabledStyle } from '@/utils/sharedStyles';
 
 const tabs = ['positions', 'orders', 'history'] as const;
 
 export type TradingHubStateType = (typeof tabs)[number];
 
 export const tradingHubStateAtom = atom<TradingHubStateType>('orders');
-
-const disabledStyle = 'opacity-50 pointer-events-none';
 
 export const TradingHub = () => {
   const { address } = useAccount();

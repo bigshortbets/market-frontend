@@ -10,6 +10,7 @@ import { selectedMarketIdAtom } from '../Market';
 import { findMarketById } from '@/utils/findMarketById';
 import { MarketType } from '@/types/marketTypes';
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
+import { disabledStyle } from '@/utils/sharedStyles';
 
 export enum OrderSideEnum {
   LONG,
@@ -45,7 +46,6 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   const isActionDisabled = price === 0 || orderCost > Number(formattedBalance);
 
   const loadingStateStyle = 'opacity-50 pointer-events-none';
-  const disabledStyle = 'bg-gray-300 pointer-events-none';
 
   return (
     <div

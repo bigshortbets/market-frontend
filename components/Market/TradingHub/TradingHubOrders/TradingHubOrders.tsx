@@ -17,6 +17,7 @@ export const TradingHubOrders = ({ orders }: TradingHubOrdersProps) => {
             <th className="font-normal py-3 pl-3">Side</th>
             <th className="font-normal">Created</th>
             <th className="font-normal">Market</th>
+            <th className="font-normal">Price</th>
           </tr>
         </thead>
         <tbody /* ref={animationParent} */>

@@ -1,7 +1,7 @@
 import { MarketType } from './marketTypes';
 
 export interface OrderType {
-  timestamp: string /* its typed as date on BE  */;
+  timestamp: string;
   id: string;
   market: MarketType;
   price: BigInt;
