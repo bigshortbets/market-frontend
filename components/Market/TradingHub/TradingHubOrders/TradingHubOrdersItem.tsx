@@ -18,6 +18,12 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
       <td>{order.timestamp}</td>
       <td>{order.market.ticker}</td>
       <td>{scaleNumber(Number(order.price))}</td>
+      <td>{Number(order.quantity)}</td>
+      <td className=" text-right pr-3 ">
+        <button className="font-bold text-xs text-[#D26D6C] transition ease-in-out hover:text-[#C53F3A] duration-300">
+          CLOSE
+        </button>
+      </td>
     </tr>
   );
 };

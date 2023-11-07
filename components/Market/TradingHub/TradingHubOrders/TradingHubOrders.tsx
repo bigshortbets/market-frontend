@@ -18,6 +18,8 @@ export const TradingHubOrders = ({ orders }: TradingHubOrdersProps) => {
             <th className="font-normal">Created</th>
             <th className="font-normal">Market</th>
             <th className="font-normal">Price</th>
+            <th className="font-normal">Quantity</th>
+            <th className="pr-3"></th>
           </tr>
         </thead>
         <tbody /* ref={animationParent} */>

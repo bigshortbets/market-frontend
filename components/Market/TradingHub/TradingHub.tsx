@@ -1,10 +1,6 @@
-import React from 'react';
 import { TradingHubTab } from './TradingHubTab';
-import { atom, useAtom } from 'jotai';
+import { atom } from 'jotai';
 import { useAccount } from 'wagmi';
-import { useSubscription } from '@apollo/client';
-import { USER_ORDERS_SUBSCRIPTION } from '@/api/queries';
-import { convertToSS58 } from '@/utils/convertToSS58';
 import { TradingHubContentContainer } from './TradingHubContentContainer';
 import { disabledStyle } from '@/utils/sharedStyles';
 
@@ -19,9 +15,9 @@ export const TradingHub = () => {
 
   return (
     <div
-      className={`h-[500px] bg-secondary-bg flex-grow rounded-lg transition ease-in-out ${
+      className={`h-[500px] bg-secondary-bg flex-grow rounded-lg transition ease-in-out overflow-y-auto ${
         !address && disabledStyle
-      }`}
+      } no-scrollbar`}
     >
       <div className="w-full bg-primary-bg h-[45px]">
         <div className="bg-secondary-bg rounded-t w-1/2 h-full flex p-1 gap-1">

@@ -6,6 +6,7 @@ export interface OrderType {
   market: MarketType;
   price: BigInt;
   side: 'LONG' | 'SHORT';
+  quantity: BigInt;
 }
 
 export interface OrdersResponse {
