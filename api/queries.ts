@@ -22,3 +22,29 @@ export const USER_ORDERS_SUBSCRIPTION = gql`
     }
   }
 `;
+
+export const USER_OPEN_POSITIONS_SUBSCRIPTION = gql`
+  subscription positions($userId: String!) {
+    positions(
+      where: {
+        AND: [
+          { OR: [{ long_eq: $userId }, { short_eq: $userId }] }
+          { status_eq: OPEN }
+        ]
+      }
+      orderBy: timestamp_DESC
+    ) {
+      id
+      price
+      quantity
+      timestamp
+      short
+      long
+      quantityLeft
+      market {
+        id
+        ticker
+      }
+    }
+  }
+`;
