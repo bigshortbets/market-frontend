@@ -5,12 +5,15 @@ export interface PositionType {
   timestamp: string;
   short: string;
   long: string;
-  status: 'OPEN' | 'CLOSED';
   quantityLeft: BigInt;
   market: {
     id: string;
     ticker: string;
   };
+}
+
+export interface PositionWithSide extends PositionType {
+  side: 'SHORT' | 'LONG';
 }
 
 export interface PositionsResponse {

@@ -28,7 +28,7 @@ export const TradingHubPositions = ({
       className="w-full h-full px-2 py-2"
       onClick={() => console.log(positionsByMarketTicker)}
     >
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
         {Object.entries(positionsByMarketTicker).map(([ticker, positions]) => (
           <TradingHubAggregatedPosition
             key={ticker}

@@ -8,7 +8,7 @@ const tabs = ['positions', 'orders', 'history'] as const;
 
 export type TradingHubStateType = (typeof tabs)[number];
 
-export const tradingHubStateAtom = atom<TradingHubStateType>('orders');
+export const tradingHubStateAtom = atom<TradingHubStateType>('positions');
 
 export const TradingHub = () => {
   const { address } = useAccount();
