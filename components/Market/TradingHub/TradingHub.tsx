@@ -15,7 +15,7 @@ export const TradingHub = () => {
 
   return (
     <div
-      className={`h-[500px] bg-secondary-bg flex-grow rounded-lg transition ease-in-out overflow-y-auto ${
+      className={` bg-secondary-bg flex-grow rounded-lg transition ease-in-out  ${
         !address && disabledStyle
       } no-scrollbar`}
     >

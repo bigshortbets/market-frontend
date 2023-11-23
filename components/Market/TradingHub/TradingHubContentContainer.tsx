@@ -32,7 +32,7 @@ export const TradingHubContentContainer = () => {
   const [tradingHubState] = useAtom(tradingHubStateAtom);
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-[420px] overflow-y-auto no-scrollbar">
       {tradingHubState === 'orders' && ordersRes && (
         <TradingHubOrders orders={ordersRes.orders} />
       )}
