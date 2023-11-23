@@ -5,7 +5,7 @@ import { extendPositionsWithSide } from '@/utils/extendPositionsWithSide';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import React, { useState } from 'react';
 import { useAccount } from 'wagmi';
-import { TradingHubDetailedPosition } from './TradingHubDetailedPosition';
+import { TradingHubPositionsItem } from './TradingHubPositionsItem';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
 import Image from 'next/image';
 
@@ -76,6 +76,7 @@ export const TradingHubAggregatedPosition = ({
                 <th className="font-normal pb-2 py-1 pl-3">Side</th>
                 <th className="font-normal">Quantity</th>
                 <th className="font-normal">Opponent</th>
+                <th className="font-normal">Entry price</th>
                 {/* <th className="font-normal">Created</th>
                 <th className="font-normal">Market</th>
                 <th className="font-normal">Price</th>
@@ -85,7 +86,7 @@ export const TradingHubAggregatedPosition = ({
             </thead>
             <tbody>
               {positionsWithSide.map((position) => (
-                <TradingHubDetailedPosition
+                <TradingHubPositionsItem
                   position={position}
                   key={position.id}
                 />

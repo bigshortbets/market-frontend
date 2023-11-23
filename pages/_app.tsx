@@ -5,6 +5,7 @@ import { ApolloProvider } from '@apollo/client';
 import type { AppProps } from 'next/app';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
+import 'react-tooltip/dist/react-tooltip.css';
 
 const { publicClient, webSocketPublicClient } = configureChains(
   [bigshortbetsChain],

@@ -1,9 +1,7 @@
 import { useCreateOrderWrite } from '@/blockchain/hooks/useCreateOrderWrite';
-import { scaleNumber } from '@/utils/scaleNumber';
 import React, { useState } from 'react';
 import { NumericFormat } from 'react-number-format';
 import ReactLoading from 'react-loading';
-import toast from 'react-hot-toast';
 import { useAccount } from 'wagmi';
 import { useAtom } from 'jotai';
 import { selectedMarketIdAtom } from '../Market';
@@ -11,6 +9,8 @@ import { findMarketById } from '@/utils/findMarketById';
 import { MarketType } from '@/types/marketTypes';
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
 import { disabledStyle } from '@/utils/sharedStyles';
+import { IoMdInformationCircle } from 'react-icons/io';
+import { Tooltip } from 'react-tooltip';
 
 export enum OrderSideEnum {
   LONG,
@@ -98,11 +98,35 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           />
         </div>
         <div className="flex justify-between mb-2">
-          <p className="text-xs">Order cost</p>
+          <div className="flex items-center gap-1">
+            <p className="text-xs">Order cost</p>
+            <a
+              data-tooltip-id="order-cost-tooltip"
+              data-tooltip-html={`<b>Order cost</b> = Initial margin * ( Order price * Quantity * Contract unit )</br> <b>${orderCost}</b> = ${
+                Number(selectedMarket?.initialMargin) / 100
+              } * ( ${price} * ${quantity} * ${Number(
+                selectedMarket?.contractUnit
+              )} )`}
+            >
+              <IoMdInformationCircle className="text-[#7F828F] text-sm " />
+            </a>
+          </div>
+
           <p className="text-xs">{orderCost} USDC</p>
         </div>
         <div className="flex justify-between mb-3">
-          <p className="text-xs">Order value</p>
+          <div className="flex items-center gap-1">
+            <p className="text-xs">Order value</p>
+            <a
+              data-tooltip-id="order-value-tooltip"
+              data-tooltip-html={`<b>Order value</b> = Order Price * Quantity * Contract Unit</br> <b>${orderValue}</b> = ${price} * ${quantity} * ${Number(
+                selectedMarket?.contractUnit
+              )}`}
+            >
+              <IoMdInformationCircle className="text-[#7F828F] text-sm " />
+            </a>
+          </div>
+
           <p className="text-xs">{orderValue} USDC</p>
         </div>
       </div>
@@ -126,6 +150,8 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           <p className="text-wwhite text-xs font-bold">SHORT</p>
         </button>
       </div>
+      <Tooltip id="order-cost-tooltip" style={{ fontSize: '12px' }} />
+      <Tooltip id="order-value-tooltip" style={{ fontSize: '12px' }} />
     </div>
   );
 };
