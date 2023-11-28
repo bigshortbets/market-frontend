@@ -14,7 +14,8 @@ export const useOraclePrice = (marketId: string) => {
     pollInterval: 1000,
   });
 
-  const oraclePriceData = data && BigInt(data.getLatestOraclePrice.price);
+  const oraclePriceData: BigInt =
+    data && BigInt(data.getLatestOraclePrice.price);
 
   return oraclePriceData;
 };

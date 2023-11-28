@@ -44,6 +44,7 @@ export const USER_OPEN_POSITIONS_SUBSCRIPTION = gql`
       market {
         id
         ticker
+        contractUnit
       }
     }
   }

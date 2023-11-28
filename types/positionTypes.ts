@@ -9,6 +9,7 @@ export interface PositionType {
   market: {
     id: string;
     ticker: string;
+    contractUnit: BigInt;
   };
 }
 

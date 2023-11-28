@@ -8,6 +8,7 @@ import { useAccount } from 'wagmi';
 import { TradingHubPositionsItem } from './TradingHubPositionsItem';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
 import Image from 'next/image';
+import { scaleNumber } from '@/utils/scaleNumber';
 
 interface TradingHubAggregatedPositionProps {
   positions: PositionType[];
@@ -33,8 +34,26 @@ export const TradingHubAggregatedPosition = ({
 
   const marketDetails = getMarkeDetails(ticker);
 
+  const oraclePrice = useOraclePrice(marketId);
+
   /* const [animationParent] = useAutoAnimate(); */
   /* const oraclePrice: string = useOraclePrice(marketId); */
+
+  const sumLossProfit: number =
+    oraclePrice &&
+    positionsWithSide.reduce((acc, position) => {
+      return position.side === 'LONG'
+        ? acc +
+            Number(position.quantity) *
+              Number(position.market.contractUnit) *
+              (Number(scaleNumber(oraclePrice.toString())) -
+                Number(scaleNumber(position.price.toString())))
+        : acc +
+            Number(position.quantity) *
+              Number(position.market.contractUnit) *
+              (Number(scaleNumber(position.price.toString())) -
+                Number(scaleNumber(oraclePrice.toString())));
+    }, 0);
 
   return (
     <div
@@ -44,6 +63,7 @@ export const TradingHubAggregatedPosition = ({
         <div className="flex justify-between items-center">
           <div className="flex flex-col gap-2">
             <p className="text-sm font-semibold">{ticker}</p>
+
             <div className=" flex items-center gap-2">
               {marketDetails && (
                 <Image
@@ -57,26 +77,42 @@ export const TradingHubAggregatedPosition = ({
               <p className="text-xs">{marketDetails?.name}</p>
             </div>
           </div>
-          <div className="flex gap-8 items-center">
+          {/* Stats */}
+          <div className="flex gap-12 items-center">
+            {/* Sum profit / loss */}
             <div className="flex flex-col gap-1 text-right">
-              <p className="text-sm">Positions count</p>
-              <p className="text-xs font-semibold">{positions.length}</p>
+              <p className="text-xs">Sum Profit / loss</p>
+              <p
+                className={`text-sm font-semibold ${
+                  sumLossProfit < 0 ? 'text-red-500' : 'text-[#73D391]'
+                }`}
+              >
+                {sumLossProfit && sumLossProfit.toFixed(2)}{' '}
+                <span className="text-xs">USDC</span>
+              </p>
             </div>
-            <button className="text-sm font-semibold" onClick={toggleExtended}>
-              {isExtended ? 'Hide all' : 'Show all'}
+
+            <button
+              className="text-sm font-semibold  w-[100px]"
+              onClick={toggleExtended}
+            >
+              {isExtended
+                ? `Hide all (${positions.length})`
+                : `Show all (${positions.length})`}
             </button>
           </div>
         </div>
       </div>
       {isExtended && (
-        <div className="w-full">
-          <table className="table-auto w-full  ">
-            <thead className="bg-[#23252E] text-sm text-left text-[#ABACBA] ">
+        <div className="w-full border-t-[1px] border-[#2d2d2f]">
+          <table className="table-auto w-full ">
+            <thead className=" text-sm text-left text-[#ABACBA] bg-[#23252E]">
               <tr>
-                <th className="font-normal pb-2 py-1 pl-3">Side</th>
+                <th className="font-normal pb-2 py-2 pl-3">Side</th>
                 <th className="font-normal">Quantity</th>
                 <th className="font-normal">Opponent</th>
                 <th className="font-normal">Entry price</th>
+                <th className="font-normal">Profit / loss</th>
                 {/* <th className="font-normal">Created</th>
                 <th className="font-normal">Market</th>
                 <th className="font-normal">Price</th>
@@ -89,6 +125,7 @@ export const TradingHubAggregatedPosition = ({
                 <TradingHubPositionsItem
                   position={position}
                   key={position.id}
+                  oraclePrice={oraclePrice}
                 />
               ))}
             </tbody>
