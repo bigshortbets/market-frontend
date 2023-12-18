@@ -21,7 +21,7 @@ export const useClosePosition = (
       quantity,
     ],
     onError(error) {
-      toast.error('Error while closing position!', {
+      toast.error('Error while creating closing order!', {
         duration: 4000,
       });
     },

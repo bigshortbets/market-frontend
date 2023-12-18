@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import logo from '../../public/logo.svg';
 import { ConnectButton } from '../ConnectButton';
 import { useNetwork } from 'wagmi';
+import { UIConfiguration } from '../Market/UIConfiguration';
 
 export const Navbar = () => {
   const { chain, chains } = useNetwork();
@@ -16,7 +17,10 @@ export const Navbar = () => {
   return (
     <nav className="bg-primary-bg w-full h-[60px] flex justify-between items-center px-6">
       <Image src={logo} alt="BigShortBet$ Logo" width={50} priority />
-      {isClient && <ConnectButton />}
+      <div className="flex items-center gap-4">
+        <UIConfiguration />
+        {isClient && <ConnectButton />}
+      </div>
     </nav>
   );
 };

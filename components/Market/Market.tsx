@@ -14,7 +14,10 @@ interface MarketProps {
   markets: MarketType[];
 }
 
+export type UIConfigurationType = 'HubOrder' | 'OrderHub';
+
 export const selectedMarketIdAtom = atom<string>('');
+export const UIConfigurationAtom = atom<UIConfigurationType>('HubOrder');
 
 export const Market = ({ markets }: MarketProps) => {
   const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
@@ -24,12 +27,18 @@ export const Market = ({ markets }: MarketProps) => {
     setSelectedMarketId(markets[0].id);
   }, []);
 
+  const [UIConfiguration] = useAtom(UIConfigurationAtom);
+
   return (
     <div className={`h-screen bg-primary-bg flex flex-col`}>
       <Navbar />
       <MarketBar markets={markets} oraclePrice={oraclePrice!} />
       <div className="h-[(100vh-120px)] px-6 py-6">
-        <div className="flex justify-between gap-6">
+        <div
+          className={`flex justify-between gap-6 ${
+            UIConfiguration === 'HubOrder' ? 'flex-row' : 'flex-row-reverse'
+          }`}
+        >
           <TradingHub />
           <div className="flex flex-col gap-6">
             <OrderManager markets={markets} />
