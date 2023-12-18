@@ -117,14 +117,11 @@ export const TradingHubAggregatedPosition = ({
               </p>
             </div>
 
-            <button
-              className="text-sm font-semibold  w-[100px]"
-              onClick={toggleExtended}
-            >
+            <div className="text-sm font-semibold  w-[100px]">
               {isExtended
                 ? `Hide all (${positions.length})`
                 : `Show all (${positions.length})`}
-            </button>
+            </div>
           </div>
         </div>
       </div>
