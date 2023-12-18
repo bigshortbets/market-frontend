@@ -35,3 +35,11 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
+tr:nth-child(even) .close-position-input {
+  background-color: #191b24;
+}
+
+tr:nth-child(odd) .close-position-input {
+  background-color: #23252e;
+}

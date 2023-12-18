@@ -9,6 +9,7 @@ import { TradingHubPositionsItem } from './TradingHubPositionsItem';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
 import Image from 'next/image';
 import { scaleNumber } from '@/utils/scaleNumber';
+import { FaChartBar } from 'react-icons/fa';
 
 interface TradingHubAggregatedPositionProps {
   positions: PositionType[];
@@ -62,8 +63,16 @@ export const TradingHubAggregatedPosition = ({
       <div className="w-full px-3 bg-[#23252E] py-3 rounded-t ">
         <div className="flex justify-between items-center">
           <div className="flex flex-col gap-2">
-            <p className="text-sm font-semibold">{ticker}</p>
-
+            <div className="flex items-center gap-2">
+              <p className="text-sm font-semibold">{ticker}</p>
+              <a
+                className="text-[#ABACBA] text-lg"
+                href={`https://pl.tradingview.com/chart/?symbol=${ticker}`}
+                target="_blank"
+              >
+                <FaChartBar />
+              </a>
+            </div>
             <div className=" flex items-center gap-2">
               {marketDetails && (
                 <Image
@@ -113,6 +122,7 @@ export const TradingHubAggregatedPosition = ({
                 <th className="font-normal">Opponent</th>
                 <th className="font-normal">Entry price</th>
                 <th className="font-normal">Profit / loss</th>
+                <th className="pr-3"></th>
                 {/* <th className="font-normal">Created</th>
                 <th className="font-normal">Market</th>
                 <th className="font-normal">Price</th>
