@@ -10,6 +10,8 @@ import { getMarkeDetails } from '@/utils/getMarketDetails';
 import Image from 'next/image';
 import { scaleNumber } from '@/utils/scaleNumber';
 import { FaChartBar } from 'react-icons/fa';
+import { useAtom } from 'jotai';
+import { selectedMarketIdAtom } from '../../Market';
 
 interface TradingHubAggregatedPositionProps {
   positions: PositionType[];
@@ -21,6 +23,7 @@ export const TradingHubAggregatedPosition = ({
   ticker,
 }: TradingHubAggregatedPositionProps) => {
   const [isExtended, setIsExtended] = useState(false);
+  const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
   const { address } = useAccount();
   const convertedAddress = convertToSS58(address!);
   const marketId = positions[0].market.id;
@@ -36,9 +39,6 @@ export const TradingHubAggregatedPosition = ({
   const marketDetails = getMarkeDetails(ticker);
 
   const oraclePrice = useOraclePrice(marketId);
-
-  /* const [animationParent] = useAutoAnimate(); */
-  /* const oraclePrice: string = useOraclePrice(marketId); */
 
   const sumLossProfit: number =
     oraclePrice &&
@@ -56,34 +56,50 @@ export const TradingHubAggregatedPosition = ({
                 Number(scaleNumber(oraclePrice.toString())));
     }, 0);
 
+  const handleClick = () => {
+    setSelectedMarketId(marketId);
+    toggleExtended();
+  };
+
   return (
     <div
-      className="w-full flex flex-col border-4 border-[#23252E]" /* ref={animationParent} */
+      className="w-full flex flex-col border-4 border-[#23252E] cursor-pointer"
+      onClick={handleClick}
     >
       <div className="w-full px-3 bg-[#23252E] py-3 rounded-t ">
         <div className="flex justify-between items-center">
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
-              <p className="text-sm font-semibold">{ticker}</p>
-              <a
-                className="text-[#ABACBA] text-lg"
-                href={`https://pl.tradingview.com/chart/?symbol=${ticker}`}
-                target="_blank"
-              >
-                <FaChartBar />
-              </a>
-            </div>
-            <div className=" flex items-center gap-2">
-              {marketDetails && (
-                <Image
-                  src={marketDetails?.path}
-                  width={20}
-                  height={20}
-                  alt="Market logo"
-                  className="rounded-full"
-                />
-              )}
-              <p className="text-xs">{marketDetails?.name}</p>
+          <div className="flex gap-1.5">
+            <div
+              className={`w-[12px] h-[12px]  rounded-full mt-[3px]  ${
+                selectedMarketId === marketId
+                  ? 'bg-[#73D391] animate-pulse'
+                  : 'bg-gray-400'
+              }`}
+            ></div>
+
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-semibold">{ticker}</p>
+                <a
+                  className="text-[#ABACBA] text-lg"
+                  href={`https://pl.tradingview.com/chart/?symbol=${ticker}`}
+                  target="_blank"
+                >
+                  <FaChartBar />
+                </a>
+              </div>
+              <div className=" flex items-center gap-2">
+                {marketDetails && (
+                  <Image
+                    src={marketDetails?.path}
+                    width={20}
+                    height={20}
+                    alt="Market logo"
+                    className="rounded-full"
+                  />
+                )}
+                <p className="text-xs">{marketDetails?.name}</p>
+              </div>
             </div>
           </div>
           {/* Stats */}
