@@ -16,6 +16,7 @@ const GET_ALL_MARKETS = gql`
       blockHeight
       timestamp
       dailyVolume
+      oraclePrice
     }
   }
 `;

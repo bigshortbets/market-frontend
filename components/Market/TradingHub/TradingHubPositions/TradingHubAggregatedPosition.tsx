@@ -1,4 +1,3 @@
-import { useOraclePrice } from '@/api/useOraclePrice';
 import { PositionType } from '@/types/positionTypes';
 import { convertToSS58 } from '@/utils/convertToSS58';
 import { extendPositionsWithSide } from '@/utils/extendPositionsWithSide';
@@ -27,6 +26,8 @@ export const TradingHubAggregatedPosition = ({
   const { address } = useAccount();
   const convertedAddress = convertToSS58(address!);
   const marketId = positions[0].market.id;
+  const oraclePrice = positions[0].market.oraclePrice;
+
   const positionsWithSide = extendPositionsWithSide(
     positions,
     convertedAddress
@@ -37,8 +38,6 @@ export const TradingHubAggregatedPosition = ({
   };
 
   const marketDetails = getMarkeDetails(ticker);
-
-  const oraclePrice = useOraclePrice(marketId);
 
   const sumLossProfit: number =
     oraclePrice &&
@@ -62,11 +61,11 @@ export const TradingHubAggregatedPosition = ({
   };
 
   return (
-    <div
-      className="w-full flex flex-col border-4 border-[#23252E] cursor-pointer"
-      onClick={handleClick}
-    >
-      <div className="w-full px-3 bg-[#23252E] py-3 rounded-t ">
+    <div className="w-full flex flex-col border-4 border-[#23252E] cursor-pointer">
+      <div
+        className="w-full px-3 bg-[#23252E] py-3 rounded-t "
+        onClick={handleClick}
+      >
         <div className="flex justify-between items-center">
           <div className="flex gap-1.5">
             <div

@@ -11,10 +11,9 @@ import Image from 'next/image';
 
 interface MarketBarProps {
   markets: MarketType[];
-  oraclePrice?: BigInt;
 }
 
-export const MarketBar = ({ markets, oraclePrice }: MarketBarProps) => {
+export const MarketBar = ({ markets }: MarketBarProps) => {
   const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
   const { address } = useAccount();
   const { data } = useNativeCurrencyBalance(address);
@@ -55,9 +54,9 @@ export const MarketBar = ({ markets, oraclePrice }: MarketBarProps) => {
 
         <div className="flex gap-2">
           <p>Oracle price:</p>
-          {oraclePrice ? (
+          {market?.oraclePrice ? (
             <p className="font-semibold">
-              {scaleNumber(oraclePrice.toString())}
+              {scaleNumber(market?.oraclePrice.toString())}
             </p>
           ) : (
             <p className="font-semibold">Loading...</p>

@@ -45,6 +45,7 @@ export const USER_OPEN_POSITIONS_SUBSCRIPTION = gql`
         id
         ticker
         contractUnit
+        oraclePrice
       }
     }
   }

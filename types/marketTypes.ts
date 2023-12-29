@@ -9,4 +9,5 @@ export interface MarketType {
   blockHeight: BigInt;
   timestamp: Date;
   dailyVolume: BigInt;
+  oraclePrice: BigInt;
 }
