@@ -1,7 +1,5 @@
 import { MarketType } from '@/types/marketTypes';
 import { gql, useSubscription } from '@apollo/client';
-import { atom, useAtom } from 'jotai';
-import { useEffect, useRef } from 'react';
 
 const GET_ALL_MARKETS = gql`
   subscription {

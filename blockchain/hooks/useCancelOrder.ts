@@ -2,6 +2,7 @@ import { useContractWrite } from 'wagmi';
 import { marketContract } from '../constants';
 import toast from 'react-hot-toast';
 import { abi } from '../abi';
+import { handleBlockchainError } from '@/utils/handleBlockchainError';
 
 export const useCancelOrder = (marketId: string, orderId: string) => {
   const { data, isLoading, isSuccess, write } = useContractWrite({
@@ -10,9 +11,7 @@ export const useCancelOrder = (marketId: string, orderId: string) => {
     functionName: 'cancel_order',
     args: [BigInt(marketId), BigInt(orderId)],
     onError(error) {
-      toast.error('Error while canceling an order!', {
-        duration: 4000,
-      });
+      handleBlockchainError(error.stack!);
     },
 
     onSuccess() {

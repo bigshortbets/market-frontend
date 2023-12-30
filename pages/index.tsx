@@ -24,10 +24,7 @@ export default function Home() {
   const isLoading = minimumLoadingTime || !markets;
 
   return (
-    <main
-      className={`${inter.className} text-white`}
-      onClick={() => console.log(markets)}
-    >
+    <main className={`${inter.className} text-white`}>
       <Head>
         <title>bigshortbet$ P2P Market</title>
       </Head>

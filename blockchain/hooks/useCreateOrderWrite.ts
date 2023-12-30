@@ -7,6 +7,7 @@ import { parseEther } from 'viem';
 import { OrderSideEnum } from '@/components/Market/OrderManager/OrderManager';
 import toast from 'react-hot-toast';
 import { tradingHubStateAtom } from '@/components/Market/TradingHub/TradingHub';
+import { handleBlockchainError } from '@/utils/handleBlockchainError';
 
 export const useCreateOrderWrite = (
   price: number,
@@ -26,9 +27,7 @@ export const useCreateOrderWrite = (
       side,
     ],
     onError(error) {
-      toast.error('Error!', {
-        duration: 4000,
-      });
+      handleBlockchainError(error.stack!);
     },
 
     onSuccess() {

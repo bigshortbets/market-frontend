@@ -3,6 +3,7 @@ import { marketContract } from '../constants';
 import toast from 'react-hot-toast';
 import { abi } from '../abi';
 import { parseEther } from 'viem';
+import { handleBlockchainError } from '@/utils/handleBlockchainError';
 
 export const useClosePosition = (
   marketId: string,
@@ -21,9 +22,7 @@ export const useClosePosition = (
       quantity,
     ],
     onError(error) {
-      toast.error('Error while creating closing order!', {
-        duration: 4000,
-      });
+      handleBlockchainError(error.stack!);
     },
 
     onSuccess() {
