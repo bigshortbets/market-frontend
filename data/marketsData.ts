@@ -25,4 +25,9 @@ export const marketsData: MarketsDataProps[] = [
     name: 'Bitcoin',
     path: './market-logos/BTC.svg',
   },
+  {
+    symbol: 'SI',
+    name: 'Silver',
+    path: './market-logos/SI.svg',
+  },
 ];
