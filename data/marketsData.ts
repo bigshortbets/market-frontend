@@ -6,28 +6,28 @@ export interface MarketsDataProps {
 
 export const marketsData: MarketsDataProps[] = [
   {
-    symbol: 'CL',
-    name: 'Crude Oil',
-    path: './market-logos/CL.svg',
+    symbol: "CL",
+    name: "Crude Oil",
+    path: "./market-logos/CL.svg",
   },
   {
-    symbol: 'E7',
-    name: 'Euro FX',
-    path: './market-logos/E7.svg',
+    symbol: "E7",
+    name: "Euro FX",
+    path: "./market-logos/E7.svg",
   },
   {
-    symbol: 'NQ',
-    name: 'Nasdaq',
-    path: './market-logos/NQ.svg',
+    symbol: "NQ",
+    name: "Nasdaq",
+    path: "./market-logos/NQ.svg",
   },
   {
-    symbol: 'BTC',
-    name: 'Bitcoin',
-    path: './market-logos/BTC.svg',
+    symbol: "BTC",
+    name: "Bitcoin",
+    path: "./market-logos/BTC.svg",
   },
   {
-    symbol: 'SI',
-    name: 'Silver',
-    path: './market-logos/SI.svg',
+    symbol: "SI",
+    name: "Silver",
+    path: "./market-logos/SI.svg",
   },
 ];

@@ -1,26 +1,32 @@
-import { useEffect } from 'react';
-import { MarketBar } from '../MarketBar';
-import { Navbar } from '../Navbar/Navbar';
-import { MarketType } from '@/types/marketTypes';
-import { atom, useAtom } from 'jotai';
-import { ContractDetails } from './ContractDetails/ContractDetails';
-import { OrderManager } from './OrderManager/OrderManager';
-import { TradingHub } from './TradingHub/TradingHub';
+import { useEffect } from "react";
+import { MarketBar } from "../MarketBar";
+import { Navbar } from "../Navbar/Navbar";
+import { MarketType } from "@/types/marketTypes";
+import { atom, useAtom } from "jotai";
+import { ContractDetails } from "./ContractDetails/ContractDetails";
+import { OrderManager } from "./OrderManager/OrderManager";
+import { TradingHub } from "./TradingHub/TradingHub";
+import { useNetwork, useSwitchNetwork } from "wagmi";
 
 interface MarketProps {
   markets: MarketType[];
 }
 
-export type UIConfigurationType = 'HubOrder' | 'OrderHub';
+export type UIConfigurationType = "HubOrder" | "OrderHub";
 
-export const selectedMarketIdAtom = atom<string>('');
-export const UIConfigurationAtom = atom<UIConfigurationType>('HubOrder');
+export const selectedMarketIdAtom = atom<string>("");
+export const UIConfigurationAtom = atom<UIConfigurationType>("HubOrder");
 
 export const Market = ({ markets }: MarketProps) => {
   const [, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
 
   useEffect(() => {
     setSelectedMarketId(markets[0].id);
+    if (chain?.id != 2137) {
+      switchNetwork?.(2137);
+    }
   }, []);
 
   const [UIConfiguration] = useAtom(UIConfigurationAtom);
@@ -32,7 +38,7 @@ export const Market = ({ markets }: MarketProps) => {
       <div className="h-[(100vh-120px)] px-6 py-6">
         <div
           className={`flex justify-between gap-6 ${
-            UIConfiguration === 'HubOrder' ? 'flex-row' : 'flex-row-reverse'
+            UIConfiguration === "HubOrder" ? "flex-row" : "flex-row-reverse"
           }`}
         >
           <TradingHub />
