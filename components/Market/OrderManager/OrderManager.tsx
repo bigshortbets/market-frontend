@@ -1,16 +1,17 @@
-import { useCreateOrderWrite } from '@/blockchain/hooks/useCreateOrderWrite';
-import React, { useState } from 'react';
-import { NumericFormat } from 'react-number-format';
-import ReactLoading from 'react-loading';
-import { useAccount } from 'wagmi';
-import { useAtom } from 'jotai';
-import { selectedMarketIdAtom } from '../Market';
-import { findMarketById } from '@/utils/findMarketById';
-import { MarketType } from '@/types/marketTypes';
-import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
-import { disabledStyle } from '@/utils/sharedStyles';
-import { IoMdInformationCircle } from 'react-icons/io';
-import { Tooltip } from 'react-tooltip';
+import { useCreateOrderWrite } from "@/blockchain/hooks/useCreateOrderWrite";
+import React, { useEffect, useState } from "react";
+import { NumericFormat } from "react-number-format";
+import ReactLoading from "react-loading";
+import { useAccount } from "wagmi";
+import { useAtom } from "jotai";
+import { selectedMarketIdAtom } from "../Market";
+import { findMarketById } from "@/utils/findMarketById";
+import { MarketType } from "@/types/marketTypes";
+import { useNativeCurrencyBalance } from "@/blockchain/hooks/useNativeCurrencyBalance";
+import { disabledStyle } from "@/utils/sharedStyles";
+import { IoMdInformationCircle } from "react-icons/io";
+import { Tooltip } from "react-tooltip";
+import { scaleNumber } from "@/utils/scaleNumber";
 
 export enum OrderSideEnum {
   LONG,
@@ -45,7 +46,12 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
 
   const isActionDisabled = price === 0 || orderCost > Number(formattedBalance);
 
-  const loadingStateStyle = 'opacity-50 pointer-events-none';
+  const loadingStateStyle = "opacity-50 pointer-events-none";
+
+  useEffect(() => {
+    selectedMarket &&
+      setPrice(Number(scaleNumber(selectedMarket?.oraclePrice.toString())));
+  }, [selectedMarket]);
 
   return (
     <div
@@ -55,7 +61,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
     >
       {loading && (
         <ReactLoading
-          type={'spin'}
+          type={"spin"}
           className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
           width={60}
         />
@@ -72,10 +78,10 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           <div className="relative">
             <NumericFormat
               allowNegative={false}
-              id={'orderPriceInput'}
+              id={"orderPriceInput"}
               className="outline-none bg-[#23252E] border-none text-sm text-white py-3 rounded-lg px-3 w-full"
-              value={price}
               onChange={(e) => setPrice(Number(e.target.value))}
+              value={price}
             />
             <span className="absolute right-3 bottom-[14px] text-xs opacity-50">
               USDC
@@ -91,7 +97,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           </label>
           <NumericFormat
             allowNegative={false}
-            id={'quantityInput'}
+            id={"quantityInput"}
             className="outline-none bg-[#23252E] border-none text-sm text-white py-3 rounded-lg px-3"
             value={quantity}
             onChange={(e) => setQuantity(Number(e.target.value))}
@@ -112,7 +118,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
             </a>
           </div>
 
-          <p className="text-xs">{orderCost} USDC</p>
+          <p className="text-xs">{orderCost.toFixed(2)} USDC</p>
         </div>
         <div className="flex justify-between mb-3">
           <div className="flex items-center gap-1">
@@ -127,13 +133,13 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
             </a>
           </div>
 
-          <p className="text-xs">{orderValue} USDC</p>
+          <p className="text-xs">{orderValue.toFixed(2)} USDC</p>
         </div>
       </div>
       <div className="flex items-center gap-2">
         <button
           className={`flex-1  duration-300 transition ease-in-out py-2 flex flex-col items-center rounded-lg ${
-            isActionDisabled ? disabledStyle : 'bg-[#73D391] hover:bg-[#61C27B]'
+            isActionDisabled ? disabledStyle : "bg-[#73D391] hover:bg-[#61C27B]"
           }`}
           onClick={() => writeLongOrder?.()}
         >
@@ -142,7 +148,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
         </button>
         <button
           className={`flex-1  duration-300 transition ease-in-out py-2 flex flex-col items-center rounded-lg ${
-            isActionDisabled ? disabledStyle : 'bg-[#D26D6C] hover:bg-[#C53F3A]'
+            isActionDisabled ? disabledStyle : "bg-[#D26D6C] hover:bg-[#C53F3A]"
           }`}
           onClick={() => writeShortOrder?.()}
         >
@@ -150,8 +156,8 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           <p className="text-wwhite text-xs font-bold">SHORT</p>
         </button>
       </div>
-      <Tooltip id="order-cost-tooltip" style={{ fontSize: '12px' }} />
-      <Tooltip id="order-value-tooltip" style={{ fontSize: '12px' }} />
+      <Tooltip id="order-cost-tooltip" style={{ fontSize: "12px" }} />
+      <Tooltip id="order-value-tooltip" style={{ fontSize: "12px" }} />
     </div>
   );
 };
