@@ -1,14 +1,12 @@
-import { TradingHubTab } from './TradingHubTab';
-import { atom } from 'jotai';
-import { useAccount } from 'wagmi';
-import { TradingHubContentContainer } from './TradingHubContentContainer';
-import { disabledStyle } from '@/utils/sharedStyles';
-
-const tabs = ['positions', 'orders', 'history'] as const;
+import { TradingHubTab } from "./TradingHubTab";
+import { atom } from "jotai";
+import { useAccount } from "wagmi";
+import { TradingHubContentContainer } from "./TradingHubContentContainer";
+const tabs = ["positions", "orders", "history"] as const;
 
 export type TradingHubStateType = (typeof tabs)[number];
 
-export const tradingHubStateAtom = atom<TradingHubStateType>('positions');
+export const tradingHubStateAtom = atom<TradingHubStateType>("positions");
 
 export const TradingHub = () => {
   const { address } = useAccount();
@@ -16,7 +14,7 @@ export const TradingHub = () => {
   return (
     <div
       className={` bg-secondary-bg flex-grow rounded-lg transition ease-in-out  ${
-        !address && disabledStyle
+        !address && "opacity-50 pointer-events-none"
       } no-scrollbar`}
     >
       <div className="w-full bg-primary-bg h-[45px]">

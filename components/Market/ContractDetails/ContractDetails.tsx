@@ -1,16 +1,15 @@
-import { MarketType } from '@/types/marketTypes';
-import { useAtom } from 'jotai';
-import React, { useRef, useState } from 'react';
-import { selectedMarketIdAtom } from '../Market';
-import { findMarketById } from '@/utils/findMarketById';
-import { scaleNumber } from '@/utils/scaleNumber';
-import { BiSolidDownArrow } from 'react-icons/bi';
-import { BiSolidUpArrow } from 'react-icons/bi';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { formatDate } from '@/utils/formatDate';
-import { addSeconds } from 'date-fns';
-import { useAccount, useNetwork } from 'wagmi';
-import { disabledStyle } from '@/utils/sharedStyles';
+import { MarketType } from "@/types/marketTypes";
+import { useAtom } from "jotai";
+import React, { useRef, useState } from "react";
+import { selectedMarketIdAtom } from "../Market";
+import { findMarketById } from "@/utils/findMarketById";
+import { scaleNumber } from "@/utils/scaleNumber";
+import { BiSolidDownArrow } from "react-icons/bi";
+import { BiSolidUpArrow } from "react-icons/bi";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { formatDate } from "@/utils/formatDate";
+import { addSeconds } from "date-fns";
+import { useAccount, useNetwork } from "wagmi";
 
 interface ContractDetailsProps {
   markets: MarketType[];
@@ -36,14 +35,14 @@ export const ContractDetails = ({ markets }: ContractDetailsProps) => {
   )}`;
 
   const contractDetailsData = [
-    { label: 'Contract name', value: selectedMarket?.ticker },
-    { label: 'Market duration', value: marketDurationRepresentation },
+    { label: "Contract name", value: selectedMarket?.ticker },
+    { label: "Market duration", value: marketDurationRepresentation },
     {
-      label: 'Tick size',
+      label: "Tick size",
       value: `${scaleNumber(selectedMarket?.tickSize?.toString()!)} USDC`,
     },
     {
-      label: 'Initial margin',
+      label: "Initial margin",
       value: `${selectedMarket?.initialMargin?.toString()!} %`,
     },
   ];
@@ -55,7 +54,7 @@ export const ContractDetails = ({ markets }: ContractDetailsProps) => {
   return (
     <div
       className={`w-[300px] bg-secondary-bg rounded pt-4 font-semibold ${
-        !address && disabledStyle
+        !address && "opacity-50 pointer-events-none"
       }`}
       ref={animationParent}
     >
