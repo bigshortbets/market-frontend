@@ -23,6 +23,32 @@ export const USER_ORDERS_SUBSCRIPTION = gql`
   }
 `;
 
+export const USER_HISTORY_SUBSCRIPTION = gql`
+  subscription orders($userId: String!) {
+    orders(
+      where: {
+        who_eq: $userId
+        AND: { status_eq: COMPLETED, OR: { status_eq: CANCELLED } }
+      }
+      orderBy: timestamp_DESC
+    ) {
+      who
+      timestamp
+      quantity
+      initialQuantity
+      price
+      id
+      blockHeight
+      side
+      status
+      market {
+        id
+        ticker
+      }
+    }
+  }
+`;
+
 export const USER_OPEN_POSITIONS_SUBSCRIPTION = gql`
   subscription positions($userId: String!) {
     positions(

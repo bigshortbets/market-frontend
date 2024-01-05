@@ -1,17 +1,15 @@
+import { HistoryResponse, HistoryOrderType } from '@/types/historyTypes';
 import React from 'react';
-import { TradingHubOrdersItem } from './TradingHubOrdersItem';
-import { OrderType } from '@/types/orderTypes';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { TradingHubHistoryItem } from './TradingHubHistoryItem';
 
-interface TradingHubOrdersProps {
-  orders: OrderType[];
+interface TradingHubHistoryProps {
+  history: HistoryOrderType[];
 }
 
-export const TradingHubOrders = ({ orders }: TradingHubOrdersProps) => {
-  /* const [animationParent] = useAutoAnimate(); - Not working properly*/
+export const TradingHubHistory = ({ history }: TradingHubHistoryProps) => {
   return (
     <div className="w-full h-full">
-      {orders.length > 0 ? (
+      {history.length > 0 ? (
         <table className="table-auto w-full">
           <thead className="bg-secondary-bg text-sm text-left text-[#ABACBA]">
             <tr>
@@ -20,18 +18,20 @@ export const TradingHubOrders = ({ orders }: TradingHubOrdersProps) => {
               <th className="font-normal">Market</th>
               <th className="font-normal">Price</th>
               <th className="font-normal">Quantity</th>
-              <th className="pr-3"></th>
+              <th className="font-normal">Status</th>
             </tr>
           </thead>
           <tbody /* ref={animationParent} */>
-            {orders.map((order: OrderType, key: number) => (
-              <TradingHubOrdersItem order={order} key={key} />
+            {history.map((order: HistoryOrderType, key: number) => (
+              <TradingHubHistoryItem order={order} key={key} />
             ))}
           </tbody>
         </table>
       ) : (
         <div className="flex items-center justify-center h-full">
-          <p className="opacity-20 text-3xl">Currently no open orders</p>
+          <p className="opacity-20 text-3xl">
+            Currently no orders in the history
+          </p>
         </div>
       )}
     </div>

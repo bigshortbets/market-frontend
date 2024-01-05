@@ -25,15 +25,23 @@ export const TradingHubPositions = ({
 
   return (
     <div className="w-full h-full px-2 py-2">
-      <div className="flex flex-col gap-4">
-        {Object.entries(positionsByMarketTicker).map(([ticker, positions]) => (
-          <TradingHubAggregatedPosition
-            key={ticker}
-            ticker={ticker}
-            positions={positions}
-          />
-        ))}
-      </div>
+      {positions.length > 0 ? (
+        <div className="flex flex-col gap-4">
+          {Object.entries(positionsByMarketTicker).map(
+            ([ticker, positions]) => (
+              <TradingHubAggregatedPosition
+                key={ticker}
+                ticker={ticker}
+                positions={positions}
+              />
+            )
+          )}
+        </div>
+      ) : (
+        <div className="flex items-center justify-center h-full">
+          <p className="opacity-20 text-3xl">Currently no open positions</p>
+        </div>
+      )}
     </div>
   );
 };
