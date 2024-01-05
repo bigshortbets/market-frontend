@@ -8,7 +8,6 @@ import { selectedMarketIdAtom } from "../Market";
 import { findMarketById } from "@/utils/findMarketById";
 import { MarketType } from "@/types/marketTypes";
 import { useNativeCurrencyBalance } from "@/blockchain/hooks/useNativeCurrencyBalance";
-import { disabledStyle } from "@/utils/sharedStyles";
 import { IoMdInformationCircle } from "react-icons/io";
 import { Tooltip } from "react-tooltip";
 import { scaleNumber } from "@/utils/scaleNumber";
@@ -138,8 +137,8 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       </div>
       <div className="flex items-center gap-2">
         <button
-          className={`flex-1  duration-300 transition ease-in-out py-2 flex flex-col items-center rounded-lg ${
-            isActionDisabled ? disabledStyle : "bg-[#73D391] hover:bg-[#61C27B]"
+          className={`flex-1  duration-300 transition bg-[#73D391] hover:bg-[#61C27B] ease-in-out py-2 flex flex-col items-center rounded-lg ${
+            isActionDisabled && "opacity-50 pointer-events-none"
           }`}
           onClick={() => writeLongOrder?.()}
         >
@@ -147,8 +146,8 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           <p className="text-white text-xs font-bold">LONG</p>
         </button>
         <button
-          className={`flex-1  duration-300 transition ease-in-out py-2 flex flex-col items-center rounded-lg ${
-            isActionDisabled ? disabledStyle : "bg-[#D26D6C] hover:bg-[#C53F3A]"
+          className={`flex-1  duration-300 bg-[#D26D6C] hover:bg-[#C53F3A] transition ease-in-out py-2 flex flex-col items-center rounded-lg ${
+            isActionDisabled && "opacity-50 pointer-events-none"
           }`}
           onClick={() => writeShortOrder?.()}
         >
