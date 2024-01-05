@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { useEffect, useState } from "react";
+import { useAccount, useConnect, useDisconnect } from "wagmi";
 
 export const ConnectButton = () => {
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
   const { isConnected } = useAccount();
+
+  const isInstalled = typeof (window as any).ethereum !== "undefined";
 
   const connector = connectors[0];
 
@@ -12,14 +14,24 @@ export const ConnectButton = () => {
     isConnected ? disconnect() : connect({ connector });
   };
 
+  const handleClick = () => {
+    isInstalled
+      ? handleConnection()
+      : window.open("https://metamask.io/download.html", "_blank");
+  };
+
   return (
     <button
       className={`bg-[#9BA6F8] font-semibold px-4 py-2  rounded-xl text-[#01083A] text-sm ${
-        !isConnected && 'animate-pulse'
+        !isConnected && "animate-pulse"
       }`}
-      onClick={handleConnection}
+      onClick={handleClick}
     >
-      {isConnected ? 'Connected' : 'Connect wallet'}
+      {!isInstalled
+        ? "Install metamask"
+        : isConnected
+        ? "Connected"
+        : "Connect wallet"}
     </button>
   );
 };
