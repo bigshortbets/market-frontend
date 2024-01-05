@@ -14,7 +14,7 @@ export const handleBlockchainError = (error: string) => {
   const errorMessageRegex = /message: Some\("(.*?)"\)/;
   const match = errorMessageRegex.exec(error);
   if (match && match[1]) {
-    const readableErrorMessage = blockchainErrorMappings[match[1]] || 'Error';
+    const readableErrorMessage = blockchainErrorMappings[match[1]] || 'Error!';
     toast.error(readableErrorMessage, {
       duration: 4000,
     });
