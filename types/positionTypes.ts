@@ -21,3 +21,14 @@ export interface PositionWithSide extends PositionType {
 export interface PositionsResponse {
   positions: PositionType[];
 }
+
+export interface RecentPositionType {
+  id: string;
+  price: BigInt;
+  timestamp: string;
+  quantity: BigInt;
+}
+
+export interface RecentPositionTypeResponse {
+  positions: RecentPositionType[];
+}

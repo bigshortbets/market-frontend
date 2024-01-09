@@ -1,22 +1,23 @@
-import { useEffect } from "react";
-import { MarketBar } from "../MarketBar";
-import { Navbar } from "../Navbar/Navbar";
-import { MarketType } from "@/types/marketTypes";
-import { atom, useAtom } from "jotai";
-import { ContractDetails } from "./ContractDetails/ContractDetails";
-import { OrderManager } from "./OrderManager/OrderManager";
-import { TradingHub } from "./TradingHub/TradingHub";
-import { useNetwork, useSwitchNetwork } from "wagmi";
-import { Mobile } from "../Mobile";
+import { useEffect } from 'react';
+import { MarketBar } from '../MarketBar';
+import { Navbar } from '../Navbar/Navbar';
+import { MarketType } from '@/types/marketTypes';
+import { atom, useAtom } from 'jotai';
+import { ContractDetails } from './ContractDetails/ContractDetails';
+import { OrderManager } from './OrderManager/OrderManager';
+import { TradingHub } from './TradingHub/TradingHub';
+import { useNetwork, useSwitchNetwork } from 'wagmi';
+import { Mobile } from '../Mobile';
+import { OrderBookContainer } from './OrderBook/OrderBookContainer';
 
 interface MarketProps {
   markets: MarketType[];
 }
 
-export type UIConfigurationType = "HubOrder" | "OrderHub";
+export type UIConfigurationType = 'HubOrder' | 'OrderHub';
 
-export const selectedMarketIdAtom = atom<string>("");
-export const UIConfigurationAtom = atom<UIConfigurationType>("HubOrder");
+export const selectedMarketIdAtom = atom<string>('');
+export const UIConfigurationAtom = atom<UIConfigurationType>('HubOrder');
 
 export const Market = ({ markets }: MarketProps) => {
   const [, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
@@ -39,11 +40,14 @@ export const Market = ({ markets }: MarketProps) => {
         <MarketBar markets={markets} />
         <div className="h-[(100vh-120px)] px-6 py-6">
           <div
-            className={`flex justify-between gap-6 ${
-              UIConfiguration === "HubOrder" ? "flex-row" : "flex-row-reverse"
+            className={`flex justify-between gap-6 h-full ${
+              UIConfiguration === 'HubOrder' ? 'flex-row' : 'flex-row-reverse'
             }`}
           >
             <TradingHub />
+            <div className="h-full">
+              <OrderBookContainer />
+            </div>
             <div className="flex flex-col gap-6">
               <OrderManager markets={markets} />
               <ContractDetails markets={markets} />

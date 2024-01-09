@@ -1,5 +1,7 @@
 import { gql } from '@apollo/client';
 
+/* Query for getting orders of given user */
+
 export const USER_ORDERS_SUBSCRIPTION = gql`
   subscription orders($userId: String!) {
     orders(
@@ -22,6 +24,8 @@ export const USER_ORDERS_SUBSCRIPTION = gql`
     }
   }
 `;
+
+/* Query for getting history of given user */
 
 export const USER_HISTORY_SUBSCRIPTION = gql`
   subscription orders($userId: String!) {
@@ -49,6 +53,8 @@ export const USER_HISTORY_SUBSCRIPTION = gql`
   }
 `;
 
+/* Query for getting open positions of given user */
+
 export const USER_OPEN_POSITIONS_SUBSCRIPTION = gql`
   subscription positions($userId: String!) {
     positions(
@@ -73,6 +79,23 @@ export const USER_OPEN_POSITIONS_SUBSCRIPTION = gql`
         contractUnit
         oraclePrice
       }
+    }
+  }
+`;
+
+/* Query for recent positions of given market*/
+
+export const RECENT_MARKET_POSITIONS_SUBSCRIPTION = gql`
+  subscription SubscribePositions($marketId: String!) {
+    positions(
+      where: { market: { id_eq: $marketId } }
+      limit: 10
+      orderBy: timestamp_DESC
+    ) {
+      id
+      price
+      timestamp
+      quantity
     }
   }
 `;
