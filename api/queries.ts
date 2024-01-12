@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 /* Query for getting orders of given user */
 
@@ -96,6 +96,46 @@ export const RECENT_MARKET_POSITIONS_SUBSCRIPTION = gql`
       price
       timestamp
       quantity
+    }
+  }
+`;
+
+/* Query for order book shorts */
+
+export const ORDER_BOOK_SHORTS_SUBSCRIPTION = gql`
+  subscription aggregatedOrdersByPrices(
+    $marketId: String!
+    $limit: Int!
+    $side: OrderSide!
+  ) {
+    aggregatedOrdersByPrices(
+      where: { market: { id_eq: $marketId }, side_eq: $side }
+      limit: $limit
+      orderBy: price_ASC
+    ) {
+      quantity
+      price
+      id
+    }
+  }
+`;
+
+/* Query for order book longs */
+
+export const ORDER_BOOK_LONGS_SUBSCRIPTION = gql`
+  subscription aggregatedOrdersByPrices(
+    $marketId: String!
+    $limit: Int!
+    $side: OrderSide!
+  ) {
+    aggregatedOrdersByPrices(
+      where: { market: { id_eq: $marketId }, side_eq: $side }
+      limit: $limit
+      orderBy: price_DESC
+    ) {
+      quantity
+      price
+      id
     }
   }
 `;
