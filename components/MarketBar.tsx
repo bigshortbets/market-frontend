@@ -1,13 +1,13 @@
-import { MarketType } from '@/types/marketTypes';
-import { useAtom } from 'jotai';
-import { selectedMarketIdAtom } from './Market/Market';
-import { findMarketById } from '@/utils/findMarketById';
-import { scaleNumber } from '@/utils/scaleNumber';
-import { useAccount, useBalance } from 'wagmi';
-import { bigshortbetsTokenAddress } from '@/blockchain/constants';
-import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
-import { getMarkeDetails } from '@/utils/getMarketDetails';
-import Image from 'next/image';
+import { MarketType } from "@/types/marketTypes";
+import { useAtom } from "jotai";
+import { selectedMarketIdAtom } from "./Market/Market";
+import { findMarketById } from "@/utils/findMarketById";
+import { scaleNumber } from "@/utils/scaleNumber";
+import { useAccount, useBalance } from "wagmi";
+import { bigshortbetsTokenAddress } from "@/blockchain/constants";
+import { useNativeCurrencyBalance } from "@/blockchain/hooks/useNativeCurrencyBalance";
+import { getMarkeDetails } from "@/utils/getMarketDetails";
+import Image from "next/image";
 
 interface MarketBarProps {
   markets: MarketType[];
@@ -28,6 +28,7 @@ export const MarketBar = ({ markets }: MarketBarProps) => {
           id="market-select"
           className="bg-gray-800 text-white border-none rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-gray-600"
           onChange={(e) => setSelectedMarketId(e.target.value)}
+          value={selectedMarketId}
         >
           {markets.map((market, index) => (
             <option
