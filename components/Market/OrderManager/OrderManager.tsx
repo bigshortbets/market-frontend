@@ -54,19 +54,19 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
 
   return (
     <div
-      className={`w-[300px] h-[300px] bg-secondary-bg rounded p-3 flex flex-col justify-between transition ease-in-out ${
+      className={`w-full h-full rounded flex flex-col transition ease-in-out px-1 ${
         !address && loadingStateStyle
       } ${loading && loadingStateStyle} relative`}
     >
       {loading && (
         <ReactLoading
           type={"spin"}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/3"
           width={60}
         />
       )}
 
-      <div>
+      <div className="mb-3">
         <div className="flex flex-col mb-3">
           <label
             htmlFor="orderPriceInput"

@@ -9,6 +9,7 @@ import { TradingHub } from "./TradingHub/TradingHub";
 import { useNetwork, useSwitchNetwork } from "wagmi";
 import { Mobile } from "../Mobile";
 import { OrderBookContainer } from "./OrderBook/OrderBookContainer";
+import { FinanceManager } from "./FinanceManager/FinanceManager";
 
 interface MarketProps {
   markets: MarketType[];
@@ -49,7 +50,8 @@ export const Market = ({ markets }: MarketProps) => {
               <OrderBookContainer />
             </div>
             <div className="flex flex-col gap-6 h-full">
-              <OrderManager markets={markets} />
+              {/*  <OrderManager markets={markets} /> */}
+              <FinanceManager markets={markets} />
               <ContractDetails markets={markets} />
             </div>
           </div>
