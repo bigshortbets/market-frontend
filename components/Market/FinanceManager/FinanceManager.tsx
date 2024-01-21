@@ -5,6 +5,7 @@ import { OrderBookStateTab } from "../OrderBook/OrderBookStateTab";
 import { FinanceManagerTab } from "./FinanceManagerTab";
 import { OrderManager } from "../OrderManager/OrderManager";
 import { MarketType } from "@/types/marketTypes";
+import { Deposit } from "../Deposit/Deposit";
 
 interface FinanceManagerProps {
   markets: MarketType[];
@@ -28,6 +29,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
         ))}
       </div>
       {financeManagerState === "order" && <OrderManager markets={markets} />}
+      {financeManagerState === "deposit" && <Deposit />}
     </div>
   );
 };
