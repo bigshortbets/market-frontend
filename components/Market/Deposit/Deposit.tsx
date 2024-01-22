@@ -1,15 +1,27 @@
 import { useDeposit } from "@/blockchain/hooks/useDeposit";
 import { useNativeCurrencyBalance } from "@/blockchain/hooks/useNativeCurrencyBalance";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import { useAccount } from "wagmi";
 
-export const Deposit = () => {
+interface DepositProps {
+  handleSetLoading: (val: boolean) => void;
+}
+
+export const Deposit = ({ handleSetLoading }: DepositProps) => {
   const [amount, setAmount] = useState<number>(1);
   const { address } = useAccount();
   const { formattedBalance } = useNativeCurrencyBalance(address);
   const { write, isLoading } = useDeposit(amount);
   const isActionDisabled = amount === 0 || amount > Number(formattedBalance);
+
+  useEffect(() => {
+    if (isLoading) {
+      handleSetLoading(true);
+    } else {
+      handleSetLoading(false);
+    }
+  }, [isLoading]);
   return (
     <div className="w-full h-full rounded flex flex-col transition ease-in-out px-1">
       <div className="flex flex-col mb-3">
