@@ -21,57 +21,59 @@ export const MarketBar = ({ markets }: MarketBarProps) => {
   const market = findMarketById(markets, selectedMarketId);
   const marketDetails = market && getMarkeDetails(market.ticker);
   return (
-    <div className="h-[60px] w-full bg-secondary-bg px-6 py-2 flex items-center justify-between">
-      <div className="flex items-center gap-8 justify-between">
-        <select
-          name="markets"
-          id="market-select"
-          className="bg-gray-800 text-white border-none rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-gray-600"
-          onChange={(e) => setSelectedMarketId(e.target.value)}
-          value={selectedMarketId}
-        >
-          {markets.map((market, index) => (
-            <option
-              key={index}
-              className="bg-gray-700 text-white"
-              value={market.id}
-            >
-              {market.ticker}
-            </option>
-          ))}
-        </select>
-        <div className="flex items-center gap-2">
-          <div className="font-semibold text-lg">{marketDetails?.name}</div>
-          {marketDetails && (
-            <Image
-              src={marketDetails?.path}
-              width={22}
-              height={22}
-              alt="Market logo"
-              className="rounded-full"
-            />
-          )}
-        </div>
+    <div className="h-[60px] w-full bg-secondary-bg px-6 py-2 f ">
+      <div className="w-full mx-auto max-w-[1800px] flex items-center justify-between">
+        <div className="flex items-center gap-8 justify-between">
+          <select
+            name="markets"
+            id="market-select"
+            className="bg-gray-800 text-white border-none rounded-md shadow-md focus:outline-none focus:ring-2 focus:ring-gray-600"
+            onChange={(e) => setSelectedMarketId(e.target.value)}
+            value={selectedMarketId}
+          >
+            {markets.map((market, index) => (
+              <option
+                key={index}
+                className="bg-gray-700 text-white"
+                value={market.id}
+              >
+                {market.ticker}
+              </option>
+            ))}
+          </select>
+          <div className="flex items-center gap-2">
+            <div className="font-semibold text-lg">{marketDetails?.name}</div>
+            {marketDetails && (
+              <Image
+                src={marketDetails?.path}
+                width={22}
+                height={22}
+                alt="Market logo"
+                className="rounded-full"
+              />
+            )}
+          </div>
 
-        <div className="flex gap-2">
-          <p>Oracle price:</p>
-          {market?.oraclePrice ? (
-            <p className="font-semibold">
-              {scaleNumber(market?.oraclePrice.toString())}
+          <div className="flex gap-2">
+            <p>Oracle price:</p>
+            {market?.oraclePrice ? (
+              <p className="font-semibold">
+                {scaleNumber(market?.oraclePrice.toString())}
+              </p>
+            ) : (
+              <p className="font-semibold">Loading...</p>
+            )}
+          </div>
+        </div>
+        {address && (
+          <div className="flex flex-col gap-1 items-end">
+            <p className="text-sm">Wallet balance</p>
+            <p className="text-xs">
+              {Number(data?.formatted).toFixed(2).toString()} {data?.symbol}
             </p>
-          ) : (
-            <p className="font-semibold">Loading...</p>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-      {address && (
-        <div className="flex flex-col gap-1 items-end">
-          <p className="text-sm">Balance</p>
-          <p className="text-xs">
-            {Number(data?.formatted).toFixed(2).toString()} {data?.symbol}
-          </p>
-        </div>
-      )}
     </div>
   );
 };
