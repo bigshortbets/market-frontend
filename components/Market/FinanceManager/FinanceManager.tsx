@@ -9,6 +9,7 @@ import { Deposit } from '../Deposit/Deposit';
 import useGetDeposit from '@/blockchain/hooks/useGetDeposit';
 import { selectedMarketIdAtom } from '../Market';
 import { findMarketById } from '@/utils/findMarketById';
+import ReactLoading from 'react-loading';
 
 interface FinanceManagerProps {
   markets: MarketType[];
@@ -18,6 +19,8 @@ const tabs = ['order', 'deposit'];
 
 export type FinanceManagerTabsType = (typeof tabs)[number];
 export const financeManagerAtom = atom<FinanceManagerTabsType>('order');
+
+const loadingState = 'opacity-50 pointer-events-none';
 
 export const FinanceManager = ({ markets }: FinanceManagerProps) => {
   const [getDepositRefetchTrigger, setGetDepositRefetchTrigger] =
@@ -37,11 +40,25 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
     getDepositRefetchTrigger
   );
   const selectedMarket = findMarketById(markets, selectedMarketId);
+
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const handleSetLoading = (val: boolean) => {
+    setLoading(val);
+  };
   return (
     <div
-      className="w-[300px] h-[350px] rounded p-1 bg-secondary-bg"
-      onClick={() => console.log(getDepositRefetchTrigger)}
+      className={`w-[300px] h-[350px] rounded p-1 bg-secondary-bg relative ${
+        loading && loadingState
+      }`}
     >
+      {loading && (
+        <ReactLoading
+          type={'spin'}
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          width={60}
+        />
+      )}
       <div
         className={`w-full flex p-1 ${!address && 'pointer-events-none'} mb-3`}
       >
@@ -49,12 +66,15 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
           <FinanceManagerTab value={tab} key={key} />
         ))}
       </div>
-      {financeManagerState === 'order' && <OrderManager markets={markets} />}
+      {financeManagerState === 'order' && (
+        <OrderManager markets={markets} handleSetLoading={handleSetLoading} />
+      )}
       {financeManagerState === 'deposit' && (
         <Deposit
           triggerDepositRefetch={triggerDepositRefetch}
           depositValue={(depositRes as any)!.result as string}
           selectedMarket={selectedMarket!}
+          handleSetLoading={handleSetLoading}
         />
       )}
     </div>

@@ -18,12 +18,14 @@ interface DepositProps {
   triggerDepositRefetch: () => void;
   depositValue?: string;
   selectedMarket: MarketType;
+  handleSetLoading: (val: boolean) => void;
 }
 
 export const Deposit = ({
   triggerDepositRefetch,
   depositValue,
   selectedMarket,
+  handleSetLoading,
 }: DepositProps) => {
   const [decimals, setDecimals] = useState<number>(2);
   const [amount, setAmount] = useState<number>(1);
@@ -49,6 +51,14 @@ export const Deposit = ({
     );
     setDecimals(val);
   }, [selectedMarket]);
+
+  useEffect(() => {
+    if (isLoading) {
+      handleSetLoading(true);
+    } else {
+      handleSetLoading(false);
+    }
+  }, [isLoading]);
 
   return (
     <div

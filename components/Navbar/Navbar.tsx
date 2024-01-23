@@ -24,12 +24,14 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-primary-bg w-full h-[60px] flex justify-between items-center px-6">
-      <Image src={logo} alt="BigShortBet$ Logo" width={50} priority />
-      <div className="flex items-center gap-4">
-        {isConnected && <CurrentNetworkTab />}
-        <UIConfiguration />
-        {isClient && <ConnectButton />}
+    <nav className="bg-primary-bg w-full h-[60px] ">
+      <div className="mx-auto max-w-[1800px] flex justify-between h-full px-6 items-center">
+        <Image src={logo} alt="BigShortBet$ Logo" width={50} priority />
+        <div className="flex items-center gap-4">
+          {isConnected && <CurrentNetworkTab />}
+          <UIConfiguration />
+          {isClient && <ConnectButton />}
+        </div>
       </div>
     </nav>
   );

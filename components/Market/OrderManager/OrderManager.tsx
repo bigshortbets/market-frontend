@@ -19,9 +19,13 @@ export enum OrderSideEnum {
 
 interface OrderManagerProps {
   markets: MarketType[];
+  handleSetLoading: (val: boolean) => void;
 }
 
-export const OrderManager = ({ markets }: OrderManagerProps) => {
+export const OrderManager = ({
+  markets,
+  handleSetLoading,
+}: OrderManagerProps) => {
   const [price, setPrice] = useState<number>(1);
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
@@ -35,8 +39,6 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   const { write: writeLongOrder, isLoading: isLongLoading } =
     useCreateOrderWrite(price, quantity, OrderSideEnum.LONG);
 
-  const loading = isShortLoading || isLongLoading;
-
   const orderCost =
     (Number(selectedMarket?.initialMargin) / 100) *
     (price * quantity * Number(selectedMarket?.contractUnit));
@@ -45,27 +47,23 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
 
   const isActionDisabled = price === 0 || orderCost > Number(formattedBalance);
 
-  const loadingStateStyle = "opacity-50 pointer-events-none";
-
   useEffect(() => {
     selectedMarket &&
       setPrice(Number(scaleNumber(selectedMarket?.oraclePrice.toString())));
   }, [selectedMarket]);
 
+  useEffect(() => {
+    if (isShortLoading || isLongLoading) {
+      handleSetLoading(true);
+    } else {
+      handleSetLoading(false);
+    }
+  }, [isShortLoading, isLongLoading]);
+
   return (
     <div
-      className={`w-full h-full rounded flex flex-col transition ease-in-out px-1 ${
-        !address && loadingStateStyle
-      } ${loading && loadingStateStyle} relative`}
+      className={`w-full h-full rounded flex flex-col transition ease-in-out px-1`}
     >
-      {loading && (
-        <ReactLoading
-          type={"spin"}
-          className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/3"
-          width={60}
-        />
-      )}
-
       <div className="mb-3">
         <div className="flex flex-col mb-3">
           <label
