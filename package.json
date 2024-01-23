@@ -11,6 +11,8 @@
   "dependencies": {
     "@apollo/client": "^3.8.6",
     "@formkit/auto-animate": "^0.8.0",
+    "@polkadot/api": "^10.11.2",
+    "@polkadot/util": "^12.6.2",
     "@polkadot/util-crypto": "^12.5.1",
     "big.js": "^6.2.1",
     "date-fns": "^2.30.0",
