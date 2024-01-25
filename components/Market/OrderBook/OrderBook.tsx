@@ -2,17 +2,17 @@ import {
   ORDER_BOOK_LONGS_SUBSCRIPTION,
   ORDER_BOOK_SHORTS_SUBSCRIPTION,
   RECENT_MARKET_POSITIONS_SUBSCRIPTION,
-} from "@/api/queries";
-import { useSubscription } from "@apollo/client";
-import { useAtom } from "jotai";
-import React from "react";
-import { selectedMarketIdAtom } from "../Market";
-import { OrderBookResponse } from "@/types/orderTypes";
-import { OrderBookItem } from "./OrderBookItem";
+} from '@/api/queries';
+import { useSubscription } from '@apollo/client';
+import { useAtom } from 'jotai';
+import React from 'react';
+import { selectedMarketIdAtom } from '../Market';
+import { OrderBookResponse } from '@/types/orderTypes';
+import { OrderBookItem } from './OrderBookItem';
 
 export enum OrderSide {
-  LONG = "LONG",
-  SHORT = "SHORT",
+  LONG = 'LONG',
+  SHORT = 'SHORT',
 }
 
 export const OrderBook = () => {

@@ -48,7 +48,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
   };
   return (
     <div
-      className={`w-[300px] h-[350px] rounded p-1 bg-secondary-bg relative ${
+      className={`w-[300px] h-[440px] rounded p-1 bg-secondary-bg relative flex flex-col ${
         loading && loadingState
       }`}
     >
@@ -60,7 +60,9 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
         />
       )}
       <div
-        className={`w-full flex p-1 ${!address && 'pointer-events-none'} mb-3`}
+        className={`w-full flex p-1 ${
+          !address && 'pointer-events-none'
+        } mb-3 h-[40px]`}
       >
         {tabs.map((tab, key) => (
           <FinanceManagerTab value={tab} key={key} />
@@ -69,7 +71,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
       {financeManagerState === 'order' && (
         <OrderManager markets={markets} handleSetLoading={handleSetLoading} />
       )}
-      {financeManagerState === 'deposit' && (
+      {financeManagerState === 'deposit' && depositRes && (
         <Deposit
           triggerDepositRefetch={triggerDepositRefetch}
           depositValue={(depositRes as any)!.result as string}
