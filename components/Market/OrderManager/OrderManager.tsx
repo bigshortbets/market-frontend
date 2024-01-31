@@ -1,16 +1,16 @@
-import { useCreateOrderWrite } from '@/blockchain/hooks/useCreateOrderWrite';
-import React, { useEffect, useState } from 'react';
-import { NumericFormat } from 'react-number-format';
-import ReactLoading from 'react-loading';
-import { useAccount } from 'wagmi';
-import { useAtom } from 'jotai';
-import { selectedMarketIdAtom } from '../Market';
-import { findMarketById } from '@/utils/findMarketById';
-import { MarketType } from '@/types/marketTypes';
-import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
-import { IoMdInformationCircle } from 'react-icons/io';
-import { Tooltip } from 'react-tooltip';
-import { scaleNumber } from '@/utils/scaleNumber';
+import { useCreateOrderWrite } from "@/blockchain/hooks/useCreateOrderWrite";
+import React, { useEffect, useState } from "react";
+import { NumericFormat } from "react-number-format";
+import ReactLoading from "react-loading";
+import { useAccount } from "wagmi";
+import { useAtom } from "jotai";
+import { selectedMarketIdAtom } from "../Market";
+import { findMarketById } from "@/utils/findMarketById";
+import { MarketType } from "@/types/marketTypes";
+import { useNativeCurrencyBalance } from "@/blockchain/hooks/useNativeCurrencyBalance";
+import { IoMdInformationCircle } from "react-icons/io";
+import { Tooltip } from "react-tooltip";
+import { scaleNumber } from "@/utils/scaleNumber";
 
 export enum OrderSideEnum {
   LONG,
@@ -48,7 +48,7 @@ export const OrderManager = ({
   const isActionDisabled = price === 0 || orderCost > Number(formattedBalance);
 
   useEffect(() => {
-    selectedMarket &&
+    selectedMarket?.oraclePrice &&
       setPrice(Number(scaleNumber(selectedMarket?.oraclePrice.toString())));
   }, [selectedMarket]);
 
@@ -75,7 +75,7 @@ export const OrderManager = ({
           <div className="relative">
             <NumericFormat
               allowNegative={false}
-              id={'orderPriceInput'}
+              id={"orderPriceInput"}
               className="outline-none bg-[#23252E] border-none text-sm text-white py-3 rounded-lg px-3 w-full"
               onChange={(e) => setPrice(Number(e.target.value))}
               value={price}
@@ -94,7 +94,7 @@ export const OrderManager = ({
           </label>
           <NumericFormat
             allowNegative={false}
-            id={'quantityInput'}
+            id={"quantityInput"}
             className="outline-none bg-[#23252E] border-none text-sm text-white py-3 rounded-lg px-3"
             value={quantity}
             onChange={(e) => setQuantity(Number(e.target.value))}
@@ -136,7 +136,7 @@ export const OrderManager = ({
       <div className="flex items-center gap-2 ">
         <button
           className={`flex-1  duration-300 transition bg-[#73D391] hover:bg-[#61C27B] ease-in-out py-2 flex flex-col items-center rounded-lg ${
-            isActionDisabled && 'opacity-50 pointer-events-none'
+            isActionDisabled && "opacity-50 pointer-events-none"
           }`}
           onClick={() => writeLongOrder?.()}
         >
@@ -145,7 +145,7 @@ export const OrderManager = ({
         </button>
         <button
           className={`flex-1  duration-300 bg-[#D26D6C] hover:bg-[#C53F3A] transition ease-in-out py-2 flex flex-col items-center rounded-lg ${
-            isActionDisabled && 'opacity-50 pointer-events-none'
+            isActionDisabled && "opacity-50 pointer-events-none"
           }`}
           onClick={() => writeShortOrder?.()}
         >
@@ -153,8 +153,8 @@ export const OrderManager = ({
           <p className="text-wwhite text-xs font-bold">SHORT</p>
         </button>
       </div>
-      <Tooltip id="order-cost-tooltip" style={{ fontSize: '12px' }} />
-      <Tooltip id="order-value-tooltip" style={{ fontSize: '12px' }} />
+      <Tooltip id="order-cost-tooltip" style={{ fontSize: "12px" }} />
+      <Tooltip id="order-value-tooltip" style={{ fontSize: "12px" }} />
     </div>
   );
 };
