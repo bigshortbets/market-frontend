@@ -1,0 +1,101 @@
+import { MarketType } from "@/types/marketTypes";
+import { findMarketById } from "@/utils/findMarketById";
+import { scaleNumber } from "@/utils/scaleNumber";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  MdOutlineKeyboardArrowDown,
+  MdOutlineKeyboardArrowUp,
+} from "react-icons/md";
+import { MarketSelectItem } from "./MarketSelectItem";
+import { getMarkeDetails } from "@/utils/getMarketDetails";
+
+interface MarketInterfaceTopBarProps {
+  markets: MarketType[];
+  selectedMarketId: string;
+}
+
+export const MarketInterfaceTopBar = ({
+  markets,
+  selectedMarketId,
+}: MarketInterfaceTopBarProps) => {
+  const market = findMarketById(markets, selectedMarketId);
+  const marketDetails = market && getMarkeDetails(market.ticker);
+  const selectRef = useRef<HTMLDivElement>(null);
+
+  const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
+
+  const handleToggleSelectOpen = () => {
+    if (isSelectOpen) {
+      setIsSelectOpen(false);
+    } else {
+      setIsSelectOpen(true);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        selectRef.current &&
+        !selectRef.current.contains(event.target as Node)
+      ) {
+        setIsSelectOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [selectRef]);
+
+  return (
+    <div className="flex border-b border-[#444650]">
+      {/* SELECT */}
+      <div
+        className="flex-1 bg-[#23252E] rounded-tl-[10px] relative"
+        ref={selectRef}
+      >
+        <div className="pr-6 pl-12 py-2 flex justify-between items-center h-full">
+          <div>
+            <p className="text-[13px] font-semibold">
+              {marketDetails ? marketDetails.name : market?.ticker}
+            </p>
+            {marketDetails && (
+              <p className="text-[10px] font-normal">{market?.ticker}</p>
+            )}
+          </div>
+          <button className="text-[24px]" onClick={handleToggleSelectOpen}>
+            {isSelectOpen ? (
+              <MdOutlineKeyboardArrowUp />
+            ) : (
+              <MdOutlineKeyboardArrowDown />
+            )}
+          </button>
+        </div>
+        {isSelectOpen && (
+          <div className="absolute w-full bg-[#23252E] ">
+            {markets.map((market, key) => (
+              <MarketSelectItem market={market} />
+            ))}
+          </div>
+        )}
+      </div>
+      {/*  */}
+      <div className="flex-1 h-[55px] border-l border-[#444650]">
+        <div className="pr-6 pl-12 py-2 h-full flex items-center gap-6">
+          <div>
+            <p className="text-xs text-tetriary font-semibold">Oracle Price</p>
+            <p className="text-xs font-normal">
+              {market?.oraclePrice &&
+                scaleNumber(market?.oraclePrice.toString())}
+            </p>
+          </div>
+
+          <div className="border-l border-[#444650] text-xs pl-2">
+            <p className="text-tetriary font-semibold">Market Price</p>
+            <p>2137x</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
