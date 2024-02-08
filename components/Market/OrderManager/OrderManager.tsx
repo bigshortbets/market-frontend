@@ -134,6 +134,24 @@ export const OrderManager = ({
           <p className="text-[10px]">Short</p>
         </div>
       </div>
+      <div className="p-2 rounded-lg bg-[#000211] flex flex-col gap-4">
+        <p className="text-sm font-semibold text-secondary leading-[24px]">
+          Summary
+        </p>
+        <div className="flex flex-col gap-2 ">
+          <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
+            <p>Cost of the order</p>
+            <p>{orderCost.toFixed(2)} USDC</p>
+          </div>
+          <div className="flex justify-between items-center font-semibold text-xs text-tetriary ">
+            <p>Order value</p>
+            <p>{orderValue.toFixed(2)} USDC</p>
+          </div>
+        </div>
+        <button className="w-full rounded-lg bg-[#87DAA4] text-[#01083A] text-[13px] font-semibold py-3">
+          Place order
+        </button>
+      </div>
     </div>
     /* <div
       className={`w-full h-[400px] rounded flex flex-col  transition ease-in-out px-1`}
