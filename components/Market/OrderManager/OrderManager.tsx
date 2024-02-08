@@ -63,6 +63,15 @@ export const OrderManager = ({
     }
   }, [isShortLoading, isLongLoading]);
 
+  const handleWriteOrder = () => {
+    if (selectedSideOrder === OrderSideEnum.LONG) {
+      writeLongOrder?.();
+    }
+    if (selectedSideOrder === OrderSideEnum.SHORT) {
+      writeShortOrder?.();
+    }
+  };
+
   return (
     <div className="p-2.5 flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -148,7 +157,11 @@ export const OrderManager = ({
             <p>{orderValue.toFixed(2)} USDC</p>
           </div>
         </div>
-        <button className="w-full rounded-lg bg-[#87DAA4] text-[#01083A] text-[13px] font-semibold py-3">
+        <button
+          onClick={handleWriteOrder}
+          disabled={isActionDisabled}
+          className="disabled:bg-gray-400 w-full rounded-lg bg-[#87DAA4] text-[#01083A] text-[13px] font-semibold py-3"
+        >
           Place order
         </button>
       </div>
