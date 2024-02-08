@@ -56,6 +56,9 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
           <FinanceManagerTab value={tab} key={key} />
         ))}
       </div>
+      {financeManagerState === "order" && (
+        <OrderManager markets={markets} handleSetLoading={handleSetLoading} />
+      )}
     </div>
     /* <div
       className={`w-[300px] h-[440px] rounded p-1 bg-secondary-bg relative flex flex-col ${
