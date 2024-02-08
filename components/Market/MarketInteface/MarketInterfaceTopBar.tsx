@@ -32,6 +32,10 @@ export const MarketInterfaceTopBar = ({
     }
   };
 
+  const handleCloseSelect = () => {
+    setIsSelectOpen(false);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -75,9 +79,12 @@ export const MarketInterfaceTopBar = ({
           </div>
         </div>
         {isSelectOpen && (
-          <div className="absolute w-full bg-[#23252E] ">
+          <div className="absolute w-full bg-[#23252E] z-40">
             {markets.map((market, key) => (
-              <MarketSelectItem market={market} />
+              <MarketSelectItem
+                market={market}
+                handleCloseSelect={handleCloseSelect}
+              />
             ))}
           </div>
         )}
