@@ -7,6 +7,8 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { scaleNumber } from "@/utils/scaleNumber";
 import { MarketInterfaceLowerBar } from "./MarketInterfaceLowerBar";
 import { MarketInterfaceTopBar } from "./MarketInterfaceTopBar";
+import { OrderManager } from "../OrderManager/OrderManager";
+import { FinanceManager } from "../FinanceManager/FinanceManager";
 
 interface MarketInterfaceProps {
   markets: MarketType[];
@@ -24,7 +26,9 @@ export const MarketInterface = ({ markets }: MarketInterfaceProps) => {
           selectedMarketId={selectedMarketId}
         />
         <div className="flex-grow flex">
-          <div className="h-full flex-1 border-r border-[#444650]"></div>
+          <div className="h-full flex-1 border-r border-[#444650]">
+            <FinanceManager markets={markets} />
+          </div>
           <div className="h-full flex-1"></div>
         </div>
       </div>

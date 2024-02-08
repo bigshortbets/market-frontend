@@ -54,7 +54,10 @@ export const MarketInterfaceTopBar = ({
         className="flex-1 bg-[#23252E] rounded-tl-[10px] relative"
         ref={selectRef}
       >
-        <div className="pr-6 pl-12 py-2 flex justify-between items-center h-full">
+        <div
+          className="pr-6 pl-12 py-2 flex w-full justify-between items-center h-full cursor-pointer"
+          onClick={handleToggleSelectOpen}
+        >
           <div>
             <p className="text-[13px] font-semibold">
               {marketDetails ? marketDetails.name : market?.ticker}
@@ -63,13 +66,13 @@ export const MarketInterfaceTopBar = ({
               <p className="text-[10px] font-normal">{market?.ticker}</p>
             )}
           </div>
-          <button className="text-[24px]" onClick={handleToggleSelectOpen}>
+          <div className="text-[24px]">
             {isSelectOpen ? (
               <MdOutlineKeyboardArrowUp />
             ) : (
               <MdOutlineKeyboardArrowDown />
             )}
-          </button>
+          </div>
         </div>
         {isSelectOpen && (
           <div className="absolute w-full bg-[#23252E] ">
