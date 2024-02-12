@@ -8,13 +8,9 @@ interface RecentTradesItemProps {
 
 export const RecentTradesItem = ({ position }: RecentTradesItemProps) => {
   return (
-    <tr className={`text-xs odd:bg-[#23252E] text-[#7F828F] h-1/10`}>
-      {/* Quantity */}
-      <td className="pl-3 py-1">{Number(position.quantity)}</td>
-      {/* Price */}
-      <td>{scaleNumber(Number(position.price))}</td>
-      {/* Market */}
-      {/*     <td>{position.timestamp}</td> */}
-    </tr>
+    <div className="py-1 flex items-center justify-between text-tetriary">
+      <p>{Number(position.quantity)}</p>
+      <p>{scaleNumber(Number(position.price))}</p>
+    </div>
   );
 };

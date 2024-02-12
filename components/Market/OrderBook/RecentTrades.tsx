@@ -6,45 +6,33 @@ import { RECENT_MARKET_POSITIONS_SUBSCRIPTION } from "@/api/queries";
 import { RecentPositionTypeResponse } from "@/types/positionTypes";
 import { RecentTradesItem } from "./RecentTradesItem";
 
-export const RecentTrades = () => {
-  const [selectedMarketId] = useAtom(selectedMarketIdAtom);
+interface RecentTradesProps {
+  positionsRes: RecentPositionTypeResponse | undefined;
+}
 
-  const { data: recentPositionsRes } =
-    useSubscription<RecentPositionTypeResponse>(
-      RECENT_MARKET_POSITIONS_SUBSCRIPTION,
-      {
-        variables: { marketId: selectedMarketId },
-      }
-    );
-
-  const numberOfTrades = recentPositionsRes
-    ? recentPositionsRes.positions.length
-    : 0;
-  const placeholders = Array.from({ length: 10 - numberOfTrades });
-
+export const RecentTrades = ({ positionsRes }: RecentTradesProps) => {
   return (
-    <div className="w-full h-[400px]">
-      {recentPositionsRes && (
-        <table className="table-auto w-full h-full">
-          <thead className="bg-secondary-bg text-xs text-left text-[#ABACBA]">
-            <tr>
-              <th className="font-normal py-4 pl-3">Quantity</th>
-              <th className="font-normal">Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recentPositionsRes.positions.map((position, key) => (
-              <RecentTradesItem position={position} key={key} />
-            ))}
-            {placeholders.map((_, key) => (
-              <tr className=" odd:bg-[#23252E] text-[#7F828F]" key={key}>
-                <td className="">&nbsp;</td>
-                <td></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+    <div className="flex flex-col pt-[14px] px-4 text-xs">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-1.5">
+          <p className="text-[#7F828F] font-semibold">Quantity</p>
+          <div className="w-10 h-4 rounded bg-[#7F828F] items-center flex justify-center text-[#191B24]">
+            UNT
+          </div>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <p className="text-[#7F828F] font-semibold">Price</p>
+          <div className="w-10 h-4 rounded bg-[#7F828F] items-center flex justify-center text-[#191B24]">
+            USDC
+          </div>
+        </div>
+      </div>
+      <div className="py-2.5">
+        {positionsRes?.positions &&
+          positionsRes.positions.map((position, key) => (
+            <RecentTradesItem position={position} key={key} />
+          ))}
+      </div>
     </div>
   );
 };

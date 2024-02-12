@@ -10,6 +10,7 @@ import { MarketInterfaceTopBar } from "./MarketInterfaceTopBar";
 import { OrderManager } from "../OrderManager/OrderManager";
 import { FinanceManager } from "../FinanceManager/FinanceManager";
 import { ContractDetails } from "../ContractDetails/ContractDetails";
+import { OrderBookContainer } from "../OrderBook/OrderBookContainer";
 
 interface MarketInterfaceProps {
   markets: MarketType[];
@@ -36,7 +37,12 @@ export const MarketInterface = ({ markets }: MarketInterfaceProps) => {
               <ContractDetails markets={markets} />
             </div>
           </div>
-          <div className="h-full flex-1"></div>
+          <div
+            className="h-full flex-1 overflow-auto no-scrollbar"
+            style={{ maxHeight: "calc(100vh - 228px)" }}
+          >
+            <OrderBookContainer />
+          </div>
         </div>
       </div>
       <MarketInterfaceLowerBar />
