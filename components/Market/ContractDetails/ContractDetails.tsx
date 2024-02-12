@@ -10,6 +10,10 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { formatDate } from "@/utils/formatDate";
 import { addSeconds } from "date-fns";
 import { useAccount, useNetwork } from "wagmi";
+import {
+  MdOutlineKeyboardArrowDown,
+  MdOutlineKeyboardArrowUp,
+} from "react-icons/md";
 
 interface ContractDetailsProps {
   markets: MarketType[];
@@ -53,23 +57,25 @@ export const ContractDetails = ({ markets }: ContractDetailsProps) => {
 
   return (
     <div
-      className={`w-[300px] bg-secondary-bg rounded pt-4 font-semibold ${
-        !address && "opacity-50 pointer-events-none"
-      }`}
+      className={`w-full  bg-[#000211] rounded-lg font-semibold`}
       ref={animationParent}
     >
-      <div className="justify-between items-center flex  mb-3 px-4">
-        <h3 className="text-sm ">CONTRACT DETAILS</h3>
+      <div className="justify-between items-center flex py-2  px-4">
+        <h3 className="text-sm ">Contract details</h3>
 
-        <button className="text-xs" onClick={toggleIsOpened}>
-          {isOpened ? <BiSolidDownArrow /> : <BiSolidUpArrow />}
+        <button className="text-2xl" onClick={toggleIsOpened}>
+          {isOpened ? (
+            <MdOutlineKeyboardArrowUp />
+          ) : (
+            <MdOutlineKeyboardArrowDown />
+          )}
         </button>
       </div>
       {isOpened && (
         <div className="flex flex-col font-normal text-xs">
           {contractDetailsData.map((data, key) => (
             <div
-              className="px-4 py-2 even:bg-[#2e303940] flex justify-between items-center"
+              className="px-4 py-2 text-tetriary flex justify-between items-center"
               key={key}
             >
               <p>{data.label}</p>

@@ -28,6 +28,9 @@ export const OrderManager = ({
 }: OrderManagerProps) => {
   const [price, setPrice] = useState<number>(1);
   const [quantity, setQuantity] = useState<number>(1);
+  const [selectedSideOrder, setSelectedSideOrder] = useState<OrderSideEnum>(
+    OrderSideEnum.LONG
+  );
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const selectedMarket = findMarketById(markets, selectedMarketId);
 
@@ -60,8 +63,110 @@ export const OrderManager = ({
     }
   }, [isShortLoading, isLongLoading]);
 
+  const handleWriteOrder = () => {
+    if (selectedSideOrder === OrderSideEnum.LONG) {
+      writeLongOrder?.();
+    }
+    if (selectedSideOrder === OrderSideEnum.SHORT) {
+      writeShortOrder?.();
+    }
+  };
+
   return (
-    <div
+    <div className="p-2.5 flex flex-col gap-4">
+      <div className="flex flex-col gap-2">
+        <p className="text-sm font-semibold text-secondary leading-[24px]">
+          Order
+        </p>
+        <div className="flex flex-col">
+          <label
+            htmlFor="orderPriceInput"
+            className="ml-1 mb-1 text-xs text-secondary font-semibold"
+          >
+            Price
+          </label>
+          <div className="relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-2">
+            <NumericFormat
+              allowNegative={false}
+              id={"orderPriceInput"}
+              className="text-right outline-none  w-[85%] bg-[#23252E] rounded-lg"
+              onChange={(e) => setPrice(Number(e.target.value))}
+              value={price}
+            />
+            <span className="absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs">
+              USDC
+            </span>
+          </div>
+        </div>
+        <div className="flex flex-col">
+          <label
+            htmlFor="quantityInput"
+            className="ml-1 mb-1 text-xs text-secondary font-semibold"
+          >
+            Quantity
+          </label>
+          <div className="relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-2">
+            <NumericFormat
+              allowNegative={false}
+              id={"quantityInput"}
+              className="text-right outline-none  w-[85%] bg-[#23252E] rounded-lg"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+            />
+            <span className="absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs">
+              UNIT
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 ">
+        <div
+          className={`${
+            selectedSideOrder === OrderSideEnum.LONG
+              ? "text-[#87DAA4] border border-[#87DAA4]"
+              : "text-tetriary border border-[#23252E]"
+          } flex-1   bg-[#23252E] py-2 flex flex-col items-center rounded-lg cursor-pointer `}
+          onClick={() => setSelectedSideOrder(OrderSideEnum.LONG)}
+        >
+          <p className=" text-[13px] font-semibold">Buy</p>
+          <p className=" text-[10px]">Long</p>
+        </div>
+        <div
+          className={`${
+            selectedSideOrder === OrderSideEnum.SHORT
+              ? "text-[#E4ADAC] border border-[#E4ADAC]"
+              : "text-tetriary border border-[#23252E]"
+          } flex-1   bg-[#23252E] py-2 flex flex-col items-center rounded-lg cursor-pointer `}
+          onClick={() => setSelectedSideOrder(OrderSideEnum.SHORT)}
+        >
+          <p className=" text-[13px] font-semibold">Sell</p>
+          <p className="text-[10px]">Short</p>
+        </div>
+      </div>
+      <div className="p-2 rounded-lg bg-[#000211] flex flex-col gap-4">
+        <p className="text-sm font-semibold text-secondary leading-[24px]">
+          Summary
+        </p>
+        <div className="flex flex-col gap-2 ">
+          <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
+            <p>Cost of the order</p>
+            <p>{orderCost.toFixed(2)} USDC</p>
+          </div>
+          <div className="flex justify-between items-center font-semibold text-xs text-tetriary ">
+            <p>Order value</p>
+            <p>{orderValue.toFixed(2)} USDC</p>
+          </div>
+        </div>
+        <button
+          onClick={handleWriteOrder}
+          disabled={isActionDisabled}
+          className="disabled:bg-gray-400 w-full rounded-lg bg-[#87DAA4] text-[#01083A] text-[13px] font-semibold py-3"
+        >
+          Place order
+        </button>
+      </div>
+    </div>
+    /* <div
       className={`w-full h-[400px] rounded flex flex-col  transition ease-in-out px-1`}
     >
       <div className="mb-3">
@@ -155,6 +260,6 @@ export const OrderManager = ({
       </div>
       <Tooltip id="order-cost-tooltip" style={{ fontSize: "12px" }} />
       <Tooltip id="order-value-tooltip" style={{ fontSize: "12px" }} />
-    </div>
+    </div> */
   );
 };

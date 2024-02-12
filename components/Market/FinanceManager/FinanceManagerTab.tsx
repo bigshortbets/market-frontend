@@ -13,8 +13,8 @@ export const FinanceManagerTab = ({ value }: FinanceManagerTabProps) => {
   const isActive = financeManagerState === value;
   return (
     <button
-      className={`flex-1  rounded flex items-center justify-center text-sm font-semibold p-2 ${
-        isActive ? "bg-primary-bg" : "bg-secondary-bg"
+      className={` rounded-lg flex items-center justify-center text-[13px] font-semibold py-2 px-4 ${
+        isActive ? "bg-[#444650]" : "bg-[#23252E] text-tetriary"
       }`}
       onClick={() => setFinanceManagerState(value)}
     >

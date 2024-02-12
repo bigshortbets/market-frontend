@@ -30,4 +30,19 @@ export const marketsData: MarketsDataProps[] = [
     name: "Silver",
     path: "./market-logos/SI.svg",
   },
+  {
+    symbol: "6B",
+    name: "British Pound",
+    path: "./market-logos/6B.svg",
+  },
+  {
+    symbol: "6J",
+    name: "Japanese Yen",
+    path: "./market-logos/6J.svg",
+  },
+  {
+    symbol: "ETH",
+    name: "Ethereum",
+    path: "./market-logos/ETH.svg",
+  },
 ];

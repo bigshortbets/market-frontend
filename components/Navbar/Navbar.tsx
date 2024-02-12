@@ -24,12 +24,12 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <nav className="bg-primary-bg w-full h-[60px] ">
-      <div className="mx-auto max-w-[1800px] flex justify-between h-full px-6 items-center">
+    <nav className="bg-[#111217] w-full h-[64px] ">
+      <div className=" flex justify-between h-full px-7 items-center">
         <Image src={logo} alt="BigShortBet$ Logo" width={50} priority />
         <div className="flex items-center gap-4">
           {isConnected && <CurrentNetworkTab />}
-          <UIConfiguration />
+          {/* <UIConfiguration /> */}
           {isClient && <ConnectButton />}
         </div>
       </div>

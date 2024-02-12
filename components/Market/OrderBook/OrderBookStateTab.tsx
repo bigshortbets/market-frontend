@@ -1,9 +1,9 @@
-import { useAtom } from 'jotai';
-import React from 'react';
+import { useAtom } from "jotai";
+import React from "react";
 import {
   OrderBookStateTabsType,
   orderBookStateAtom,
-} from './OrderBookContainer';
+} from "./OrderBookContainer";
 
 interface OrderBookStateTabProps {
   value: OrderBookStateTabsType;
@@ -14,8 +14,8 @@ export const OrderBookStateTab = ({ value }: OrderBookStateTabProps) => {
   const isActive = orderBookState === value;
   return (
     <button
-      className={`flex-1  rounded flex items-center justify-center text-sm font-semibold p-1 ${
-        isActive ? 'bg-primary-bg' : 'bg-secondary-bg'
+      className={` rounded-lg flex items-center justify-center text-[13px] font-semibold py-2 px-4 ${
+        isActive ? "bg-[#444650]" : "bg-[#23252E] text-tetriary"
       }`}
       onClick={() => setOrderBookState(value)}
     >
