@@ -1,6 +1,6 @@
-import React from 'react';
-import { TradingHubStateType, tradingHubStateAtom } from './TradingHub';
-import { useAtom } from 'jotai';
+import React from "react";
+import { TradingHubStateType, tradingHubStateAtom } from "./TradingHub";
+import { useAtom } from "jotai";
 
 interface TradingHubTabProps {
   value: TradingHubStateType;
@@ -12,8 +12,8 @@ export const TradingHubTab = ({ value }: TradingHubTabProps) => {
   const isActive = tradingHubState === value;
   return (
     <button
-      className={`flex-1  rounded flex items-center justify-center text-sm font-semibold ${
-        isActive ? 'bg-primary-bg' : 'bg-secondary-bg'
+      className={` rounded-lg flex items-center justify-center text-[13px] font-semibold py-2 px-4 ${
+        isActive ? "bg-[#444650]" : "bg-[#23252E] text-tetriary"
       }`}
       onClick={() => setTradingHubState(value)}
     >

@@ -2,19 +2,19 @@ import {
   USER_HISTORY_SUBSCRIPTION,
   USER_OPEN_POSITIONS_SUBSCRIPTION,
   USER_ORDERS_SUBSCRIPTION,
-} from '@/api/queries';
-import { convertToSS58 } from '@/utils/convertToSS58';
-import { useSubscription } from '@apollo/client';
-import { useAtom } from 'jotai';
-import React from 'react';
-import { useAccount } from 'wagmi';
-import { tradingHubStateAtom } from './TradingHub';
-import { TradingHubOrders } from './TradingHubOrders/TradingHubOrders';
-import { OrdersResponse } from '@/types/orderTypes';
-import { PositionsResponse } from '@/types/positionTypes';
-import { TradingHubPositions } from './TradingHubPositions/TradingHubPositions';
-import { TradingHubHistory } from './TradingHubHistory/TradingHubHistory';
-import { HistoryResponse } from '@/types/historyTypes';
+} from "@/api/queries";
+import { convertToSS58 } from "@/utils/convertToSS58";
+import { useSubscription } from "@apollo/client";
+import { useAtom } from "jotai";
+import React from "react";
+import { useAccount } from "wagmi";
+import { tradingHubStateAtom } from "./TradingHub";
+import { TradingHubOrders } from "./TradingHubOrders/TradingHubOrders";
+import { OrdersResponse } from "@/types/orderTypes";
+import { PositionsResponse } from "@/types/positionTypes";
+import { TradingHubPositions } from "./TradingHubPositions/TradingHubPositions";
+import { TradingHubHistory } from "./TradingHubHistory/TradingHubHistory";
+import { HistoryResponse } from "@/types/historyTypes";
 
 export const TradingHubContentContainer = () => {
   const { address } = useAccount();
@@ -42,17 +42,14 @@ export const TradingHubContentContainer = () => {
   const [tradingHubState] = useAtom(tradingHubStateAtom);
 
   return (
-    <div
-      className="w-full h-[420px] overflow-y-auto no-scrollbar"
-      onClick={() => console.log(historyRes)}
-    >
-      {tradingHubState === 'orders' && ordersRes && (
+    <div className="w-full h-[420px] overflow-y-auto no-scrollbar">
+      {tradingHubState === "orders" && ordersRes && (
         <TradingHubOrders orders={ordersRes.orders} />
       )}
-      {tradingHubState === 'positions' && positionsRes && (
+      {tradingHubState === "positions" && positionsRes && (
         <TradingHubPositions positions={positionsRes.positions} />
       )}
-      {tradingHubState === 'history' && historyRes && (
+      {tradingHubState === "history" && historyRes && (
         <TradingHubHistory history={historyRes.orders} />
       )}
     </div>

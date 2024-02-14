@@ -40,10 +40,7 @@ export const Market = ({ markets }: MarketProps) => {
       <Navbar />
       <div className="flex-grow p-6 flex gap-6">
         <MarketInterface markets={markets} />
-        <div className="flex-grow h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]">
-          <div className="flex-grow"></div>
-          <div className="h-[58px] border-t border-[#444650] "></div>
-        </div>
+        <TradingHub />
       </div>
       {/* <div className={`h-full flex-col hidden lg:flex `}>
         <Navbar />
