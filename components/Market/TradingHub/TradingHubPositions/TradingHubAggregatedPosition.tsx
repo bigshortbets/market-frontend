@@ -1,16 +1,16 @@
-import { PositionType } from '@/types/positionTypes';
-import { convertToSS58 } from '@/utils/convertToSS58';
-import { extendPositionsWithSide } from '@/utils/extendPositionsWithSide';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
-import React, { useState } from 'react';
-import { useAccount } from 'wagmi';
-import { TradingHubPositionsItem } from './TradingHubPositionsItem';
-import { getMarkeDetails } from '@/utils/getMarketDetails';
-import Image from 'next/image';
-import { scaleNumber } from '@/utils/scaleNumber';
-import { FaChartBar } from 'react-icons/fa';
-import { useAtom } from 'jotai';
-import { selectedMarketIdAtom } from '../../Market';
+import { PositionType } from "@/types/positionTypes";
+import { convertToSS58 } from "@/utils/convertToSS58";
+import { extendPositionsWithSide } from "@/utils/extendPositionsWithSide";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import React, { useState } from "react";
+import { useAccount } from "wagmi";
+import { TradingHubPositionsItem } from "./TradingHubPositionsItem";
+import { getMarkeDetails } from "@/utils/getMarketDetails";
+import Image from "next/image";
+import { scaleNumber } from "@/utils/scaleNumber";
+import { FaChartBar } from "react-icons/fa";
+import { useAtom } from "jotai";
+import { selectedMarketIdAtom } from "../../Market";
 
 interface TradingHubAggregatedPositionProps {
   positions: PositionType[];
@@ -42,7 +42,7 @@ export const TradingHubAggregatedPosition = ({
   const sumLossProfit: number =
     oraclePrice &&
     positionsWithSide.reduce((acc, position) => {
-      return position.side === 'LONG'
+      return position.side === "LONG"
         ? acc +
             Number(position.quantity) *
               Number(position.market.contractUnit) *
@@ -61,22 +61,36 @@ export const TradingHubAggregatedPosition = ({
   };
 
   return (
-    <div className="w-full flex flex-col border-4 border-[#23252E] cursor-pointer">
+    <div className="w-full flex flex-col  ">
       <div
-        className="w-full px-3 bg-[#23252E] py-3 rounded-t "
+        className="w-full px-3 bg-[#23252E] py-3  cursor-pointer"
         onClick={handleClick}
       >
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center ">
           <div className="flex gap-1.5">
-            <div
+            {/*  <div
               className={`w-[12px] h-[12px]  rounded-full mt-[3px]  ${
                 selectedMarketId === marketId
-                  ? 'bg-[#73D391] animate-pulse'
-                  : 'bg-gray-400'
+                  ? "bg-[#73D391] animate-pulse"
+                  : "bg-gray-400"
               }`}
-            ></div>
-
-            <div className="flex flex-col gap-2">
+            ></div> */}
+            <div>
+              <div className="flex items-center gap-1">
+                <p className="text-[#EBEDFD] text-sm">{ticker}</p>
+                {marketDetails && (
+                  <Image
+                    src={marketDetails?.path}
+                    width={14}
+                    height={14}
+                    alt="Market logo"
+                    className="rounded-full"
+                  />
+                )}
+              </div>
+              <p className="text-[#ABACBA] text-xs">{marketDetails?.name}</p>
+            </div>
+            {/*  <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <p className="text-sm font-semibold">{ticker}</p>
                 <a
@@ -99,35 +113,35 @@ export const TradingHubAggregatedPosition = ({
                 )}
                 <p className="text-xs">{marketDetails?.name}</p>
               </div>
-            </div>
+            </div> */}
           </div>
           {/* Stats */}
           <div className="flex gap-12 items-center">
             {/* Sum profit / loss */}
-            <div className="flex flex-col gap-1 text-right">
-              <p className="text-xs">Sum Profit / loss</p>
+            <div className="flex flex-col text-right">
+              <p className="text-xs text-tetriary">Sum gain / loss</p>
               <p
-                className={`text-sm font-semibold ${
-                  sumLossProfit < 0 ? 'text-red-500' : 'text-[#73D391]'
+                className={`text-xs font-semibold ${
+                  sumLossProfit < 0 ? "text-red-500" : "text-[#87DAA4]"
                 }`}
               >
-                {sumLossProfit && sumLossProfit.toFixed(2)}{' '}
+                {sumLossProfit && sumLossProfit.toFixed(2)}{" "}
                 <span className="text-xs">USDC</span>
               </p>
             </div>
 
-            <div className="text-sm font-semibold  w-[100px]">
+            {/* <div className="text-sm font-semibold  w-[100px]">
               {isExtended
                 ? `Hide all (${positions.length})`
                 : `Show all (${positions.length})`}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
       {isExtended && (
         <div className="w-full border-t-[1px] border-[#2d2d2f]">
           <table className="table-auto w-full ">
-            <thead className=" text-sm text-left text-[#ABACBA] bg-[#23252E]">
+            <thead className=" text-sm text-left text-[#ABACBA] border-b-[1px] border-[#23252E] bg-[#191B24]">
               <tr>
                 <th className="font-normal pb-2 py-2 pl-3">Side</th>
                 <th className="font-normal">Quantity</th>
