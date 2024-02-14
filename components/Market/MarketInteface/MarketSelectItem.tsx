@@ -3,6 +3,7 @@ import React from "react";
 import { selectedMarketIdAtom } from "../Market";
 import { MarketType } from "@/types/marketTypes";
 import { getMarkeDetails } from "@/utils/getMarketDetails";
+import Image from "next/image";
 
 interface MarketSelectItemProps {
   market: MarketType;
@@ -26,9 +27,20 @@ export const MarketSelectItem = ({
       onClick={handleAction}
     >
       <div className="pl-12">
-        <p className="text-[13px] font-semibold">
-          {details ? details.name : market.ticker}
-        </p>
+        <div className="flex items-center gap-1.5">
+          <p className="text-[13px] font-semibold">
+            {details ? details.name : market.ticker}
+          </p>
+          {details && (
+            <Image
+              src={details.path}
+              width={14}
+              height={14}
+              alt="Market logo"
+              className="rounded-full"
+            />
+          )}
+        </div>
         {details && <p className="text-[10px] font-normal">{market?.ticker}</p>}
       </div>
     </div>

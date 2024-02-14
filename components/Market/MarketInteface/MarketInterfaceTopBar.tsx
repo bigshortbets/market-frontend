@@ -8,6 +8,7 @@ import {
 } from "react-icons/md";
 import { MarketSelectItem } from "./MarketSelectItem";
 import { getMarkeDetails } from "@/utils/getMarketDetails";
+import Image from "next/image";
 
 interface MarketInterfaceTopBarProps {
   markets: MarketType[];
@@ -63,9 +64,20 @@ export const MarketInterfaceTopBar = ({
           onClick={handleToggleSelectOpen}
         >
           <div>
-            <p className="text-[13px] font-semibold">
-              {marketDetails ? marketDetails.name : market?.ticker}
-            </p>
+            <div className="flex items-center gap-1.5">
+              <p className="text-[13px] font-semibold">
+                {marketDetails ? marketDetails.name : market?.ticker}
+              </p>
+              {marketDetails && (
+                <Image
+                  src={marketDetails.path}
+                  width={14}
+                  height={14}
+                  alt="Market logo"
+                  className="rounded-full"
+                />
+              )}
+            </div>
             {marketDetails && (
               <p className="text-[10px] font-normal">{market?.ticker}</p>
             )}
