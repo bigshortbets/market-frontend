@@ -61,13 +61,13 @@ export const TradingHubAggregatedPosition = ({
   };
 
   return (
-    <div className="w-full flex flex-col  ">
+    <div className="w-full flex flex-col  relative h-full">
       <div
-        className="w-full px-3 bg-[#23252E] py-3  cursor-pointer"
+        className="w-full px-3 bg-[#23252E] py-3  cursor-pointer h-full"
         onClick={handleClick}
       >
-        <div className="flex justify-between items-center ">
-          <div className="flex gap-1.5">
+        <div className="flex justify-between items-center h-full">
+          <div className="flex gap-1.5 h-full">
             {/*  <div
               className={`w-[12px] h-[12px]  rounded-full mt-[3px]  ${
                 selectedMarketId === marketId
@@ -115,6 +115,20 @@ export const TradingHubAggregatedPosition = ({
               </div>
             </div> */}
           </div>
+          {/* <div className="  h-[36px] w-[30%] flex relative ">
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-tertiary  text-xs opacity-40">
+              vs
+            </div>
+            <div className="flex-1 bg-green-400 opacity-10"></div>
+            <div className="flex-1 bg-red-400 opacity-10"></div>
+            <div className="absolute text-[10px] text-tertiary bottom-1 left-1 opacity-30">
+              You
+            </div>
+
+            <div className="absolute text-[10px] text-tertiary top-1 right-1 opacity-30">
+              Opponents
+            </div>
+          </div> */}
           {/* Stats */}
           <div className="flex gap-12 items-center">
             {/* Sum profit / loss */}

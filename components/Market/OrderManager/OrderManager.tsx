@@ -2,7 +2,7 @@ import { useCreateOrderWrite } from "@/blockchain/hooks/useCreateOrderWrite";
 import React, { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import ReactLoading from "react-loading";
-import { useAccount } from "wagmi";
+import { useAccount, useConnect } from "wagmi";
 import { useAtom } from "jotai";
 import { selectedMarketIdAtom } from "../Market";
 import { findMarketById } from "@/utils/findMarketById";
@@ -11,6 +11,7 @@ import { useNativeCurrencyBalance } from "@/blockchain/hooks/useNativeCurrencyBa
 import { IoMdInformationCircle } from "react-icons/io";
 import { Tooltip } from "react-tooltip";
 import { scaleNumber } from "@/utils/scaleNumber";
+import { FinanceManagerWarning } from "../FinanceManager/FinanceManagerWarning";
 
 export enum OrderSideEnum {
   LONG,
@@ -26,6 +27,8 @@ export const OrderManager = ({
   markets,
   handleSetLoading,
 }: OrderManagerProps) => {
+  const { connect, connectors } = useConnect();
+  const connector = connectors[0];
   const [price, setPrice] = useState<number>(1);
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedSideOrder, setSelectedSideOrder] = useState<OrderSideEnum>(
@@ -64,6 +67,10 @@ export const OrderManager = ({
   }, [isShortLoading, isLongLoading]);
 
   const handleWriteOrder = () => {
+    if (!address) {
+      connect({ connector });
+      return;
+    }
     if (selectedSideOrder === OrderSideEnum.LONG) {
       writeLongOrder?.();
     }
@@ -73,7 +80,7 @@ export const OrderManager = ({
   };
 
   return (
-    <div className="p-2.5 flex flex-col gap-4">
+    <div className="p-2.5 pb-4 flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <p className="text-sm font-semibold text-secondary leading-[24px]">
           Order
@@ -157,14 +164,20 @@ export const OrderManager = ({
             <p>{orderValue.toFixed(2)} USDC</p>
           </div>
         </div>
+
         <button
           onClick={handleWriteOrder}
           disabled={isActionDisabled}
-          className="disabled:bg-gray-400 w-full rounded-lg bg-[#87DAA4] text-[#01083A] text-[13px] font-semibold py-3"
+          className={`disabled:bg-gray-400 w-full rounded-lg ${
+            address ? "bg-[#87DAA4]" : "bg-[#9BA6F8]"
+          } text-[#01083A] text-[13px] font-semibold py-3`}
         >
-          Place order
+          {address ? "Place order" : "Connect wallet"}
         </button>
       </div>
+      {!address && (
+        <FinanceManagerWarning error="Connect your wallet do interact with market" />
+      )}
     </div>
     /* <div
       className={`w-full h-[400px] rounded flex flex-col  transition ease-in-out px-1`}
