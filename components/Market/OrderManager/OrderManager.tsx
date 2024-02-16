@@ -169,7 +169,11 @@ export const OrderManager = ({
           onClick={handleWriteOrder}
           disabled={isActionDisabled}
           className={`disabled:bg-gray-400 w-full rounded-lg ${
-            address ? "bg-[#87DAA4]" : "bg-[#9BA6F8]"
+            address
+              ? selectedSideOrder === OrderSideEnum.LONG
+                ? "bg-[#87DAA4]"
+                : "bg-[#D26D6C]"
+              : "bg-[#9BA6F8]"
           } text-[#01083A] text-[13px] font-semibold py-3`}
         >
           {address ? "Place order" : "Connect wallet"}
