@@ -20,7 +20,7 @@ export const MarketInterface = ({ markets }: MarketInterfaceProps) => {
   const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
 
   return (
-    <div className="w-[720px] h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]">
+    <div className="flex-1 h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]">
       <div className="flex-grow flex flex-col overflow-auto no-scrollbar">
         {/* TOPBAR */}
         <MarketInterfaceTopBar
@@ -29,7 +29,7 @@ export const MarketInterface = ({ markets }: MarketInterfaceProps) => {
         />
         <div className="flex-grow flex overflow-auto">
           <div
-            className="h-full flex-1 border-r border-[#444650] overflow-auto no-scrollbar"
+            className="h-full w-[360px] border-r border-[#444650] overflow-auto no-scrollbar"
             style={{ maxHeight: "calc(100vh - 228px)" }}
           >
             <FinanceManager markets={markets} />

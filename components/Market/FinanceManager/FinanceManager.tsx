@@ -48,10 +48,8 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
     setLoading(val);
   };
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <div className="py-3 px-4 border-b border-[#444650] flex items-center gap-2">
-        <IoMdInformationCircle className="w-6 h-6 mr-4 text-[#444650]" />
-
         {tabs.map((tab, key) => (
           <FinanceManagerTab value={tab} key={key} />
         ))}

@@ -56,7 +56,7 @@ export const MarketInterfaceTopBar = ({
     <div className="flex border-b border-[#444650]">
       {/* SELECT */}
       <div
-        className="flex-1 bg-[#23252E] rounded-tl-[10px] relative"
+        className="w-[360px] bg-[#23252E] rounded-tl-[10px] relative"
         ref={selectRef}
       >
         <div
