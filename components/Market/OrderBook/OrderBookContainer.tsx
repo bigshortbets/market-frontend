@@ -13,7 +13,7 @@ const tabs = ["orderbook", "trades"];
 
 export type OrderBookStateTabsType = (typeof tabs)[number];
 
-export const orderBookStateAtom = atom<OrderBookStateTabsType>("trades");
+export const orderBookStateAtom = atom<OrderBookStateTabsType>("orderbook");
 
 export const OrderBookContainer = () => {
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
@@ -28,13 +28,13 @@ export const OrderBookContainer = () => {
       }
     );
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full">
       <div className="py-3 px-4 border-b border-[#444650] flex flex-row-reverse items-center gap-2">
         {tabs.map((tab, key) => (
           <OrderBookStateTab key={key} value={tab} />
         ))}
       </div>
-      {orderBookState === "book" && <OrderBook />}
+      {orderBookState === "orderbook" && <OrderBook />}
       {orderBookState === "trades" && (
         <RecentTrades positionsRes={recentPositionsRes} />
       )}

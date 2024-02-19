@@ -180,7 +180,7 @@ export const OrderManager = ({
         </button>
       </div>
       {!address && (
-        <FinanceManagerWarning error="Connect your wallet do interact with market" />
+        <FinanceManagerWarning error="Connect your wallet do interact with the market. " />
       )}
     </div>
     /* <div

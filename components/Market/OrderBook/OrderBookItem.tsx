@@ -12,16 +12,16 @@ interface OrderBookItem {
 export const OrderBookItem = ({ empty, side, data }: OrderBookItem) => {
   return (
     <div
-      className={`flex-1  bg-opacity-[15%] border-opacity-[15%] text-opacity-50  border ${
+      className={`w-full bg-opacity-[15%]  text-opacity-50 py-2   ${
         side === OrderSide.LONG
-          ? "border-green-800 bg-green-900 text-green-300"
-          : "border-red-800 bg-red-900 text-red-300"
+          ? " bg-green-900 text-tetriary"
+          : " bg-[#C53F3A] text-tetriary"
       }`}
     >
       {!empty && data && (
-        <div className="w-full items-center h-full flex pl-2 text-xs">
-          <div className="flex-1">{scaleNumber(data.price)}</div>
-          <div className="flex-1">{data.quantity}</div>
+        <div className="w-full justify-between h-full flex px-4 text-xs">
+          <div>{scaleNumber(data.price)}</div>
+          <div>{data.quantity}</div>
         </div>
       )}
     </div>
