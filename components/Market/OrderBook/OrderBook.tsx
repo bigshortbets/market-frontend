@@ -15,37 +15,12 @@ export enum OrderSide {
   SHORT = "SHORT",
 }
 
-export const OrderBook = () => {
-  const [selectedMarketId] = useAtom(selectedMarketIdAtom);
+interface OrderBooksProps {
+  shortsRes: OrderBookResponse | undefined;
+  longsRes: OrderBookResponse | undefined;
+}
 
-  const { data: longsRes } = useSubscription<OrderBookResponse>(
-    ORDER_BOOK_LONGS_SUBSCRIPTION,
-    {
-      variables: { marketId: selectedMarketId, limit: 5, side: OrderSide.LONG },
-    }
-  );
-
-  const { data: shortsRes } = useSubscription<OrderBookResponse>(
-    ORDER_BOOK_SHORTS_SUBSCRIPTION,
-    {
-      variables: {
-        marketId: selectedMarketId,
-        limit: 5,
-        side: OrderSide.SHORT,
-      },
-    }
-  );
-
-  const numberOfShorts = shortsRes
-    ? shortsRes.aggregatedOrdersByPrices.length
-    : 0;
-
-  const shortPlaceholders = Array.from({ length: 5 - numberOfShorts });
-
-  const numberOfLongs = longsRes ? longsRes.aggregatedOrdersByPrices.length : 0;
-
-  const longsPlaceholders = Array.from({ length: 5 - numberOfLongs });
-
+export const OrderBook = ({ shortsRes, longsRes }: OrderBooksProps) => {
   return (
     <div className="flex flex-col pt-[14px]  text-xs h-full">
       <div className="flex justify-between items-center px-4">
@@ -63,7 +38,7 @@ export const OrderBook = () => {
         </div>
       </div>
       <div className="flex-grow flex flex-col justify-center">
-        <div className="flex-col-reverse flex flex-1">
+        <div className="flex-col-reverse flex flex-1 gap-[1px]">
           {shortsRes &&
             shortsRes.aggregatedOrdersByPrices.map((data, key) => (
               <OrderBookItem
@@ -75,7 +50,7 @@ export const OrderBook = () => {
             ))}
         </div>
         <hr className="border-top-[1px] border-[#444650]" />
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col gap-[1px]">
           {longsRes &&
             longsRes.aggregatedOrdersByPrices.map((data, key) => (
               <OrderBookItem
