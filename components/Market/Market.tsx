@@ -11,6 +11,7 @@ import { Mobile } from "../Mobile";
 import { OrderBookContainer } from "./OrderBook/OrderBookContainer";
 import { FinanceManager } from "./FinanceManager/FinanceManager";
 import { MarketInterface } from "./MarketInteface/MarketInterface";
+import { useCurrentBlock } from "@/api/useCurrentBlock";
 
 interface MarketProps {
   markets: MarketType[];
@@ -20,11 +21,13 @@ export type UIConfigurationType = "HubOrder" | "OrderHub";
 
 export const selectedMarketIdAtom = atom<string>("");
 export const UIConfigurationAtom = atom<UIConfigurationType>("HubOrder");
+export const currentBlockAtom = atom<number | undefined>(undefined);
 
 export const Market = ({ markets }: MarketProps) => {
   const [, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
   const { chain } = useNetwork();
   const { switchNetwork } = useSwitchNetwork();
+  const { loading, error } = useCurrentBlock();
 
   useEffect(() => {
     setSelectedMarketId(markets[0].id);

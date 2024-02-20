@@ -17,7 +17,7 @@ interface MarketInterfaceProps {
 }
 
 export const MarketInterface = ({ markets }: MarketInterfaceProps) => {
-  const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
+  const [selectedMarketId] = useAtom(selectedMarketIdAtom);
 
   return (
     <div className="flex-1 h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]">

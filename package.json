@@ -15,7 +15,7 @@
     "@polkadot/util": "^12.6.2",
     "@polkadot/util-crypto": "^12.5.1",
     "big.js": "^6.2.1",
-    "date-fns": "^2.30.0",
+    "date-fns": "^3.3.1",
     "graphql": "^16.8.1",
     "graphql-ws": "^5.14.2",
     "jotai": "^2.5.0",

@@ -60,27 +60,28 @@ export const MarketInterfaceTopBar = ({
         ref={selectRef}
       >
         <div
-          className="pr-6 pl-12 py-2 flex w-full justify-between items-center h-full cursor-pointer"
+          className="pr-6 pl-4 py-2 flex w-full justify-between items-center h-full cursor-pointer"
           onClick={handleToggleSelectOpen}
         >
-          <div>
-            <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-4">
+            {marketDetails && (
+              <Image
+                src={marketDetails.path}
+                width={18}
+                height={18}
+                alt="Market logo"
+                className="rounded-full"
+              />
+            )}
+            <div>
               <p className="text-[13px] font-semibold">
                 {marketDetails ? marketDetails.name : market?.ticker}
               </p>
+
               {marketDetails && (
-                <Image
-                  src={marketDetails.path}
-                  width={14}
-                  height={14}
-                  alt="Market logo"
-                  className="rounded-full"
-                />
+                <p className="text-[10px] font-normal">{market?.ticker}</p>
               )}
             </div>
-            {marketDetails && (
-              <p className="text-[10px] font-normal">{market?.ticker}</p>
-            )}
           </div>
           <div className="text-[24px]">
             {isSelectOpen ? (
@@ -94,6 +95,7 @@ export const MarketInterfaceTopBar = ({
           <div className="absolute w-full bg-[#23252E] z-40">
             {markets.map((market, key) => (
               <MarketSelectItem
+                key={key}
                 market={market}
                 handleCloseSelect={handleCloseSelect}
               />

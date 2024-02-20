@@ -1,19 +1,17 @@
 import { MarketType } from "@/types/marketTypes";
 import { useAtom } from "jotai";
 import React, { useRef, useState } from "react";
-import { selectedMarketIdAtom } from "../Market";
+import { currentBlockAtom, selectedMarketIdAtom } from "../Market";
 import { findMarketById } from "@/utils/findMarketById";
 import { scaleNumber } from "@/utils/scaleNumber";
-import { BiSolidDownArrow } from "react-icons/bi";
-import { BiSolidUpArrow } from "react-icons/bi";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { formatDate } from "@/utils/formatDate";
-import { addSeconds } from "date-fns";
-import { useAccount, useNetwork } from "wagmi";
+
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,
 } from "react-icons/md";
+import { calculateMarketClosing } from "@/utils/calculateMarketClosing";
 
 interface ContractDetailsProps {
   markets: MarketType[];
@@ -23,20 +21,15 @@ export const ContractDetails = ({ markets }: ContractDetailsProps) => {
   const selectedMarket = findMarketById(markets, selectedMarketId);
   const [isOpened, setIsOpened] = useState<boolean>(true);
   const [animationParent] = useAutoAnimate();
-
-  const { chain } = useNetwork();
-  const { address } = useAccount();
+  const [currentBlock] = useAtom(currentBlockAtom);
+  const { formattedDate } = calculateMarketClosing(
+    currentBlock!,
+    Number(selectedMarket?.lifetime)
+  );
 
   const marketDurationRepresentation = `${formatDate(
-    selectedMarket?.timestamp as unknown as string /* Typing should be fixed on BE */
-  )}-${formatDate(
-    String(
-      addSeconds(
-        new Date(selectedMarket?.timestamp as unknown as string),
-        Number(selectedMarket?.lifetime)
-      )
-    )
-  )}`;
+    selectedMarket?.timestamp as unknown as string
+  )}-${formattedDate}`;
 
   const contractDetailsData = [
     { label: "Contract name", value: selectedMarket?.ticker },
