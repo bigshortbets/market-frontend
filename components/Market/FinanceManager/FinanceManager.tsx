@@ -57,6 +57,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
       {financeManagerState === "order" && (
         <OrderManager markets={markets} handleSetLoading={handleSetLoading} />
       )}
+      {financeManagerState === "deposit" && <Deposit />}
     </div>
     /* <div
       className={`w-[300px] h-[440px] rounded p-1 bg-secondary-bg relative flex flex-col ${

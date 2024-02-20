@@ -20,7 +20,6 @@ export const ContractDetails = ({ markets }: ContractDetailsProps) => {
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const selectedMarket = findMarketById(markets, selectedMarketId);
   const [isOpened, setIsOpened] = useState<boolean>(true);
-  const [animationParent] = useAutoAnimate();
   const [currentBlock] = useAtom(currentBlockAtom);
   const { formattedDate } = calculateMarketClosing(
     currentBlock!,
@@ -49,10 +48,7 @@ export const ContractDetails = ({ markets }: ContractDetailsProps) => {
   };
 
   return (
-    <div
-      className={`w-full  bg-[#000211] rounded-lg font-semibold`}
-      ref={animationParent}
-    >
+    <div className={`w-full  bg-[#000211] rounded-lg font-semibold`}>
       <div className="justify-between items-center flex py-2  px-4">
         <h3 className="text-sm ">Contract details</h3>
 
