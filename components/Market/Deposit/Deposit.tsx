@@ -3,7 +3,7 @@ import { useNativeCurrencyBalance } from "@/blockchain/hooks/useNativeCurrencyBa
 import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
-import { useAccount } from "wagmi";
+import { useAccount, useConnect } from "wagmi";
 import { selectedMarketIdAtom } from "../Market";
 import useGetDeposit from "@/blockchain/hooks/useGetDeposit";
 import {
@@ -30,6 +30,20 @@ export const Deposit = (/* {
   const [amount, setAmount] = useState<number>(1);
   const { address } = useAccount();
   const { data: walletBalance } = useNativeCurrencyBalance(address);
+  const { write, isLoading } = useDeposit(amount);
+  const { connect, connectors } = useConnect();
+  const connector = connectors[0];
+
+  const handleDeposit = () => {
+    if (!address) {
+      connect({ connector });
+      return;
+    }
+    write?.();
+  };
+
+  const depositDisabled =
+    Number(walletBalance?.formatted) < amount || amount <= 0;
 
   return (
     <div className="p-2.5 pb-4 flex flex-col gap-4">
@@ -67,59 +81,16 @@ export const Deposit = (/* {
             <p>Total</p>
             <p>{amount.toFixed(2)} USDC</p>
           </div>
-          {/*  <div className="flex justify-between items-center font-semibold text-xs text-tetriary ">
-            <p>Wallet balance</p>
-            <p>{address ? Number(walletBalance?.formatted).toFixed(2) : "-"}</p>
-          </div> */}
         </div>
 
         <button
-          /* onClick={handleWriteOrder}
-          disabled={isActionDisabled} */
+          disabled={depositDisabled}
+          onClick={handleDeposit}
           className={`disabled:bg-gray-400 bg-[#9BA6F8] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-3`}
         >
           {address ? "Confirm deposit" : "Connect wallet"}
         </button>
       </div>
     </div>
-    /*  <div className="w-full h-full rounded flex flex-col transition ease-in-out px-1">
-      <div className="flex flex-col mb-3">
-        <label
-          htmlFor="amountInput"
-          className="leading-4 text-xs text-[#7F828F] font-semibold mb-1"
-        >
-          Amount
-        </label>
-        <div className="relative">
-          <NumericFormat
-            allowNegative={false}
-            id={"amountInput"}
-            className="outline-none bg-[#23252E] border-none text-sm text-white py-3 rounded-lg px-3 w-full"
-            onChange={(e) => setAmount(Number(e.target.value))}
-            value={amount}
-          />
-          <span className="absolute right-3 bottom-[14px] text-xs opacity-50">
-            USDC
-          </span>
-        </div>
-      </div>
-      <button
-          onClick={() => write?.()}
-        className="w-full py-2 rounded bg-[#9BA6F8] text-black font-semibold"
-        disabled={isActionDisabled}
-      >
-        Deposit
-      </button>
-      <p>
-        {depositValue !== undefined
-          ? Number(depositValue) < 0.00001
-            ? numberToCurrencyFormat(0, decimals)
-            : numberToCurrencyFormat(
-                toFixedNoRounding(Number(depositValue)),
-                decimals
-              )
-          : '?'}
-      </p>
-    </div> */
   );
 };
