@@ -24,11 +24,21 @@ export const getMarkeDetails = (
 
   if (market) {
     const symbolLength = market.symbol.length;
-    const symbol = marketInput.substr(0, symbolLength); // Extract symbol
-    const month = monthMapping[marketInput.substr(-5, 1)]; // Extract month from second to last position
-    const year = marketInput.substr(-4); // Extract year
+    const symbol = marketInput.substr(0, symbolLength);
+    let monthCode = "";
+    let yearCode = "";
+    for (let i = marketInput.length - 1; i >= 0; i--) {
+      if (isNaN(Number(marketInput[i]))) {
+        monthCode = marketInput[i];
+        yearCode = marketInput.substring(i + 1);
+        break;
+      }
+    }
+
+    const month = monthMapping[monthCode];
+
     return {
-      name: `${market.name} ${month} ${year}`,
+      name: `${market.name} ${month} ${yearCode}`,
       path: market.path,
       symbol: market.symbol,
     };
