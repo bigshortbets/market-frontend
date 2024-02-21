@@ -11,6 +11,7 @@ import { selectedMarketIdAtom } from "../Market";
 import { findMarketById } from "@/utils/findMarketById";
 import ReactLoading from "react-loading";
 import { IoMdInformationCircle } from "react-icons/io";
+import { Withdraw } from "../Withdraw/Withdraw";
 
 interface FinanceManagerProps {
   markets: MarketType[];
@@ -58,6 +59,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
         <OrderManager markets={markets} handleSetLoading={handleSetLoading} />
       )}
       {financeManagerState === "deposit" && <Deposit />}
+      {financeManagerState === "withdraw" && <Withdraw />}
     </div>
     /* <div
       className={`w-[300px] h-[440px] rounded p-1 bg-secondary-bg relative flex flex-col ${
