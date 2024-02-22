@@ -12,6 +12,7 @@ import { IoMdInformationCircle } from "react-icons/io";
 import { Tooltip } from "react-tooltip";
 import { scaleNumber } from "@/utils/scaleNumber";
 import { FinanceManagerWarning } from "../FinanceManager/FinanceManagerWarning";
+import { checkIfDivisible } from "@/utils/checkIfDivisible";
 
 export enum OrderSideEnum {
   LONG,
@@ -34,8 +35,15 @@ export const OrderManager = ({
   const [selectedSideOrder, setSelectedSideOrder] = useState<OrderSideEnum>(
     OrderSideEnum.LONG
   );
+
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const selectedMarket = findMarketById(markets, selectedMarketId);
+  const [isDivisibleByTickSize, setIsDivisibleByTickSize] = useState(
+    checkIfDivisible(
+      price,
+      Number(scaleNumber(selectedMarket?.tickSize.toString()!))
+    )
+  );
 
   const { address } = useAccount();
   const { formattedBalance } = useNativeCurrencyBalance(address);
@@ -51,12 +59,15 @@ export const OrderManager = ({
 
   const orderValue = price * quantity * Number(selectedMarket?.contractUnit);
 
-  const isActionDisabled = price === 0 || orderCost > Number(formattedBalance);
+  const isActionDisabled =
+    price === 0 ||
+    orderCost > Number(formattedBalance) ||
+    !isDivisibleByTickSize;
 
   useEffect(() => {
     selectedMarket?.oraclePrice &&
       setPrice(Number(scaleNumber(selectedMarket?.oraclePrice.toString())));
-  }, [selectedMarket]);
+  }, [selectedMarketId]);
 
   useEffect(() => {
     if (isShortLoading || isLongLoading) {
@@ -65,6 +76,14 @@ export const OrderManager = ({
       handleSetLoading(false);
     }
   }, [isShortLoading, isLongLoading]);
+
+  useEffect(() => {
+    const res = checkIfDivisible(
+      price,
+      Number(scaleNumber(selectedMarket?.tickSize.toString()!))
+    );
+    setIsDivisibleByTickSize(res);
+  }, [price]);
 
   const handleWriteOrder = () => {
     if (!address) {
@@ -96,7 +115,7 @@ export const OrderManager = ({
             <NumericFormat
               allowNegative={false}
               id={"orderPriceInput"}
-              className="text-right outline-none  w-[85%] bg-[#23252E] rounded-lg"
+              className="text-right outline-none  w-[85%] bg-[#23252E] "
               onChange={(e) => setPrice(Number(e.target.value))}
               value={price}
             />
@@ -116,7 +135,7 @@ export const OrderManager = ({
             <NumericFormat
               allowNegative={false}
               id={"quantityInput"}
-              className="text-right outline-none  w-[85%] bg-[#23252E] rounded-lg"
+              className="text-right outline-none  w-[85%] bg-[#23252E]"
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
             />
@@ -181,6 +200,13 @@ export const OrderManager = ({
       </div>
       {!address && (
         <FinanceManagerWarning error="Connect your wallet do interact with the market. " />
+      )}
+      {!isDivisibleByTickSize && (
+        <FinanceManagerWarning
+          error={`Your price amount must be divisible by the tick size: (${scaleNumber(
+            selectedMarket?.tickSize.toString()!
+          )})`}
+        />
       )}
     </div>
     /* <div
