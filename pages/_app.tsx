@@ -1,18 +1,18 @@
-import { apolloClient } from '@/api/graphql';
-import { bigshortbetsChain } from '@/blockchain/chain';
-import '@/styles/globals.css';
-import { ApolloProvider } from '@apollo/client';
-import type { AppProps } from 'next/app';
-import { WagmiConfig, configureChains, createConfig } from 'wagmi';
-import { publicProvider } from 'wagmi/providers/public';
-import 'react-tooltip/dist/react-tooltip.css';
+import { apolloClient } from "@/api/graphql";
+import { bigshortbetsChain } from "@/blockchain/chain";
+import "@/styles/globals.css";
+import { ApolloProvider } from "@apollo/client";
+import type { AppProps } from "next/app";
+import { WagmiConfig, configureChains, createConfig } from "wagmi";
+import { publicProvider } from "wagmi/providers/public";
+import "react-tooltip/dist/react-tooltip.css";
 
 const { publicClient, webSocketPublicClient } = configureChains(
   [bigshortbetsChain],
   [publicProvider()]
 );
 
-const config = createConfig({
+export const wagmiConfig = createConfig({
   publicClient,
   webSocketPublicClient,
   autoConnect: true,
@@ -21,7 +21,7 @@ const config = createConfig({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={apolloClient}>
-      <WagmiConfig config={config}>
+      <WagmiConfig config={wagmiConfig}>
         <Component {...pageProps} />
       </WagmiConfig>
     </ApolloProvider>

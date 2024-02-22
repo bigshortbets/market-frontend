@@ -1,20 +1,20 @@
 import { useNativeCurrencyBalance } from "@/blockchain/hooks/useNativeCurrencyBalance";
 import { useWithdraw } from "@/blockchain/hooks/useWithdraw";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 import React, { useState } from "react";
 import { NumericFormat } from "react-number-format";
 import { useAccount, useConnect } from "wagmi";
 
 export const Withdraw = () => {
+  const { open } = useWeb3Modal();
   const [amount, setAmount] = useState<number>(1);
   const { address } = useAccount();
   const { data: walletBalance } = useNativeCurrencyBalance(address);
   const { write, isLoading } = useWithdraw(amount);
-  const { connect, connectors } = useConnect();
-  const connector = connectors[0];
 
   const handleWithdraw = () => {
     if (!address) {
-      connect({ connector });
+      open();
       return;
     }
     write?.();

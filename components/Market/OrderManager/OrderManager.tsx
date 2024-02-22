@@ -1,18 +1,16 @@
 import { useCreateOrderWrite } from "@/blockchain/hooks/useCreateOrderWrite";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
-import ReactLoading from "react-loading";
-import { useAccount, useConnect } from "wagmi";
+import { useAccount } from "wagmi";
 import { useAtom } from "jotai";
 import { selectedMarketIdAtom } from "../Market";
 import { findMarketById } from "@/utils/findMarketById";
 import { MarketType } from "@/types/marketTypes";
 import { useNativeCurrencyBalance } from "@/blockchain/hooks/useNativeCurrencyBalance";
-import { IoMdInformationCircle } from "react-icons/io";
-import { Tooltip } from "react-tooltip";
 import { scaleNumber } from "@/utils/scaleNumber";
 import { FinanceManagerWarning } from "../FinanceManager/FinanceManagerWarning";
 import { checkIfDivisible } from "@/utils/checkIfDivisible";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 
 export enum OrderSideEnum {
   LONG,
@@ -28,13 +26,13 @@ export const OrderManager = ({
   markets,
   handleSetLoading,
 }: OrderManagerProps) => {
-  const { connect, connectors } = useConnect();
-  const connector = connectors[0];
   const [price, setPrice] = useState<number>(1);
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedSideOrder, setSelectedSideOrder] = useState<OrderSideEnum>(
     OrderSideEnum.LONG
   );
+
+  const { open } = useWeb3Modal();
 
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const selectedMarket = findMarketById(markets, selectedMarketId);
@@ -87,7 +85,7 @@ export const OrderManager = ({
 
   const handleWriteOrder = () => {
     if (!address) {
-      connect({ connector });
+      open();
       return;
     }
     if (selectedSideOrder === OrderSideEnum.LONG) {

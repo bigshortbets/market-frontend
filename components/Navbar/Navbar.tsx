@@ -2,9 +2,10 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import logo from "../../public/logo.svg";
 import { ConnectButton } from "../ConnectButton";
-import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
+import { WagmiConfig, useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 import { UIConfiguration } from "../Market/UIConfiguration";
 import { CurrentNetworkTab } from "./CurrentNetworkTab";
+import { WalletConnect } from "../WalletConnect";
 
 export const Navbar = () => {
   const [isClient, setIsClient] = useState(false);
@@ -30,7 +31,7 @@ export const Navbar = () => {
         <div className="flex items-center gap-4">
           {isConnected && <CurrentNetworkTab />}
           {/* <UIConfiguration /> */}
-          {isClient && <ConnectButton />}
+          {isClient && <WalletConnect />}
         </div>
       </div>
     </nav>

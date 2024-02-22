@@ -13,6 +13,7 @@ import {
 import { scaleNumber } from "@/utils/scaleNumber";
 import { MarketType } from "@/types/marketTypes";
 import { formatEther, parseEther } from "viem";
+import { useWeb3Modal } from "@web3modal/wagmi/react";
 
 /* interface DepositProps {
   triggerDepositRefetch: () => void;
@@ -27,16 +28,15 @@ export const Deposit = (/* {
   selectedMarket,
   handleSetLoading,
 }: DepositProps */) => {
+  const { open } = useWeb3Modal();
   const [amount, setAmount] = useState<number>(1);
   const { address } = useAccount();
   const { data: walletBalance } = useNativeCurrencyBalance(address);
   const { write, isLoading } = useDeposit(amount);
-  const { connect, connectors } = useConnect();
-  const connector = connectors[0];
 
   const handleDeposit = () => {
     if (!address) {
-      connect({ connector });
+      open();
       return;
     }
     write?.();
