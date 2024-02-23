@@ -13,7 +13,7 @@ export const TradingHub = () => {
   const { address } = useAccount();
 
   return (
-    <div className="flex-1 h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]">
+    <div className=" h-[calc(100vh-166px)] lg:flex-1 lg:h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]">
       <div className="flex-grow">
         <div className="px-2.5 pt-3 pb-2.5 flex gap-1">
           {tabs.map((tab, key) => (

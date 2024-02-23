@@ -5,9 +5,6 @@ import { wagmiConfig } from "@/pages/_app";
 import { useAccount } from "wagmi";
 
 export const WalletConnect = () => {
-  const projectId = "86ff0af7d996a9e572fa31d5d0f8bf52";
-  const chains = [bigshortbetsChain];
-  createWeb3Modal({ wagmiConfig, projectId, chains });
   const { open } = useWeb3Modal();
   const { isConnected } = useAccount();
 

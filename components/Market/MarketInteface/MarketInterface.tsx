@@ -20,7 +20,7 @@ export const MarketInterface = ({ markets }: MarketInterfaceProps) => {
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
 
   return (
-    <div className="lg:flex-1 w-full  lg:h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]">
+    <div className=" h-[calc(100vh-166px)] lg:flex-1 lg:h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]">
       <div className="flex-grow flex flex-col overflow-auto no-scrollbar">
         {/* TOPBAR */}
         <MarketInterfaceTopBar

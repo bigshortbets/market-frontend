@@ -116,7 +116,7 @@ export const MarketInterfaceTopBar = ({
 
           <div className="border-l border-[#444650] text-xs pl-2">
             <p className="text-tetriary font-semibold">Market Price</p>
-            <p>2137x</p>
+            <p>-</p>
           </div>
         </div>
       </div>
