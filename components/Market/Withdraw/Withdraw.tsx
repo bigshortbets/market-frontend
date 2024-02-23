@@ -3,7 +3,7 @@ import { useWithdraw } from "@/blockchain/hooks/useWithdraw";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import React, { useState } from "react";
 import { NumericFormat } from "react-number-format";
-import { useAccount, useConnect } from "wagmi";
+import { useAccount, useConnect, useNetwork, useSwitchNetwork } from "wagmi";
 
 export const Withdraw = () => {
   const { open } = useWeb3Modal();
@@ -11,10 +11,17 @@ export const Withdraw = () => {
   const { address } = useAccount();
   const { data: walletBalance } = useNativeCurrencyBalance(address);
   const { write, isLoading } = useWithdraw(amount);
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
+  const isBsbNetwork = chain?.id === 2137;
 
   const handleWithdraw = () => {
     if (!address) {
       open();
+      return;
+    }
+    if (address && !isBsbNetwork) {
+      switchNetwork?.(2137);
       return;
     }
     write?.();
@@ -64,7 +71,9 @@ export const Withdraw = () => {
           onClick={handleWithdraw}
           className={`disabled:bg-gray-400 bg-[#9BA6F8] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-3`}
         >
-          {address ? "Confirm withdrawal" : "Connect wallet"}
+          {!address && "Connect wallet"}
+          {address && isBsbNetwork && "Withdraw"}
+          {address && !isBsbNetwork && "Change network"}
         </button>
       </div>
     </div>

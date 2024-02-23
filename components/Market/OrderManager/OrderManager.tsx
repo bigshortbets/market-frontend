@@ -1,7 +1,7 @@
 import { useCreateOrderWrite } from "@/blockchain/hooks/useCreateOrderWrite";
 import { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
-import { useAccount } from "wagmi";
+import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 import { useAtom } from "jotai";
 import { selectedMarketIdAtom } from "../Market";
 import { findMarketById } from "@/utils/findMarketById";
@@ -50,17 +50,14 @@ export const OrderManager = ({
     useCreateOrderWrite(price, quantity, OrderSideEnum.SHORT);
   const { write: writeLongOrder, isLoading: isLongLoading } =
     useCreateOrderWrite(price, quantity, OrderSideEnum.LONG);
+  const { chain } = useNetwork();
+  const { switchNetwork } = useSwitchNetwork();
 
   const orderCost =
     (Number(selectedMarket?.initialMargin) / 100) *
     (price * quantity * Number(selectedMarket?.contractUnit));
 
   const orderValue = price * quantity * Number(selectedMarket?.contractUnit);
-
-  const isActionDisabled =
-    price === 0 ||
-    orderCost > Number(formattedBalance) ||
-    !isDivisibleByTickSize;
 
   useEffect(() => {
     selectedMarket?.oraclePrice &&
@@ -83,9 +80,16 @@ export const OrderManager = ({
     setIsDivisibleByTickSize(res);
   }, [price]);
 
+  const isBsbNetwork = chain?.id === 2137;
+
   const handleWriteOrder = () => {
     if (!address) {
       open();
+      return;
+    }
+
+    if (address && !isBsbNetwork) {
+      switchNetwork?.(2137);
       return;
     }
     if (selectedSideOrder === OrderSideEnum.LONG) {
@@ -95,6 +99,11 @@ export const OrderManager = ({
       writeShortOrder?.();
     }
   };
+
+  const isActionDisabled =
+    price === 0 ||
+    orderCost > Number(formattedBalance) ||
+    !isDivisibleByTickSize;
 
   return (
     <div className="p-2.5 pb-4 flex flex-col gap-4">
@@ -186,14 +195,16 @@ export const OrderManager = ({
           onClick={handleWriteOrder}
           disabled={isActionDisabled}
           className={`disabled:bg-gray-400 w-full rounded-lg ${
-            address
+            address && isBsbNetwork
               ? selectedSideOrder === OrderSideEnum.LONG
                 ? "bg-[#87DAA4]"
                 : "bg-[#D26D6C]"
               : "bg-[#9BA6F8]"
           } text-[#01083A] text-[13px] font-semibold py-3`}
         >
-          {address ? "Place order" : "Connect wallet"}
+          {!address && "Connect wallet"}
+          {address && isBsbNetwork && "Place order"}
+          {address && !isBsbNetwork && "Change network"}
         </button>
       </div>
       {!address && (
