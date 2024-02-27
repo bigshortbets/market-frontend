@@ -115,7 +115,7 @@ export const TradingHubAggregatedPosition = ({
                 <p className="text-xs">{marketDetails?.name}</p>
               </div>
             </div> */}
-            <MiniChart width={90} height={32} symbol={ticker} dateRange="1M" />
+            {/*  <MiniChart width={90} height={32} symbol={ticker} dateRange="1M" /> */}
           </div>
           {/* <div className="  h-[36px] w-[30%] flex relative ">
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-tertiary  text-xs opacity-40">
