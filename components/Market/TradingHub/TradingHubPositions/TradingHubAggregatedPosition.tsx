@@ -1,16 +1,17 @@
-import { PositionType } from "@/types/positionTypes";
-import { convertToSS58 } from "@/utils/convertToSS58";
-import { extendPositionsWithSide } from "@/utils/extendPositionsWithSide";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import React, { useState } from "react";
-import { useAccount } from "wagmi";
-import { TradingHubPositionsItem } from "./TradingHubPositionsItem";
-import { getMarkeDetails } from "@/utils/getMarketDetails";
-import Image from "next/image";
-import { scaleNumber } from "@/utils/scaleNumber";
-import { FaChartBar } from "react-icons/fa";
-import { useAtom } from "jotai";
-import { selectedMarketIdAtom } from "../../Market";
+import { PositionType } from '@/types/positionTypes';
+import { convertToSS58 } from '@/utils/convertToSS58';
+import { extendPositionsWithSide } from '@/utils/extendPositionsWithSide';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
+import React, { useState } from 'react';
+import { useAccount } from 'wagmi';
+import { TradingHubPositionsItem } from './TradingHubPositionsItem';
+import { getMarkeDetails } from '@/utils/getMarketDetails';
+import Image from 'next/image';
+import { scaleNumber } from '@/utils/scaleNumber';
+import { FaChartBar } from 'react-icons/fa';
+import { useAtom } from 'jotai';
+import { selectedMarketIdAtom } from '../../Market';
+import { MiniChart } from './MiniChart';
 
 interface TradingHubAggregatedPositionProps {
   positions: PositionType[];
@@ -42,7 +43,7 @@ export const TradingHubAggregatedPosition = ({
   const sumLossProfit: number =
     oraclePrice &&
     positionsWithSide.reduce((acc, position) => {
-      return position.side === "LONG"
+      return position.side === 'LONG'
         ? acc +
             Number(position.quantity) *
               Number(position.market.contractUnit) *
@@ -67,7 +68,7 @@ export const TradingHubAggregatedPosition = ({
         onClick={handleClick}
       >
         <div className="flex justify-between items-center h-full">
-          <div className="flex gap-1.5 h-full">
+          <div className="flex gap-4 h-full">
             {/*  <div
               className={`w-[12px] h-[12px]  rounded-full mt-[3px]  ${
                 selectedMarketId === marketId
@@ -114,6 +115,7 @@ export const TradingHubAggregatedPosition = ({
                 <p className="text-xs">{marketDetails?.name}</p>
               </div>
             </div> */}
+            <MiniChart width={90} height={32} symbol={ticker} dateRange="1M" />
           </div>
           {/* <div className="  h-[36px] w-[30%] flex relative ">
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-tertiary  text-xs opacity-40">
@@ -136,10 +138,10 @@ export const TradingHubAggregatedPosition = ({
               <p className="text-xs text-tetriary">Sum gain / loss</p>
               <p
                 className={`text-xs font-semibold ${
-                  sumLossProfit < 0 ? "text-red-500" : "text-[#87DAA4]"
+                  sumLossProfit < 0 ? 'text-red-500' : 'text-[#87DAA4]'
                 }`}
               >
-                {sumLossProfit && sumLossProfit.toFixed(2)}{" "}
+                {sumLossProfit && sumLossProfit.toFixed(2)}{' '}
                 <span className="text-xs">USDC</span>
               </p>
             </div>
