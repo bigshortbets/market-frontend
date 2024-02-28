@@ -1,16 +1,17 @@
-import { useCreateOrderWrite } from "@/blockchain/hooks/useCreateOrderWrite";
-import { useEffect, useState } from "react";
-import { NumericFormat } from "react-number-format";
-import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
-import { useAtom } from "jotai";
-import { selectedMarketIdAtom } from "../Market";
-import { findMarketById } from "@/utils/findMarketById";
-import { MarketType } from "@/types/marketTypes";
-import { useNativeCurrencyBalance } from "@/blockchain/hooks/useNativeCurrencyBalance";
-import { scaleNumber } from "@/utils/scaleNumber";
-import { FinanceManagerWarning } from "../FinanceManager/FinanceManagerWarning";
-import { checkIfDivisible } from "@/utils/checkIfDivisible";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useCreateOrderWrite } from '@/blockchain/hooks/useCreateOrderWrite';
+import { useEffect, useState } from 'react';
+import { NumericFormat } from 'react-number-format';
+import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
+import { useAtom } from 'jotai';
+import { selectedMarketIdAtom } from '../Market';
+import { findMarketById } from '@/utils/findMarketById';
+import { MarketType } from '@/types/marketTypes';
+import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
+import { scaleNumber } from '@/utils/scaleNumber';
+import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
+import { checkIfDivisible } from '@/utils/checkIfDivisible';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { bigshortbetsChain } from '@/blockchain/chain';
 
 export enum OrderSideEnum {
   LONG,
@@ -77,10 +78,15 @@ export const OrderManager = ({
       price,
       Number(scaleNumber(selectedMarket?.tickSize.toString()!))
     );
+    console.log(
+      price,
+      Number(scaleNumber(selectedMarket?.tickSize.toString()!)),
+      res
+    );
     setIsDivisibleByTickSize(res);
   }, [price]);
 
-  const isBsbNetwork = chain?.id === 2137;
+  const isBsbNetwork = chain?.id === bigshortbetsChain.id;
 
   const handleWriteOrder = () => {
     if (!address) {
@@ -89,7 +95,7 @@ export const OrderManager = ({
     }
 
     if (address && !isBsbNetwork) {
-      switchNetwork?.(2137);
+      switchNetwork?.(bigshortbetsChain.id);
       return;
     }
     if (selectedSideOrder === OrderSideEnum.LONG) {
@@ -121,7 +127,7 @@ export const OrderManager = ({
           <div className="relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-2">
             <NumericFormat
               allowNegative={false}
-              id={"orderPriceInput"}
+              id={'orderPriceInput'}
               className="text-right outline-none  w-[85%] bg-[#23252E] "
               onChange={(e) => setPrice(Number(e.target.value))}
               value={price}
@@ -141,7 +147,7 @@ export const OrderManager = ({
           <div className="relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-2">
             <NumericFormat
               allowNegative={false}
-              id={"quantityInput"}
+              id={'quantityInput'}
               className="text-right outline-none  w-[85%] bg-[#23252E]"
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
@@ -156,8 +162,8 @@ export const OrderManager = ({
         <div
           className={`${
             selectedSideOrder === OrderSideEnum.LONG
-              ? "text-[#87DAA4] border border-[#87DAA4]"
-              : "text-tetriary border border-[#23252E]"
+              ? 'text-[#87DAA4] border border-[#87DAA4]'
+              : 'text-tetriary border border-[#23252E]'
           } flex-1   bg-[#23252E] py-2 flex flex-col items-center rounded-lg cursor-pointer `}
           onClick={() => setSelectedSideOrder(OrderSideEnum.LONG)}
         >
@@ -167,8 +173,8 @@ export const OrderManager = ({
         <div
           className={`${
             selectedSideOrder === OrderSideEnum.SHORT
-              ? "text-[#E4ADAC] border border-[#E4ADAC]"
-              : "text-tetriary border border-[#23252E]"
+              ? 'text-[#E4ADAC] border border-[#E4ADAC]'
+              : 'text-tetriary border border-[#23252E]'
           } flex-1   bg-[#23252E] py-2 flex flex-col items-center rounded-lg cursor-pointer `}
           onClick={() => setSelectedSideOrder(OrderSideEnum.SHORT)}
         >
@@ -197,14 +203,14 @@ export const OrderManager = ({
           className={`disabled:bg-gray-400 w-full rounded-lg ${
             address && isBsbNetwork
               ? selectedSideOrder === OrderSideEnum.LONG
-                ? "bg-[#87DAA4]"
-                : "bg-[#D26D6C]"
-              : "bg-[#9BA6F8]"
+                ? 'bg-[#87DAA4]'
+                : 'bg-[#D26D6C]'
+              : 'bg-[#9BA6F8]'
           } text-[#01083A] text-[13px] font-semibold py-3`}
         >
-          {!address && "Connect wallet"}
-          {address && isBsbNetwork && "Place order"}
-          {address && !isBsbNetwork && "Change network"}
+          {!address && 'Connect wallet'}
+          {address && isBsbNetwork && 'Place order'}
+          {address && !isBsbNetwork && 'Change network'}
         </button>
       </div>
       {!address && (

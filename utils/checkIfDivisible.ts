@@ -1,7 +1,7 @@
 export const checkIfDivisible = (number: number, divisor: number): boolean => {
   function getMultiplier(num: number): number {
     const numStr = num.toString();
-    const decimalPart = numStr.includes(".") ? numStr.split(".")[1] : "";
+    const decimalPart = numStr.includes('.') ? numStr.split('.')[1] : '';
     return Math.pow(10, decimalPart.length);
   }
 
@@ -9,8 +9,8 @@ export const checkIfDivisible = (number: number, divisor: number): boolean => {
   const divisorMultiplier = getMultiplier(divisor);
   const commonMultiplier = Math.max(numberMultiplier, divisorMultiplier);
 
-  const adjustedNumber = number * commonMultiplier;
-  const adjustedDivisor = divisor * commonMultiplier;
+  const adjustedNumber = Math.round(number * commonMultiplier);
+  const adjustedDivisor = Math.round(divisor * commonMultiplier);
 
   return adjustedNumber % adjustedDivisor === 0;
 };
