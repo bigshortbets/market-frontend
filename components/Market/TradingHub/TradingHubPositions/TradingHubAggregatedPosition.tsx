@@ -11,7 +11,7 @@ import { scaleNumber } from '@/utils/scaleNumber';
 import { FaChartBar } from 'react-icons/fa';
 import { useAtom } from 'jotai';
 import { selectedMarketIdAtom } from '../../Market';
-import { MiniChart } from './MiniChart';
+import MiniChartWidget from '../Widget/MiniChartWidget';
 
 interface TradingHubAggregatedPositionProps {
   positions: PositionType[];
@@ -68,7 +68,7 @@ export const TradingHubAggregatedPosition = ({
         onClick={handleClick}
       >
         <div className="flex justify-between items-center h-full">
-          <div className="flex gap-4 h-full">
+          <div className="flex gap-4 h-full items-center">
             {/*  <div
               className={`w-[12px] h-[12px]  rounded-full mt-[3px]  ${
                 selectedMarketId === marketId
@@ -115,7 +115,8 @@ export const TradingHubAggregatedPosition = ({
                 <p className="text-xs">{marketDetails?.name}</p>
               </div>
             </div> */}
-            {/*  <MiniChart width={90} height={32} symbol={ticker} dateRange="1M" /> */}
+
+            <MiniChartWidget symbol={ticker} />
           </div>
           {/* <div className="  h-[36px] w-[30%] flex relative ">
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-tertiary  text-xs opacity-40">
