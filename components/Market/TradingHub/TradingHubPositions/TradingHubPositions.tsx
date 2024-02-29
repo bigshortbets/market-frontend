@@ -1,6 +1,6 @@
-import { PositionType } from "@/types/positionTypes";
-import React from "react";
-import { TradingHubAggregatedPosition } from "./TradingHubAggregatedPosition";
+import { PositionType } from '@/types/positionTypes';
+import React from 'react';
+import { TradingHubAggregatedPosition } from './TradingHubAggregatedPosition';
 
 interface TradingHubPositionsProps {
   positions: PositionType[];
@@ -24,9 +24,39 @@ export const TradingHubPositions = ({
   const positionsByMarketTicker = aggregatePositionsByMarketTicker();
 
   return (
-    <div className="w-full h-full p-2.5">
+    <div
+      className="w-full h-full  px-2.5  overflow-y-auto no-scrollbar"
+      style={{ maxHeight: 'calc(100vh - 230px)' }}
+    >
       {positions.length > 0 ? (
         <div className="flex flex-col gap-4">
+          {Object.entries(positionsByMarketTicker).map(
+            ([ticker, positions]) => (
+              <TradingHubAggregatedPosition
+                key={ticker}
+                ticker={ticker}
+                positions={positions}
+              />
+            )
+          )}
+          {Object.entries(positionsByMarketTicker).map(
+            ([ticker, positions]) => (
+              <TradingHubAggregatedPosition
+                key={ticker}
+                ticker={ticker}
+                positions={positions}
+              />
+            )
+          )}
+          {Object.entries(positionsByMarketTicker).map(
+            ([ticker, positions]) => (
+              <TradingHubAggregatedPosition
+                key={ticker}
+                ticker={ticker}
+                positions={positions}
+              />
+            )
+          )}
           {Object.entries(positionsByMarketTicker).map(
             ([ticker, positions]) => (
               <TradingHubAggregatedPosition

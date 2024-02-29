@@ -1,5 +1,4 @@
-import { HistoryResponse, HistoryOrderType } from '@/types/historyTypes';
-import React from 'react';
+import { HistoryOrderType } from '@/types/historyTypes';
 import { TradingHubHistoryItem } from './TradingHubHistoryItem';
 
 interface TradingHubHistoryProps {
@@ -8,9 +7,12 @@ interface TradingHubHistoryProps {
 
 export const TradingHubHistory = ({ history }: TradingHubHistoryProps) => {
   return (
-    <div className="w-full h-full">
+    <div
+      className="w-full h-full overflow-y-auto no-scrollbar"
+      style={{ maxHeight: 'calc(100vh - 230px)' }}
+    >
       {history.length > 0 ? (
-        <table className="table-auto w-full">
+        <table className="table-auto w-full ">
           <thead className="bg-secondary-bg text-sm text-left text-[#ABACBA]">
             <tr>
               <th className="font-normal py-3 pl-3">Side</th>
@@ -21,7 +23,7 @@ export const TradingHubHistory = ({ history }: TradingHubHistoryProps) => {
               <th className="font-normal">Status</th>
             </tr>
           </thead>
-          <tbody /* ref={animationParent} */>
+          <tbody>
             {history.map((order: HistoryOrderType, key: number) => (
               <TradingHubHistoryItem order={order} key={key} />
             ))}

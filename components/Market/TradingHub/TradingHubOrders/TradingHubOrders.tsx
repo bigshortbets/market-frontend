@@ -10,7 +10,10 @@ interface TradingHubOrdersProps {
 export const TradingHubOrders = ({ orders }: TradingHubOrdersProps) => {
   /* const [animationParent] = useAutoAnimate(); - Not working properly*/
   return (
-    <div className="w-full h-full">
+    <div
+      className="w-full h-full overflow-y-auto no-scrollbar"
+      style={{ maxHeight: 'calc(100vh - 230px)' }}
+    >
       {orders.length > 0 ? (
         <table className="table-auto w-full">
           <thead className="bg-secondary-bg text-sm text-left text-[#ABACBA]">
