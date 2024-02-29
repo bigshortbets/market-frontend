@@ -39,33 +39,6 @@ export const TradingHubPositions = ({
               />
             )
           )}
-          {Object.entries(positionsByMarketTicker).map(
-            ([ticker, positions]) => (
-              <TradingHubAggregatedPosition
-                key={ticker}
-                ticker={ticker}
-                positions={positions}
-              />
-            )
-          )}
-          {Object.entries(positionsByMarketTicker).map(
-            ([ticker, positions]) => (
-              <TradingHubAggregatedPosition
-                key={ticker}
-                ticker={ticker}
-                positions={positions}
-              />
-            )
-          )}
-          {Object.entries(positionsByMarketTicker).map(
-            ([ticker, positions]) => (
-              <TradingHubAggregatedPosition
-                key={ticker}
-                ticker={ticker}
-                positions={positions}
-              />
-            )
-          )}
         </div>
       ) : (
         <div className="flex items-center justify-center h-full">
