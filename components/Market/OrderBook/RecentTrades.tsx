@@ -1,16 +1,13 @@
-import { useAtom } from "jotai";
-import React from "react";
-import { selectedMarketIdAtom } from "../Market";
-import { useSubscription } from "@apollo/client";
-import { RECENT_MARKET_POSITIONS_SUBSCRIPTION } from "@/api/queries";
-import { RecentPositionTypeResponse } from "@/types/positionTypes";
-import { RecentTradesItem } from "./RecentTradesItem";
+import { useAtom } from 'jotai';
+import React from 'react';
+import { recentTradesAtom, selectedMarketIdAtom } from '../Market';
+import { useSubscription } from '@apollo/client';
+import { RECENT_MARKET_POSITIONS_SUBSCRIPTION } from '@/api/queries';
+import { RecentPositionTypeResponse } from '@/types/positionTypes';
+import { RecentTradesItem } from './RecentTradesItem';
 
-interface RecentTradesProps {
-  positionsRes: RecentPositionTypeResponse | undefined;
-}
-
-export const RecentTrades = ({ positionsRes }: RecentTradesProps) => {
+export const RecentTrades = () => {
+  const [recentTrades] = useAtom(recentTradesAtom);
   return (
     <div className="flex flex-col pt-[14px] px-4 text-xs">
       <div className="flex justify-between items-center">
@@ -28,8 +25,8 @@ export const RecentTrades = ({ positionsRes }: RecentTradesProps) => {
         </div>
       </div>
       <div className="py-2.5">
-        {positionsRes?.positions &&
-          positionsRes.positions.map((position, key) => (
+        {recentTrades &&
+          recentTrades.map((position, key) => (
             <RecentTradesItem position={position} key={key} />
           ))}
       </div>

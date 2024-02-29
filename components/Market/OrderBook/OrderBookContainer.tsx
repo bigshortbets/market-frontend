@@ -1,37 +1,30 @@
-import { atom, useAtom } from "jotai";
-import React from "react";
-import { OrderBookStateTab } from "./OrderBookStateTab";
-import { OrderBook, OrderSide } from "./OrderBook";
-import { RecentTrades } from "./RecentTrades";
-import { useAccount } from "wagmi";
-import { useSubscription } from "@apollo/client";
-import { RecentPositionTypeResponse } from "@/types/positionTypes";
+import { atom, useAtom } from 'jotai';
+import React from 'react';
+import { OrderBookStateTab } from './OrderBookStateTab';
+import { OrderBook, OrderSide } from './OrderBook';
+import { RecentTrades } from './RecentTrades';
+import { useAccount } from 'wagmi';
+import { useSubscription } from '@apollo/client';
+import { RecentPositionTypeResponse } from '@/types/positionTypes';
 import {
   ORDER_BOOK_LONGS_SUBSCRIPTION,
   ORDER_BOOK_SHORTS_SUBSCRIPTION,
   RECENT_MARKET_POSITIONS_SUBSCRIPTION,
-} from "@/api/queries";
-import { selectedMarketIdAtom } from "../Market";
-import { OrderBookResponse } from "@/types/orderTypes";
+} from '@/api/queries';
+import { selectedMarketIdAtom } from '../Market';
+import { OrderBookResponse } from '@/types/orderTypes';
 
-const tabs = ["orderbook", "trades"];
+const tabs = ['orderbook', 'trades'];
 
 export type OrderBookStateTabsType = (typeof tabs)[number];
 
-export const orderBookStateAtom = atom<OrderBookStateTabsType>("orderbook");
+export const orderBookStateAtom = atom<OrderBookStateTabsType>('orderbook');
 
 export const OrderBookContainer = () => {
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
 
   const { address } = useAccount();
   const [orderBookState] = useAtom(orderBookStateAtom);
-  const { data: recentPositionsRes } =
-    useSubscription<RecentPositionTypeResponse>(
-      RECENT_MARKET_POSITIONS_SUBSCRIPTION,
-      {
-        variables: { marketId: selectedMarketId },
-      }
-    );
 
   const { data: longsRes } = useSubscription<OrderBookResponse>(
     ORDER_BOOK_LONGS_SUBSCRIPTION,
@@ -57,12 +50,10 @@ export const OrderBookContainer = () => {
           <OrderBookStateTab key={key} value={tab} />
         ))}
       </div>
-      {orderBookState === "orderbook" && (
+      {orderBookState === 'orderbook' && (
         <OrderBook shortsRes={shortsRes} longsRes={longsRes} />
       )}
-      {orderBookState === "trades" && (
-        <RecentTrades positionsRes={recentPositionsRes} />
-      )}
+      {orderBookState === 'trades' && <RecentTrades />}
     </div>
 
     /* <div

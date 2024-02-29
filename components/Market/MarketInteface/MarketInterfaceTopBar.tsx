@@ -1,14 +1,16 @@
-import { MarketType } from "@/types/marketTypes";
-import { findMarketById } from "@/utils/findMarketById";
-import { scaleNumber } from "@/utils/scaleNumber";
-import React, { useEffect, useRef, useState } from "react";
+import { MarketType } from '@/types/marketTypes';
+import { findMarketById } from '@/utils/findMarketById';
+import { scaleNumber } from '@/utils/scaleNumber';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,
-} from "react-icons/md";
-import { MarketSelectItem } from "./MarketSelectItem";
-import { getMarkeDetails } from "@/utils/getMarketDetails";
-import Image from "next/image";
+} from 'react-icons/md';
+import { MarketSelectItem } from './MarketSelectItem';
+import { getMarkeDetails } from '@/utils/getMarketDetails';
+import Image from 'next/image';
+import { useAtom } from 'jotai';
+import { recentTradesAtom } from '../Market';
 
 interface MarketInterfaceTopBarProps {
   markets: MarketType[];
@@ -22,8 +24,8 @@ export const MarketInterfaceTopBar = ({
   const market = findMarketById(markets, selectedMarketId);
   const marketDetails = market && getMarkeDetails(market.ticker);
   const selectRef = useRef<HTMLDivElement>(null);
-
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
+  const [recentTrades] = useAtom(recentTradesAtom);
 
   const handleToggleSelectOpen = () => {
     if (isSelectOpen) {
@@ -46,9 +48,9 @@ export const MarketInterfaceTopBar = ({
         setIsSelectOpen(false);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [selectRef]);
 
@@ -116,7 +118,11 @@ export const MarketInterfaceTopBar = ({
 
           <div className="border-l border-[#444650] text-xs pl-2">
             <p className="text-tetriary font-semibold">Market Price</p>
-            <p>-</p>
+            <p>
+              {recentTrades.length > 0
+                ? scaleNumber(Number(recentTrades[0].price))
+                : '-'}
+            </p>
           </div>
         </div>
       </div>
