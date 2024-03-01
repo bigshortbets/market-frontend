@@ -63,39 +63,39 @@ export const MarketInterfaceTopBar = ({
 
   return (
     <div
-      className='flex border-b border-[#444650]'
+      className="flex border-b border-[#444650]"
       onClick={() => console.log(activeMarkets, closedMarkets)}
     >
       {/* SELECT */}{' '}
       <div
-        className='w-[360px] bg-[#23252E] rounded-tl-[10px] relative border-r border-[#444650]'
+        className="w-[360px] bg-[#23252E] rounded-tl-[10px] relative border-r border-[#444650]"
         ref={selectRef}
       >
         <div
-          className='pr-6 pl-4 py-2 flex w-full justify-between items-center h-full cursor-pointer'
+          className="pr-6 pl-4 py-2 flex w-full justify-between items-center h-full cursor-pointer"
           onClick={handleToggleSelectOpen}
         >
-          <div className='flex items-center gap-4'>
+          <div className="flex items-center gap-4">
             {marketDetails && (
               <Image
                 src={marketDetails.path}
                 width={18}
                 height={18}
-                alt='Market logo'
-                className='rounded-full'
+                alt="Market logo"
+                className="rounded-full"
               />
             )}
             <div>
-              <p className='text-[13px] font-semibold'>
+              <p className="text-[13px] font-semibold">
                 {marketDetails ? marketDetails.name : market?.ticker}
               </p>
 
               {marketDetails && (
-                <p className='text-[10px] font-normal'>{market?.ticker}</p>
+                <p className="text-[10px] font-normal">{market?.ticker}</p>
               )}
             </div>
           </div>
-          <div className='text-[24px]'>
+          <div className="text-[24px]">
             {isSelectOpen ? (
               <MdOutlineKeyboardArrowUp />
             ) : (
@@ -104,7 +104,7 @@ export const MarketInterfaceTopBar = ({
           </div>
         </div>
         {isSelectOpen && (
-          <div className='absolute w-full bg-[#23252E] z-40'>
+          <div className="absolute w-full bg-[#23252E] z-40">
             <div>
               {activeMarkets.map((market, key) => (
                 <MarketSelectItem
@@ -114,7 +114,7 @@ export const MarketInterfaceTopBar = ({
                 />
               ))}
             </div>
-            <div className='h-2 w-full bg-[#191B24]'></div>
+            <div className="h-1 w-full bg-[#444650]"></div>
             <div>
               {closedMarkets.map((market, key) => (
                 <MarketSelectItem
@@ -128,18 +128,18 @@ export const MarketInterfaceTopBar = ({
         )}
       </div>
       {/*  */}
-      <div className='flex-1 h-[55px] '>
-        <div className='pr-6 pl-12 py-2 h-full flex items-center gap-6'>
+      <div className="flex-1 h-[55px] ">
+        <div className="pr-6 pl-12 py-2 h-full flex items-center gap-6">
           <div>
-            <p className='text-xs text-tetriary font-semibold'>Oracle Price</p>
-            <p className='text-xs font-normal'>
+            <p className="text-xs text-tetriary font-semibold">Oracle Price</p>
+            <p className="text-xs font-normal">
               {market?.oraclePrice &&
                 scaleNumber(market?.oraclePrice.toString())}
             </p>
           </div>
 
-          <div className='border-l border-[#444650] text-xs pl-2'>
-            <p className='text-tetriary font-semibold'>Market Price</p>
+          <div className="border-l border-[#444650] text-xs pl-2">
+            <p className="text-tetriary font-semibold">Market Price</p>
             <p>
               {recentTrades.length > 0
                 ? scaleNumber(Number(recentTrades[0].price))

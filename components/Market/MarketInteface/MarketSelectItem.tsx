@@ -32,7 +32,7 @@ export const MarketSelectItem = ({
   };
   return (
     <div
-      className={`w-full h-[55px] px-4 border-b border-[#191B24] flex justify-between items-center cursor-pointer ${
+      className={`w-full h-[55px] px-4 border-b border-[#444650] flex justify-between items-center cursor-pointer ${
         isClosed && 'bg-[#23252E]'
       }`}
       onClick={handleAction}
@@ -43,34 +43,34 @@ export const MarketSelectItem = ({
             src={details.path}
             width={18}
             height={18}
-            alt='Market logo'
-            className='rounded-full'
+            alt="Market logo"
+            className="rounded-full"
           />
         )}
         <div>
-          <div className='flex items-center gap-1.5'>
-            <p className='text-[13px] font-bold'>
+          <div className="flex items-center gap-1.5">
+            <p className="text-[13px] font-bold">
               {details ? details.name : market.ticker}
             </p>
           </div>
           {details && (
-            <p className='text-[10px] font-normal'>({market?.ticker})</p>
+            <p className="text-[10px] font-normal">({market?.ticker})</p>
           )}
         </div>
       </div>
       {!isClosed ? (
-        <div className='flex items-center gap-1'>
-          <p className='text-[10px] text-tetriary font-normal'>
+        <div className="flex items-center gap-1">
+          <p className="text-[10px] text-tetriary font-normal">
             {daysLeft} days left
           </p>
-          <div className='text-[12px] text-tetriary'>
+          <div className="text-[12px] text-tetriary">
             <CiCalendar />
           </div>
         </div>
       ) : (
-        <div className='flex items-center gap-1'>
-          <p className='text-[10px] text-tetriary font-normal'>Market closed</p>
-          <div className='text-[12px] text-tetriary'>
+        <div className="flex items-center gap-1">
+          <p className="text-[10px] text-tetriary font-normal">Market closed</p>
+          <div className="text-[12px] text-tetriary">
             <IoMdLock />
           </div>
         </div>
