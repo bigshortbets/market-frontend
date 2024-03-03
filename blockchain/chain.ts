@@ -30,3 +30,15 @@ export const bigshortbetsChain = {
     },
   },
 } as const satisfies Chain;
+
+export const bigshortbetsChainNative = {
+  chainId: `0x${(2137).toString(16)}`, // Convert the chain ID to hexadecimal
+  chainName: 'BigShortBets',
+  nativeCurrency: {
+    name: 'USD Coin',
+    symbol: 'USDC',
+    decimals: 18,
+  },
+  rpcUrls: ['https://test-market.bigsb.network'], // MetaMask expects an array of strings, not an object
+  // Uncomment and adjust according to actual available block explorer
+};

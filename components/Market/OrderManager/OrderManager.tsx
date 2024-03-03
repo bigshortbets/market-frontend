@@ -12,6 +12,7 @@ import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
 import { checkIfDivisible } from '@/utils/checkIfDivisible';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { bigshortbetsChain } from '@/blockchain/chain';
+import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
 
 export enum OrderSideEnum {
   LONG,
@@ -52,7 +53,6 @@ export const OrderManager = ({
   const { write: writeLongOrder, isLoading: isLongLoading } =
     useCreateOrderWrite(price, quantity, OrderSideEnum.LONG);
   const { chain } = useNetwork();
-  const { switchNetwork } = useSwitchNetwork();
 
   const orderCost =
     (Number(selectedMarket?.initialMargin) / 100) *
@@ -95,7 +95,7 @@ export const OrderManager = ({
     }
 
     if (address && !isBsbNetwork) {
-      switchNetwork?.(bigshortbetsChain.id);
+      switchToBigShortBetsChain();
       return;
     }
     if (selectedSideOrder === OrderSideEnum.LONG) {
@@ -112,53 +112,53 @@ export const OrderManager = ({
     !isDivisibleByTickSize;
 
   return (
-    <div className="p-2.5 pb-4 flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <p className="text-sm font-semibold text-secondary leading-[24px]">
+    <div className='p-2.5 pb-4 flex flex-col gap-4'>
+      <div className='flex flex-col gap-2'>
+        <p className='text-sm font-semibold text-secondary leading-[24px]'>
           Order
         </p>
-        <div className="flex flex-col">
+        <div className='flex flex-col'>
           <label
-            htmlFor="orderPriceInput"
-            className="ml-1 mb-1 text-xs text-secondary font-semibold"
+            htmlFor='orderPriceInput'
+            className='ml-1 mb-1 text-xs text-secondary font-semibold'
           >
             Price
           </label>
-          <div className="relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-2">
+          <div className='relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-2'>
             <NumericFormat
               allowNegative={false}
               id={'orderPriceInput'}
-              className="text-right outline-none  w-[85%] bg-[#23252E] "
+              className='text-right outline-none  w-[85%] bg-[#23252E] '
               onChange={(e) => setPrice(Number(e.target.value))}
               value={price}
             />
-            <span className="absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs">
+            <span className='absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs'>
               USDC
             </span>
           </div>
         </div>
-        <div className="flex flex-col">
+        <div className='flex flex-col'>
           <label
-            htmlFor="quantityInput"
-            className="ml-1 mb-1 text-xs text-secondary font-semibold"
+            htmlFor='quantityInput'
+            className='ml-1 mb-1 text-xs text-secondary font-semibold'
           >
             Quantity
           </label>
-          <div className="relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-2">
+          <div className='relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-2'>
             <NumericFormat
               allowNegative={false}
               id={'quantityInput'}
-              className="text-right outline-none  w-[85%] bg-[#23252E]"
+              className='text-right outline-none  w-[85%] bg-[#23252E]'
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
             />
-            <span className="absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs">
+            <span className='absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs'>
               UNIT
             </span>
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-2 ">
+      <div className='flex items-center gap-2 '>
         <div
           className={`${
             selectedSideOrder === OrderSideEnum.LONG
@@ -167,8 +167,8 @@ export const OrderManager = ({
           } flex-1   bg-[#23252E] py-2 flex flex-col items-center rounded-lg cursor-pointer `}
           onClick={() => setSelectedSideOrder(OrderSideEnum.LONG)}
         >
-          <p className=" text-[13px] font-semibold">Buy</p>
-          <p className=" text-[10px]">Long</p>
+          <p className=' text-[13px] font-semibold'>Buy</p>
+          <p className=' text-[10px]'>Long</p>
         </div>
         <div
           className={`${
@@ -178,20 +178,20 @@ export const OrderManager = ({
           } flex-1   bg-[#23252E] py-2 flex flex-col items-center rounded-lg cursor-pointer `}
           onClick={() => setSelectedSideOrder(OrderSideEnum.SHORT)}
         >
-          <p className=" text-[13px] font-semibold">Sell</p>
-          <p className="text-[10px]">Short</p>
+          <p className=' text-[13px] font-semibold'>Sell</p>
+          <p className='text-[10px]'>Short</p>
         </div>
       </div>
-      <div className="p-2 rounded-lg bg-[#000211] flex flex-col gap-4">
-        <p className="text-sm font-semibold text-secondary leading-[24px]">
+      <div className='p-2 rounded-lg bg-[#000211] flex flex-col gap-4'>
+        <p className='text-sm font-semibold text-secondary leading-[24px]'>
           Summary
         </p>
-        <div className="flex flex-col gap-2 ">
-          <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
+        <div className='flex flex-col gap-2 '>
+          <div className='flex justify-between items-center font-semibold text-[13px] text-secondary '>
             <p>Cost of the order</p>
             <p>{orderCost.toFixed(2)} USDC</p>
           </div>
-          <div className="flex justify-between items-center font-semibold text-xs text-tetriary ">
+          <div className='flex justify-between items-center font-semibold text-xs text-tetriary '>
             <p>Order value</p>
             <p>{orderValue.toFixed(2)} USDC</p>
           </div>
@@ -214,7 +214,7 @@ export const OrderManager = ({
         </button>
       </div>
       {!address && (
-        <FinanceManagerWarning error="Connect your wallet do interact with the market. " />
+        <FinanceManagerWarning error='Connect your wallet do interact with the market. ' />
       )}
       {!isDivisibleByTickSize && (
         <FinanceManagerWarning
