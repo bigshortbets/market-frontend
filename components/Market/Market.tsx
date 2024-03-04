@@ -16,6 +16,7 @@ import { RecentPositionType } from '@/types/positionTypes';
 import { useRecentTrades } from '@/api/useRecentTrades';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
+import { MarketSelect } from './FinanceManager/MarketSelect';
 
 interface MarketProps {
   markets: MarketType[];
@@ -63,13 +64,14 @@ export const Market = ({ markets }: MarketProps) => {
         <TradingHub />
       </div>
       <div>
-        <div className="p-6 flex-col flex-grow lg:hidden">
+        {/* Tablet view */}
+        <div className="p-6 flex-col hidden sm:flex flex-grow lg:hidden">
           {tabletView === 'market' && <MarketInterface markets={markets} />}
           {tabletView === 'positions' && <TradingHub />}
         </div>
       </div>
-      {/* Tablet tab */}
-      <div className="w-full h-[54px] bg-[#23252E] justify-center gap-2 items-center hidden md:flex lg:hidden">
+
+      <div className="w-full h-[54px] bg-[#23252E] justify-center gap-2 items-center hidden sm:flex lg:hidden">
         {tabletViewArr.map((view, key) => (
           <button
             className={`h-8 w-[120px] rounded-lg  flex items-center capitalize justify-center font-semibold text-[13px] ${
@@ -81,8 +83,20 @@ export const Market = ({ markets }: MarketProps) => {
           </button>
         ))}
       </div>
-      {/* Mobile tab */}
-      <div className="w-full h-[54px] bg-[#23252E] flex justify-center gap-2 items-center md:hidden">
+      {/* Mobile view */}
+      <div className="p-6 flex-col flex flex-grow sm:hidden">
+        {mobileView === 'manager' && (
+          <div className="border border-[#444650] rounded-lg bg-[#191B24] h-[calc(100vh-166px)]">
+            <MarketSelect
+              markets={markets}
+              selectedMarketId={selectedMarketId}
+            />
+            <FinanceManager markets={markets} />
+          </div>
+        )}
+        {tabletView === 'positions' && <TradingHub />}
+      </div>
+      <div className="w-full h-[54px] bg-[#23252E] flex justify-center gap-2 items-center sm:hidden">
         {mobileViewArr.map((view, key) => (
           <button
             className={`h-8 w-[120px] rounded-lg  flex items-center capitalize justify-center font-semibold text-[13px] ${

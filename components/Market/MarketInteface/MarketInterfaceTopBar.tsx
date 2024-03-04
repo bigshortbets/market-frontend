@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { useAtom } from 'jotai';
 import { currentBlockAtom, recentTradesAtom } from '../Market';
 import { categorizeMarkets } from '@/utils/categorizeMarkets';
+import { MarketSelect } from '../FinanceManager/MarketSelect';
 
 interface MarketInterfaceTopBarProps {
   markets: MarketType[];
@@ -66,68 +67,8 @@ export const MarketInterfaceTopBar = ({
       className="flex border-b border-[#444650]"
       onClick={() => console.log(activeMarkets, closedMarkets)}
     >
-      {/* SELECT */}{' '}
-      <div
-        className="w-[360px] bg-[#23252E] rounded-tl-[10px] relative border-r border-[#444650]"
-        ref={selectRef}
-      >
-        <div
-          className="pr-6 pl-4 py-2 flex w-full justify-between items-center h-full cursor-pointer"
-          onClick={handleToggleSelectOpen}
-        >
-          <div className="flex items-center gap-4">
-            {marketDetails && (
-              <Image
-                src={marketDetails.path}
-                width={18}
-                height={18}
-                alt="Market logo"
-                className="rounded-full"
-              />
-            )}
-            <div>
-              <p className="text-[13px] font-semibold">
-                {marketDetails ? marketDetails.name : market?.ticker}
-              </p>
+      <MarketSelect markets={markets} selectedMarketId={selectedMarketId} />
 
-              {marketDetails && (
-                <p className="text-[10px] font-normal">{market?.ticker}</p>
-              )}
-            </div>
-          </div>
-          <div className="text-[24px]">
-            {isSelectOpen ? (
-              <MdOutlineKeyboardArrowUp />
-            ) : (
-              <MdOutlineKeyboardArrowDown />
-            )}
-          </div>
-        </div>
-        {isSelectOpen && (
-          <div className="absolute w-full bg-[#23252E] z-40">
-            <div>
-              {activeMarkets.map((market, key) => (
-                <MarketSelectItem
-                  key={key}
-                  market={market}
-                  handleCloseSelect={handleCloseSelect}
-                />
-              ))}
-            </div>
-            <div className="h-1 w-full bg-[#444650]"></div>
-            <div>
-              {closedMarkets.map((market, key) => (
-                <MarketSelectItem
-                  key={key}
-                  market={market}
-                  handleCloseSelect={handleCloseSelect}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-      {/*  */}
       <div className="lg:w-[320px]  h-[55px] ">
         <div className="pr-6 pl-12 py-2 h-full flex items-center gap-6">
           <div>

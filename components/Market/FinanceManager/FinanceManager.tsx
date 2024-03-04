@@ -1,28 +1,29 @@
-import { atom, useAtom } from "jotai";
-import React, { useState } from "react";
-import { useAccount } from "wagmi";
-import { OrderBookStateTab } from "../OrderBook/OrderBookStateTab";
-import { FinanceManagerTab } from "./FinanceManagerTab";
-import { OrderManager } from "../OrderManager/OrderManager";
-import { MarketType } from "@/types/marketTypes";
-import { Deposit } from "../Deposit/Deposit";
-import useGetDeposit from "@/blockchain/hooks/useGetDeposit";
-import { selectedMarketIdAtom } from "../Market";
-import { findMarketById } from "@/utils/findMarketById";
-import ReactLoading from "react-loading";
-import { IoMdInformationCircle } from "react-icons/io";
-import { Withdraw } from "../Withdraw/Withdraw";
+import { atom, useAtom } from 'jotai';
+import React, { useState } from 'react';
+import { useAccount } from 'wagmi';
+import { OrderBookStateTab } from '../OrderBook/OrderBookStateTab';
+import { FinanceManagerTab } from './FinanceManagerTab';
+import { OrderManager } from '../OrderManager/OrderManager';
+import { MarketType } from '@/types/marketTypes';
+import { Deposit } from '../Deposit/Deposit';
+import useGetDeposit from '@/blockchain/hooks/useGetDeposit';
+import { selectedMarketIdAtom } from '../Market';
+import { findMarketById } from '@/utils/findMarketById';
+import ReactLoading from 'react-loading';
+import { IoMdInformationCircle } from 'react-icons/io';
+import { Withdraw } from '../Withdraw/Withdraw';
+import { ContractDetails } from '../ContractDetails/ContractDetails';
 
 interface FinanceManagerProps {
   markets: MarketType[];
 }
 
-const tabs = ["order", "deposit", "withdraw"];
+const tabs = ['order', 'deposit', 'withdraw'];
 
 export type FinanceManagerTabsType = (typeof tabs)[number];
-export const financeManagerAtom = atom<FinanceManagerTabsType>("order");
+export const financeManagerAtom = atom<FinanceManagerTabsType>('order');
 
-const loadingState = "opacity-50 pointer-events-none";
+const loadingState = 'opacity-50 pointer-events-none';
 
 export const FinanceManager = ({ markets }: FinanceManagerProps) => {
   const [getDepositRefetchTrigger, setGetDepositRefetchTrigger] =
@@ -49,17 +50,25 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
     setLoading(val);
   };
   return (
-    <div className="flex flex-col ">
-      <div className="py-3 px-4 border-b border-[#444650] flex items-center gap-2">
-        {tabs.map((tab, key) => (
-          <FinanceManagerTab value={tab} key={key} />
-        ))}
+    <div
+      className="h-full w-full sm:w-[360px] sm:border-r border-[#444650] overflow-auto no-scrollbar"
+      style={{ maxHeight: 'calc(100vh - 228px)' }}
+    >
+      <div className="flex flex-col ">
+        <div className="py-3 px-4 border-b border-[#444650] flex items-center gap-2">
+          {tabs.map((tab, key) => (
+            <FinanceManagerTab value={tab} key={key} />
+          ))}
+        </div>
+        {financeManagerState === 'order' && (
+          <OrderManager markets={markets} handleSetLoading={handleSetLoading} />
+        )}
+        {financeManagerState === 'deposit' && <Deposit />}
+        {financeManagerState === 'withdraw' && <Withdraw />}
       </div>
-      {financeManagerState === "order" && (
-        <OrderManager markets={markets} handleSetLoading={handleSetLoading} />
-      )}
-      {financeManagerState === "deposit" && <Deposit />}
-      {financeManagerState === "withdraw" && <Withdraw />}
+      <div className="px-[10px] pb-2">
+        <ContractDetails markets={markets} />
+      </div>
     </div>
     /* <div
       className={`w-[300px] h-[440px] rounded p-1 bg-secondary-bg relative flex flex-col ${
