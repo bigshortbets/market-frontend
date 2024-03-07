@@ -17,6 +17,8 @@ import { useRecentTrades } from '@/api/useRecentTrades';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
 import { MarketSelect } from './FinanceManager/MarketSelect';
+import { OrderBookTop } from './OrderBook/OrderBookTop';
+import { findMarketById } from '@/utils/findMarketById';
 
 interface MarketProps {
   markets: MarketType[];
@@ -46,6 +48,8 @@ export const Market = ({ markets }: MarketProps) => {
   const { loading, error } = useCurrentBlock();
   const { loading: recentTradesLoading, error: recentTradesError } =
     useRecentTrades(selectedMarketId);
+  const market = findMarketById(markets, selectedMarketId);
+  const [recentTrades] = useAtom(recentTradesAtom);
 
   useEffect(() => {
     setSelectedMarketId(markets[0].id);
@@ -94,6 +98,12 @@ export const Market = ({ markets }: MarketProps) => {
             <FinanceManager markets={markets} />
           </div>
         )}
+        {mobileView === 'orderbook' && (
+          <div className="border border-[#444650] rounded-lg bg-[#191B24] h-[calc(100vh-166px)]">
+            <OrderBookTop market={market!} recentTrades={recentTrades} />
+            <OrderBookContainer />
+          </div>
+        )}
         {tabletView === 'positions' && <TradingHub />}
       </div>
       <div className="w-full h-[54px] bg-[#23252E] flex justify-center gap-2 items-center sm:hidden">
@@ -102,7 +112,7 @@ export const Market = ({ markets }: MarketProps) => {
             className={`h-8 w-[120px] rounded-lg  flex items-center capitalize justify-center font-semibold text-[13px] ${
               mobileView === view && 'bg-[#444650]'
             }`}
-            onClick={() => setTabletView(view)}
+            onClick={() => setMobileView(view)}
           >
             {view}
           </button>

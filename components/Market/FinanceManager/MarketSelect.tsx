@@ -59,7 +59,7 @@ export const MarketSelect = ({
 
   return (
     <div
-      className="sm:w-[360px] w-full bg-[#23252E] rounded-tl-[10px] relative border-r border-[#444650]"
+      className="sm:w-[360px] w-full bg-[#23252E] rounded-tl-[10px] relative sm:border-r border-[#444650]"
       ref={selectRef}
     >
       <div
