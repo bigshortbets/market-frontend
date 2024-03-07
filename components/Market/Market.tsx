@@ -78,6 +78,7 @@ export const Market = ({ markets }: MarketProps) => {
       <div className="w-full h-[54px] bg-[#23252E] justify-center gap-2 items-center hidden sm:flex lg:hidden">
         {tabletViewArr.map((view, key) => (
           <button
+            key={key}
             className={`h-8 w-[120px] rounded-lg  flex items-center capitalize justify-center font-semibold text-[13px] ${
               tabletView === view && 'bg-[#444650]'
             }`}
@@ -104,7 +105,7 @@ export const Market = ({ markets }: MarketProps) => {
             <OrderBookContainer />
           </div>
         )}
-        {tabletView === 'positions' && <TradingHub />}
+        {mobileView === 'portfolio' && <TradingHub />}
       </div>
       <div className="w-full h-[54px] bg-[#23252E] flex justify-center gap-2 items-center sm:hidden">
         {mobileViewArr.map((view, key) => (
