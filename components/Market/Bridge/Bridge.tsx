@@ -1,45 +1,71 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { FaLongArrowAltRight } from 'react-icons/fa';
 import { NumericFormat } from 'react-number-format';
+
+const tabs = ['deposit', 'withdraw'];
+type BridgeTabsType = (typeof tabs)[number];
 
 export const Bridge = () => {
   const [amount, setAmount] = useState<number>(1);
+  const [state, setState] = useState<BridgeTabsType>('deposit');
 
   return (
     <div className="p-2.5 pb-4 flex flex-col gap-4">
-      <div className="flex flex-col gap-3.5">
+      <div className="flex flex-col gap-2">
         <p className="text-sm font-semibold text-secondary leading-[24px]">
           Bridge
         </p>
-        <div className="flex items-center gap-3 3">
-          <div className="flex flex-col ml-1 text-secondary">
-            <p className=" mb-1.5 text-xs  font-semibold">Source</p>
-            <div className="flex items-center gap-1.5">
-              <Image
-                className="rounded-full"
-                src={'/market-logos/ETH.svg'}
-                alt={'Ethereum Logo'}
-                width={18}
-                height={18}
-              />
-              <p className="text-sm font-semibold">Ethereum</p>
-            </div>
+        <div className="flex gap-1.5 mb-2">
+          {tabs.map((tab, key) => (
+            <button
+              className={`rounded-lg flex items-center justify-center text-[10px] font-semibold py-1.5 px-3 ${
+                tab === state ? 'bg-[#444650]' : 'bg-[#23252E] text-tetriary'
+              }`}
+              onClick={() => setState(tab)}
+            >
+              <p className="capitalize">{tab}</p>
+            </button>
+          ))}
+        </div>
+
+        <div
+          className={`flex  justify-start text-secondary items-center gap-3 mb-2`}
+        >
+          <div
+            className={`flex items-center gap-1 ${
+              state === 'deposit' ? 'order-1' : 'order-3'
+            }`}
+          >
+            <Image
+              className="rounded-full"
+              src={'/market-logos/ETH.svg'}
+              alt={'Ethereum Logo'}
+              width={16}
+              height={16}
+            />
+            <p className="text-sm font-semibold">Ethereum</p>
           </div>
-          <div className="flex flex-col ml-1 text-secondary">
-            <p className=" mb-1.5 text-xs  font-semibold">Asset</p>
-            <div className="flex items-center gap-1.5">
-              <Image
-                className="rounded-full"
-                src={'/market-logos/USDC.svg'}
-                alt={'USDC Logo'}
-                width={18}
-                height={18}
-              />
-              <p className="text-sm font-semibold">$USDC</p>
-            </div>
+          <div className="text-lg order-2">
+            <FaLongArrowAltRight />
+          </div>
+          <div
+            className={`flex items-center gap-1 ${
+              state === 'deposit' ? 'order-3' : 'order-1'
+            }`}
+          >
+            <Image
+              className="rounded-full"
+              src={'/market-logos/BIGSB.svg'}
+              alt={'Ethereum Logo'}
+              width={16}
+              height={16}
+            />
+            <p className="text-sm font-semibold">BigShortBets</p>
           </div>
         </div>
-        <div className="flex flex-col">
+
+        <div className="flex flex-col mb-2">
           <label
             htmlFor="orderPriceInput"
             className="ml-1 mb-1 text-xs text-secondary font-semibold"
