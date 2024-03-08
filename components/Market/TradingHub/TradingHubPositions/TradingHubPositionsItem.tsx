@@ -43,7 +43,7 @@ export const TradingHubPositionsItem = ({
       <td className="pl-3 py-3">
         <SideLabel side={position.side} />
       </td>
-      <td>{Number(position.quantity)}</td>
+      <td>{Number(position.quantityLeft)}</td>
       <td>{truncateAddress(opponent)}</td>
       <td>{scaleNumber(Number(position.price))}</td>
       <td
