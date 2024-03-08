@@ -13,12 +13,13 @@ import ReactLoading from 'react-loading';
 import { IoMdInformationCircle } from 'react-icons/io';
 import { Withdraw } from '../Withdraw/Withdraw';
 import { ContractDetails } from '../ContractDetails/ContractDetails';
+import { Bridge } from '../Bridge/Bridge';
 
 interface FinanceManagerProps {
   markets: MarketType[];
 }
 
-const tabs = ['order', 'deposit', 'withdraw'];
+const tabs = ['order', 'deposit', 'withdraw', 'bridge'];
 
 export type FinanceManagerTabsType = (typeof tabs)[number];
 export const financeManagerAtom = atom<FinanceManagerTabsType>('order');
@@ -55,7 +56,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
       style={{ maxHeight: 'calc(100vh - 228px)' }}
     >
       <div className="flex flex-col ">
-        <div className="py-3 px-4 border-b border-[#444650] flex items-center gap-2">
+        <div className="py-3 px-2.5 border-b border-[#444650] flex items-center gap-2">
           {tabs.map((tab, key) => (
             <FinanceManagerTab value={tab} key={key} />
           ))}
@@ -65,6 +66,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
         )}
         {financeManagerState === 'deposit' && <Deposit />}
         {financeManagerState === 'withdraw' && <Withdraw />}
+        {financeManagerState === 'bridge' && <Bridge />}
       </div>
       <div className="px-[10px] pb-2">
         <ContractDetails markets={markets} />
