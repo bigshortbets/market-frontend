@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+/* import { useEffect, useState } from 'react';
 import { hexToLittleEndian } from '@/utils/hexToLittleEndian';
 import { nToHex } from '@polkadot/util';
 import { convertToSS58 } from '@/utils/convertToSS58';
@@ -38,7 +38,7 @@ export const bufferToHex = (buffer: Uint8Array) => {
   return '0x' + out.toLocaleLowerCase();
 };
 
-const convertToU8a = async (value: string) => {
+export const convertToU8a = async (value: string) => {
   const api = await ApiPromise.create({ provider });
   const decodedAddress = api.createType('AccountId', value);
 
@@ -112,3 +112,4 @@ const useGetDeposit = (
 };
 
 export default useGetDeposit;
+ */
