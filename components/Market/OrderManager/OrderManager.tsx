@@ -78,11 +78,7 @@ export const OrderManager = ({
       price,
       Number(scaleNumber(selectedMarket?.tickSize.toString()!))
     );
-    console.log(
-      price,
-      Number(scaleNumber(selectedMarket?.tickSize.toString()!)),
-      res
-    );
+
     setIsDivisibleByTickSize(res);
   }, [price]);
 
