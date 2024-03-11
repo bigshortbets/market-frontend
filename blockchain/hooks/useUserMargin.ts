@@ -9,27 +9,50 @@ import { useEffect } from 'react';
 
 export interface MarginInfo {
   margin: string;
-  collateral: string;
+  requiredDeposit: string;
+  liquidationStatus: string;
+}
+
+export interface UserMargins {
+  details: Record<string, MarginInfo>;
+  totalMarginValue: number;
 }
 
 export function useUserMargin(
   markets: MarketType[],
-  userAddress: string,
+  userAddress: string | null,
   selectedMarketId: string
 ) {
   const [, setUserMargins] = useAtom(userMarginsAtom);
   const [, setSelectedMarketMargin] = useAtom(selectedMarketMarginAtom);
 
-  const POLLING_INTERVAL = 60000; // big due to rpc limit limitations
+  const POLLING_INTERVAL = 3000;
 
   useEffect(() => {
     const fetchAllMargins = async () => {
+      if (!userAddress) {
+        setUserMargins({ details: {}, totalMarginValue: 0 });
+        setSelectedMarketMargin({
+          margin: '',
+          requiredDeposit: '',
+          liquidationStatus: '',
+        });
+        return;
+      }
+
+      let totalMarginValue = 0;
       const allMargins: Record<string, MarginInfo> = {};
       for (const market of markets) {
         try {
           const marketId = market.id;
           const marginInfo = await fetchMarginInfo(userAddress, marketId);
           allMargins[marketId] = marginInfo;
+
+          const marginValue = parseFloat(marginInfo.margin);
+          if (!isNaN(marginValue)) {
+            totalMarginValue += marginValue;
+          }
+
           if (marketId === selectedMarketId) {
             setSelectedMarketMargin(marginInfo);
           }
@@ -40,18 +63,19 @@ export function useUserMargin(
           );
         }
       }
-      setUserMargins(allMargins);
+      setUserMargins({ details: allMargins, totalMarginValue });
     };
 
     fetchAllMargins();
-    const intervalId = setInterval(fetchAllMargins, POLLING_INTERVAL);
-
-    return () => clearInterval(intervalId);
+    if (userAddress) {
+      const intervalId = setInterval(fetchAllMargins, POLLING_INTERVAL);
+      return () => clearInterval(intervalId);
+    }
   }, [
     markets,
     userAddress,
     selectedMarketId,
     setUserMargins,
     setSelectedMarketMargin,
-  ]); // Zależności
+  ]);
 }

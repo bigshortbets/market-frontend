@@ -57,7 +57,6 @@ export const TradingHubAggregatedPosition = ({
     }, 0);
 
   const handleClick = () => {
-    setSelectedMarketId(marketId);
     toggleExtended();
   };
 

@@ -13,16 +13,39 @@ export async function fetchMarginInfo(
   try {
     const api = await getApiInstance();
     const res = await api.rpc.state.call(
-      'MarketApi_margin_with_collateral',
+      'MarketApi_margin_data',
       hexToLittleEndian(nToHex(BigInt(selectedMarketId))) +
         (await convertToU8a(convertToSS58(address))).substring(2)
     );
 
-    const result = api.createType('(Balance, Balance)', res);
-    const [margin, collateral] = [result[0].toString(), result[1].toString()];
-    const formattedMargin = scaleNumber(BigInt(margin).toString());
-    const formattedCollateral = scaleNumber(BigInt(collateral).toString());
-    return { margin: formattedMargin, collateral: formattedCollateral };
+    const result = api.createType(
+      '(Balance, Option<(Balance, LiquidationStatus)>)',
+      res
+    );
+
+    const jsonData = (result.toJSON() as [number, [number, string]?]) ?? [];
+
+    const margin = jsonData[0];
+    const requiredDepositOption = jsonData[1];
+
+    let requiredDeposit = '0';
+    let liquidationStatus = 'None';
+
+    if (requiredDepositOption) {
+      requiredDeposit = requiredDepositOption[0].toString();
+      liquidationStatus = requiredDepositOption[1];
+    }
+
+    const formattedMargin = scaleNumber(Number(margin.toString()));
+    const formattedRequiredDeposit = scaleNumber(
+      Number(requiredDeposit.toString())
+    );
+
+    return {
+      margin: formattedMargin,
+      requiredDeposit: formattedRequiredDeposit,
+      liquidationStatus: liquidationStatus,
+    };
   } catch (error) {
     console.error('Error fetching margin information:', error);
     throw error;

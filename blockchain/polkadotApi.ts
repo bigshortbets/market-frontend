@@ -5,7 +5,14 @@ let apiInstance: ApiPromise | null = null;
 export async function getApiInstance() {
   if (!apiInstance) {
     const wsProvider = new WsProvider('wss://test-market.bigsb.network');
-    apiInstance = await ApiPromise.create({ provider: wsProvider });
+    apiInstance = await ApiPromise.create({
+      provider: wsProvider,
+      types: {
+        LiquidationStatus: {
+          _enum: ['EverythingFine', 'MarginCall', 'Liquidation', 'Underwater'],
+        },
+      },
+    });
   }
   return apiInstance;
 }

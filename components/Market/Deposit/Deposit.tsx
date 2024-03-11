@@ -5,20 +5,10 @@ import { NumericFormat } from 'react-number-format';
 import { useAccount, useNetwork } from 'wagmi';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
+import { useAtom } from 'jotai';
+import { selectedMarketMarginAtom } from '../Market';
 
-/* interface DepositProps {
-  triggerDepositRefetch: () => void;
-  depositValue?: string;
-  selectedMarket: MarketType;
-  handleSetLoading: (val: boolean) => void;
-}
- */
-export const Deposit = (/* {
-  triggerDepositRefetch,
-  depositValue,
-  selectedMarket,
-  handleSetLoading,
-}: DepositProps */) => {
+export const Deposit = () => {
   const { open } = useWeb3Modal();
   const [amount, setAmount] = useState<number>(1);
   const { address } = useAccount();
@@ -26,6 +16,7 @@ export const Deposit = (/* {
   const { write, isLoading } = useDeposit(amount);
   const { chain } = useNetwork();
   const isBsbNetwork = chain?.id === 2137;
+  const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
 
   const handleDeposit = () => {
     if (!address) {
@@ -74,6 +65,10 @@ export const Deposit = (/* {
           Summary
         </p>
         <div className="flex flex-col gap-2 ">
+          <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
+            <p>Current deposit</p>
+            <p>{selecteMarketMargin?.margin} USDC</p>
+          </div>
           <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
             <p>Total</p>
             <p>{amount.toFixed(2)} USDC</p>
