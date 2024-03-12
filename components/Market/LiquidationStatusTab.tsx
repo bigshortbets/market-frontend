@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface LiquidationStatusTabProps {
-  status: 'EverythingFine' | 'MarginCall' | 'Liquidation' | 'Underwater'; // Define the possible status values
+  status: 'EverythingFine' | 'MarginCall' | 'Liquidation' | 'Underwater';
 }
 
 export const LiquidationStatusTab = ({ status }: LiquidationStatusTabProps) => {

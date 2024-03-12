@@ -2,32 +2,55 @@ import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBa
 import { useAtom } from 'jotai';
 import React from 'react';
 import { useAccount } from 'wagmi';
-import { userMarginsAtom } from '../Market';
+import { selectedMarketMarginAtom, userMarginsAtom } from '../Market';
+import { LiquidationStatusTab } from '../LiquidationStatusTab';
 
 export const MarketInterfaceLowerBar = () => {
   const { address } = useAccount();
   const { data } = useNativeCurrencyBalance(address);
   const [userMargins] = useAtom(userMarginsAtom);
+  const [selectedMarketMargin] = useAtom(selectedMarketMarginAtom);
   return (
-    <div className="h-[58px] border-t border-[#444650] px-5 py-3">
-      <div className="flex items-center gap-10">
-        <div className=" text-xs ">
-          <p className="text-tetriary font-semibold">Wallet balance</p>
-          <p className="text-white">
-            {address
-              ? `${Number(data?.formatted).toFixed(2).toString()} ${
-                  data?.symbol
-                }`
-              : '-'}
-          </p>
+    <div className='h-[58px] border-t border-[#444650] px-5 py-3'>
+      <div className='flex items-center justify-between'>
+        <div className='flex items-center gap-10'>
+          <div className=' text-xs '>
+            <p className='text-tetriary font-semibold'>Wallet balance</p>
+            <p className='text-white'>
+              {address
+                ? `${Number(data?.formatted).toFixed(2).toString()} ${
+                    data?.symbol
+                  }`
+                : '-'}
+            </p>
+          </div>
+          <div className='border-l border-[#444650] h-[32px] text-xs pl-2'>
+            <p className='text-tetriary font-semibold'>Total deposits</p>
+            <p>
+              {userMargins.totalMarginValue === 0
+                ? '-'
+                : `${userMargins.totalMarginValue} USDC`}
+            </p>
+          </div>
         </div>
-        <div className="border-l border-[#444650] h-[32px] text-xs pl-2">
-          <p className="text-tetriary font-semibold">Total deposits</p>
-          <p>
-            {userMargins.totalMarginValue === 0
-              ? '-'
-              : `${userMargins.totalMarginValue} USDC`}
-          </p>
+        <div className='flex items-center gap-4'>
+          <div className='text-xs'>
+            <div className='flex items-center gap-1'>
+              {' '}
+              <p className='text-tetriary font-semibold'>Market deposit</p>
+            </div>
+
+            <p className='text-white'>{selectedMarketMargin?.margin} USDC</p>
+          </div>
+          <LiquidationStatusTab
+            status={
+              selectedMarketMargin?.liquidationStatus as
+                | 'EverythingFine'
+                | 'MarginCall'
+                | 'Liquidation'
+                | 'Underwater'
+            }
+          />
         </div>
       </div>
     </div>

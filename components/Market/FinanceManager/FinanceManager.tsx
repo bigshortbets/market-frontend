@@ -39,7 +39,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
         {financeManagerState === 'order' && (
           <OrderManager markets={markets} handleSetLoading={handleSetLoading} />
         )}
-        {financeManagerState === 'deposit' && <Deposit />}
+        {financeManagerState === 'deposit' && <Deposit markets={markets} />}
         {financeManagerState === 'withdraw' && <Withdraw />}
         {financeManagerState === 'bridge' && <Bridge />}
       </div>
