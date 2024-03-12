@@ -10,8 +10,9 @@ import Image from 'next/image';
 import { scaleNumber } from '@/utils/scaleNumber';
 import { FaChartBar } from 'react-icons/fa';
 import { useAtom } from 'jotai';
-import { selectedMarketIdAtom } from '../../Market';
+import { selectedMarketIdAtom, userMarginsAtom } from '../../Market';
 import MiniChartWidget from '../Widget/MiniChartWidget';
+import { LiquidationStatusTab } from '../../LiquidationStatusTab';
 
 interface TradingHubAggregatedPositionProps {
   positions: PositionType[];
@@ -60,14 +61,21 @@ export const TradingHubAggregatedPosition = ({
     toggleExtended();
   };
 
+  const [userMargins] = useAtom(userMarginsAtom);
+
   return (
-    <div className="w-full flex flex-col  relative h-full">
+    <div
+      className='w-full flex flex-col  relative h-full'
+      onClick={() =>
+        console.log(userMargins.details[marketId].liquidationStatus)
+      }
+    >
       <div
-        className="w-full px-3 bg-[#23252E] py-3  cursor-pointer h-full"
+        className='w-full px-3 bg-[#23252E] py-3  cursor-pointer h-full'
         onClick={handleClick}
       >
-        <div className="flex justify-between items-center h-full">
-          <div className="flex gap-4 h-full items-center">
+        <div className='flex justify-between items-center h-full'>
+          <div className='flex gap-4 h-full items-center'>
             {/*  <div
               className={`w-[12px] h-[12px]  rounded-full mt-[3px]  ${
                 selectedMarketId === marketId
@@ -76,19 +84,19 @@ export const TradingHubAggregatedPosition = ({
               }`}
             ></div> */}
             <div>
-              <div className="flex items-center gap-1.5">
-                <p className="text-[#EBEDFD] text-sm">{ticker}</p>
+              <div className='flex items-center gap-1.5'>
+                <p className='text-[#EBEDFD] text-sm'>{ticker}</p>
                 {marketDetails && (
                   <Image
                     src={marketDetails?.path}
                     width={14}
                     height={14}
-                    alt="Market logo"
-                    className="rounded-full"
+                    alt='Market logo'
+                    className='rounded-full'
                   />
                 )}
               </div>
-              <p className="text-[#ABACBA] text-xs">{marketDetails?.name}</p>
+              <p className='text-[#ABACBA] text-xs'>{marketDetails?.name}</p>
             </div>
             {/*  <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
@@ -132,17 +140,33 @@ export const TradingHubAggregatedPosition = ({
             </div>
           </div> */}
           {/* Stats */}
-          <div className="flex gap-12 items-center">
+          <div className='flex gap-6'>
+            {userMargins.details[marketId] && (
+              <div className='flex flex-col'>
+                <div className='flex items-center gap-1'>
+                  <p className='text-xs text-tetriary'>Status</p>
+                  <LiquidationStatusTab
+                    status={
+                      userMargins.details[marketId].liquidationStatus as
+                        | 'EverythingFine'
+                        | 'MarginCall'
+                        | 'Liquidation'
+                        | 'Underwater'
+                    }
+                  />
+                </div>
+              </div>
+            )}
             {/* Sum profit / loss */}
-            <div className="flex flex-col text-right">
-              <p className="text-xs text-tetriary">Sum gain / loss</p>
+            <div className='flex flex-col text-right'>
+              <p className='text-xs text-tetriary'>Sum gain / loss</p>
               <p
                 className={`text-xs font-semibold ${
                   sumLossProfit < 0 ? 'text-red-500' : 'text-[#87DAA4]'
                 }`}
               >
                 {sumLossProfit && sumLossProfit.toFixed(2)}{' '}
-                <span className="text-xs">USDC</span>
+                <span className='text-xs'>USDC</span>
               </p>
             </div>
 
@@ -155,16 +179,16 @@ export const TradingHubAggregatedPosition = ({
         </div>
       </div>
       {isExtended && (
-        <div className="w-full border-t-[1px] border-[#2d2d2f]">
-          <table className="table-auto w-full ">
-            <thead className=" text-sm text-left text-[#ABACBA] border-b-[1px] border-[#23252E] bg-[#191B24]">
+        <div className='w-full border-t-[1px] border-[#2d2d2f]'>
+          <table className='table-auto w-full '>
+            <thead className=' text-sm text-left text-[#ABACBA] border-b-[1px] border-[#23252E] bg-[#191B24]'>
               <tr>
-                <th className="font-normal pb-2 py-2 pl-3">Side</th>
-                <th className="font-normal">Quantity</th>
-                <th className="font-normal">Opponent</th>
-                <th className="font-normal">Entry price</th>
-                <th className="font-normal">Profit / loss</th>
-                <th className="pr-3"></th>
+                <th className='font-normal pb-2 py-2 pl-3'>Side</th>
+                <th className='font-normal'>Quantity</th>
+                <th className='font-normal'>Opponent</th>
+                <th className='font-normal'>Entry price</th>
+                <th className='font-normal'>Profit / loss</th>
+                <th className='pr-3'></th>
                 {/* <th className="font-normal">Created</th>
                 <th className="font-normal">Market</th>
                 <th className="font-normal">Price</th>
