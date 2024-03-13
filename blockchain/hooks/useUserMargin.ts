@@ -7,6 +7,12 @@ import { fetchMarginInfo } from '@/utils/fetchMarginInfo';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 
+export type LiquidationStatusType =
+  | 'EverythingFine'
+  | 'MarginCall'
+  | 'Liquidation'
+  | 'Underwater';
+
 export interface MarginInfo {
   margin: string;
   requiredDeposit: string;

@@ -1,10 +1,12 @@
-import React from "react";
+import React from 'react';
 
-interface FinanceManagerWarning {
+interface FinanceManagerWarningProps {
   error: string;
 }
 
-export const FinanceManagerWarning = ({ error }: FinanceManagerWarning) => {
+export const FinanceManagerWarning = ({
+  error,
+}: FinanceManagerWarningProps) => {
   return (
     <div className="flex flex-col gap-2">
       <p className="text-xs text-[#E5B744]">Warning</p>

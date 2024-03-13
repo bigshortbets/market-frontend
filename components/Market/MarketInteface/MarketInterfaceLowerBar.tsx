@@ -4,6 +4,7 @@ import React from 'react';
 import { useAccount } from 'wagmi';
 import { selectedMarketMarginAtom, userMarginsAtom } from '../Market';
 import { LiquidationStatusTab } from '../LiquidationStatusTab';
+import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 
 export const MarketInterfaceLowerBar = () => {
   const { address } = useAccount();
@@ -11,12 +12,12 @@ export const MarketInterfaceLowerBar = () => {
   const [userMargins] = useAtom(userMarginsAtom);
   const [selectedMarketMargin] = useAtom(selectedMarketMarginAtom);
   return (
-    <div className='h-[58px] border-t border-[#444650] px-5 py-3'>
-      <div className='flex items-center justify-between'>
-        <div className='flex items-center gap-10'>
-          <div className=' text-xs '>
-            <p className='text-tetriary font-semibold'>Wallet balance</p>
-            <p className='text-white'>
+    <div className="h-[58px] border-t border-[#444650] px-5 py-3">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-10">
+          <div className=" text-xs ">
+            <p className="text-tetriary font-semibold">Wallet balance</p>
+            <p className="text-white">
               {address
                 ? `${Number(data?.formatted).toFixed(2).toString()} ${
                     data?.symbol
@@ -24,8 +25,8 @@ export const MarketInterfaceLowerBar = () => {
                 : '-'}
             </p>
           </div>
-          <div className='border-l border-[#444650] h-[32px] text-xs pl-2'>
-            <p className='text-tetriary font-semibold'>Total deposits</p>
+          <div className="border-l border-[#444650] h-[32px] text-xs pl-2">
+            <p className="text-tetriary font-semibold">Total deposits</p>
             <p>
               {userMargins.totalMarginValue === 0
                 ? '-'
@@ -33,22 +34,18 @@ export const MarketInterfaceLowerBar = () => {
             </p>
           </div>
         </div>
-        <div className='flex items-center gap-4'>
-          <div className='text-xs'>
-            <div className='flex items-center gap-1'>
+        <div className="flex items-center gap-4">
+          <div className="text-xs">
+            <div className="flex items-center gap-1">
               {' '}
-              <p className='text-tetriary font-semibold'>Market deposit</p>
+              <p className="text-tetriary font-semibold">Market deposit</p>
             </div>
 
-            <p className='text-white'>{selectedMarketMargin?.margin} USDC</p>
+            <p className="text-white">{selectedMarketMargin?.margin} USDC</p>
           </div>
           <LiquidationStatusTab
             status={
-              selectedMarketMargin?.liquidationStatus as
-                | 'EverythingFine'
-                | 'MarginCall'
-                | 'Liquidation'
-                | 'Underwater'
+              selectedMarketMargin?.liquidationStatus as LiquidationStatusType
             }
           />
         </div>

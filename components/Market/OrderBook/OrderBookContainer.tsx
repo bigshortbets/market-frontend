@@ -14,7 +14,7 @@ import {
 import { selectedMarketIdAtom } from '../Market';
 import { OrderBookResponse } from '@/types/orderTypes';
 
-const tabs = ['orderbook', 'trades'];
+const tabs = ['trades', 'orderbook'];
 
 export type OrderBookStateTabsType = (typeof tabs)[number];
 
