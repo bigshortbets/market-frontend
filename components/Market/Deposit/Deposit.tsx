@@ -14,6 +14,7 @@ import { FaLongArrowAltRight } from 'react-icons/fa';
 import { LiquidationStatusTab } from '../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { FinanceManagerInfo } from '../FinanceManager/FinanceManagerInfo';
+import { bigshortbetsChain } from '@/blockchain/chain';
 
 export interface DepositProps {
   markets: MarketType[];
@@ -26,7 +27,7 @@ export const Deposit = ({ markets }: DepositProps) => {
   const { data: walletBalance } = useNativeCurrencyBalance(address);
   const { write, isLoading } = useDeposit(amount);
   const { chain } = useNetwork();
-  const isBsbNetwork = chain?.id === 2137;
+  const isBsbNetwork = chain?.id === bigshortbetsChain.id;
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const market = findMarketById(markets, selectedMarketId);
@@ -127,7 +128,7 @@ export const Deposit = ({ markets }: DepositProps) => {
                 </button>
               </div>
             )}
-          <div></div>
+
           <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
             <p>Amount</p>
             <p>{amount.toFixed(2)} USDC</p>

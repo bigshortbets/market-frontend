@@ -27,11 +27,11 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
   };
   return (
     <div
-      className='h-full w-full sm:w-[360px] sm:border-r border-[#444650] overflow-auto no-scrollbar'
+      className="h-full w-full sm:w-[360px] sm:border-r border-[#444650] overflow-auto no-scrollbar"
       style={{ maxHeight: 'calc(100vh - 228px)' }}
     >
-      <div className='flex flex-col '>
-        <div className='py-3 px-2.5 border-b border-[#444650] flex items-center gap-2'>
+      <div className="flex flex-col ">
+        <div className="py-3 px-2.5 border-b border-[#444650] flex items-center gap-2">
           {tabs.map((tab, key) => (
             <FinanceManagerTab value={tab} key={key} />
           ))}
@@ -40,10 +40,10 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
           <OrderManager markets={markets} handleSetLoading={handleSetLoading} />
         )}
         {financeManagerState === 'deposit' && <Deposit markets={markets} />}
-        {financeManagerState === 'withdraw' && <Withdraw />}
+        {financeManagerState === 'withdraw' && <Withdraw markets={markets} />}
         {financeManagerState === 'bridge' && <Bridge />}
       </div>
-      <div className='px-[10px] pb-2'>
+      <div className="px-[10px] pb-2">
         <ContractDetails markets={markets} />
       </div>
     </div>

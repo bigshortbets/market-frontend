@@ -5,14 +5,25 @@ import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useState } from 'react';
 import { NumericFormat } from 'react-number-format';
 import { useAccount, useNetwork } from 'wagmi';
+import { selectedMarketIdAtom, selectedMarketMarginAtom } from '../Market';
+import { useAtom } from 'jotai';
+import { findMarketById } from '@/utils/findMarketById';
+import { MarketType } from '@/types/marketTypes';
 
-export const Withdraw = () => {
+export interface WithdrawProps {
+  markets: MarketType[];
+}
+
+export const Withdraw = ({ markets }: WithdrawProps) => {
   const { open } = useWeb3Modal();
   const [amount, setAmount] = useState<number>(1);
   const { address } = useAccount();
   const { data: walletBalance } = useNativeCurrencyBalance(address);
   const { write, isLoading } = useWithdraw(amount);
   const { chain } = useNetwork();
+  const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
+  const [selectedMarketId] = useAtom(selectedMarketIdAtom);
+  const market = findMarketById(markets, selectedMarketId);
 
   const isBsbNetwork = chain?.id === 2137;
 
@@ -28,7 +39,14 @@ export const Withdraw = () => {
     write?.();
   };
 
-  const withdrawDisabled = amount <= 0;
+  const possibleWithdraw =
+    selecteMarketMargin?.liquidationStatus === 'EverythingFine'
+      ? Number(selecteMarketMargin.margin) -
+        Number(selecteMarketMargin.requiredDeposit)
+      : 0;
+
+  const withdrawDisabled = amount <= 0 || amount > possibleWithdraw;
+
   return (
     <div className="p-2.5 pb-4 flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -61,12 +79,40 @@ export const Withdraw = () => {
           Summary
         </p>
         <div className="flex flex-col gap-2 ">
-          <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
-            <p>Total</p>
-            <p>{amount.toFixed(2)} USDC</p>
+          <div className="flex justify-between items-center text-xs text-tetriary ">
+            <p>Your current {market?.ticker} deposit</p>
+            <p>
+              {address
+                ? `${Number(selecteMarketMargin?.margin).toFixed(2)} USDC`
+                : '-'}{' '}
+            </p>
+          </div>
+          <div className="flex justify-between items-center text-xs text-tetriary mb-2">
+            <p>Your required {market?.ticker} deposit</p>
+            <p>
+              {Number(selecteMarketMargin?.requiredDeposit) > 0 && address
+                ? `${Number(selecteMarketMargin?.requiredDeposit).toFixed(
+                    2
+                  )} USDC`
+                : '-'}
+            </p>
+          </div>
+          <div className="flex flex-col gap-2 ">
+            <div className="flex justify-between items-center text-xs text-secondary ">
+              <p>Possible withdraw</p>
+              <button
+                className="underline"
+                onClick={() => setAmount(possibleWithdraw)}
+              >
+                {possibleWithdraw.toFixed(2)} USDC
+              </button>
+            </div>
+            <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
+              <p>Amount</p>
+              <p>{amount.toFixed(2)} USDC</p>
+            </div>
           </div>
         </div>
-
         <button
           disabled={withdrawDisabled}
           onClick={handleWithdraw}
