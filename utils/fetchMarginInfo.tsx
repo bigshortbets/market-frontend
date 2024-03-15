@@ -8,14 +8,18 @@ import { convertToU8a } from './convertToU8a';
 
 export async function fetchMarginInfo(
   address: string,
-  selectedMarketId: string
+  selectedMarketId: string,
+  addressConverted: boolean = false
 ) {
   try {
     const api = await getApiInstance();
+    const addressPayload = addressConverted
+      ? (await convertToU8a(address)).substring(2)
+      : (await convertToU8a(convertToSS58(address))).substring(2);
+
     const res = await api.rpc.state.call(
       'MarketApi_margin_data',
-      hexToLittleEndian(nToHex(BigInt(selectedMarketId))) +
-        (await convertToU8a(convertToSS58(address))).substring(2)
+      hexToLittleEndian(nToHex(BigInt(selectedMarketId))) + addressPayload
     );
 
     const result = api.createType(

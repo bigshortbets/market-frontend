@@ -5,6 +5,11 @@ import { truncateAddress } from '@/utils/truncateAddress';
 import { scaleNumber } from '@/utils/scaleNumber';
 import { NumericFormat } from 'react-number-format';
 import { useClosePosition } from '@/blockchain/hooks/useClosePosition';
+import { getOpponentMarginData } from '@/utils/getOpponentMarginData';
+import { opponentsMarginsAtom } from '../../Market';
+import { useAtom } from 'jotai';
+import { LiquidationStatusTab } from '../../LiquidationStatusTab';
+import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 
 interface TradingHubPositionsItemProps {
   position: PositionWithSide;
@@ -35,6 +40,14 @@ export const TradingHubPositionsItem = ({
     position.quantityLeft
   );
 
+  const [opponentsMargin] = useAtom(opponentsMarginsAtom);
+
+  const marginData = getOpponentMarginData(
+    opponentsMargin,
+    opponent,
+    position.market.id
+  );
+
   return (
     <tr
       className={`text-sm even:bg-[#23252E] text-[#7F828F] 
@@ -44,8 +57,7 @@ export const TradingHubPositionsItem = ({
         <SideLabel side={position.side} />
       </td>
       <td>{Number(position.quantityLeft)}</td>
-      <td>{truncateAddress(opponent)}</td>
-      <td>{scaleNumber(Number(position.price))}</td>
+
       <td
         className={`${
           calculatedProfitOrLoss < 0
@@ -56,6 +68,17 @@ export const TradingHubPositionsItem = ({
         {calculatedProfitOrLoss.toFixed(2)}{' '}
         <span className={`text-xs`}>USDC</span>
       </td>
+      <td>{scaleNumber(Number(position.price))}</td>
+      <td className="align-middle">
+        <div className="flex items-center space-x-2">
+          <p>{truncateAddress(opponent)}</p>
+          <LiquidationStatusTab
+            status={marginData?.liquidationStatus! as LiquidationStatusType}
+            small
+          />
+        </div>
+      </td>
+
       <td className=" text-right pr-3 ">
         <NumericFormat
           className="rounded-lg mr-4 w-[100px] py-1.5 px-2 close-position-input text-xs outline-none"

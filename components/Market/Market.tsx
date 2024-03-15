@@ -20,6 +20,7 @@ import {
   UserMargins,
   useUserMargin,
 } from '@/blockchain/hooks/useUserMargin';
+import { OpponentData } from '@/blockchain/hooks/useOpponentsMargin';
 
 interface MarketProps {
   markets: MarketType[];
@@ -39,6 +40,7 @@ export const userMarginsAtom = atom<UserMargins>({
 });
 
 export const selectedMarketMarginAtom = atom<MarginInfo | null>(null);
+export const opponentsMarginsAtom = atom<OpponentData>({});
 
 export const selectedMarketIdAtom = atom<string>('');
 export const UIConfigurationAtom = atom<UIConfigurationType>('HubOrder');

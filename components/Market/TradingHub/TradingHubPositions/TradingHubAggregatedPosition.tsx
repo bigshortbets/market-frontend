@@ -183,9 +183,11 @@ export const TradingHubAggregatedPosition = ({
               <tr>
                 <th className="font-normal pb-2 py-2 pl-3">Side</th>
                 <th className="font-normal">Quantity</th>
-                <th className="font-normal">Opponent</th>
+
                 <th className="font-normal">Entry price</th>
                 <th className="font-normal">Profit / loss</th>
+                <th className="font-normal">Opponent & status</th>
+
                 <th className="pr-3"></th>
                 {/* <th className="font-normal">Created</th>
                 <th className="font-normal">Market</th>

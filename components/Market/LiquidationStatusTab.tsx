@@ -2,9 +2,13 @@ import React from 'react';
 
 interface LiquidationStatusTabProps {
   status: 'EverythingFine' | 'MarginCall' | 'Liquidation' | 'Underwater';
+  small?: boolean;
 }
 
-export const LiquidationStatusTab = ({ status }: LiquidationStatusTabProps) => {
+export const LiquidationStatusTab = ({
+  status,
+  small = false,
+}: LiquidationStatusTabProps) => {
   const statusText = {
     EverythingFine: 'Everything fine',
     MarginCall: 'Margin call',
@@ -23,10 +27,16 @@ export const LiquidationStatusTab = ({ status }: LiquidationStatusTabProps) => {
   const backgroundColor = statusBackgroundColors[status];
 
   return (
-    <div
-      className={`rounded flex items-center justify-center px-1 font-semibold text-[#191B24] text-xs py-[1px] ${backgroundColor}`}
-    >
-      {text}
-    </div>
+    <>
+      {small ? (
+        <div className={`${backgroundColor} h-4 w-4 rounded`}></div>
+      ) : (
+        <div
+          className={`rounded flex items-center justify-center px-1 font-semibold text-[#191B24] text-xs py-[1px] ${backgroundColor}`}
+        >
+          {text}
+        </div>
+      )}
+    </>
   );
 };

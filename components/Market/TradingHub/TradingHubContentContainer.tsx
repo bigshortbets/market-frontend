@@ -15,6 +15,9 @@ import { PositionsResponse } from '@/types/positionTypes';
 import { TradingHubPositions } from './TradingHubPositions/TradingHubPositions';
 import { TradingHubHistory } from './TradingHubHistory/TradingHubHistory';
 import { HistoryResponse } from '@/types/historyTypes';
+import { useOpponentsMargin } from '@/blockchain/hooks/useOpponentsMargin';
+import { opponentsMarginsAtom } from '../Market';
+import { fetchMarginInfo } from '@/utils/fetchMarginInfo';
 
 export const TradingHubContentContainer = () => {
   const { address } = useAccount();
@@ -40,6 +43,7 @@ export const TradingHubContentContainer = () => {
   );
 
   const [tradingHubState] = useAtom(tradingHubStateAtom);
+  useOpponentsMargin(positionsRes?.positions!, address!);
 
   return (
     <div className="w-full no-scrollbar">
