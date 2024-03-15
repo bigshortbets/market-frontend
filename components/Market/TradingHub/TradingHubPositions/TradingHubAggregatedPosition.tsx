@@ -65,12 +65,7 @@ export const TradingHubAggregatedPosition = ({
   const [userMargins] = useAtom(userMarginsAtom);
 
   return (
-    <div
-      className="w-full flex flex-col  relative h-full"
-      onClick={() =>
-        console.log(userMargins.details[marketId].liquidationStatus)
-      }
-    >
+    <div className="w-full flex flex-col  relative h-full">
       <div
         className="w-full px-3 bg-[#23252E] py-3  cursor-pointer h-full"
         onClick={handleClick}
