@@ -40,6 +40,14 @@ export const ContractDetails = ({ markets }: ContractDetailsProps) => {
       label: 'Initial margin',
       value: `${selectedMarket?.initialMargin?.toString()!} %`,
     },
+    {
+      label: 'Maintenance margin',
+      value: `${selectedMarket?.maintenanceMargin?.toString()!} %`,
+    },
+    {
+      label: 'Contract unit',
+      value: `${selectedMarket?.contractUnit?.toString()!}`,
+    },
   ];
 
   return (
