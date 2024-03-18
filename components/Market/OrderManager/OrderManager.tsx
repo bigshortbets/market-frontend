@@ -195,7 +195,7 @@ export const OrderManager = ({
 
         <button
           onClick={handleWriteOrder}
-          disabled={address ? isActionDisabled : false}
+          disabled={address && isBsbNetwork ? isActionDisabled : false}
           className={`disabled:bg-gray-400 w-full rounded-lg ${
             address && isBsbNetwork
               ? selectedSideOrder === OrderSideEnum.LONG

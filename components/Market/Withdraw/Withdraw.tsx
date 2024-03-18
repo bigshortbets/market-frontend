@@ -9,6 +9,7 @@ import { selectedMarketIdAtom, selectedMarketMarginAtom } from '../Market';
 import { useAtom } from 'jotai';
 import { findMarketById } from '@/utils/findMarketById';
 import { MarketType } from '@/types/marketTypes';
+import { bigshortbetsChain } from '@/blockchain/chain';
 
 export interface WithdrawProps {
   markets: MarketType[];
@@ -25,7 +26,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const market = findMarketById(markets, selectedMarketId);
 
-  const isBsbNetwork = chain?.id === 2137;
+  const isBsbNetwork = chain?.id === bigshortbetsChain.id;
 
   const handleWithdraw = () => {
     if (!address) {
@@ -114,7 +115,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
           </div>
         </div>
         <button
-          disabled={address ? withdrawDisabled : false}
+          disabled={address && isBsbNetwork ? withdrawDisabled : false}
           onClick={handleWithdraw}
           className={`disabled:bg-gray-400 bg-[#9BA6F8] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-3`}
         >
