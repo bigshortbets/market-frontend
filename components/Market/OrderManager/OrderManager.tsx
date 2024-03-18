@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { NumericFormat } from 'react-number-format';
 import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
 import { useAtom } from 'jotai';
-import { selectedMarketIdAtom } from '../Market';
+import { currentBlockAtom, selectedMarketIdAtom } from '../Market';
 import { findMarketById } from '@/utils/findMarketById';
 import { MarketType } from '@/types/marketTypes';
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
@@ -13,6 +13,7 @@ import { checkIfDivisible } from '@/utils/checkIfDivisible';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
+import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 
 export enum OrderSideEnum {
   LONG,
@@ -21,21 +22,16 @@ export enum OrderSideEnum {
 
 interface OrderManagerProps {
   markets: MarketType[];
-  handleSetLoading: (val: boolean) => void;
 }
 
-export const OrderManager = ({
-  markets,
-  handleSetLoading,
-}: OrderManagerProps) => {
+export const OrderManager = ({ markets }: OrderManagerProps) => {
   const [price, setPrice] = useState<number>(1);
   const [quantity, setQuantity] = useState<number>(1);
   const [selectedSideOrder, setSelectedSideOrder] = useState<OrderSideEnum>(
     OrderSideEnum.LONG
   );
 
-  const { open } = useWeb3Modal();
-
+  const [currentBlock] = useAtom(currentBlockAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const selectedMarket = findMarketById(markets, selectedMarketId);
   const [isDivisibleByTickSize, setIsDivisibleByTickSize] = useState(
@@ -45,7 +41,15 @@ export const OrderManager = ({
     )
   );
 
+  const { isClosed: isMarketClosed } = calculateMarketClosing(
+    currentBlock!,
+    Number(selectedMarket?.lifetime)
+  );
+
   const { address } = useAccount();
+
+  const { open } = useWeb3Modal();
+
   const { formattedBalance } = useNativeCurrencyBalance(address);
 
   const { write: writeShortOrder, isLoading: isShortLoading } =
@@ -60,18 +64,18 @@ export const OrderManager = ({
 
   const orderValue = price * quantity * Number(selectedMarket?.contractUnit);
 
+  const isBsbNetwork = chain?.id === bigshortbetsChain.id;
+
+  const isActionDisabled =
+    isMarketClosed ||
+    price === 0 ||
+    orderCost > Number(formattedBalance) ||
+    !isDivisibleByTickSize;
+
   useEffect(() => {
     selectedMarket?.oraclePrice &&
       setPrice(Number(scaleNumber(selectedMarket?.oraclePrice.toString())));
   }, [selectedMarketId]);
-
-  useEffect(() => {
-    if (isShortLoading || isLongLoading) {
-      handleSetLoading(true);
-    } else {
-      handleSetLoading(false);
-    }
-  }, [isShortLoading, isLongLoading]);
 
   useEffect(() => {
     const res = checkIfDivisible(
@@ -82,14 +86,11 @@ export const OrderManager = ({
     setIsDivisibleByTickSize(res);
   }, [price]);
 
-  const isBsbNetwork = chain?.id === bigshortbetsChain.id;
-
   const handleWriteOrder = () => {
     if (!address) {
       open();
       return;
     }
-
     if (address && !isBsbNetwork) {
       switchToBigShortBetsChain();
       return;
@@ -101,11 +102,6 @@ export const OrderManager = ({
       writeShortOrder?.();
     }
   };
-
-  const isActionDisabled =
-    price === 0 ||
-    orderCost > Number(formattedBalance) ||
-    !isDivisibleByTickSize;
 
   return (
     <div className="p-2.5 pb-4 flex flex-col gap-4">
@@ -211,6 +207,9 @@ export const OrderManager = ({
       </div>
       {!address && (
         <FinanceManagerWarning error="Connect your wallet to interact with the market. " />
+      )}
+      {address && isMarketClosed && (
+        <FinanceManagerWarning error="This market is already closed." />
       )}
       {!isDivisibleByTickSize && (
         <FinanceManagerWarning

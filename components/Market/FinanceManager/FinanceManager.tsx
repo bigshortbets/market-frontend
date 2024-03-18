@@ -20,11 +20,6 @@ export const financeManagerAtom = atom<FinanceManagerTabsType>('order');
 export const FinanceManager = ({ markets }: FinanceManagerProps) => {
   const [financeManagerState] = useAtom(financeManagerAtom);
 
-  const [loading, setLoading] = useState<boolean>(true);
-
-  const handleSetLoading = (val: boolean) => {
-    setLoading(val);
-  };
   return (
     <div
       className="h-full w-full sm:w-[360px] sm:border-r border-[#444650] overflow-auto no-scrollbar"
@@ -36,9 +31,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
             <FinanceManagerTab value={tab} key={key} />
           ))}
         </div>
-        {financeManagerState === 'order' && (
-          <OrderManager markets={markets} handleSetLoading={handleSetLoading} />
-        )}
+        {financeManagerState === 'order' && <OrderManager markets={markets} />}
         {financeManagerState === 'deposit' && <Deposit markets={markets} />}
         {financeManagerState === 'withdraw' && <Withdraw markets={markets} />}
         {financeManagerState === 'bridge' && <Bridge />}
@@ -47,38 +40,5 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
         <ContractDetails markets={markets} />
       </div>
     </div>
-    /* <div
-      className={`w-[300px] h-[440px] rounded p-1 bg-secondary-bg relative flex flex-col ${
-        loading && loadingState
-      }`}
-    >
-      {loading && (
-        <ReactLoading
-          type={'spin'}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-          width={60}
-        />
-      )}
-      <div
-        className={`w-full flex p-1 ${
-          !address && 'pointer-events-none'
-        } mb-3 h-[40px]`}
-      >
-        {tabs.map((tab, key) => (
-          <FinanceManagerTab value={tab} key={key} />
-        ))}
-      </div>
-      {financeManagerState === 'order' && (
-        <OrderManager markets={markets} handleSetLoading={handleSetLoading} />
-      )}
-      {financeManagerState === 'deposit' && depositRes && (
-        <Deposit
-          triggerDepositRefetch={triggerDepositRefetch}
-          depositValue={(depositRes as any)!.result as string}
-          selectedMarket={selectedMarket!}
-          handleSetLoading={handleSetLoading}
-        />
-      )}
-    </div> */
   );
 };
