@@ -136,7 +136,7 @@ export const Deposit = ({ markets }: DepositProps) => {
         </div>
 
         <button
-          disabled={depositDisabled}
+          disabled={address ? depositDisabled : false}
           onClick={handleDeposit}
           className={`disabled:bg-gray-400 bg-[#9BA6F8] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-3`}
         >

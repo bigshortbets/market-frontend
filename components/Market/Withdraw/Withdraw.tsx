@@ -114,7 +114,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
           </div>
         </div>
         <button
-          disabled={withdrawDisabled}
+          disabled={address ? withdrawDisabled : false}
           onClick={handleWithdraw}
           className={`disabled:bg-gray-400 bg-[#9BA6F8] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-3`}
         >
