@@ -6,7 +6,12 @@ import { useAccount, useNetwork } from 'wagmi';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
 import { useAtom } from 'jotai';
-import { selectedMarketIdAtom, selectedMarketMarginAtom } from '../Market';
+import {
+  collateralAtom,
+  selectedMarketIdAtom,
+  selectedMarketMarginAtom,
+  unsettledLossesAtom,
+} from '../Market';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
 import { findMarketById } from '@/utils/findMarketById';
 import { MarketType } from '@/types/marketTypes';
@@ -47,8 +52,17 @@ export const Deposit = ({ markets }: DepositProps) => {
   const depositDisabled =
     Number(walletBalance?.formatted) < amount || amount <= 0;
 
+  const [unsettledLosesArr] = useAtom(unsettledLossesAtom);
+  const [collateralArr] = useAtom(collateralAtom);
+
+  const unsettledLoses = unsettledLosesArr[selectedMarketId];
+  const collateral = collateralArr[selectedMarketId];
+
   return (
-    <div className="p-2.5 pb-4 flex flex-col gap-4">
+    <div
+      className="p-2.5 pb-4 flex flex-col gap-4"
+      onClick={() => console.log(unsettledLoses, collateral)}
+    >
       <div className="flex flex-col gap-2">
         <p className="text-sm font-semibold text-secondary leading-[24px]">
           Deposit

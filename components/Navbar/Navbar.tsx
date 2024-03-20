@@ -27,10 +27,13 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <nav className='bg-[#111217] w-full h-[64px] '>
-      <div className=' flex justify-between h-full px-7 items-center'>
-        <Image src={logo} alt='BigShortBet$ Logo' width={50} priority />
-        <div className='flex items-center gap-4'>
+    <nav className="bg-[#111217] w-full h-[64px] ">
+      <div className=" flex justify-between h-full px-7 items-center">
+        <div className="flex gap-2">
+          <Image src={logo} alt="BigShortBet$ Logo" width={50} priority />
+          <p className="text-md">market peer-to-peer</p>
+        </div>
+        <div className="flex items-center gap-4">
           {isConnected && <CurrentNetworkTab />}
           {/* <UIConfiguration /> */}
           {isClient && <WalletConnect />}

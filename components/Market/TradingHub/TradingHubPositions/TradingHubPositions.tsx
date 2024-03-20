@@ -1,6 +1,8 @@
 import { PositionType } from '@/types/positionTypes';
 import React from 'react';
 import { TradingHubAggregatedPosition } from './TradingHubAggregatedPosition';
+import { useAtom } from 'jotai';
+import { unsettledLossesAtom } from '../../Market';
 
 interface TradingHubPositionsProps {
   positions: PositionType[];

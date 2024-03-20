@@ -21,6 +21,8 @@ import {
   useUserMargin,
 } from '@/blockchain/hooks/useUserMargin';
 import { OpponentData } from '@/blockchain/hooks/useOpponentsMargin';
+import { UnsettledLosses } from '@/hooks/useUnsettledLosses';
+import { Collateral } from '@/hooks/useCollateral';
 
 interface MarketProps {
   markets: MarketType[];
@@ -42,6 +44,8 @@ export const userMarginsAtom = atom<UserMargins>({
 export const selectedMarketMarginAtom = atom<MarginInfo | null>(null);
 export const opponentsMarginsAtom = atom<OpponentData>({});
 
+export const unsettledLossesAtom = atom<UnsettledLosses>({});
+export const collateralAtom = atom<Collateral>({});
 export const selectedMarketIdAtom = atom<string>('');
 export const UIConfigurationAtom = atom<UIConfigurationType>('HubOrder');
 export const currentBlockAtom = atom<number | undefined>(undefined);

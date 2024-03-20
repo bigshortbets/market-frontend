@@ -16,8 +16,8 @@ import { TradingHubPositions } from './TradingHubPositions/TradingHubPositions';
 import { TradingHubHistory } from './TradingHubHistory/TradingHubHistory';
 import { HistoryResponse } from '@/types/historyTypes';
 import { useOpponentsMargin } from '@/blockchain/hooks/useOpponentsMargin';
-import { opponentsMarginsAtom } from '../Market';
-import { fetchMarginInfo } from '@/utils/fetchMarginInfo';
+import { useUnsettledLosses } from '@/hooks/useUnsettledLosses';
+import { useCollateral } from '@/hooks/useCollateral';
 
 export const TradingHubContentContainer = () => {
   const { address } = useAccount();
@@ -41,6 +41,11 @@ export const TradingHubContentContainer = () => {
       variables: { userId: convertToSS58(address!) },
     }
   );
+
+  const oraclePrice = positionsRes?.positions[0].market.oraclePrice;
+
+  useUnsettledLosses(positionsRes?.positions, address!, oraclePrice!);
+  useCollateral(positionsRes?.positions, address!);
 
   const [tradingHubState] = useAtom(tradingHubStateAtom);
   useOpponentsMargin(positionsRes?.positions!, address!);
