@@ -14,7 +14,7 @@ interface TradingHubTabProps {
 
 export const TradingHubTab = ({ value }: TradingHubTabProps) => {
   const { address } = useAccount();
-  const [tradingHubState] = useAtom(tradingHubStateAtom);
+  const [tradingHubState, setTradingHubState] = useAtom(tradingHubStateAtom);
   const [positionsCount] = useAtom(tradingHubPositionsCountAtom);
   const [ordersCount] = useAtom(tradingHubOrdersCountAtom);
 
@@ -32,7 +32,7 @@ export const TradingHubTab = ({ value }: TradingHubTabProps) => {
       className={`rounded-lg flex items-center justify-center text-[13px] font-semibold py-2 px-4 ${
         isActive ? 'bg-[#444650]' : 'bg-[#23252E] text-tetriary'
       }`}
-      onClick={() => console.log(positionsCount)}
+      onClick={() => setTradingHubState(value)}
     >
       <p className="capitalize">
         {value} {count != null && address ? `(${count})` : ''}
