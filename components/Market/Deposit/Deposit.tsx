@@ -81,7 +81,7 @@ export const Deposit = ({ markets }: DepositProps) => {
 
   const handleAddNegative = (val: number) => {
     if (val < 0) {
-      setAmount(val);
+      setAmount(Math.abs(val));
     }
   };
 
