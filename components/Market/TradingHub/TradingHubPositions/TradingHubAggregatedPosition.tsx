@@ -81,7 +81,7 @@ export const TradingHubAggregatedPosition = ({
             ></div> */}
             <div>
               <div className="flex items-center gap-1.5">
-                <p className="text-[#EBEDFD] text-sm">{ticker}</p>
+                <p className="text-[#EBEDFD] text-sm">{marketDetails?.name}</p>
                 {marketDetails && (
                   <Image
                     src={marketDetails?.path}
@@ -92,7 +92,7 @@ export const TradingHubAggregatedPosition = ({
                   />
                 )}
               </div>
-              <p className="text-[#ABACBA] text-xs">{marketDetails?.name}</p>
+              <p className="text-[#ABACBA] text-xs">{ticker}</p>
             </div>
             {/*  <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">

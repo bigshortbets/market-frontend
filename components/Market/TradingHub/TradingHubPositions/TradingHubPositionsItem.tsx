@@ -57,7 +57,7 @@ export const TradingHubPositionsItem = ({
         <SideLabel side={position.side} />
       </td>
       <td>{Number(position.quantityLeft)}</td>
-
+      <td>{scaleNumber(Number(position.price))}</td>
       <td
         className={`${
           calculatedProfitOrLoss < 0
@@ -68,7 +68,7 @@ export const TradingHubPositionsItem = ({
         {calculatedProfitOrLoss.toFixed(2)}{' '}
         <span className={`text-xs`}>USDC</span>
       </td>
-      <td>{scaleNumber(Number(position.price))}</td>
+
       <td className="align-middle">
         <div className="flex items-center space-x-2">
           <p>{truncateAddress(opponent)}</p>

@@ -58,10 +58,37 @@ export const Deposit = ({ markets }: DepositProps) => {
   const unsettledLoses = unsettledLosesArr[selectedMarketId];
   const collateral = collateralArr[selectedMarketId];
 
+  const toEverythingFine = (
+    Number(selecteMarketMargin?.margin) -
+    Number(selecteMarketMargin?.requiredDeposit)
+  ).toFixed(2);
+
+  const toMarginCall = (
+    Number(selecteMarketMargin?.margin) -
+    Number(
+      collateral * (Number(market!.initialMargin.toString()) / 100) +
+        unsettledLoses
+    )
+  ).toFixed(2);
+
+  const toLiquidation = (
+    Number(selecteMarketMargin?.margin) -
+    Number(
+      collateral * (Number(market!.maintenanceMargin.toString()) / 100) +
+        unsettledLoses
+    )
+  ).toFixed(2);
+
+  const handleAddNegative = (val: number) => {
+    if (val < 0) {
+      setAmount(val);
+    }
+  };
+
   return (
     <div
       className="p-2.5 pb-4 flex flex-col gap-4"
-      onClick={() => console.log(unsettledLoses, collateral)}
+      onClick={() => console.log(Number(market!.initialMargin.toString()))}
     >
       <div className="flex flex-col gap-2">
         <p className="text-sm font-semibold text-secondary leading-[24px]">
@@ -94,7 +121,7 @@ export const Deposit = ({ markets }: DepositProps) => {
         </p>
         <div className="flex flex-col gap-2 ">
           <div className="flex justify-between items-center text-xs text-tetriary ">
-            <p>Your current {market?.ticker} deposit</p>
+            <p>Current deposit</p>
             <p>
               {address
                 ? `${Number(selecteMarketMargin?.margin).toFixed(2)} USDC`
@@ -102,7 +129,7 @@ export const Deposit = ({ markets }: DepositProps) => {
             </p>
           </div>
           <div className="flex justify-between items-center text-xs text-tetriary mb-2">
-            <p>Your required {market?.ticker} deposit</p>
+            <p>Required deposit</p>
             <p>
               {Number(selecteMarketMargin?.requiredDeposit) > 0 && address
                 ? `${Number(selecteMarketMargin?.requiredDeposit).toFixed(
@@ -111,7 +138,76 @@ export const Deposit = ({ markets }: DepositProps) => {
                 : '-'}
             </p>
           </div>
-          {selecteMarketMargin?.liquidationStatus != 'EverythingFine' &&
+          <div className="flex justify-between items-center text-xs text-tetriary mb-2">
+            <p>Status</p>
+            <LiquidationStatusTab
+              status={
+                selecteMarketMargin?.liquidationStatus as LiquidationStatusType
+              }
+            />
+          </div>
+          {selecteMarketMargin?.liquidationStatus != 'EverythingFine' && (
+            <div className="flex justify-between items-center text-xs text-tetriary mb-2">
+              <div className="flex items-center gap-1.5">
+                <p>To</p>
+                <LiquidationStatusTab status={'EverythingFine'} />
+              </div>
+              <p
+                onClick={() => handleAddNegative(Number(toEverythingFine))}
+                className={`text-xs font-semibold ${
+                  Number(toEverythingFine) > 0
+                    ? 'text-[#ACE7C2]'
+                    : 'text-[#DA8D8B] underline cursor-pointer'
+                }`}
+              >
+                {Number(toEverythingFine) > 0
+                  ? `+${toEverythingFine}`
+                  : toEverythingFine}
+              </p>
+            </div>
+          )}
+          {selecteMarketMargin?.liquidationStatus != 'MarginCall' &&
+            Number(selecteMarketMargin?.requiredDeposit) > 0 && (
+              <div className="flex justify-between items-center text-xs text-tetriary mb-2">
+                <div className="flex items-center gap-1.5">
+                  <p>To</p>
+                  <LiquidationStatusTab status={'MarginCall'} />
+                </div>
+                <p
+                  onClick={() => handleAddNegative(Number(toMarginCall))}
+                  className={`text-xs font-semibold ${
+                    Number(toMarginCall) > 0
+                      ? 'text-[#ACE7C2]'
+                      : 'text-[#DA8D8B] underline cursor-pointer'
+                  }`}
+                >
+                  {Number(toMarginCall) > 0 ? `+${toMarginCall}` : toMarginCall}
+                </p>
+              </div>
+            )}
+          {selecteMarketMargin?.liquidationStatus != 'Liquidation' &&
+            Number(selecteMarketMargin?.requiredDeposit) > 0 && (
+              <div className="flex justify-between items-center text-xs text-tetriary mb-2">
+                <div className="flex items-center gap-1.5">
+                  <p>To</p>
+                  <LiquidationStatusTab status={'Liquidation'} />
+                </div>
+                <p
+                  onClick={() => handleAddNegative(Number(toLiquidation))}
+                  className={`text-xs font-semibold ${
+                    Number(toLiquidation) > 0
+                      ? 'text-[#ACE7C2]'
+                      : 'text-[#DA8D8B] underline cursor-pointer'
+                  }`}
+                >
+                  {Number(toLiquidation) > 0
+                    ? `+${toLiquidation}`
+                    : toLiquidation}
+                </p>
+              </div>
+            )}
+
+          {/*   {selecteMarketMargin?.liquidationStatus != 'EverythingFine' &&
             selecteMarketMargin?.liquidationStatus && (
               <div className="flex justify-between">
                 <div className="flex items-center gap-2">
@@ -141,7 +237,7 @@ export const Deposit = ({ markets }: DepositProps) => {
                   USDC
                 </button>
               </div>
-            )}
+            )} */}
 
           <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
             <p>Amount</p>

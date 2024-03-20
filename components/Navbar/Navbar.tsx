@@ -31,7 +31,7 @@ export const Navbar = () => {
       <div className=" flex justify-between h-full px-7 items-center">
         <div className="flex gap-2">
           <Image src={logo} alt="BigShortBet$ Logo" width={50} priority />
-          <p className="text-md">market peer-to-peer</p>
+          <p className="text-md">peer-to-peer</p>
         </div>
         <div className="flex items-center gap-4">
           {isConnected && <CurrentNetworkTab />}
