@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TradingHubOrdersItem } from './TradingHubOrdersItem';
 import { OrderType } from '@/types/orderTypes';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { useAtom } from 'jotai';
+import { tradingHubOrdersCountAtom } from '../TradingHub';
 
 interface TradingHubOrdersProps {
   orders: OrderType[];
@@ -9,6 +11,12 @@ interface TradingHubOrdersProps {
 
 export const TradingHubOrders = ({ orders }: TradingHubOrdersProps) => {
   /* const [animationParent] = useAutoAnimate(); - Not working properly*/
+
+  const [, setOrdersCount] = useAtom(tradingHubOrdersCountAtom);
+
+  useEffect(() => {
+    setOrdersCount(orders.length);
+  }, [orders]);
   return (
     <div
       className="w-full h-full overflow-y-auto no-scrollbar"

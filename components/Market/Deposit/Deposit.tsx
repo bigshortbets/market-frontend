@@ -162,7 +162,8 @@ export const Deposit = ({ markets }: DepositProps) => {
               >
                 {Number(toEverythingFine) > 0
                   ? `+${toEverythingFine}`
-                  : toEverythingFine}
+                  : toEverythingFine}{' '}
+                USDC
               </p>
             </div>
           )}
@@ -181,7 +182,8 @@ export const Deposit = ({ markets }: DepositProps) => {
                       : 'text-[#DA8D8B] underline cursor-pointer'
                   }`}
                 >
-                  {Number(toMarginCall) > 0 ? `+${toMarginCall}` : toMarginCall}
+                  {Number(toMarginCall) > 0 ? `+${toMarginCall}` : toMarginCall}{' '}
+                  USDC
                 </p>
               </div>
             )}
@@ -202,7 +204,8 @@ export const Deposit = ({ markets }: DepositProps) => {
                 >
                   {Number(toLiquidation) > 0
                     ? `+${toLiquidation}`
-                    : toLiquidation}
+                    : toLiquidation}{' '}
+                  USDC
                 </p>
               </div>
             )}

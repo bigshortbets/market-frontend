@@ -1,8 +1,10 @@
 import { PositionType } from '@/types/positionTypes';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TradingHubAggregatedPosition } from './TradingHubAggregatedPosition';
 import { useAtom } from 'jotai';
 import { unsettledLossesAtom } from '../../Market';
+import { tradingHubPositionsCountAtom } from '../TradingHub';
+import { useAccount } from 'wagmi';
 
 interface TradingHubPositionsProps {
   positions: PositionType[];
@@ -24,6 +26,12 @@ export const TradingHubPositions = ({
   };
 
   const positionsByMarketTicker = aggregatePositionsByMarketTicker();
+  const [, setPositionsCount] = useAtom(tradingHubPositionsCountAtom);
+  const { address } = useAccount();
+
+  useEffect(() => {
+    setPositionsCount(positions.length);
+  }, [positions]);
 
   return (
     <div
