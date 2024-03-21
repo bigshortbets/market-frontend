@@ -13,14 +13,13 @@ export interface UnsettledLosses {
 
 export function useUnsettledLosses(
   positions: PositionType[] | undefined,
-  address: string | null,
-  oraclePrice: BigInt | null
+  address: string | null
 ) {
   const [, setUnsettledLosses] = useAtom(unsettledLossesAtom);
 
   useEffect(() => {
     const calculateUnsettledLosses = () => {
-      if (!address || !positions || positions.length === 0 || !oraclePrice) {
+      if (!address || !positions || positions.length === 0) {
         setUnsettledLosses({});
         return;
       }
@@ -42,6 +41,7 @@ export function useUnsettledLosses(
 
       positionsWithSide.forEach((position: PositionWithSide) => {
         const marketId = position.market.id;
+        const oraclePrice = position.market.oraclePrice;
         const loss =
           position.side === 'LONG'
             ? Number(position.quantity) *
@@ -61,8 +61,8 @@ export function useUnsettledLosses(
       setUnsettledLosses(marketLosses);
     };
 
-    if (address && positions && positions.length > 0 && oraclePrice) {
+    if (address && positions && positions.length > 0) {
       calculateUnsettledLosses();
     }
-  }, [positions, address, oraclePrice, setUnsettledLosses]);
+  }, [positions, address, setUnsettledLosses]);
 }

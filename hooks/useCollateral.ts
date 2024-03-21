@@ -26,12 +26,14 @@ export function useCollateral(
 
       positions.forEach((position) => {
         const marketId = position.market.id;
-
-        const price = Number(scaleNumber(Number(position.price.toString())));
+        const oraclePrice = Number(
+          scaleNumber(Number(position.market.oraclePrice.toString()))
+        );
+        /* const price = Number(scaleNumber(Number(position.price.toString()))); */
         const quantityLeft = Number(position.quantityLeft.toString());
         const contractUnit = Number(position.market.contractUnit.toString());
 
-        const collateralForPosition = price * quantityLeft * contractUnit;
+        const collateralForPosition = oraclePrice * quantityLeft * contractUnit;
 
         if (!marketCollateral[marketId]) {
           marketCollateral[marketId] = 0;

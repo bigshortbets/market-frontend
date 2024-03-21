@@ -42,9 +42,7 @@ export const TradingHubContentContainer = () => {
     }
   );
 
-  const oraclePrice = positionsRes?.positions[0].market.oraclePrice;
-
-  useUnsettledLosses(positionsRes?.positions, address!, oraclePrice!);
+  useUnsettledLosses(positionsRes?.positions, address!);
   useCollateral(positionsRes?.positions, address!);
 
   const [tradingHubState] = useAtom(tradingHubStateAtom);

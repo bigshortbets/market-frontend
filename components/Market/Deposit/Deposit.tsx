@@ -86,20 +86,7 @@ export const Deposit = ({ markets }: DepositProps) => {
   };
 
   return (
-    <div
-      className="p-2.5 pb-4 flex flex-col gap-4"
-      onClick={() =>
-        console.log(
-          `Margin: ${Number(
-            selecteMarketMargin?.margin
-          )} Collateral: ${collateral} Usettled Loses: ${unsettledLoses} Initial margin: ${
-            Number(market!.initialMargin.toString()) / 100
-          } Maintenance margin: ${
-            Number(market!.maintenanceMargin.toString()) / 100
-          }`
-        )
-      }
-    >
+    <div className="p-2.5 pb-4 flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <p className="text-sm font-semibold text-secondary leading-[24px]">
           Deposit
