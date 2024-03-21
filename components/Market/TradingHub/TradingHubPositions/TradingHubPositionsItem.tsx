@@ -26,11 +26,11 @@ export const TradingHubPositionsItem = ({
   const opponent = position.side === 'LONG' ? position.short : position.long;
   const calculatedProfitOrLoss =
     position.side === 'LONG'
-      ? Number(position.quantity) *
+      ? Number(position.quantityLeft) *
         Number(position.market.contractUnit) *
         (Number(scaleNumber(oraclePrice.toString())) -
           Number(scaleNumber(position.price.toString())))
-      : Number(position.quantity) *
+      : Number(position.quantityLeft) *
         Number(position.market.contractUnit) *
         (Number(scaleNumber(position.price.toString())) -
           Number(scaleNumber(oraclePrice.toString())));
