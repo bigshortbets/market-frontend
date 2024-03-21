@@ -44,11 +44,11 @@ export function useUnsettledLosses(
         const oraclePrice = position.market.oraclePrice;
         const loss =
           position.side === 'LONG'
-            ? Number(position.quantity) *
+            ? Number(position.quantityLeft) *
               Number(position.market.contractUnit) *
               (Number(scaleNumber(oraclePrice.toString())) -
                 Number(scaleNumber(position.price.toString())))
-            : Number(position.quantity) *
+            : Number(position.quantityLeft) *
               Number(position.market.contractUnit) *
               (Number(scaleNumber(position.price.toString())) -
                 Number(scaleNumber(oraclePrice.toString())));
