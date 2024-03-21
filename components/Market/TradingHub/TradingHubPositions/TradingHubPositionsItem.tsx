@@ -10,6 +10,8 @@ import { opponentsMarginsAtom } from '../../Market';
 import { useAtom } from 'jotai';
 import { LiquidationStatusTab } from '../../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
+import { Tooltip } from 'react-tooltip';
+import { useMarkToMarket } from '@/blockchain/hooks/useMarkToMarket';
 
 interface TradingHubPositionsItemProps {
   position: PositionWithSide;
@@ -33,12 +35,16 @@ export const TradingHubPositionsItem = ({
         (Number(scaleNumber(position.price.toString())) -
           Number(scaleNumber(oraclePrice.toString())));
 
-  const { write: writeClosePosition, isLoading } = useClosePosition(
-    position.market.id,
-    position.id,
-    priceToClose,
-    position.quantityLeft
-  );
+  const { write: writeClosePosition, isLoading: isClosePositionLoading } =
+    useClosePosition(
+      position.market.id,
+      position.id,
+      priceToClose,
+      position.quantityLeft
+    );
+
+  const { write: writeMarkToMarket, isLoading: isMarkToMarketLoading } =
+    useMarkToMarket(position.market.id, position.id);
 
   const [opponentsMargin] = useAtom(opponentsMarginsAtom);
 
@@ -80,6 +86,18 @@ export const TradingHubPositionsItem = ({
       </td>
 
       <td className=" text-right pr-3 ">
+        <a
+          data-tooltip-id="m2m-tooltip"
+          data-tooltip-html="Mark-to-Market (MTM): Instantly updates your</br> asset values based  on current market conditions.</br> On our peer-to-peer market, this action is </br>executed on demand, ensuring transparency without</br> daily automatic adjustments."
+        >
+          <button
+            className="mr-4 text-xs font-semibold text-[#9BA6F8]"
+            onClick={() => writeMarkToMarket?.()}
+          >
+            MTM
+          </button>
+        </a>
+
         <NumericFormat
           className="rounded-lg mr-4 w-[100px] py-1.5 px-2 close-position-input text-xs outline-none"
           placeholder="Price to close"
@@ -99,6 +117,7 @@ export const TradingHubPositionsItem = ({
           CLOSE POSITION
         </button>
       </td>
+      <Tooltip id="m2m-tooltip" />
     </tr>
   );
 };

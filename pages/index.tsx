@@ -29,7 +29,7 @@ export default function Home() {
         <title>bigshortbet$ P2P Market</title>
       </Head>
       {isLoading ? <LoadingScreen /> : <Market markets={markets} />}
-      <Toaster position="bottom-center" />
+      <Toaster position="top-center" />
     </main>
   );
 }
