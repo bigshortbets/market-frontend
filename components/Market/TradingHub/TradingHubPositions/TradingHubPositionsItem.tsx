@@ -12,6 +12,7 @@ import { LiquidationStatusTab } from '../../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { Tooltip } from 'react-tooltip';
 import { useMarkToMarket } from '@/blockchain/hooks/useMarkToMarket';
+import { ClosePositionModal } from './ClosePositionModal';
 
 interface TradingHubPositionsItemProps {
   position: PositionWithSide;
@@ -22,7 +23,6 @@ export const TradingHubPositionsItem = ({
   position,
   oraclePrice,
 }: TradingHubPositionsItemProps) => {
-  const [priceToClose, setPriceToClose] = useState<number>(0);
   const opponent = position.side === 'LONG' ? position.short : position.long;
   const calculatedProfitOrLoss =
     position.side === 'LONG'
@@ -35,13 +35,13 @@ export const TradingHubPositionsItem = ({
         (Number(scaleNumber(position.price.toString())) -
           Number(scaleNumber(oraclePrice.toString())));
 
-  const { write: writeClosePosition, isLoading: isClosePositionLoading } =
+  /*   const { write: writeClosePosition, isLoading: isClosePositionLoading } =
     useClosePosition(
       position.market.id,
       position.id,
       priceToClose,
       position.quantityLeft
-    );
+    ); */
 
   const { write: writeMarkToMarket, isLoading: isMarkToMarketLoading } =
     useMarkToMarket(position.market.id, position.id);
@@ -54,12 +54,18 @@ export const TradingHubPositionsItem = ({
     position.market.id
   );
 
+  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+
+  const handleCloseModal = () => {
+    setIsModalOpened(false);
+  };
+
   return (
     <tr
       className={`text-sm even:bg-[#23252E] text-[#7F828F] 
   }`}
     >
-      <td className="pl-3 py-3">
+      <td className='pl-3 py-3'>
         <SideLabel side={position.side} />
       </td>
       <td>{Number(position.quantityLeft)}</td>
@@ -75,8 +81,8 @@ export const TradingHubPositionsItem = ({
         <span className={`text-xs`}>USDC</span>
       </td>
 
-      <td className="align-middle">
-        <div className="flex items-center space-x-2">
+      <td className='align-middle'>
+        <div className='flex items-center space-x-2'>
           <p>{truncateAddress(opponent)}</p>
           <LiquidationStatusTab
             status={marginData?.liquidationStatus! as LiquidationStatusType}
@@ -85,39 +91,33 @@ export const TradingHubPositionsItem = ({
         </div>
       </td>
 
-      <td className=" text-right pr-3 ">
+      <td className=' text-right pr-3 '>
         <a
-          data-tooltip-id="m2m-tooltip"
-          data-tooltip-html="Mark-to-Market (MTM): Instantly updates your</br> asset values based  on current market conditions.</br> On our peer-to-peer market, this action is </br>executed on demand, ensuring transparency without</br> daily automatic adjustments."
+          data-tooltip-id='m2m-tooltip'
+          data-tooltip-html='Mark-to-Market (MTM): Instantly updates your</br> asset values based  on current market conditions.</br> On our peer-to-peer market, this action is </br>executed on demand, ensuring transparency without</br> daily automatic adjustments.'
         >
           <button
-            className="mr-4 text-xs font-semibold text-[#9BA6F8] hover:underline"
+            className='mr-4 text-xs font-semibold text-[#9BA6F8] hover:underline'
             onClick={() => writeMarkToMarket?.()}
           >
             MTM
           </button>
         </a>
 
-        <NumericFormat
-          className="rounded-lg mr-4 w-[100px] py-1.5 px-2 close-position-input text-xs outline-none"
-          placeholder="Price to close"
-          allowNegative={false}
-          value={priceToClose === 0 ? '' : priceToClose}
-          onChange={(e) => setPriceToClose(Number(e.target.value))}
-        />
-
         <button
-          onClick={() => writeClosePosition?.()}
-          className={`font-bold text-xs ${
-            priceToClose > 0
-              ? 'text-[#D26D6C] '
-              : 'text-[#7F828F] pointer-events-none'
-          } transition ease-in-out hover:text-[#C53F3A] duration-300 `}
+          onClick={() => setIsModalOpened(true)}
+          className={`font-bold text-xs hover:underline transition ease-in-out text-[#C53F3A] duration-300 `}
         >
-          CLOSE POSITION
+          CLOSE
         </button>
       </td>
-      <Tooltip id="m2m-tooltip" />
+      <Tooltip id='m2m-tooltip' />
+      <ClosePositionModal
+        handleCloseModal={handleCloseModal}
+        isModalOpened={isModalOpened}
+        position={position}
+        profitLoss={calculatedProfitOrLoss}
+      />
     </tr>
   );
 };
