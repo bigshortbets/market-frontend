@@ -11,6 +11,7 @@
   "dependencies": {
     "@apollo/client": "^3.8.6",
     "@formkit/auto-animate": "^0.8.0",
+    "@headlessui/react": "^1.7.18",
     "@polkadot/api": "^10.11.2",
     "@polkadot/util": "^12.6.2",
     "@polkadot/util-crypto": "^12.5.1",

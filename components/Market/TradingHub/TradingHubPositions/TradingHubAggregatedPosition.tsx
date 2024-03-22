@@ -14,6 +14,7 @@ import { selectedMarketIdAtom, userMarginsAtom } from '../../Market';
 import MiniChartWidget from '../Widget/MiniChartWidget';
 import { LiquidationStatusTab } from '../../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
+import { ClosePositionModal } from './ClosePositionModal';
 
 interface TradingHubAggregatedPositionProps {
   positions: PositionType[];
@@ -203,6 +204,7 @@ export const TradingHubAggregatedPosition = ({
           </table>
         </div>
       )}
+      <ClosePositionModal />
     </div>
   );
 };

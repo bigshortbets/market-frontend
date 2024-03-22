@@ -91,7 +91,7 @@ export const TradingHubPositionsItem = ({
           data-tooltip-html="Mark-to-Market (MTM): Instantly updates your</br> asset values based  on current market conditions.</br> On our peer-to-peer market, this action is </br>executed on demand, ensuring transparency without</br> daily automatic adjustments."
         >
           <button
-            className="mr-4 text-xs font-semibold text-[#9BA6F8]"
+            className="mr-4 text-xs font-semibold text-[#9BA6F8] hover:underline"
             onClick={() => writeMarkToMarket?.()}
           >
             MTM
