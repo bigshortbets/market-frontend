@@ -11,7 +11,7 @@ export const LiquidationStatusTab = ({
 }: LiquidationStatusTabProps) => {
   const statusText = {
     EverythingFine: 'Everything fine',
-    MarginCall: 'Margin call',
+    MarginCall: 'Below required',
     Liquidation: 'Liquidation',
     Underwater: 'Underwater',
   };

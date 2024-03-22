@@ -9,7 +9,7 @@ export const useClosePosition = (
   marketId: string,
   positionId: string,
   price: number,
-  quantity: BigInt
+  quantity: number
 ) => {
   const { data, isLoading, isSuccess, write } = useContractWrite({
     address: marketContract as `0x${string}`,
@@ -19,7 +19,7 @@ export const useClosePosition = (
       BigInt(marketId),
       BigInt(positionId),
       parseEther(price.toString()),
-      quantity,
+      BigInt(quantity),
     ],
     onError(error) {
       handleBlockchainError(error.stack!);
