@@ -268,16 +268,18 @@ export const Deposit = ({ markets }: DepositProps) => {
           {address && !isBsbNetwork && 'Change network'}
         </button>
       </div>
-      {selecteMarketMargin?.liquidationStatus != 'EverythingFine' && (
-        <FinanceManagerInfo
-          value={`To change your market status from ${
-            selecteMarketMargin?.liquidationStatus
-          } to Everthing fine, you need to deposit ${(
-            Number(selecteMarketMargin!.requiredDeposit) -
-            Number(selecteMarketMargin!.margin)
-          ).toFixed(2)} USDC to ${market?.ticker} market.`}
-        />
-      )}
+      {selecteMarketMargin?.liquidationStatus != 'EverythingFine' &&
+        selecteMarketMargin &&
+        selecteMarketMargin.requiredDeposit && (
+          <FinanceManagerInfo
+            value={`To change your market status from ${
+              selecteMarketMargin?.liquidationStatus
+            } to Everthing fine, you need to deposit ${(
+              Number(selecteMarketMargin!.requiredDeposit) -
+              Number(selecteMarketMargin!.margin)
+            ).toFixed(2)} USDC to ${market?.ticker} market.`}
+          />
+        )}
     </div>
   );
 };

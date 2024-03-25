@@ -65,42 +65,42 @@ export const marketsData: MarketsDataProps[] = [
 
   {
     symbol: 'MCL',
-    name: 'Micro Crude Oil',
+    name: 'Crude Oil',
     path: './market-logos/CL.svg',
   },
   {
     symbol: 'MGC',
-    name: 'Micro Gold',
+    name: 'Gold',
     path: './market-logos/GOLD.svg',
   },
   {
     symbol: 'MBT',
-    name: 'Micro Bitcoin',
+    name: 'Bitcoin',
     path: './market-logos/BTC.svg',
   },
   {
     symbol: 'MET',
-    name: 'Micro Ethereum',
+    name: 'Ethereum',
     path: './market-logos/ETH.svg',
   },
   {
     symbol: 'MNQ',
-    name: 'Micro Nasdaq',
+    name: 'Nasdaq',
     path: './market-logos/NQ.svg',
   },
   {
     symbol: 'MES',
-    name: 'Micro S&P 500',
+    name: 'S&P 500',
     path: './market-logos/SP500.svg',
   },
   {
     symbol: 'M6E',
-    name: 'Micro Euro/Usd',
+    name: 'Euro/Usd',
     path: './market-logos/E7.svg',
   },
   {
     symbol: 'MYM',
-    name: 'Micro Dow Jones',
+    name: 'Dow Jones',
     path: './market-logos/DOWJONES.svg',
   },
 ];

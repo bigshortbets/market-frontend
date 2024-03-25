@@ -81,7 +81,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
         </p>
         <div className="flex flex-col gap-2 ">
           <div className="flex justify-between items-center text-xs text-tetriary ">
-            <p>Your current {market?.ticker} deposit</p>
+            <p>Current deposit</p>
             <p>
               {address
                 ? `${Number(selecteMarketMargin?.margin).toFixed(2)} USDC`
@@ -89,7 +89,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
             </p>
           </div>
           <div className="flex justify-between items-center text-xs text-tetriary mb-2">
-            <p>Your required {market?.ticker} deposit</p>
+            <p>Required deposit</p>
             <p>
               {Number(selecteMarketMargin?.requiredDeposit) > 0 && address
                 ? `${Number(selecteMarketMargin?.requiredDeposit).toFixed(
