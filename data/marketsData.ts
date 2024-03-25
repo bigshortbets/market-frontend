@@ -60,4 +60,42 @@ export const marketsData: MarketsDataProps[] = [
     name: 'Apple',
     path: './market-logos/AAPH.svg',
   },
+
+  /* MICRO */
+
+  {
+    symbol: 'MCL',
+    name: 'Micro Crude Oil',
+    path: './market-logos/CL.svg',
+  },
+  {
+    symbol: 'MGC',
+    name: 'Micro Gold',
+    path: './market-logos/GOLD.svg',
+  },
+  {
+    symbol: 'MBT',
+    name: 'Micro Bitcoin',
+    path: './market-logos/BTC.svg',
+  },
+  {
+    symbol: 'MET',
+    name: 'Micro Ethereum',
+    path: './market-logos/ETH.svg',
+  },
+  {
+    symbol: 'MNQ',
+    name: 'Micro Nasdaq',
+    path: './market-logos/NQ.svg',
+  },
+  {
+    symbol: 'MES',
+    name: 'Micro S&P 500',
+    path: './market-logos/SP500.svg',
+  },
+  {
+    symbol: 'M6E',
+    name: 'Micro Euro/Usd',
+    path: './market-logos/E7.svg',
+  },
 ];
