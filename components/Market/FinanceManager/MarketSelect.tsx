@@ -29,12 +29,16 @@ export const MarketSelect = ({
     markets,
     Number(currentBlock)
   );
+
+  const noMarkets = markets.length < 1;
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
   const handleToggleSelectOpen = () => {
-    if (isSelectOpen) {
-      setIsSelectOpen(false);
-    } else {
-      setIsSelectOpen(true);
+    if (!noMarkets) {
+      if (isSelectOpen) {
+        setIsSelectOpen(false);
+      } else {
+        setIsSelectOpen(true);
+      }
     }
   };
 
@@ -59,11 +63,15 @@ export const MarketSelect = ({
 
   return (
     <div
-      className="sm:w-[360px] w-full bg-[#23252E] rounded-tl-[10px] relative sm:border-r border-[#444650]"
+      className={`sm:w-[360px] w-full bg-[#23252E] rounded-tl-[10px] relative sm:border-r border-[#444650] ${
+        noMarkets && 'opacity-50'
+      }`}
       ref={selectRef}
     >
       <div
-        className="pr-6 pl-4 py-2 flex w-full justify-between items-center h-full cursor-pointer"
+        className={`pr-6 pl-4 py-2 flex w-full justify-between items-center h-full ${
+          !noMarkets && 'cursor-pointer'
+        }`}
         onClick={handleToggleSelectOpen}
       >
         <div className="flex items-center gap-4">
@@ -83,6 +91,9 @@ export const MarketSelect = ({
 
             {marketDetails && (
               <p className="text-[10px] font-normal">{market?.ticker}</p>
+            )}
+            {noMarkets && (
+              <p className="text-xs">Currently no markets available</p>
             )}
           </div>
         </div>

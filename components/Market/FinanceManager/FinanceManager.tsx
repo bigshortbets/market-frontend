@@ -20,6 +20,8 @@ export const financeManagerAtom = atom<FinanceManagerTabsType>('order');
 export const FinanceManager = ({ markets }: FinanceManagerProps) => {
   const [financeManagerState] = useAtom(financeManagerAtom);
 
+  const noMarkets = markets.length < 1;
+
   return (
     <div
       className="h-full w-full sm:w-[360px] sm:border-r border-[#444650] overflow-auto no-scrollbar"
@@ -28,7 +30,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
       <div className="flex flex-col ">
         <div className="py-3 px-2.5 border-b border-[#444650] flex items-center gap-2">
           {tabs.map((tab, key) => (
-            <FinanceManagerTab value={tab} key={key} />
+            <FinanceManagerTab value={tab} key={key} disabled={noMarkets} />
           ))}
         </div>
         {financeManagerState === 'order' && <OrderManager markets={markets} />}
@@ -36,9 +38,11 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
         {financeManagerState === 'withdraw' && <Withdraw markets={markets} />}
         {financeManagerState === 'bridge' && <Bridge />}
       </div>
-      <div className="px-[10px] pb-2">
-        <ContractDetails markets={markets} />
-      </div>
+      {!noMarkets && (
+        <div className="px-[10px] pb-2">
+          <ContractDetails markets={markets} />
+        </div>
+      )}
     </div>
   );
 };
