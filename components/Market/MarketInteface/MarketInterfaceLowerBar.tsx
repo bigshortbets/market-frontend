@@ -5,6 +5,7 @@ import { useAccount } from 'wagmi';
 import { selectedMarketMarginAtom, userMarginsAtom } from '../Market';
 import { LiquidationStatusTab } from '../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
+import { currencyFormatter } from '@/utils/currencyFormatter';
 
 export const MarketInterfaceLowerBar = () => {
   const { address } = useAccount();
@@ -19,7 +20,7 @@ export const MarketInterfaceLowerBar = () => {
             <p className="text-tetriary font-semibold">Wallet balance</p>
             <p className="text-white">
               {address
-                ? `${Number(data?.formatted).toFixed(2).toString()} ${
+                ? `${currencyFormatter.format(Number(data?.formatted))} ${
                     data?.symbol
                   }`
                 : '-'}
@@ -27,11 +28,9 @@ export const MarketInterfaceLowerBar = () => {
           </div>
           <div className="border-l border-[#444650] h-[32px] text-xs pl-2">
             <p className="text-tetriary font-semibold">Total deposits</p>
-            <p>
-              {userMargins.totalMarginValue === 0
-                ? '-'
-                : `${userMargins.totalMarginValue} USDC`}
-            </p>
+            <p>{`${currencyFormatter.format(
+              userMargins.totalMarginValue
+            )} USDC`}</p>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -41,7 +40,10 @@ export const MarketInterfaceLowerBar = () => {
               <p className="text-tetriary font-semibold">Market deposit</p>
             </div>
 
-            <p className="text-white">{selectedMarketMargin?.margin} USDC</p>
+            <p className="text-white">
+              {currencyFormatter.format(Number(selectedMarketMargin?.margin))}{' '}
+              USDC
+            </p>
           </div>
           <LiquidationStatusTab
             status={
