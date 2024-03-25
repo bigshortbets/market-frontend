@@ -98,4 +98,9 @@ export const marketsData: MarketsDataProps[] = [
     name: 'Micro Euro/Usd',
     path: './market-logos/E7.svg',
   },
+  {
+    symbol: 'MYM',
+    name: 'Micro Dow Jones',
+    path: './market-logos/DOWJONES.svg',
+  },
 ];
