@@ -1,6 +1,5 @@
 import { OrderType } from '@/types/orderTypes';
 import { SideLabel } from '../SideLabel';
-import { scaleNumber } from '@/utils/scaleNumber';
 import { useCancelOrder } from '@/blockchain/hooks/useCancelOrder';
 
 interface TradingHubOrdersItemProps {
@@ -27,7 +26,7 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
       {/* Market */}
       <td>{order.market.ticker}</td>
       {/* Price */}
-      <td>{scaleNumber(Number(order.price))}</td>
+      <td>{Number(order.price)}</td>
       {/* Quantity */}
       <td>{Number(order.quantity)}</td>
       {/* Close */}

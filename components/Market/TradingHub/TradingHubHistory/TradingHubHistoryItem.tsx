@@ -1,8 +1,5 @@
-import { OrderType } from "@/types/orderTypes";
-import { SideLabel } from "../SideLabel";
-import { scaleNumber } from "@/utils/scaleNumber";
-import { useCancelOrder } from "@/blockchain/hooks/useCancelOrder";
-import { HistoryOrderType } from "@/types/historyTypes";
+import { SideLabel } from '../SideLabel';
+import { HistoryOrderType } from '@/types/historyTypes';
 
 interface TradingHubHistoryItem {
   order: HistoryOrderType;
@@ -20,7 +17,7 @@ export const TradingHubHistoryItem = ({ order }: TradingHubHistoryItem) => {
       {/* Market */}
       <td>{order.market.ticker}</td>
       {/* Price */}
-      <td>{scaleNumber(Number(order.price))}</td>
+      <td>{Number(order.price)}</td>
       {/* Quantity */}
       <td>{Number(order.initialQuantity)}</td>
       {/* Close */}

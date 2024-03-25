@@ -1,7 +1,5 @@
 import { MarketType } from '@/types/marketTypes';
 import { RecentPositionType } from '@/types/positionTypes';
-import { scaleNumber } from '@/utils/scaleNumber';
-import React from 'react';
 
 interface OrderBookTopProps {
   recentTrades: RecentPositionType[];
@@ -15,17 +13,13 @@ export const OrderBookTop = ({ recentTrades, market }: OrderBookTopProps) => {
         <div>
           <p className="text-xs text-tetriary font-semibold">Oracle Price</p>
           <p className="text-xs font-normal">
-            {market?.oraclePrice && scaleNumber(market?.oraclePrice.toString())}
+            {market?.oraclePrice && market?.oraclePrice.toString()}
           </p>
         </div>
 
         <div className="border-l border-[#444650] text-xs pl-2">
           <p className="text-tetriary font-semibold">Market Price</p>
-          <p>
-            {recentTrades.length > 0
-              ? scaleNumber(Number(recentTrades[0].price))
-              : '-'}
-          </p>
+          <p>{recentTrades.length > 0 ? Number(recentTrades[0].price) : '-'}</p>
         </div>
       </div>
     </div>

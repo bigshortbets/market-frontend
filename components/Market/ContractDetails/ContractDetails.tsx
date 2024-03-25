@@ -1,16 +1,9 @@
 import { MarketType } from '@/types/marketTypes';
 import { useAtom } from 'jotai';
-import React, { useRef, useState } from 'react';
 import { currentBlockAtom, selectedMarketIdAtom } from '../Market';
 import { findMarketById } from '@/utils/findMarketById';
-import { scaleNumber } from '@/utils/scaleNumber';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { formatDate } from '@/utils/formatDate';
 
-import {
-  MdOutlineKeyboardArrowDown,
-  MdOutlineKeyboardArrowUp,
-} from 'react-icons/md';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 
 interface ContractDetailsProps {
@@ -34,7 +27,7 @@ export const ContractDetails = ({ markets }: ContractDetailsProps) => {
     { label: 'Market duration', value: marketDurationRepresentation },
     {
       label: 'Tick size',
-      value: `${scaleNumber(selectedMarket?.tickSize?.toString()!)} USDC`,
+      value: `${selectedMarket?.tickSize?.toString()} USDC`,
     },
     {
       label: 'Initial margin',

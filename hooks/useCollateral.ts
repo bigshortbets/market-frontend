@@ -3,7 +3,6 @@ import { useAtom } from 'jotai';
 
 import { collateralAtom } from '@/components/Market/Market';
 import { PositionType } from '@/types/positionTypes';
-import { scaleNumber } from '@/utils/scaleNumber';
 
 export interface Collateral {
   [marketId: string]: number;
@@ -26,9 +25,7 @@ export function useCollateral(
 
       positions.forEach((position) => {
         const marketId = position.market.id;
-        const oraclePrice = Number(
-          scaleNumber(Number(position.market.oraclePrice.toString()))
-        );
+        const oraclePrice = Number(position.market.oraclePrice.toString());
         /* const price = Number(scaleNumber(Number(position.price.toString()))); */
         const quantityLeft = Number(position.quantityLeft.toString());
         const contractUnit = Number(position.market.contractUnit.toString());

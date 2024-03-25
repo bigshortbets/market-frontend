@@ -2,9 +2,7 @@ import { MarketType } from '@/types/marketTypes';
 import { useAtom } from 'jotai';
 import { selectedMarketIdAtom } from './Market/Market';
 import { findMarketById } from '@/utils/findMarketById';
-import { scaleNumber } from '@/utils/scaleNumber';
-import { useAccount, useBalance } from 'wagmi';
-import { bigshortbetsTokenAddress } from '@/blockchain/constants';
+import { useAccount } from 'wagmi';
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
 import Image from 'next/image';
@@ -39,7 +37,7 @@ export const MarketBar = ({ markets }: MarketBarProps) => {
     { label: 'Market duration', value: marketDurationRepresentation },
     {
       label: 'Tick size',
-      value: `${scaleNumber(market?.tickSize?.toString()!)} USDC`,
+      value: `${market?.tickSize?.toString()!} USDC`,
     },
     {
       label: 'Initial margin',
@@ -84,7 +82,7 @@ export const MarketBar = ({ markets }: MarketBarProps) => {
             <p>Oracle price:</p>
             {market?.oraclePrice ? (
               <p className="font-semibold text-[#9BA6F8]">
-                {scaleNumber(market?.oraclePrice.toString())}
+                {market?.oraclePrice.toString()}
               </p>
             ) : (
               <p className="font-semibold">Loading...</p>

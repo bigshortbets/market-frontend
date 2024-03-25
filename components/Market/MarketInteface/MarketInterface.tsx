@@ -1,15 +1,9 @@
 import { MarketType } from '@/types/marketTypes';
 import { useAtom } from 'jotai';
-import React from 'react';
 import { selectedMarketIdAtom } from '../Market';
-import { findMarketById } from '@/utils/findMarketById';
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
-import { scaleNumber } from '@/utils/scaleNumber';
 import { MarketInterfaceLowerBar } from './MarketInterfaceLowerBar';
 import { MarketInterfaceTopBar } from './MarketInterfaceTopBar';
-import { OrderManager } from '../OrderManager/OrderManager';
 import { FinanceManager } from '../FinanceManager/FinanceManager';
-import { ContractDetails } from '../ContractDetails/ContractDetails';
 import { OrderBookContainer } from '../OrderBook/OrderBookContainer';
 
 interface MarketInterfaceProps {
