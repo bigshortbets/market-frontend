@@ -66,7 +66,10 @@ export const Market = ({ markets }: MarketProps) => {
   const market = findMarketById(markets, selectedMarketId);
   const [recentTrades] = useAtom(recentTradesAtom);
   useEffect(() => {
-    setSelectedMarketId(markets[0].id);
+    if (markets && markets.length > 0 && markets[0].id) {
+      setSelectedMarketId(markets[0].id);
+    }
+
     if (chain?.id != bigshortbetsChain.id) {
       switchToBigShortBetsChain();
     }
