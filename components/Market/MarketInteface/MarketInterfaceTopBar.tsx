@@ -1,14 +1,7 @@
 import { MarketType } from '@/types/marketTypes';
 import { findMarketById } from '@/utils/findMarketById';
-import { scaleNumber } from '@/utils/scaleNumber';
-import React, { useEffect, useRef, useState } from 'react';
-import {
-  MdOutlineKeyboardArrowDown,
-  MdOutlineKeyboardArrowUp,
-} from 'react-icons/md';
-import { MarketSelectItem } from './MarketSelectItem';
+import { useEffect, useRef, useState } from 'react';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
-import Image from 'next/image';
 import { useAtom } from 'jotai';
 import { currentBlockAtom, recentTradesAtom } from '../Market';
 import { categorizeMarkets } from '@/utils/categorizeMarkets';
@@ -71,18 +64,14 @@ export const MarketInterfaceTopBar = ({
           <div>
             <p className="text-xs text-tetriary font-semibold">Oracle Price</p>
             <p className="text-xs font-normal">
-              {market?.oraclePrice
-                ? scaleNumber(market?.oraclePrice.toString())
-                : '-'}
+              {market?.oraclePrice ? market?.oraclePrice.toString() : '-'}
             </p>
           </div>
 
           <div className="border-l border-[#444650] text-xs pl-2">
             <p className="text-tetriary font-semibold">Market Price</p>
             <p>
-              {recentTrades.length > 0
-                ? scaleNumber(Number(recentTrades[0].price))
-                : '-'}
+              {recentTrades.length > 0 ? Number(recentTrades[0].price) : '-'}
             </p>
           </div>
         </div>

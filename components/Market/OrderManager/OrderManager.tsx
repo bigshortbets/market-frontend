@@ -1,19 +1,19 @@
 import { useCreateOrderWrite } from '@/blockchain/hooks/useCreateOrderWrite';
 import { useEffect, useState } from 'react';
 import { NumericFormat } from 'react-number-format';
-import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
+import { useAccount, useNetwork } from 'wagmi';
 import { useAtom } from 'jotai';
 import { currentBlockAtom, selectedMarketIdAtom } from '../Market';
 import { findMarketById } from '@/utils/findMarketById';
 import { MarketType } from '@/types/marketTypes';
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
-import { scaleNumber } from '@/utils/scaleNumber';
 import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
 import { checkIfDivisible } from '@/utils/checkIfDivisible';
 import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
+import { scaleNumber } from '@/utils/scaleNumber';
 
 export enum OrderSideEnum {
   LONG,
@@ -74,7 +74,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
 
   useEffect(() => {
     selectedMarket?.oraclePrice &&
-      setPrice(Number(scaleNumber(selectedMarket?.oraclePrice.toString())));
+      setPrice(Number(selectedMarket?.oraclePrice.toString()));
   }, [selectedMarketId]);
 
   useEffect(() => {

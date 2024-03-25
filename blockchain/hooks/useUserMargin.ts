@@ -16,7 +16,7 @@ export type LiquidationStatusType =
 export interface MarginInfo {
   margin: string;
   requiredDeposit: string;
-  liquidationStatus: string;
+  liquidationStatus: LiquidationStatusType; // Adjusted for clarity
 }
 
 export interface UserMargins {
@@ -38,11 +38,7 @@ export function useUserMargin(
     const fetchAllMargins = async () => {
       if (!userAddress) {
         setUserMargins({ details: {}, totalMarginValue: 0 });
-        setSelectedMarketMargin({
-          margin: '',
-          requiredDeposit: '',
-          liquidationStatus: '',
-        });
+        setSelectedMarketMargin(null); // Set to null if no user address, adjust according to your data handling strategy
         return;
       }
 
@@ -52,15 +48,26 @@ export function useUserMargin(
         try {
           const marketId = market.id;
           const marginInfo = await fetchMarginInfo(userAddress, marketId);
-          allMargins[marketId] = marginInfo;
+          // Convert numeric values to strings to align with the MarginInfo interface
+          allMargins[marketId] = {
+            margin: marginInfo.margin.toString(),
+            requiredDeposit: marginInfo.requiredDeposit.toString(),
+            liquidationStatus:
+              marginInfo.liquidationStatus as LiquidationStatusType,
+          };
 
-          const marginValue = parseFloat(marginInfo.margin);
+          const marginValue = parseFloat(marginInfo.margin.toString());
           if (!isNaN(marginValue)) {
             totalMarginValue += marginValue;
           }
 
           if (marketId === selectedMarketId) {
-            setSelectedMarketMargin(marginInfo);
+            setSelectedMarketMargin({
+              margin: marginInfo.margin.toString(),
+              requiredDeposit: marginInfo.requiredDeposit.toString(),
+              liquidationStatus:
+                marginInfo.liquidationStatus as LiquidationStatusType,
+            });
           }
         } catch (error) {
           console.error(

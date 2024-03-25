@@ -24,16 +24,13 @@ export function useOpponentsMargin(
 ) {
   const [, setOpponentsMargins] = useAtom(opponentsMarginsAtom);
 
-  // Default positions to an empty array if it's undefined
   const safePositions = positions || [];
 
-  const POLLING_INTERVAL = 3000; // Adjust this value as needed
+  const POLLING_INTERVAL = 3000;
 
   useEffect(() => {
     const fetchOpponentsMargins = async () => {
-      // Only proceed if the user address is accessible and positions are initialized
       if (!userAddress || safePositions.length === 0) {
-        // Optionally, clear the current margins here if the conditions are not met
         setOpponentsMargins({});
         return;
       }
@@ -52,17 +49,21 @@ export function useOpponentsMargin(
           marketOpponents[marketId] = {};
         }
 
-        // Check we don't already have the margin data for this opponent in this market
         if (!marketOpponents[marketId][opponent]) {
           try {
-            const marginInfo = await fetchMarginInfo(opponent, marketId, true); // Assuming opponent addresses are already in the correct format
-            marketOpponents[marketId][opponent] = marginInfo;
+            const marginInfo = await fetchMarginInfo(opponent, marketId, true);
+
+            marketOpponents[marketId][opponent] = {
+              margin: marginInfo.margin.toString(),
+              requiredDeposit: marginInfo.requiredDeposit.toString(),
+              liquidationStatus: marginInfo.liquidationStatus,
+            };
           } catch (error) {
             console.error(
               `Error fetching margin information for opponent ${opponent} in market ${marketId}:`,
               error
             );
-            // Initialize with default values in case of error
+
             marketOpponents[marketId][opponent] = {
               margin: '',
               requiredDeposit: '',

@@ -5,7 +5,6 @@ import { NumericFormat } from 'react-number-format';
 import { PositionWithSide } from '@/types/positionTypes';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
 import Image from 'next/image';
-import { scaleNumber } from '@/utils/scaleNumber';
 import { IoClose } from 'react-icons/io5';
 import { useClosePosition } from '@/blockchain/hooks/useClosePosition';
 
@@ -25,7 +24,7 @@ export const ClosePositionModal = ({
   const details = getMarkeDetails(position.market.ticker);
 
   const [price, setPrice] = useState(
-    Number(scaleNumber(position.market.oraclePrice.toString()))
+    Number(position.market.oraclePrice.toString())
   );
   const [quantity, setQuantity] = useState(Number(position.quantityLeft));
 

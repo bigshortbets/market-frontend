@@ -1,10 +1,7 @@
 import { PositionWithSide } from '@/types/positionTypes';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SideLabel } from '../SideLabel';
 import { truncateAddress } from '@/utils/truncateAddress';
-import { scaleNumber } from '@/utils/scaleNumber';
-import { NumericFormat } from 'react-number-format';
-import { useClosePosition } from '@/blockchain/hooks/useClosePosition';
 import { getOpponentMarginData } from '@/utils/getOpponentMarginData';
 import { opponentsMarginsAtom } from '../../Market';
 import { useAtom } from 'jotai';
@@ -28,12 +25,10 @@ export const TradingHubPositionsItem = ({
     position.side === 'LONG'
       ? Number(position.quantityLeft) *
         Number(position.market.contractUnit) *
-        (Number(scaleNumber(oraclePrice.toString())) -
-          Number(scaleNumber(position.price.toString())))
+        (Number(oraclePrice.toString()) - Number(position.price.toString()))
       : Number(position.quantityLeft) *
         Number(position.market.contractUnit) *
-        (Number(scaleNumber(position.price.toString())) -
-          Number(scaleNumber(oraclePrice.toString())));
+        (Number(position.price.toString()) - Number(oraclePrice.toString()));
 
   const { write: writeMarkToMarket, isLoading: isMarkToMarketLoading } =
     useMarkToMarket(position.market.id, position.id);
@@ -61,7 +56,7 @@ export const TradingHubPositionsItem = ({
         <SideLabel side={position.side} />
       </td>
       <td>{Number(position.quantityLeft)}</td>
-      <td>{scaleNumber(Number(position.price))}</td>
+      <td>{Number(position.price)}</td>
       <td
         className={`${
           calculatedProfitOrLoss < 0

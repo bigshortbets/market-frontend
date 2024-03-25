@@ -1,17 +1,11 @@
 import { MarketType } from '@/types/marketTypes';
 import { useAtom } from 'jotai';
-import React, { useRef, useState } from 'react';
 import { currentBlockAtom, selectedMarketIdAtom } from '../Market';
 import { findMarketById } from '@/utils/findMarketById';
-import { scaleNumber } from '@/utils/scaleNumber';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { formatDate } from '@/utils/formatDate';
 
-import {
-  MdOutlineKeyboardArrowDown,
-  MdOutlineKeyboardArrowUp,
-} from 'react-icons/md';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
+import { scaleNumber } from '@/utils/scaleNumber';
 
 interface ContractDetailsProps {
   markets: MarketType[];

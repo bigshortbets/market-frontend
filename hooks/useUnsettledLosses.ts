@@ -5,7 +5,6 @@ import { convertToSS58 } from '@/utils/convertToSS58';
 import { extendPositionsWithSide } from '@/utils/extendPositionsWithSide';
 import { unsettledLossesAtom } from '@/components/Market/Market';
 import { PositionType, PositionWithSide } from '@/types/positionTypes';
-import { scaleNumber } from '@/utils/scaleNumber';
 
 export interface UnsettledLosses {
   [marketId: string]: number;
@@ -46,12 +45,12 @@ export function useUnsettledLosses(
           position.side === 'LONG'
             ? Number(position.quantityLeft) *
               Number(position.market.contractUnit) *
-              (Number(scaleNumber(oraclePrice.toString())) -
-                Number(scaleNumber(position.price.toString())))
+              (Number(oraclePrice.toString()) -
+                Number(position.price.toString()))
             : Number(position.quantityLeft) *
               Number(position.market.contractUnit) *
-              (Number(scaleNumber(position.price.toString())) -
-                Number(scaleNumber(oraclePrice.toString())));
+              (Number(position.price.toString()) -
+                Number(oraclePrice.toString()));
 
         if (loss > 0) return;
 

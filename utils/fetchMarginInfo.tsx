@@ -3,7 +3,6 @@ import { hexToLittleEndian } from './hexToLittleEndian';
 import { nToHex } from '@polkadot/util';
 
 import { convertToSS58 } from './convertToSS58';
-import { scaleNumber } from './scaleNumber';
 import { convertToU8a } from './convertToU8a';
 
 export async function fetchMarginInfo(
@@ -40,10 +39,8 @@ export async function fetchMarginInfo(
       liquidationStatus = requiredDepositOption[1];
     }
 
-    const formattedMargin = scaleNumber(Number(margin.toString()));
-    const formattedRequiredDeposit = scaleNumber(
-      Number(requiredDeposit.toString())
-    );
+    const formattedMargin = Number(margin.toString());
+    const formattedRequiredDeposit = Number(requiredDeposit.toString());
 
     return {
       margin: formattedMargin,
