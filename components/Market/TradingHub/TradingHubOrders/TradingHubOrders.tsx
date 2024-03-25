@@ -42,7 +42,7 @@ export const TradingHubOrders = ({ orders }: TradingHubOrdersProps) => {
         </table>
       ) : (
         <div className="flex items-center justify-center h-full">
-          <p className="opacity-20 text-3xl">Currently no open orders</p>
+          <p className="opacity-20 text-2xl mt-5">Currently no open orders</p>
         </div>
       )}
     </div>

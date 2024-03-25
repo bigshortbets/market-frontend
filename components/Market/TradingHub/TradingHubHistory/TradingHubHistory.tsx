@@ -31,7 +31,7 @@ export const TradingHubHistory = ({ history }: TradingHubHistoryProps) => {
         </table>
       ) : (
         <div className="flex items-center justify-center h-full">
-          <p className="opacity-20 text-3xl">
+          <p className="opacity-20 text-2xl mt-5">
             Currently no orders in the history
           </p>
         </div>
