@@ -108,7 +108,7 @@ export const Market = ({ markets }: MarketProps) => {
       {/* Mobile view */}
       <div className="p-6 flex-col flex flex-grow sm:hidden">
         {mobileView === 'manager' && (
-          <div className="border border-[, ] rounded-lg bg-[#191B24] h-[calc(100vh-166px)]">
+          <div className="border rounded-lg bg-[#191B24] h-[calc(100vh-166px)]">
             <MarketSelect
               markets={markets}
               selectedMarketId={selectedMarketId}

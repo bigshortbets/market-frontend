@@ -103,6 +103,8 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
     }
   };
 
+  const noMarkets = markets.length < 1;
+
   return (
     <div className="p-2.5 pb-4 flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -182,11 +184,11 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
         <div className="flex flex-col gap-2 ">
           <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
             <p>Cost of the order</p>
-            <p>{orderCost.toFixed(2)} USDC</p>
+            <p>{!noMarkets ? orderCost.toFixed(2) : '-'} USDC</p>
           </div>
           <div className="flex justify-between items-center font-semibold text-xs text-tetriary ">
             <p>Order value</p>
-            <p>{orderValue.toFixed(2)} USDC</p>
+            <p>{!noMarkets ? orderValue.toFixed(2) : '-'} USDC</p>
           </div>
         </div>
 
@@ -212,12 +214,15 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       {address && isMarketClosed && (
         <FinanceManagerWarning error="This market is already closed." />
       )}
-      {!isDivisibleByTickSize && (
+      {!isDivisibleByTickSize && !noMarkets && (
         <FinanceManagerWarning
           error={`Your price amount must be divisible by the tick size: (${scaleNumber(
             selectedMarket?.tickSize.toString()!
           )})`}
         />
+      )}
+      {noMarkets && (
+        <FinanceManagerWarning error={`Currently no markets are available.`} />
       )}
     </div>
     /* <div
