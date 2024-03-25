@@ -13,6 +13,7 @@ import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
+import { scaleNumber } from '@/utils/scaleNumber';
 
 export enum OrderSideEnum {
   LONG,
@@ -34,7 +35,10 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const selectedMarket = findMarketById(markets, selectedMarketId);
   const [isDivisibleByTickSize, setIsDivisibleByTickSize] = useState(
-    checkIfDivisible(price, Number(selectedMarket?.tickSize.toString()!))
+    checkIfDivisible(
+      price,
+      Number(scaleNumber(selectedMarket?.tickSize.toString()!))
+    )
   );
 
   const { isClosed: isMarketClosed } = calculateMarketClosing(
@@ -76,7 +80,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   useEffect(() => {
     const res = checkIfDivisible(
       price,
-      Number(selectedMarket?.tickSize.toString()!)
+      Number(scaleNumber(selectedMarket?.tickSize.toString()!))
     );
 
     setIsDivisibleByTickSize(res);
@@ -210,7 +214,9 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       )}
       {!isDivisibleByTickSize && (
         <FinanceManagerWarning
-          error={`Your price amount must be divisible by the tick size: (${selectedMarket?.tickSize.toString()!})`}
+          error={`Your price amount must be divisible by the tick size: (${scaleNumber(
+            selectedMarket?.tickSize.toString()!
+          )})`}
         />
       )}
     </div>

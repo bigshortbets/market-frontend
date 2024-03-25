@@ -8,6 +8,7 @@ import { getMarkeDetails } from '@/utils/getMarketDetails';
 import Image from 'next/image';
 import { formatDate } from '@/utils/formatDate';
 import { addSeconds } from 'date-fns';
+import { scaleNumber } from '@/utils/scaleNumber';
 
 interface MarketBarProps {
   markets: MarketType[];
@@ -37,7 +38,7 @@ export const MarketBar = ({ markets }: MarketBarProps) => {
     { label: 'Market duration', value: marketDurationRepresentation },
     {
       label: 'Tick size',
-      value: `${market?.tickSize?.toString()!} USDC`,
+      value: `${scaleNumber(market?.tickSize?.toString()!)} USDC`,
     },
     {
       label: 'Initial margin',
