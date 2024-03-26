@@ -28,9 +28,13 @@ export const MarketInterfaceLowerBar = () => {
           </div>
           <div className="border-l border-[#444650] h-[32px] text-xs pl-2">
             <p className="text-tetriary font-semibold">Total deposits</p>
-            <p>{`${currencyFormatter.format(
-              userMargins.totalMarginValue
-            )} USDC`}</p>
+            <p>
+              {address
+                ? `${currencyFormatter.format(
+                    userMargins.totalMarginValue
+                  )} USDC`
+                : '-'}
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-4">
@@ -41,8 +45,11 @@ export const MarketInterfaceLowerBar = () => {
             </div>
 
             <p className="text-white">
-              {currencyFormatter.format(Number(selectedMarketMargin?.margin))}{' '}
-              USDC
+              {address
+                ? `${currencyFormatter.format(
+                    Number(selectedMarketMargin?.margin)
+                  )} USDC`
+                : '-'}{' '}
             </p>
           </div>
           <LiquidationStatusTab

@@ -148,35 +148,39 @@ export const Deposit = ({ markets }: DepositProps) => {
                 : '-'}
             </p>
           </div>
-          <div className="flex justify-between items-center text-xs text-tetriary mb-2">
-            <p>Status</p>
-            <LiquidationStatusTab
-              status={
-                selecteMarketMargin?.liquidationStatus as LiquidationStatusType
-              }
-            />
-          </div>
-          {selecteMarketMargin?.liquidationStatus != 'EverythingFine' && (
+          {address && (
             <div className="flex justify-between items-center text-xs text-tetriary mb-2">
-              <div className="flex items-center gap-1.5">
-                <p>To</p>
-                <LiquidationStatusTab status={'EverythingFine'} />
-              </div>
-              <p
-                onClick={() => handleAddNegative(Number(toEverythingFine))}
-                className={`text-xs font-semibold ${
-                  Number(toEverythingFine) > 0
-                    ? 'text-[#ACE7C2]'
-                    : 'text-[#DA8D8B] underline cursor-pointer'
-                }`}
-              >
-                {Number(toEverythingFine) > 0
-                  ? `+${toEverythingFine}`
-                  : toEverythingFine}{' '}
-                USDC
-              </p>
+              <p>Status</p>
+              <LiquidationStatusTab
+                status={
+                  selecteMarketMargin?.liquidationStatus as LiquidationStatusType
+                }
+              />
             </div>
           )}
+
+          {selecteMarketMargin?.liquidationStatus != 'EverythingFine' &&
+            address && (
+              <div className="flex justify-between items-center text-xs text-tetriary mb-2">
+                <div className="flex items-center gap-1.5">
+                  <p>To</p>
+                  <LiquidationStatusTab status={'EverythingFine'} />
+                </div>
+                <p
+                  onClick={() => handleAddNegative(Number(toEverythingFine))}
+                  className={`text-xs font-semibold ${
+                    Number(toEverythingFine) > 0
+                      ? 'text-[#ACE7C2]'
+                      : 'text-[#DA8D8B] underline cursor-pointer'
+                  }`}
+                >
+                  {Number(toEverythingFine) > 0
+                    ? `+${toEverythingFine}`
+                    : toEverythingFine}{' '}
+                  USDC
+                </p>
+              </div>
+            )}
           {selecteMarketMargin?.liquidationStatus != 'MarginCall' &&
             Number(selecteMarketMargin?.requiredDeposit) > 0 && (
               <div className="flex justify-between items-center text-xs text-tetriary mb-2">
