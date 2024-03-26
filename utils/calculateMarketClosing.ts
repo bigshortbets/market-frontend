@@ -18,7 +18,7 @@ export const calculateMarketClosing = (
   const diff = lifetime - blockHeight;
   const targetDate = new Date();
 
-  targetDate.setSeconds(targetDate.getSeconds() + 3600);
+  targetDate.setSeconds(targetDate.getSeconds() + diff);
 
   if (diff < 0) {
     isClosed = true;
