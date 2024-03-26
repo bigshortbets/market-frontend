@@ -78,8 +78,8 @@ export const MarketSelect = ({
           {marketDetails && (
             <Image
               src={marketDetails.path}
-              width={18}
-              height={18}
+              width={28}
+              height={28}
               alt="Market logo"
               className="rounded-full"
             />

@@ -10,6 +10,7 @@ import { useAtom } from 'jotai';
 import { findMarketById } from '@/utils/findMarketById';
 import { MarketType } from '@/types/marketTypes';
 import { bigshortbetsChain } from '@/blockchain/chain';
+import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
 
 export interface WithdrawProps {
   markets: MarketType[];
@@ -98,16 +99,20 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
                 : '-'}
             </p>
           </div>
+
           <div className="flex flex-col gap-2 ">
-            <div className="flex justify-between items-center text-xs text-secondary ">
-              <p>Possible withdraw</p>
-              <button
-                className="underline"
-                onClick={() => setAmount(possibleWithdraw)}
-              >
-                {possibleWithdraw.toFixed(2)} USDC
-              </button>
-            </div>
+            {address && (
+              <div className="flex justify-between items-center text-xs text-secondary ">
+                <p>Possible withdraw</p>
+                <button
+                  className="underline"
+                  onClick={() => setAmount(possibleWithdraw)}
+                >
+                  {possibleWithdraw.toFixed(2)} USDC
+                </button>
+              </div>
+            )}
+
             <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
               <p>Amount</p>
               <p>{amount.toFixed(2)} USDC</p>
@@ -124,6 +129,9 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
           {address && !isBsbNetwork && 'Change network'}
         </button>
       </div>
+      {!address && (
+        <FinanceManagerWarning error="Connect your wallet to interact with the market. " />
+      )}
     </div>
   );
 };

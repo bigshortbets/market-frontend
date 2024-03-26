@@ -20,6 +20,7 @@ import { LiquidationStatusTab } from '../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { FinanceManagerInfo } from '../FinanceManager/FinanceManagerInfo';
 import { bigshortbetsChain } from '@/blockchain/chain';
+import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
 
 export interface DepositProps {
   markets: MarketType[];
@@ -274,7 +275,8 @@ export const Deposit = ({ markets }: DepositProps) => {
       </div>
       {selecteMarketMargin?.liquidationStatus != 'EverythingFine' &&
         selecteMarketMargin &&
-        selecteMarketMargin.requiredDeposit && (
+        selecteMarketMargin.requiredDeposit &&
+        address && (
           <FinanceManagerInfo
             value={`To change your market status from ${
               selecteMarketMargin?.liquidationStatus
@@ -284,6 +286,9 @@ export const Deposit = ({ markets }: DepositProps) => {
             ).toFixed(2)} USDC to ${market?.ticker} market.`}
           />
         )}
+      {!address && (
+        <FinanceManagerWarning error="Connect your wallet to interact with the market. " />
+      )}
     </div>
   );
 };
