@@ -20,7 +20,7 @@ export const ContractDetails = ({ markets }: ContractDetailsProps) => {
 
   const marketDurationRepresentation = `${formatDate(
     selectedMarket?.timestamp as unknown as string
-  )}-${formattedDate}`;
+  )} - ${formattedDate}`;
 
   const contractDetailsData = [
     { label: 'Contract name', value: selectedMarket?.ticker },

@@ -186,13 +186,9 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               <p>Order cost</p>
               <a
                 data-tooltip-id="order-cost-tooltip"
-                data-tooltip-html={`<b>Order cost</b> = Initial margin * ( Order price * Quantity * Contract unit )</br> <b>${currencyFormatter.format(
-                  orderCost
-                )}</b> = ${
-                  Number(selectedMarket?.initialMargin) / 100
-                } * ( ${price} * ${quantity} * ${Number(
-                  selectedMarket?.contractUnit
-                )} )`}
+                data-tooltip-html={`Mandatory initial deposit, set at ${Number(
+                  selectedMarket?.initialMargin
+                )}%</br> of the contract value being traded.`}
               >
                 <IoMdInformationCircle className="text-[#7F828F] text-sm " />
               </a>
@@ -204,11 +200,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               <p>Order value</p>
               <a
                 data-tooltip-id="order-value-tooltip"
-                data-tooltip-html={`<b>Order value</b> = Order Price * Quantity * Contract Unit</br> <b>${currencyFormatter.format(
-                  orderValue
-                )}</b> = ${price} * ${quantity} * ${Number(
-                  selectedMarket?.contractUnit
-                )}`}
+                data-tooltip-html={`Represents the total value of the underlying asset.</br> It considers the current price of the asset,</br> the quantity of contracts traded, and the</br> standardized units per contract.`}
               >
                 <IoMdInformationCircle className="text-[#7F828F] text-sm " />
               </a>

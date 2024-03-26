@@ -1,4 +1,4 @@
-import { differenceInDays, format } from "date-fns";
+import { differenceInDays, format } from 'date-fns';
 
 export const calculateMarketClosing = (
   blockHeight: number,
@@ -22,14 +22,11 @@ export const calculateMarketClosing = (
 
   const daysLeft = differenceInDays(targetDate, currentDate);
 
-  // Check if targetDate is a valid date before formatting
-  let formattedDate = "";
+  let formattedDate = '';
   if (!isNaN(targetDate.getTime())) {
-    // Checks if targetDate is valid
-    formattedDate = format(targetDate, "dd.MM.yyyy");
+    formattedDate = format(targetDate, 'dd MMM yyyy');
   } else {
-    // Handle the invalid date case (e.g., by setting a default string or handling the logic differently)
-    formattedDate = "Invalid Date"; // You can adjust this as needed
+    formattedDate = 'Invalid Date';
   }
 
   return {
