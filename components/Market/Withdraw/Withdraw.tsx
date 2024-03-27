@@ -103,7 +103,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
           <div className="flex flex-col gap-2 ">
             {address && (
               <div className="flex justify-between items-center text-xs text-secondary ">
-                <p>Possible withdraw</p>
+                <p>Available for withdrawal</p>
                 <button
                   className="underline"
                   onClick={() => setAmount(possibleWithdraw)}
