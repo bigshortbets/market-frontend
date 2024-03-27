@@ -5,13 +5,35 @@ import {
   format,
 } from "date-fns";
 
+const getTimeLeftMessage = (targetDate: Date): string => {
+  const currentDate = new Date();
+  const daysDifference = differenceInDays(targetDate, currentDate);
+
+  if (daysDifference > 0) {
+    return `${daysDifference} day${daysDifference > 1 ? "s" : ""} left`;
+  }
+
+  const hoursDifference = differenceInHours(targetDate, currentDate);
+  if (hoursDifference > 0) {
+    return `${hoursDifference} hour${hoursDifference > 1 ? "s" : ""} left`;
+  }
+
+  const minutesDifference = differenceInMinutes(targetDate, currentDate);
+  if (minutesDifference > 0) {
+    return `${minutesDifference} minute${minutesDifference > 1 ? "s" : ""} left`;
+  }
+
+  return "Market closed";
+};
+
 export const calculateMarketClosing = (
   blockHeight: number,
   lifetime: number
 ): {
   newDate: Date;
   isClosed: boolean;
-  timeLeft: string;
+  timeDiff: number;
+  timeLeftMessage: string;
   formattedDate: string;
 } => {
   let isClosed = false;
@@ -35,36 +57,8 @@ export const calculateMarketClosing = (
   return {
     newDate: targetDate,
     isClosed: isClosed,
-    timeLeft: calculateTimeLeft(targetDate),
+    timeDiff: diff,
+    timeLeftMessage: getTimeLeftMessage(targetDate),
     formattedDate: formattedDate,
   };
-};
-
-const calculateTimeLeft = (targetDate: Date): string => {
-  const currentDate = new Date();
-
-  const daysDifference = differenceInDays(targetDate, currentDate);
-  let message = "";
-
-  if (daysDifference > 0) {
-    message += `${daysDifference} day${daysDifference > 1 ? "s" : ""} left`;
-  } else {
-    const hoursDifference = differenceInHours(targetDate, currentDate);
-    if (hoursDifference > 0) {
-      message += `${hoursDifference} hour${
-        hoursDifference > 1 ? "s" : ""
-      } left`;
-    } else {
-      const minutesDifference = differenceInMinutes(targetDate, currentDate);
-      if (minutesDifference > 0) {
-        message += `${minutesDifference} minute${
-          minutesDifference > 1 ? "s" : ""
-        } left`;
-      } else {
-        return "Market closed";
-      }
-    }
-  }
-
-  return message;
 };
