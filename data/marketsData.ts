@@ -95,7 +95,7 @@ export const marketsData: MarketsDataProps[] = [
   },
   {
     symbol: 'M6E',
-    name: 'Euro/Usd',
+    name: 'EUR/USD',
     path: './market-logos/E7.svg',
   },
   {
