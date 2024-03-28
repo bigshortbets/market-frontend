@@ -21,7 +21,7 @@ export const MarketSelectItem = ({
   const [currentBlock] = useAtom(currentBlockAtom);
   const details = getMarkeDetails(market.ticker);
 
-  const { daysLeft, isClosed } = calculateMarketClosing(
+  const { timeLeftMessage, isClosed } = calculateMarketClosing(
     Number(currentBlock),
     Number(market.lifetime)
   );
@@ -61,7 +61,7 @@ export const MarketSelectItem = ({
       {!isClosed ? (
         <div className="flex items-center gap-1">
           <p className="text-[10px] text-tetriary font-normal">
-            {daysLeft} days left
+            {timeLeftMessage}
           </p>
           <div className="text-[12px] text-tetriary">
             <CiCalendar />

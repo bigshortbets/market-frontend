@@ -4,7 +4,8 @@ import { calculateMarketClosing } from './calculateMarketClosing';
 export interface MarketWithDateType extends MarketType {
   newDate: Date;
   isClosed: boolean;
-  daysLeft: number;
+  timeDiff: number;
+  timeLeftMessage: string;
   formattedDate: string;
 }
 
