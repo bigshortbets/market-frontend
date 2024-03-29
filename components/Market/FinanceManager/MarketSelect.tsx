@@ -11,6 +11,10 @@ import { categorizeMarkets } from '@/utils/categorizeMarkets';
 import { currentBlockAtom } from '../Market';
 import { useAtom } from 'jotai';
 import { MarketSelectItem } from '../MarketInteface/MarketSelectItem';
+import { ExtendedMarketType, enrichMarketData } from '@/utils/enrichMarkets';
+import { MarketDataCategories } from '@/data/marketsData';
+import { MarketSelectCategoryTab } from './MarketSelectCategoryTab';
+import { getUniqueCategories } from '@/utils/getUniqueCategories';
 
 interface MarketSelectProps {
   markets: MarketType[];
@@ -21,12 +25,16 @@ export const MarketSelect = ({
   markets,
   selectedMarketId,
 }: MarketSelectProps) => {
+  const [activeCategory, setActiveCategory] = useState<
+    MarketDataCategories | undefined
+  >(undefined);
   const [currentBlock] = useAtom(currentBlockAtom);
   const selectRef = useRef<HTMLDivElement>(null);
+  const enrichedMarkets = enrichMarketData(markets);
   const market = findMarketById(markets, selectedMarketId);
   const marketDetails = market && getMarkeDetails(market.ticker);
   const { activeMarkets, closedMarkets } = categorizeMarkets(
-    markets,
+    enrichedMarkets,
     Number(currentBlock)
   );
 
@@ -60,6 +68,12 @@ export const MarketSelect = ({
   const handleCloseSelect = () => {
     setIsSelectOpen(false);
   };
+
+  const handleSetCategory = (val: MarketDataCategories | undefined) => {
+    setActiveCategory(val);
+  };
+
+  const categories = getUniqueCategories(enrichedMarkets);
 
   return (
     <div
@@ -107,24 +121,48 @@ export const MarketSelect = ({
       </div>
       {isSelectOpen && (
         <div className="absolute w-full bg-[#23252E] z-40">
-          <div>
-            {activeMarkets.map((market, key) => (
-              <MarketSelectItem
-                key={key}
-                market={market}
-                handleCloseSelect={handleCloseSelect}
+          <div className="p-2 border-b border-[#444650]">
+            <div className="flex items-center gap-2 flex-wrap gap-y-2 ">
+              <MarketSelectCategoryTab
+                activeCategory={activeCategory}
+                value={undefined}
+                handleSetCategory={handleSetCategory}
               />
-            ))}
+              {categories.map((category, key) => (
+                <MarketSelectCategoryTab
+                  activeCategory={activeCategory}
+                  key={key}
+                  value={category as MarketDataCategories}
+                  handleSetCategory={handleSetCategory}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            {activeMarkets.map(
+              (market, key) =>
+                (market.category === activeCategory || !activeCategory) && (
+                  <MarketSelectItem
+                    key={key}
+                    market={market}
+                    handleCloseSelect={handleCloseSelect}
+                  />
+                )
+            )}
           </div>
           <div className="h-1 w-full bg-[#444650]"></div>
           <div>
-            {closedMarkets.map((market, key) => (
-              <MarketSelectItem
-                key={key}
-                market={market}
-                handleCloseSelect={handleCloseSelect}
-              />
-            ))}
+            {closedMarkets.map(
+              (market, key) =>
+                (market.category === activeCategory || !activeCategory) && (
+                  <MarketSelectItem
+                    key={key}
+                    market={market}
+                    handleCloseSelect={handleCloseSelect}
+                  />
+                )
+            )}
           </div>
         </div>
       )}

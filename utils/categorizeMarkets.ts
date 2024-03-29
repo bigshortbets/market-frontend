@@ -1,7 +1,8 @@
 import { MarketType } from '@/types/marketTypes';
 import { calculateMarketClosing } from './calculateMarketClosing';
+import { ExtendedMarketType } from './enrichMarkets';
 
-export interface MarketWithDateType extends MarketType {
+export interface MarketWithDateType extends ExtendedMarketType {
   newDate: Date;
   isClosed: boolean;
   timeDiff: number;

@@ -43,6 +43,7 @@ export const getMarkeDetails = (
       name: `${market.name} ${month} ${yearCode}`,
       path: market.path,
       symbol: market.symbol,
+      category: market.category,
     };
   }
 
