@@ -24,7 +24,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
 
   return (
     <div
-      className="h-full w-full sm:w-[360px] sm:border-r border-[#444650] overflow-auto no-scrollbar"
+      className="h-full w-full sm:w-[360px] sm:border-r border-[#444650]  overflow-auto no-scrollbar"
       style={{ maxHeight: 'calc(100vh - 228px)' }}
     >
       <div className="flex flex-col ">

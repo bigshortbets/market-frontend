@@ -92,7 +92,7 @@ export const Market = ({ markets }: MarketProps) => {
         </div>
       </div>
 
-      <div className="w-full h-[54px] bg-[#23252E] justify-center gap-2 items-center hidden sm:flex lg:hidden">
+      <div className="w-full h-[54px] bg-[#23252E] justify-center gap-2 items-center hidden sm:flex lg:hidden z-50">
         {tabletViewArr.map((view, key) => (
           <button
             key={key}
@@ -106,9 +106,9 @@ export const Market = ({ markets }: MarketProps) => {
         ))}
       </div>
       {/* Mobile view */}
-      <div className="p-6 flex-col flex flex-grow sm:hidden">
+      <div className="p-6 flex-col flex flex-grow sm:hidden overflow-auto">
         {mobileView === 'manager' && (
-          <div className="border rounded-lg bg-[#191B24] h-[calc(100vh-166px)]">
+          <div className="border rounded-lg border-[#444650] bg-[#191B24] h-[calc(100vh-166px)]">
             <MarketSelect
               markets={markets}
               selectedMarketId={selectedMarketId}
@@ -124,7 +124,7 @@ export const Market = ({ markets }: MarketProps) => {
         )}
         {mobileView === 'portfolio' && <TradingHub />}
       </div>
-      <div className="w-full h-[54px] bg-[#23252E] flex justify-center gap-2 items-center sm:hidden">
+      <div className="w-full h-[54px] bg-[#23252E] flex justify-center gap-2 items-center sm:hidden z-50">
         {mobileViewArr.map((view, key) => (
           <button
             key={key}
