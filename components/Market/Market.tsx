@@ -84,7 +84,7 @@ export const Market = ({ markets }: MarketProps) => {
     if (chain?.id != bigshortbetsChain.id) {
       switchToBigShortBetsChain();
     }
-  }, []);
+  }, [blockHeight]);
 
   /* const [UIConfiguration] = useAtom(UIConfigurationAtom); */
 
