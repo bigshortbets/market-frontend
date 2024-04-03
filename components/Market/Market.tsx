@@ -68,7 +68,7 @@ export const Market = ({ markets }: MarketProps) => {
   const market = findMarketById(markets, selectedMarketId);
   const [recentTrades] = useAtom(recentTradesAtom);
   useEffect(() => {
-    if (markets && markets.length > 0 && markets[0].id) {
+    if (markets && markets.length > 0 && markets[0].id && blockHeight) {
       for (let x of markets) {
         const { isClosed } = calculateMarketClosing(
           blockHeight!,
