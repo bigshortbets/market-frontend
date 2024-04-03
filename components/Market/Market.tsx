@@ -23,6 +23,7 @@ import {
 import { OpponentData } from '@/blockchain/hooks/useOpponentsMargin';
 import { UnsettledLosses } from '@/hooks/useUnsettledLosses';
 import { Collateral } from '@/hooks/useCollateral';
+import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 
 interface MarketProps {
   markets: MarketType[];
@@ -57,6 +58,7 @@ export const Market = ({ markets }: MarketProps) => {
   const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
   const [tabletView, setTabletView] = useAtom(tabletViewAtom);
   const [mobileView, setMobileView] = useAtom(mobileViewAtom);
+  const [blockHeight] = useAtom(currentBlockAtom);
   const { address } = useAccount();
   const { chain } = useNetwork();
   const { loading, error } = useCurrentBlock();
@@ -67,7 +69,16 @@ export const Market = ({ markets }: MarketProps) => {
   const [recentTrades] = useAtom(recentTradesAtom);
   useEffect(() => {
     if (markets && markets.length > 0 && markets[0].id) {
-      setSelectedMarketId(markets[0].id);
+      for (let x of markets) {
+        const { isClosed } = calculateMarketClosing(
+          blockHeight!,
+          Number(x.lifetime)
+        );
+        if (!isClosed) {
+          setSelectedMarketId(x.id);
+          return;
+        }
+      }
     }
 
     if (chain?.id != bigshortbetsChain.id) {
