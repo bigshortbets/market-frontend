@@ -24,6 +24,7 @@ import { OpponentData } from '@/blockchain/hooks/useOpponentsMargin';
 import { UnsettledLosses } from '@/hooks/useUnsettledLosses';
 import { Collateral } from '@/hooks/useCollateral';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
+import { useRouter } from 'next/router';
 
 interface MarketProps {
   markets: MarketType[];
@@ -67,15 +68,37 @@ export const Market = ({ markets }: MarketProps) => {
     useRecentTrades(selectedMarketId);
   const market = findMarketById(markets, selectedMarketId);
   const [recentTrades] = useAtom(recentTradesAtom);
+  const router = useRouter();
+
   useEffect(() => {
-    if (markets && markets.length > 0 && markets[0].id && blockHeight) {
+    const marketParam = router.query.market;
+    let isMarketFromURLProcessed = false;
+
+    if (marketParam && markets && markets.length > 0) {
+      const matchedMarket = markets.find(
+        (market) => market.ticker === marketParam
+      );
+
+      if (matchedMarket) {
+        setSelectedMarketId(matchedMarket.id);
+        isMarketFromURLProcessed = true;
+      }
+    }
+
+    if (
+      !isMarketFromURLProcessed &&
+      markets &&
+      markets.length > 0 &&
+      blockHeight
+    ) {
       for (let x of markets) {
         const { isClosed } = calculateMarketClosing(
-          blockHeight!,
+          blockHeight,
           Number(x.lifetime)
         );
         if (!isClosed) {
           setSelectedMarketId(x.id);
+          router.push(`?market=${x.ticker}`, undefined, { shallow: true });
           return;
         }
       }
@@ -84,7 +107,7 @@ export const Market = ({ markets }: MarketProps) => {
     if (chain?.id != bigshortbetsChain.id) {
       switchToBigShortBetsChain();
     }
-  }, [blockHeight]);
+  }, [blockHeight, markets, router]);
 
   /* const [UIConfiguration] = useAtom(UIConfigurationAtom); */
 

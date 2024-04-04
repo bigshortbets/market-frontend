@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 import { CiCalendar } from 'react-icons/ci';
 import { IoMdLock } from 'react-icons/io';
+import { useRouter } from 'next/router';
 
 interface MarketSelectItemProps {
   market: MarketType;
@@ -25,10 +26,12 @@ export const MarketSelectItem = ({
     Number(currentBlock),
     Number(market.lifetime)
   );
+  const router = useRouter();
 
   const handleAction = () => {
     setSelectedMarketId(market.id);
     handleCloseSelect();
+    router.push(`?market=${market.ticker}`);
   };
   return (
     <div
