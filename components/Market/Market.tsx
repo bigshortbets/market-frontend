@@ -61,7 +61,7 @@ export const Market = ({ markets }: MarketProps) => {
   const [blockHeight] = useAtom(currentBlockAtom);
   const { address } = useAccount();
   const { chain } = useNetwork();
-  const { loading, error } = useCurrentBlock();
+
   useUserMargin(markets, address!, selectedMarketId);
   const { loading: recentTradesLoading, error: recentTradesError } =
     useRecentTrades(selectedMarketId);
