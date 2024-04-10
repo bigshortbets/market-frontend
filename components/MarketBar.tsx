@@ -81,7 +81,7 @@ export const MarketBar = ({ markets }: MarketBarProps) => {
           <div className="flex flex-col gap-1 text-xs">
             <p>Oracle price:</p>
             {market?.oraclePrice ? (
-              <p className="font-semibold text-[#9BA6F8]">
+              <p className="font-semibold text-[#4ECB7D]">
                 {market?.oraclePrice.toString()}
               </p>
             ) : (

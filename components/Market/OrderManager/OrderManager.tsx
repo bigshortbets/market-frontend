@@ -219,7 +219,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               ? selectedSideOrder === OrderSideEnum.LONG
                 ? 'bg-[#87DAA4]'
                 : 'bg-[#D26D6C]'
-              : 'bg-[#9BA6F8]'
+              : 'bg-[#4ECB7D]'
           } text-[#01083A] text-[13px] font-semibold py-3`}
         >
           {!address && 'Connect wallet'}

@@ -266,7 +266,7 @@ export const Deposit = ({ markets }: DepositProps) => {
         <button
           disabled={address && isBsbNetwork ? depositDisabled : false}
           onClick={handleDeposit}
-          className={`disabled:bg-gray-400 bg-[#9BA6F8] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-3`}
+          className={`disabled:bg-gray-400 bg-[#4ECB7D] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-3`}
         >
           {!address && 'Connect wallet'}
           {address && isBsbNetwork && 'Deposit'}

@@ -122,7 +122,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
         <button
           disabled={address && isBsbNetwork ? withdrawDisabled : false}
           onClick={handleWithdraw}
-          className={`disabled:bg-gray-400 bg-[#9BA6F8] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-3`}
+          className={`disabled:bg-gray-400 bg-[#4ECB7D] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-3`}
         >
           {!address && 'Connect wallet'}
           {address && isBsbNetwork && 'Withdraw'}
