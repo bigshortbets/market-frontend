@@ -9,9 +9,12 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { createWeb3Modal } from '@web3modal/wagmi/react';
 import { MetaMaskConnector } from 'wagmi/connectors/metaMask';
 import { InjectedConnector } from 'wagmi/connectors/injected';
+import { mainnet, sepolia } from 'wagmi';
+import { defineChain } from 'viem';
+import { sepo } from '@/blockchain/constants';
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [bigshortbetsChain],
+  [bigshortbetsChain, sepo],
   [publicProvider()]
 );
 

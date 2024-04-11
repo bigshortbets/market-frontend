@@ -17,9 +17,11 @@ export const FinanceManagerTab = ({
   const isActive = financeManagerState === value;
   return (
     <button
-      disabled={disabled}
+      disabled={disabled || value === 'bridge'}
       className={` rounded-lg flex items-center justify-center text-xs font-semibold py-1.5 px-3 ${
-        isActive ? 'bg-[#444650]' : 'bg-[#23252E] text-tetriary'
+        isActive
+          ? 'bg-[#444650]'
+          : 'bg-[#23252E] text-tetriary disabled:bg-[#141414]'
       }`}
       onClick={() => setFinanceManagerState(value)}
     >
