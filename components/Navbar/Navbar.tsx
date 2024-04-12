@@ -43,7 +43,7 @@ export const Navbar = () => {
           <div className="hidden md:block">
             <Image src={banner} alt="banner" width={400} height={60} />
           </div>
-          {isConnected && <CurrentNetworkTab />}
+          {/*           {isConnected && <CurrentNetworkTab />} */}
           {/* <UIConfiguration /> */}
           {isClient && <WalletConnect />}
         </div>
