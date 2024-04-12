@@ -16,6 +16,7 @@ import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 import { currencyFormatter } from '@/utils/currencyFormatter';
 import { IoMdInformationCircle } from 'react-icons/io';
 import { Tooltip } from 'react-tooltip';
+import { FinanceManagerInfo } from '../FinanceManager/FinanceManagerInfo';
 
 export enum OrderSideEnum {
   LONG,
@@ -229,7 +230,10 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
         </button>
       </div>
       {!address && (
-        <FinanceManagerWarning error="Connect your wallet to interact with the market. " />
+        <FinanceManagerInfo value="Connect your wallet to interact with the market." />
+      )}
+      {address && orderCost > Number(formattedBalance) && (
+        <FinanceManagerWarning error="Order cost is higher than your wallet balance. Please add funds to your wallet." />
       )}
       {address && isMarketClosed && (
         <FinanceManagerWarning error="This market is already closed." />
