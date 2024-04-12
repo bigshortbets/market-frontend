@@ -40,7 +40,9 @@ export const Navbar = () => {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          {/* <Image src={banner} alt="banner" width={400} height={60} /> */}
+          <div className="hidden md:block">
+            <Image src={banner} alt="banner" width={400} height={60} />
+          </div>
           {isConnected && <CurrentNetworkTab />}
           {/* <UIConfiguration /> */}
           {isClient && <WalletConnect />}
