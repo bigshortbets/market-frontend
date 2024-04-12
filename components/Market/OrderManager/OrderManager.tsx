@@ -69,7 +69,8 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
     isMarketClosed ||
     price === 0 ||
     orderCost > Number(formattedBalance) ||
-    !isDivisibleByTickSize;
+    !isDivisibleByTickSize ||
+    quantity === 0;
 
   useEffect(() => {
     selectedMarket?.oraclePrice &&
@@ -232,6 +233,9 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       )}
       {address && isMarketClosed && (
         <FinanceManagerWarning error="This market is already closed." />
+      )}
+      {address && quantity === 0 && (
+        <FinanceManagerWarning error="Your quantity value must be higher than 0." />
       )}
       {!isDivisibleByTickSize && !noMarkets && (
         <FinanceManagerWarning

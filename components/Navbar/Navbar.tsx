@@ -6,6 +6,7 @@ import { CurrentNetworkTab } from './CurrentNetworkTab';
 import { WalletConnect } from '../WalletConnect';
 import { selectedMarketIdAtom } from '../Market/Market';
 import { useAtom } from 'jotai';
+import banner from '../../public/banner.svg';
 
 export const Navbar = () => {
   const [isClient, setIsClient] = useState(false);
@@ -39,6 +40,7 @@ export const Navbar = () => {
           </div>
         </div>
         <div className="flex items-center gap-4">
+          {/* <Image src={banner} alt="banner" width={400} height={60} /> */}
           {isConnected && <CurrentNetworkTab />}
           {/* <UIConfiguration /> */}
           {isClient && <WalletConnect />}
