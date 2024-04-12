@@ -128,6 +128,7 @@ export const MarketSelect = ({
                 value={undefined}
                 handleSetCategory={handleSetCategory}
               />
+
               {categories.map((category, key) => (
                 <MarketSelectCategoryTab
                   activeCategory={activeCategory}

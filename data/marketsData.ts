@@ -1,4 +1,5 @@
 export type MarketDataCategories =
+  | 'election'
   | 'currencies'
   | 'indexes'
   | 'commodities'
@@ -130,5 +131,20 @@ export const marketsData: MarketsDataProps[] = [
     name: 'Dow Jones',
     path: './market-logos/DOWJONES.svg',
     category: 'indexes',
+  },
+
+  /* ELECTIOn */
+
+  {
+    symbol: 'TRUMP',
+    name: 'Trump Election',
+    path: './market-logos/TRUMP.jpg',
+    category: 'election',
+  },
+  {
+    symbol: 'BIDEN',
+    name: 'Biden Election',
+    path: './market-logos/BIDEN.jpg',
+    category: 'election',
   },
 ];
