@@ -4,6 +4,7 @@ import {
 } from '@/components/Market/Market';
 import { MarketType } from '@/types/marketTypes';
 import { fetchMarginInfo } from '@/utils/fetchMarginInfo';
+import { scaleNumber } from '@/utils/scaleNumber';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 
@@ -63,8 +64,8 @@ export function useUserMargin(
 
           if (marketId === selectedMarketId) {
             setSelectedMarketMargin({
-              margin: marginInfo.margin.toString(),
-              requiredDeposit: marginInfo.requiredDeposit.toString(),
+              margin: scaleNumber(marginInfo.margin),
+              requiredDeposit: scaleNumber(marginInfo.requiredDeposit),
               liquidationStatus:
                 marginInfo.liquidationStatus as LiquidationStatusType,
             });
@@ -76,7 +77,8 @@ export function useUserMargin(
           );
         }
       }
-      setUserMargins({ details: allMargins, totalMarginValue });
+      const formattedTotal = Number(scaleNumber(totalMarginValue));
+      setUserMargins({ details: allMargins, totalMarginValue: formattedTotal });
     };
 
     fetchAllMargins();

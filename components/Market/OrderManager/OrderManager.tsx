@@ -60,7 +60,9 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
 
   const orderCost =
     (Number(selectedMarket?.initialMargin) / 100) *
-    (price * quantity * Number(selectedMarket?.contractUnit));
+    (Number(selectedMarket?.oraclePrice) *
+      quantity *
+      Number(selectedMarket?.contractUnit));
 
   const orderValue = price * quantity * Number(selectedMarket?.contractUnit);
 
