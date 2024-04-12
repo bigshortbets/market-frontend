@@ -1,3 +1,4 @@
+import { format, parseISO } from 'date-fns';
 import { SideLabel } from '../SideLabel';
 import { HistoryOrderType } from '@/types/historyTypes';
 
@@ -6,6 +7,7 @@ interface TradingHubHistoryItem {
 }
 
 export const TradingHubHistoryItem = ({ order }: TradingHubHistoryItem) => {
+  const date = parseISO(order.timestamp);
   return (
     <tr className={`text-sm odd:bg-[#23252E] text-[#7F828F] `}>
       {/* Side */}
@@ -13,7 +15,7 @@ export const TradingHubHistoryItem = ({ order }: TradingHubHistoryItem) => {
         <SideLabel side={order.side} />
       </td>
       {/* Created */}
-      <td>{order.timestamp}</td>
+      <td>{format(date, 'd MMMM yyyy HH:mm:ss')}</td>
       {/* Market */}
       <td>{order.market.ticker}</td>
       {/* Price */}
