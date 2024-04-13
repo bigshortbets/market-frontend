@@ -1,4 +1,4 @@
-import { bridgeAbi } from '@/blockchain/bridgeAbi';
+/* import { bridgeAbi } from '@/blockchain/bridgeAbi';
 import {
   MAX_ALLOWANCE,
   bridgeDepoChainId,
@@ -29,3 +29,4 @@ export const useStartDepoProcess = (amount: number) => {
 
   return { write };
 };
+ */
