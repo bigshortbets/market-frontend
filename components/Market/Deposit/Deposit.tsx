@@ -29,7 +29,7 @@ export const Deposit = ({ markets }: DepositProps) => {
   const [amount, setAmount] = useState<number>(1);
   const { address, chain } = useAccount();
   const { data: walletBalance } = useNativeCurrencyBalance(address);
-  const { write, isLoading } = useDeposit(amount);
+  const { write: writeDeposit } = useDeposit(amount);
   const isBsbNetwork = chain?.id === bigshortbetsChain.id;
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
@@ -44,7 +44,7 @@ export const Deposit = ({ markets }: DepositProps) => {
       switchToBigShortBetsChain();
       return;
     }
-    write?.();
+    writeDeposit();
   };
 
   const depositDisabled =

@@ -1,25 +1,36 @@
-import { useContractWrite } from 'wagmi';
+import { useWriteContract } from 'wagmi';
 import { marketContract } from '../constants';
-import toast from 'react-hot-toast';
 import { abi } from '../abi';
+import { useEffect } from 'react';
 import { handleBlockchainError } from '@/utils/handleBlockchainError';
+import toast from 'react-hot-toast';
 
 export const useCancelOrder = (marketId: string, orderId: string) => {
-  const { data, isLoading, isSuccess, write } = useContractWrite({
-    address: marketContract as `0x${string}`,
-    abi: abi,
-    functionName: 'cancel_order',
-    args: [BigInt(marketId), BigInt(orderId)],
-    onError(error) {
-      handleBlockchainError(error.stack!);
-    },
+  const { writeContract, error, data, isSuccess } = useWriteContract();
 
-    onSuccess() {
-      toast.success('Order canceled!', {
+  const notifText = `Order has been canceled! Wait for transaction confirmation.`;
+
+  const write = () =>
+    writeContract({
+      address: marketContract as `0x${string}`,
+      abi: abi,
+      functionName: 'cancel_order',
+      args: [BigInt(marketId), BigInt(orderId)],
+    });
+
+  useEffect(() => {
+    if (error) {
+      handleBlockchainError(error.stack!);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(notifText, {
         duration: 4000,
       });
-    },
-  });
+    }
+  }, [isSuccess]);
 
-  return { data, isLoading, isSuccess, write };
+  return { data, isSuccess, write };
 };

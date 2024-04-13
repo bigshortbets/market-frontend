@@ -1,29 +1,39 @@
-/* import {
+import {
   MAX_ALLOWANCE,
   bridgeDepoContract,
   mainnetUSDC,
 } from '@/blockchain/constants';
 import { handleBlockchainError } from '@/utils/handleBlockchainError';
+import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { erc20Abi } from 'viem';
-import {  useContractWrite, usePrepareContractWrite, useWriteContract } from 'wagmi';
+import { useWriteContract } from 'wagmi';
 
 export const useSetBridgeDepoAllowance = () => {
-  const { writeContract, isSuccess } = useWriteContract({
-    address: mainnetUSDC,
-    abi: erc20Abi,
-    functionName: 'approve',
-    args: [bridgeDepoContract, BigInt(MAX_ALLOWANCE)],
-    onError(error : any) {
+  const { writeContract, error, data, isSuccess } = useWriteContract();
+
+  const notifText = `Allowance has been set! Wait for transaction confirmation.`;
+
+  const write = () =>
+    writeContract({
+      address: mainnetUSDC,
+      abi: erc20Abi,
+      functionName: 'approve',
+      args: [bridgeDepoContract, BigInt(MAX_ALLOWANCE)],
+    });
+
+  useEffect(() => {
+    if (error) {
       handleBlockchainError(error.stack!);
-    },
-    onSuccess() {
-      toast.success('Allowance has been set!', {
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(notifText, {
         duration: 4000,
       });
-    },
-  });
-
-  return { write };
+    }
+  }, [isSuccess]);
+  return { write, error, data };
 };
- */

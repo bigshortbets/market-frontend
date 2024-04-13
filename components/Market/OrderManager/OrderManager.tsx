@@ -50,10 +50,16 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
 
   const { formattedBalance } = useNativeCurrencyBalance(address);
 
-  const { write: writeShortOrder, isLoading: isShortLoading } =
-    useCreateOrderWrite(price, quantity, OrderSideEnum.SHORT);
-  const { write: writeLongOrder, isLoading: isLongLoading } =
-    useCreateOrderWrite(price, quantity, OrderSideEnum.LONG);
+  const { write: writeShortOrder } = useCreateOrderWrite(
+    price,
+    quantity,
+    OrderSideEnum.SHORT
+  );
+  const { write: writeLongOrder } = useCreateOrderWrite(
+    price,
+    quantity,
+    OrderSideEnum.LONG
+  );
 
   const orderCost =
     (Number(selectedMarket?.initialMargin) / 100) *
@@ -96,10 +102,10 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       return;
     }
     if (selectedSideOrder === OrderSideEnum.LONG) {
-      writeLongOrder?.();
+      writeLongOrder();
     }
     if (selectedSideOrder === OrderSideEnum.SHORT) {
-      writeShortOrder?.();
+      writeShortOrder();
     }
   };
 

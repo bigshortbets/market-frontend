@@ -2,23 +2,12 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import { NumericFormat } from 'react-number-format';
-import {
-  useAccount,
-  useBalance,
-  useBlockNumber,
-  useSwitchChain,
-  useWriteContract,
-} from 'wagmi';
-import {
-  MAX_ALLOWANCE,
-  bridgeDepoChainId,
-  bridgeDepoContract,
-  mainnetUSDC,
-} from '@/blockchain/constants';
+import { useAccount, useBalance, useBlockNumber, useSwitchChain } from 'wagmi';
+import { bridgeDepoChainId, mainnetUSDC } from '@/blockchain/constants';
 import { useBridgeDepoAllowance } from '@/blockchain/hooks/bridge/useBridgeDepoAllowance';
 import { useStartDepoProcess } from '@/blockchain/hooks/bridge/useStartDepoProcess';
 import { useQueryClient } from '@tanstack/react-query';
-import { erc20Abi } from 'viem';
+import { useSetBridgeDepoAllowance } from '@/blockchain/hooks/bridge/useSetBridgeDepoAllowance';
 
 export const BridgeDeposit = () => {
   const [amount, setAmount] = useState<number>(1);
@@ -29,8 +18,10 @@ export const BridgeDeposit = () => {
   const { allowance, queryKey: bridgeDepoQueryKey } = useBridgeDepoAllowance(
     address!
   );
-  const { writeContract } = useWriteContract();
+
+  const { write: writeAllowance } = useSetBridgeDepoAllowance();
   const { write: writeStartDepo } = useStartDepoProcess(amount);
+
   const isAllowance = allowance != BigInt(0);
   const { data: blockNumber } = useBlockNumber({ watch: true });
 
@@ -45,15 +36,10 @@ export const BridgeDeposit = () => {
       switchChain({ chainId: bridgeDepoChainId });
     }
     if (chain!.id === bridgeDepoChainId && !isAllowance) {
-      writeContract({
-        address: mainnetUSDC,
-        abi: erc20Abi,
-        functionName: 'approve',
-        args: [bridgeDepoContract, BigInt(MAX_ALLOWANCE)],
-      });
+      writeAllowance();
     }
     if (chain!.id === bridgeDepoChainId && isAllowance) {
-      writeStartDepo?.();
+      writeStartDepo();
     }
     console.log(allowance);
   };
