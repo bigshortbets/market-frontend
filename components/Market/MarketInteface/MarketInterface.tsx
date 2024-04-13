@@ -26,6 +26,7 @@ export const MarketInterface = ({ markets }: MarketInterfaceProps) => {
           <OrderBookContainer />
         </div>
       </div>
+
       <MarketInterfaceLowerBar />
     </div>
   );

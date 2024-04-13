@@ -14,7 +14,32 @@ export const MarketInterfaceLowerBar = () => {
   const [selectedMarketMargin] = useAtom(selectedMarketMarginAtom);
   return (
     <div className="h-[58px] border-t border-[#444650] px-5 py-3">
-      <div className="flex items-center justify-between">
+      <div className="sm:hidden flex items-center justify-between h-full">
+        <div className=" text-[11px] ">
+          <p className="text-tetriary font-semibold">Wallet balance</p>
+          <p className="text-white">
+            {address
+              ? `${currencyFormatter.format(Number(data?.formatted))} ${
+                  data?.symbol
+                }`
+              : '-'}
+          </p>
+        </div>
+        <div className=" text-[11px]  ">
+          <p className="text-tetriary font-semibold">Total deposits</p>
+          <p className="text-white">
+            {address
+              ? `${currencyFormatter.format(userMargins.totalMarginValue)} USDC`
+              : '-'}
+          </p>
+        </div>
+        <LiquidationStatusTab
+          status={
+            selectedMarketMargin?.liquidationStatus as LiquidationStatusType
+          }
+        />
+      </div>
+      <div className=" hidden sm:flex items-center justify-between ">
         <div className="flex items-center gap-10">
           <div className=" text-xs ">
             <p className="text-tetriary font-semibold">Wallet balance</p>
@@ -26,7 +51,7 @@ export const MarketInterfaceLowerBar = () => {
                 : '-'}
             </p>
           </div>
-          <div className="border-l border-[#444650] h-[32px] text-xs pl-2">
+          <div className="sm:border-l sm:border-[#444650]  sm:h-[32px] text-xs pl-2">
             <p className="text-tetriary font-semibold">Total deposits</p>
             <p>
               {address
