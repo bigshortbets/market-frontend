@@ -1,9 +1,8 @@
-import { Chain } from 'wagmi';
+import { type Chain } from 'viem';
 
 export const bigshortbetsChain = {
   id: 2137,
   name: 'BigShortBets',
-  network: 'BIGSB',
   nativeCurrency: {
     name: 'USD Coin',
     symbol: 'USDC',

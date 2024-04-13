@@ -1,43 +1,67 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import { NumericFormat } from 'react-number-format';
-import { useAccount, useBalance, useNetwork, useSwitchNetwork } from 'wagmi';
-import { bridgeDepoChainId, mainnetUSDC } from '@/blockchain/constants';
+import {
+  useAccount,
+  useBalance,
+  useBlockNumber,
+  useSwitchChain,
+  useWriteContract,
+} from 'wagmi';
+import {
+  MAX_ALLOWANCE,
+  bridgeDepoChainId,
+  bridgeDepoContract,
+  mainnetUSDC,
+} from '@/blockchain/constants';
 import { useBridgeDepoAllowance } from '@/blockchain/hooks/bridge/useBridgeDepoAllowance';
-import { useSetBridgeDepoAllowance } from '@/blockchain/hooks/bridge/useSetBridgeDepoAllowance';
 import { useStartDepoProcess } from '@/blockchain/hooks/bridge/useStartDepoProcess';
+import { useQueryClient } from '@tanstack/react-query';
+import { erc20Abi } from 'viem';
 
 export const BridgeDeposit = () => {
   const [amount, setAmount] = useState<number>(1);
-  const { chain } = useNetwork();
-  const { switchNetwork } = useSwitchNetwork();
+  const { switchChain } = useSwitchChain();
+  const queryClient = useQueryClient();
 
-  const { address } = useAccount();
-  const { allowance } = useBridgeDepoAllowance(address!);
-  const { write } = useSetBridgeDepoAllowance();
+  const { address, chain } = useAccount();
+  const { allowance, queryKey: bridgeDepoQueryKey } = useBridgeDepoAllowance(
+    address!
+  );
+  const { writeContract } = useWriteContract();
   const { write: writeStartDepo } = useStartDepoProcess(amount);
   const isAllowance = allowance != BigInt(0);
+  const { data: blockNumber } = useBlockNumber({ watch: true });
 
-  const { data: mainnetUSDCData } = useBalance({
+  const { data: mainnetUSDCData, queryKey } = useBalance({
     address: address,
     chainId: bridgeDepoChainId,
     token: mainnetUSDC,
-    watch: true,
   });
 
   const handleAction = () => {
     if (chain!.id != bridgeDepoChainId) {
-      switchNetwork?.(bridgeDepoChainId);
+      switchChain({ chainId: bridgeDepoChainId });
     }
     if (chain!.id === bridgeDepoChainId && !isAllowance) {
-      write?.();
+      writeContract({
+        address: mainnetUSDC,
+        abi: erc20Abi,
+        functionName: 'approve',
+        args: [bridgeDepoContract, BigInt(MAX_ALLOWANCE)],
+      });
     }
     if (chain!.id === bridgeDepoChainId && isAllowance) {
       writeStartDepo?.();
     }
     console.log(allowance);
   };
+
+  useEffect(() => {
+    queryClient.invalidateQueries({ queryKey: bridgeDepoQueryKey });
+    queryClient.invalidateQueries({ queryKey });
+  }, [blockNumber, queryClient]);
 
   return (
     <div className="flex flex-col gap-4">

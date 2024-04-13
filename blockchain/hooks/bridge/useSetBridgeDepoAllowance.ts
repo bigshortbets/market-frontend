@@ -1,19 +1,20 @@
-import {
+/* import {
   MAX_ALLOWANCE,
   bridgeDepoContract,
   mainnetUSDC,
 } from '@/blockchain/constants';
 import { handleBlockchainError } from '@/utils/handleBlockchainError';
 import toast from 'react-hot-toast';
-import { erc20ABI, useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { erc20Abi } from 'viem';
+import {  useContractWrite, usePrepareContractWrite, useWriteContract } from 'wagmi';
 
 export const useSetBridgeDepoAllowance = () => {
-  const { write } = useContractWrite({
+  const { writeContract, isSuccess } = useWriteContract({
     address: mainnetUSDC,
-    abi: erc20ABI,
+    abi: erc20Abi,
     functionName: 'approve',
     args: [bridgeDepoContract, BigInt(MAX_ALLOWANCE)],
-    onError(error) {
+    onError(error : any) {
       handleBlockchainError(error.stack!);
     },
     onSuccess() {
@@ -25,3 +26,4 @@ export const useSetBridgeDepoAllowance = () => {
 
   return { write };
 };
+ */

@@ -2,8 +2,7 @@ import { useDeposit } from '@/blockchain/hooks/useDeposit';
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
 import { useState } from 'react';
 import { NumericFormat } from 'react-number-format';
-import { useAccount, useNetwork } from 'wagmi';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { useAccount } from 'wagmi';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
 import { useAtom } from 'jotai';
 import {
@@ -27,12 +26,10 @@ export interface DepositProps {
 }
 
 export const Deposit = ({ markets }: DepositProps) => {
-  const { open } = useWeb3Modal();
   const [amount, setAmount] = useState<number>(1);
-  const { address } = useAccount();
+  const { address, chain } = useAccount();
   const { data: walletBalance } = useNativeCurrencyBalance(address);
   const { write, isLoading } = useDeposit(amount);
-  const { chain } = useNetwork();
   const isBsbNetwork = chain?.id === bigshortbetsChain.id;
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);

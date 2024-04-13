@@ -15,7 +15,8 @@
     "@polkadot/api": "^10.11.2",
     "@polkadot/util": "^12.6.2",
     "@polkadot/util-crypto": "^12.5.1",
-    "@web3modal/wagmi": "3.5.7",
+    "@rainbow-me/rainbowkit": "^2.0.5",
+    "@tanstack/react-query": "^5.29.2",
     "big.js": "^6.2.1",
     "date-fns": "^3.3.1",
     "graphql": "^16.8.1",
@@ -30,8 +31,8 @@
     "react-number-format": "^5.3.1",
     "react-tooltip": "^5.26.3",
     "truncate-eth-address": "^1.0.2",
-    "viem": "^1.16.6",
-    "wagmi": "^1.4.5"
+    "viem": "2.x",
+    "wagmi": "^2.5.19"
   },
   "devDependencies": {
     "@types/big.js": "^6.2.1",

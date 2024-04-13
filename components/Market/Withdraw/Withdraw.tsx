@@ -1,10 +1,9 @@
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
 import { useWithdraw } from '@/blockchain/hooks/useWithdraw';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useState } from 'react';
 import { NumericFormat } from 'react-number-format';
-import { useAccount, useNetwork } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { selectedMarketIdAtom, selectedMarketMarginAtom } from '../Market';
 import { useAtom } from 'jotai';
 import { findMarketById } from '@/utils/findMarketById';
@@ -17,12 +16,10 @@ export interface WithdrawProps {
 }
 
 export const Withdraw = ({ markets }: WithdrawProps) => {
-  const { open } = useWeb3Modal();
   const [amount, setAmount] = useState<number>(1);
-  const { address } = useAccount();
+  const { address, chain } = useAccount();
   const { data: walletBalance } = useNativeCurrencyBalance(address);
   const { write, isLoading } = useWithdraw(amount);
-  const { chain } = useNetwork();
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const market = findMarketById(markets, selectedMarketId);

@@ -1,7 +1,7 @@
 import { useCreateOrderWrite } from '@/blockchain/hooks/useCreateOrderWrite';
 import { useEffect, useState } from 'react';
 import { NumericFormat } from 'react-number-format';
-import { useAccount, useNetwork } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { useAtom } from 'jotai';
 import { currentBlockAtom, selectedMarketIdAtom } from '../Market';
 import { findMarketById } from '@/utils/findMarketById';
@@ -9,7 +9,7 @@ import { MarketType } from '@/types/marketTypes';
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
 import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
 import { checkIfDivisible } from '@/utils/checkIfDivisible';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
+
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
@@ -46,9 +46,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
     Number(selectedMarket?.lifetime)
   );
 
-  const { address } = useAccount();
-
-  const { open } = useWeb3Modal();
+  const { address, chain } = useAccount();
 
   const { formattedBalance } = useNativeCurrencyBalance(address);
 
@@ -56,7 +54,6 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
     useCreateOrderWrite(price, quantity, OrderSideEnum.SHORT);
   const { write: writeLongOrder, isLoading: isLongLoading } =
     useCreateOrderWrite(price, quantity, OrderSideEnum.LONG);
-  const { chain } = useNetwork();
 
   const orderCost =
     (Number(selectedMarket?.initialMargin) / 100) *
