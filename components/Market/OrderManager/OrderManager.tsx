@@ -113,7 +113,10 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   const noMarkets = markets.length < 1;
 
   return (
-    <div className="p-2.5 pb-4 flex flex-col gap-4">
+    <div
+      className="p-2.5 pb-4 flex flex-col gap-4"
+      onClick={() => console.log(selectedMarket?.oraclePrice)}
+    >
       <div className="flex flex-col gap-2">
         <p className="text-sm font-semibold text-secondary leading-[24px]">
           Order
@@ -214,7 +217,10 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               </a>
             </div>
             <p>
-              {!noMarkets ? currencyFormatter.format(orderValue) : '-'} USDC
+              {!noMarkets && selectedMarket?.oraclePrice != null
+                ? currencyFormatter.format(orderValue)
+                : '-'}{' '}
+              USDC
             </p>
           </div>
         </div>
