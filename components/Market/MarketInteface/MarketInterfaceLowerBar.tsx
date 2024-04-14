@@ -1,17 +1,27 @@
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
 import { useAtom } from 'jotai';
-import React from 'react';
-import { useAccount } from 'wagmi';
+import React, { useEffect } from 'react';
+import { useAccount, useBlockNumber } from 'wagmi';
 import { selectedMarketMarginAtom, userMarginsAtom } from '../Market';
 import { LiquidationStatusTab } from '../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { currencyFormatter } from '@/utils/currencyFormatter';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const MarketInterfaceLowerBar = () => {
   const { address } = useAccount();
-  const { data } = useNativeCurrencyBalance(address);
+  const { data, refetch } = useNativeCurrencyBalance(address);
   const [userMargins] = useAtom(userMarginsAtom);
   const [selectedMarketMargin] = useAtom(selectedMarketMarginAtom);
+  const { data: blockNumber } = useBlockNumber({ watch: true });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
   return (
     <div className="h-[58px] border-t border-[#444650] px-5 py-3">
       <div className="sm:hidden flex items-center justify-between h-full">

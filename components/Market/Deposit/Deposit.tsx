@@ -1,9 +1,8 @@
 import { useDeposit } from '@/blockchain/hooks/useDeposit';
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NumericFormat } from 'react-number-format';
-import { useAccount, useNetwork } from 'wagmi';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { useAccount } from 'wagmi';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
 import { useAtom } from 'jotai';
 import {
@@ -27,16 +26,22 @@ export interface DepositProps {
 }
 
 export const Deposit = ({ markets }: DepositProps) => {
-  const { open } = useWeb3Modal();
   const [amount, setAmount] = useState<number>(1);
-  const { address } = useAccount();
-  const { data: walletBalance } = useNativeCurrencyBalance(address);
-  const { write, isLoading } = useDeposit(amount);
-  const { chain } = useNetwork();
+  const { address, chain } = useAccount();
+  const { data: walletBalance, refetch } = useNativeCurrencyBalance(address);
+  const { write: writeDeposit } = useDeposit(amount);
   const isBsbNetwork = chain?.id === bigshortbetsChain.id;
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const market = findMarketById(markets, selectedMarketId);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleDeposit = () => {
     if (!address) {
@@ -47,7 +52,7 @@ export const Deposit = ({ markets }: DepositProps) => {
       switchToBigShortBetsChain();
       return;
     }
-    write?.();
+    writeDeposit();
   };
 
   const depositDisabled =
@@ -274,6 +279,7 @@ export const Deposit = ({ markets }: DepositProps) => {
         </button>
       </div>
       {selecteMarketMargin?.liquidationStatus != 'EverythingFine' &&
+        selecteMarketMargin?.liquidationStatus != ('None' as any) &&
         selecteMarketMargin &&
         selecteMarketMargin.requiredDeposit &&
         address && (

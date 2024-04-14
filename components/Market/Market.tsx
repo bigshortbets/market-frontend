@@ -3,7 +3,7 @@ import { Navbar } from '../Navbar/Navbar';
 import { MarketType } from '@/types/marketTypes';
 import { atom, useAtom } from 'jotai';
 import { TradingHub } from './TradingHub/TradingHub';
-import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 import { OrderBookContainer } from './OrderBook/OrderBookContainer';
 import { FinanceManager } from './FinanceManager/FinanceManager';
 import { MarketInterface } from './MarketInteface/MarketInterface';
@@ -60,8 +60,7 @@ export const Market = ({ markets }: MarketProps) => {
   const [tabletView, setTabletView] = useAtom(tabletViewAtom);
   const [mobileView, setMobileView] = useAtom(mobileViewAtom);
   const [blockHeight] = useAtom(currentBlockAtom);
-  const { address } = useAccount();
-  const { chain } = useNetwork();
+  const { address, chain } = useAccount();
 
   useUserMargin(markets, address!, selectedMarketId);
   const { loading: recentTradesLoading, error: recentTradesError } =
@@ -105,11 +104,11 @@ export const Market = ({ markets }: MarketProps) => {
     }
   }, [blockHeight, markets, router]);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (chain?.id != bigshortbetsChain.id) {
       switchToBigShortBetsChain();
     }
-  }, []);
+  }, []); */
 
   /* const [UIConfiguration] = useAtom(UIConfigurationAtom); */
 

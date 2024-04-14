@@ -1,42 +1,66 @@
-import { useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { useEffect } from 'react';
+import { useTransactionConfirmations, useWriteContract } from 'wagmi';
 import { marketContract } from '../constants';
 import { abi } from '../abi';
 import { useAtom } from 'jotai';
 import { selectedMarketIdAtom } from '@/components/Market/Market';
 import { parseEther } from 'viem';
 import { OrderSideEnum } from '@/components/Market/OrderManager/OrderManager';
-import toast from 'react-hot-toast';
-import { tradingHubStateAtom } from '@/components/Market/TradingHub/TradingHub';
 import { handleBlockchainError } from '@/utils/handleBlockchainError';
+import toast from 'react-hot-toast';
 
 export const useCreateOrderWrite = (
   price: number,
   quantity: number,
   side: OrderSideEnum
 ) => {
-  const [, setTradingHubState] = useAtom(tradingHubStateAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
-  const { data, isLoading, isSuccess, write } = useContractWrite({
-    address: marketContract as `0x${string}`,
-    abi: abi,
-    functionName: 'create_order',
-    args: [
-      BigInt(selectedMarketId),
-      parseEther(price.toString()),
-      quantity,
-      side,
-    ],
-    onError(error) {
-      handleBlockchainError(error.stack!);
-    },
+  const { writeContract, error, data } = useWriteContract();
 
-    onSuccess() {
-      toast.success('Order created!', {
+  const notifText = `Order created! Wait for transaction confirmation.`;
+
+  const write = () =>
+    writeContract({
+      address: marketContract,
+      abi: abi,
+      functionName: 'create_order',
+      args: [
+        BigInt(selectedMarketId),
+        parseEther(price.toString()),
+        quantity,
+        side,
+      ],
+    });
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message.split('\n')[0], {
         duration: 4000,
       });
-      setTradingHubState('orders');
-    },
-  });
+    }
+  }, [error]);
 
-  return { data, isLoading, isSuccess, write };
+  /*   const { data: confData } = useTransactionConfirmations({
+    hash: data,
+  }); */
+
+  useEffect(() => {
+    if (data) {
+      toast.success(notifText, {
+        duration: 4000,
+      });
+    }
+  }, [data]);
+
+  /*  useEffect(() => {
+    if (confData !== undefined && confData > 0) {
+      toast.success(`Transaction confirmed! Tx hash: ${data}`);
+    }
+  }, [confData]); */
+
+  /*  useEffect(() => {
+    console.log(confData);
+  }, [confData]); */
+
+  return { write };
 };

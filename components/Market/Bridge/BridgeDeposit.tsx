@@ -1,43 +1,58 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { FaLongArrowAltRight } from 'react-icons/fa';
 import { NumericFormat } from 'react-number-format';
-import { useAccount, useBalance, useNetwork, useSwitchNetwork } from 'wagmi';
+import { useAccount, useBalance, useBlockNumber, useSwitchChain } from 'wagmi';
 import { bridgeDepoChainId, mainnetUSDC } from '@/blockchain/constants';
 import { useBridgeDepoAllowance } from '@/blockchain/hooks/bridge/useBridgeDepoAllowance';
-import { useSetBridgeDepoAllowance } from '@/blockchain/hooks/bridge/useSetBridgeDepoAllowance';
 import { useStartDepoProcess } from '@/blockchain/hooks/bridge/useStartDepoProcess';
+import { useQueryClient } from '@tanstack/react-query';
+import { useSetBridgeDepoAllowance } from '@/blockchain/hooks/bridge/useSetBridgeDepoAllowance';
 
 export const BridgeDeposit = () => {
   const [amount, setAmount] = useState<number>(1);
-  const { chain } = useNetwork();
-  const { switchNetwork } = useSwitchNetwork();
+  const { switchChain } = useSwitchChain();
+  const queryClient = useQueryClient();
 
-  const { address } = useAccount();
-  const { allowance } = useBridgeDepoAllowance(address!);
-  const { write } = useSetBridgeDepoAllowance();
+  const { address, chain } = useAccount();
+  const {
+    allowance,
+    queryKey: bridgeDepoQueryKey,
+    refetch: refetchAllowance,
+  } = useBridgeDepoAllowance(address!);
+
+  const { write: writeAllowance } = useSetBridgeDepoAllowance();
   const { write: writeStartDepo } = useStartDepoProcess(amount);
+
   const isAllowance = allowance != BigInt(0);
 
-  const { data: mainnetUSDCData } = useBalance({
+  const { data: mainnetUSDCData, refetch } = useBalance({
     address: address,
     chainId: bridgeDepoChainId,
     token: mainnetUSDC,
-    watch: true,
   });
 
   const handleAction = () => {
     if (chain!.id != bridgeDepoChainId) {
-      switchNetwork?.(bridgeDepoChainId);
+      switchChain({ chainId: bridgeDepoChainId });
     }
     if (chain!.id === bridgeDepoChainId && !isAllowance) {
-      write?.();
+      writeAllowance();
     }
     if (chain!.id === bridgeDepoChainId && isAllowance) {
-      writeStartDepo?.();
+      writeStartDepo();
     }
     console.log(allowance);
   };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+      refetchAllowance();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="flex flex-col gap-4">

@@ -1,7 +1,7 @@
 import { useCreateOrderWrite } from '@/blockchain/hooks/useCreateOrderWrite';
 import { useEffect, useState } from 'react';
 import { NumericFormat } from 'react-number-format';
-import { useAccount, useNetwork } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { useAtom } from 'jotai';
 import { currentBlockAtom, selectedMarketIdAtom } from '../Market';
 import { findMarketById } from '@/utils/findMarketById';
@@ -9,7 +9,7 @@ import { MarketType } from '@/types/marketTypes';
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
 import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
 import { checkIfDivisible } from '@/utils/checkIfDivisible';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
+
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
@@ -46,17 +46,20 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
     Number(selectedMarket?.lifetime)
   );
 
-  const { address } = useAccount();
-
-  const { open } = useWeb3Modal();
+  const { address, chain } = useAccount();
 
   const { formattedBalance } = useNativeCurrencyBalance(address);
 
-  const { write: writeShortOrder, isLoading: isShortLoading } =
-    useCreateOrderWrite(price, quantity, OrderSideEnum.SHORT);
-  const { write: writeLongOrder, isLoading: isLongLoading } =
-    useCreateOrderWrite(price, quantity, OrderSideEnum.LONG);
-  const { chain } = useNetwork();
+  const { write: writeShortOrder } = useCreateOrderWrite(
+    price,
+    quantity,
+    OrderSideEnum.SHORT
+  );
+  const { write: writeLongOrder } = useCreateOrderWrite(
+    price,
+    quantity,
+    OrderSideEnum.LONG
+  );
 
   const orderCost =
     (Number(selectedMarket?.initialMargin) / 100) *
@@ -73,7 +76,8 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
     price === 0 ||
     orderCost > Number(formattedBalance) ||
     !isDivisibleByTickSize ||
-    quantity === 0;
+    quantity === 0 ||
+    selectedMarket?.oraclePrice === null;
 
   useEffect(() => {
     selectedMarket?.oraclePrice &&
@@ -99,17 +103,20 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       return;
     }
     if (selectedSideOrder === OrderSideEnum.LONG) {
-      writeLongOrder?.();
+      writeLongOrder();
     }
     if (selectedSideOrder === OrderSideEnum.SHORT) {
-      writeShortOrder?.();
+      writeShortOrder();
     }
   };
 
   const noMarkets = markets.length < 1;
 
   return (
-    <div className="p-2.5 pb-4 flex flex-col gap-4">
+    <div
+      className="p-2.5 pb-4 flex flex-col gap-4"
+      onClick={() => console.log(selectedMarket?.oraclePrice)}
+    >
       <div className="flex flex-col gap-2">
         <p className="text-sm font-semibold text-secondary leading-[24px]">
           Order
@@ -210,7 +217,10 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               </a>
             </div>
             <p>
-              {!noMarkets ? currencyFormatter.format(orderValue) : '-'} USDC
+              {!noMarkets && selectedMarket?.oraclePrice != null
+                ? currencyFormatter.format(orderValue)
+                : '-'}{' '}
+              USDC
             </p>
           </div>
         </div>
@@ -236,6 +246,9 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       )}
       {address && orderCost > Number(formattedBalance) && (
         <FinanceManagerWarning error="Order cost is higher than your wallet balance. Please add funds to your wallet." />
+      )}
+      {address && selectedMarket?.oraclePrice === null && (
+        <FinanceManagerWarning error="There is no oracle price for this market yet, placing orders is not available." />
       )}
       {address && isMarketClosed && (
         <FinanceManagerWarning error="This market is already closed." />

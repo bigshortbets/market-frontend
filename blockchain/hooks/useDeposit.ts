@@ -1,31 +1,42 @@
-import { useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { useTransactionConfirmations, useWriteContract } from 'wagmi';
 import { marketContract } from '../constants';
 import { abi } from '../abi';
 import { useAtom } from 'jotai';
 import { selectedMarketIdAtom } from '@/components/Market/Market';
 import { parseEther } from 'viem';
-import { OrderSideEnum } from '@/components/Market/OrderManager/OrderManager';
-import toast from 'react-hot-toast';
+import { useEffect } from 'react';
 import { handleBlockchainError } from '@/utils/handleBlockchainError';
+import toast from 'react-hot-toast';
 
-export const useDeposit = (amount: number, onSuccessFunc?: Function) => {
+export const useDeposit = (amount: number) => {
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
-  const { data, isLoading, isSuccess, write } = useContractWrite({
-    address: marketContract as `0x${string}`,
-    abi: abi,
-    functionName: 'deposit',
-    args: [BigInt(selectedMarketId), parseEther(amount.toString())],
-    onError(error) {
-      handleBlockchainError(error.stack!);
-    },
+  const { writeContract, error, data } = useWriteContract();
 
-    onSuccess() {
-      onSuccessFunc && onSuccessFunc();
-      toast.success('Deposit was successfully made!', {
+  const notifText = `Deposit has been done! Wait for transaction confirmation.`;
+
+  const write = () =>
+    writeContract({
+      address: marketContract as `0x${string}`,
+      abi: abi,
+      functionName: 'deposit',
+      args: [BigInt(selectedMarketId), parseEther(amount.toString())],
+    });
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message.split('\n')[0], {
         duration: 4000,
       });
-    },
-  });
+    }
+  }, [error]);
 
-  return { data, isLoading, isSuccess, write };
+  useEffect(() => {
+    if (data) {
+      toast.success(notifText, {
+        duration: 4000,
+      });
+    }
+  }, [data]);
+
+  return { write };
 };

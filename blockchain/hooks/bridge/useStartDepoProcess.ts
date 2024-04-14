@@ -1,31 +1,38 @@
 import { bridgeAbi } from '@/blockchain/bridgeAbi';
-import {
-  MAX_ALLOWANCE,
-  bridgeDepoChainId,
-  bridgeDepoContract,
-  mainnetUSDC,
-} from '@/blockchain/constants';
+import { bridgeDepoChainId, bridgeDepoContract } from '@/blockchain/constants';
 import { handleBlockchainError } from '@/utils/handleBlockchainError';
+import { useEffect } from 'react';
 import toast from 'react-hot-toast';
-import { parseEther } from 'viem';
-import { erc20ABI, useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { useWriteContract } from 'wagmi';
 
 export const useStartDepoProcess = (amount: number) => {
-  const { write } = useContractWrite({
-    address: bridgeDepoContract,
-    chainId: bridgeDepoChainId,
-    abi: bridgeAbi,
-    functionName: 'startDepositProcess',
-    args: [BigInt(amount * 1_000_000)],
-    onError(error) {
-      handleBlockchainError(error.stack!);
-    },
-    onSuccess() {
-      toast.success('Start deposit proccess successful!', {
+  const { writeContract, error, data, isSuccess } = useWriteContract();
+
+  const notifText = `Deposit has been done! Wait for transaction confirmation.`;
+
+  const write = () =>
+    writeContract({
+      address: bridgeDepoContract,
+      chainId: bridgeDepoChainId,
+      abi: bridgeAbi,
+      functionName: 'startDepositProcess',
+      args: [BigInt(amount * 1_000_000)],
+    });
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message.split('\n')[0], {
         duration: 4000,
       });
-    },
-  });
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(notifText, {
+        duration: 4000,
+      });
+    }
+  }, [isSuccess]);
 
   return { write };
 };

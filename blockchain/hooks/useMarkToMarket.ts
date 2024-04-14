@@ -1,25 +1,39 @@
-import { useContractWrite } from 'wagmi';
+import { useWriteContract } from 'wagmi';
 import { marketContract } from '../constants';
 import { abi } from '../abi';
 import toast from 'react-hot-toast';
-import { handleBlockchainError } from '@/utils/handleBlockchainError';
+import { bigshortbetsChain } from '../chain';
+import { useEffect } from 'react';
 
 export const useMarkToMarket = (marketId: string, positionId: string) => {
-  const { data, isLoading, isSuccess, write } = useContractWrite({
-    address: marketContract as `0x${string}`,
-    abi: abi,
-    functionName: 'mark_to_market',
-    args: [BigInt(marketId), BigInt(positionId)],
-    onError(error) {
-      handleBlockchainError(error.stack!);
-    },
+  const { writeContract, error, data, isSuccess } = useWriteContract();
 
-    onSuccess() {
-      toast.success('Mark to market was successfully made!', {
+  const notifText = `Mark to market action performed! Wait for transaction confirmation.`;
+
+  const write = () =>
+    writeContract({
+      address: marketContract as `0x${string}`,
+      abi: abi,
+      functionName: 'mark_to_market',
+      args: [BigInt(marketId), BigInt(positionId)],
+      chainId: bigshortbetsChain.id,
+    });
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error.message.split('\n')[0], {
         duration: 4000,
       });
-    },
-  });
+    }
+  }, [error]);
 
-  return { data, isLoading, isSuccess, write };
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(notifText, {
+        duration: 4000,
+      });
+    }
+  }, [isSuccess]);
+
+  return { data, isSuccess, write };
 };

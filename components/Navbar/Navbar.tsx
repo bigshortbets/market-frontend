@@ -1,25 +1,19 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import logo from '../../public/logo.svg';
-import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
-import { CurrentNetworkTab } from './CurrentNetworkTab';
-import { WalletConnect } from '../WalletConnect';
-import { selectedMarketIdAtom } from '../Market/Market';
-import { useAtom } from 'jotai';
+import { useAccount, useSwitchChain } from 'wagmi';
 import banner from '../../public/banner.svg';
+import { bigshortbetsChain } from '@/blockchain/chain';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 export const Navbar = () => {
   const [isClient, setIsClient] = useState(false);
-  const { isConnected } = useAccount();
-  const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
-
-  const { chain } = useNetwork();
-  const { switchNetwork } = useSwitchNetwork();
-  const { address } = useAccount();
+  const { isConnected, chain } = useAccount();
+  const { switchChain } = useSwitchChain();
 
   useEffect(() => {
-    if (chain?.id != 2137) {
-      switchNetwork?.(2137);
+    if (chain?.id != bigshortbetsChain.id) {
+      switchChain({ chainId: bigshortbetsChain.id });
     }
   }, [isConnected]);
 
@@ -45,7 +39,20 @@ export const Navbar = () => {
           </div>
           {/*           {isConnected && <CurrentNetworkTab />} */}
           {/* <UIConfiguration /> */}
-          {isClient && <WalletConnect />}
+          {/* {isClient && <WalletConnect />} */}
+          {isClient && (
+            <ConnectButton
+              accountStatus={{
+                smallScreen: 'avatar',
+                largeScreen: 'address',
+              }}
+              chainStatus={{
+                smallScreen: 'icon',
+                largeScreen: 'full',
+              }}
+              showBalance={false}
+            />
+          )}
         </div>
       </div>
     </nav>

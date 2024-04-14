@@ -1,10 +1,9 @@
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
 import { useWithdraw } from '@/blockchain/hooks/useWithdraw';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
-import { useWeb3Modal } from '@web3modal/wagmi/react';
 import { useState } from 'react';
 import { NumericFormat } from 'react-number-format';
-import { useAccount, useNetwork } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { selectedMarketIdAtom, selectedMarketMarginAtom } from '../Market';
 import { useAtom } from 'jotai';
 import { findMarketById } from '@/utils/findMarketById';
@@ -17,12 +16,9 @@ export interface WithdrawProps {
 }
 
 export const Withdraw = ({ markets }: WithdrawProps) => {
-  const { open } = useWeb3Modal();
   const [amount, setAmount] = useState<number>(1);
-  const { address } = useAccount();
-  const { data: walletBalance } = useNativeCurrencyBalance(address);
-  const { write, isLoading } = useWithdraw(amount);
-  const { chain } = useNetwork();
+  const { address, chain } = useAccount();
+  const { write } = useWithdraw(amount);
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const market = findMarketById(markets, selectedMarketId);
@@ -38,19 +34,23 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
       switchToBigShortBetsChain();
       return;
     }
-    write?.();
+    write();
   };
 
   const possibleWithdraw =
-    selecteMarketMargin?.liquidationStatus === 'EverythingFine'
-      ? Number(selecteMarketMargin.margin) -
-        Number(selecteMarketMargin.requiredDeposit)
+    selecteMarketMargin?.liquidationStatus === 'EverythingFine' ||
+    selecteMarketMargin?.liquidationStatus === ('None' as any)
+      ? Number(selecteMarketMargin!.margin) -
+        Number(selecteMarketMargin!.requiredDeposit)
       : 0;
 
   const withdrawDisabled = amount <= 0 || amount > possibleWithdraw;
 
   return (
-    <div className="p-2.5 pb-4 flex flex-col gap-4">
+    <div
+      className="p-2.5 pb-4 flex flex-col gap-4"
+      onClick={() => console.log(selecteMarketMargin!.liquidationStatus)}
+    >
       <div className="flex flex-col gap-2">
         <p className="text-sm font-semibold text-secondary leading-[24px]">
           Withdraw
