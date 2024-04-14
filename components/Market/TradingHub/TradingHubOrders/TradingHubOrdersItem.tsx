@@ -1,6 +1,7 @@
 import { OrderType } from '@/types/orderTypes';
 import { SideLabel } from '../SideLabel';
 import { useCancelOrder } from '@/blockchain/hooks/useCancelOrder';
+import { format, parseISO } from 'date-fns';
 
 interface TradingHubOrdersItemProps {
   order: OrderType;
@@ -8,6 +9,7 @@ interface TradingHubOrdersItemProps {
 
 export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
   const { write: writeCancelOrder } = useCancelOrder(order.market.id, order.id);
+  const date = parseISO(order.timestamp);
   return (
     <tr className={`text-sm odd:bg-[#23252E] text-[#7F828F] `}>
       {/* Side */}
@@ -15,7 +17,7 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
         <SideLabel side={order.side} />
       </td>
       {/* Created */}
-      <td>{order.timestamp}</td>
+      <td>{format(date, 'd MMMM yyyy HH:mm:ss')}</td>
       {/* Market */}
       <td>{order.market.ticker}</td>
       {/* Price */}

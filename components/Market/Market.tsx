@@ -104,11 +104,11 @@ export const Market = ({ markets }: MarketProps) => {
     }
   }, [blockHeight, markets, router]);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (chain?.id != bigshortbetsChain.id) {
       switchToBigShortBetsChain();
     }
-  }, []);
+  }, []); */
 
   /* const [UIConfiguration] = useAtom(UIConfigurationAtom); */
 
