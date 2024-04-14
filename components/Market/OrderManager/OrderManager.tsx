@@ -256,11 +256,13 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       {address && quantity === 0 && (
         <FinanceManagerWarning error="Your quantity value must be higher than 0." />
       )}
-      {!isDivisibleByTickSize && !noMarkets && (
-        <FinanceManagerWarning
-          error={`Your price amount must be divisible by the tick size: (${selectedMarket?.tickSize.toString()!})`}
-        />
-      )}
+      {!isDivisibleByTickSize &&
+        !noMarkets &&
+        selectedMarket?.oraclePrice != null && (
+          <FinanceManagerWarning
+            error={`Your price amount must be divisible by the tick size: (${selectedMarket?.tickSize.toString()!})`}
+          />
+        )}
       {noMarkets && (
         <FinanceManagerWarning error={`Currently no markets are available.`} />
       )}
