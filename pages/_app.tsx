@@ -23,7 +23,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
 const config = getDefaultConfig({
   appName: 'bigshortbet$ market peer2peer',
   projectId: '86ff0af7d996a9e572fa31d5d0f8bf52',
-  chains: [bigshortbetsChain, sepolia],
+  chains: [bigshortbetsChain],
   ssr: true,
 });
 
