@@ -76,7 +76,8 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
     price === 0 ||
     orderCost > Number(formattedBalance) ||
     !isDivisibleByTickSize ||
-    quantity === 0;
+    quantity === 0 ||
+    selectedMarket?.oraclePrice === null;
 
   useEffect(() => {
     selectedMarket?.oraclePrice &&
@@ -239,6 +240,9 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       )}
       {address && orderCost > Number(formattedBalance) && (
         <FinanceManagerWarning error="Order cost is higher than your wallet balance. Please add funds to your wallet." />
+      )}
+      {address && selectedMarket?.oraclePrice === null && (
+        <FinanceManagerWarning error="There is no oracle price for this market yet, placing orders is not available." />
       )}
       {address && isMarketClosed && (
         <FinanceManagerWarning error="This market is already closed." />
