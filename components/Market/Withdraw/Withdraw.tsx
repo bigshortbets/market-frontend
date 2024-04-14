@@ -18,8 +18,7 @@ export interface WithdrawProps {
 export const Withdraw = ({ markets }: WithdrawProps) => {
   const [amount, setAmount] = useState<number>(1);
   const { address, chain } = useAccount();
-  const { data: walletBalance } = useNativeCurrencyBalance(address);
-  const { write, isLoading } = useWithdraw(amount);
+  const { write } = useWithdraw(amount);
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const market = findMarketById(markets, selectedMarketId);
@@ -35,7 +34,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
       switchToBigShortBetsChain();
       return;
     }
-    write?.();
+    write();
   };
 
   const possibleWithdraw =

@@ -1,5 +1,6 @@
 import {
   MAX_ALLOWANCE,
+  bridgeDepoChainId,
   bridgeDepoContract,
   mainnetUSDC,
 } from '@/blockchain/constants';
@@ -20,6 +21,7 @@ export const useSetBridgeDepoAllowance = () => {
       abi: erc20Abi,
       functionName: 'approve',
       args: [bridgeDepoContract, BigInt(MAX_ALLOWANCE)],
+      chainId: bridgeDepoChainId,
     });
 
   useEffect(() => {

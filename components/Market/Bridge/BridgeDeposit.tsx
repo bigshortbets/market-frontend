@@ -15,17 +15,18 @@ export const BridgeDeposit = () => {
   const queryClient = useQueryClient();
 
   const { address, chain } = useAccount();
-  const { allowance, queryKey: bridgeDepoQueryKey } = useBridgeDepoAllowance(
-    address!
-  );
+  const {
+    allowance,
+    queryKey: bridgeDepoQueryKey,
+    refetch: refetchAllowance,
+  } = useBridgeDepoAllowance(address!);
 
   const { write: writeAllowance } = useSetBridgeDepoAllowance();
   const { write: writeStartDepo } = useStartDepoProcess(amount);
 
   const isAllowance = allowance != BigInt(0);
-  const { data: blockNumber } = useBlockNumber({ watch: true });
 
-  const { data: mainnetUSDCData, queryKey } = useBalance({
+  const { data: mainnetUSDCData, refetch } = useBalance({
     address: address,
     chainId: bridgeDepoChainId,
     token: mainnetUSDC,
@@ -45,9 +46,13 @@ export const BridgeDeposit = () => {
   };
 
   useEffect(() => {
-    queryClient.invalidateQueries({ queryKey: bridgeDepoQueryKey });
-    queryClient.invalidateQueries({ queryKey });
-  }, [blockNumber, queryClient]);
+    const interval = setInterval(() => {
+      refetch();
+      refetchAllowance();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="flex flex-col gap-4">

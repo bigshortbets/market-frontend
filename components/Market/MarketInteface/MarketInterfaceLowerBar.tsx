@@ -21,7 +21,7 @@ export const MarketInterfaceLowerBar = () => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [blockNumber]);
+  }, []);
   return (
     <div className="h-[58px] border-t border-[#444650] px-5 py-3">
       <div className="sm:hidden flex items-center justify-between h-full">

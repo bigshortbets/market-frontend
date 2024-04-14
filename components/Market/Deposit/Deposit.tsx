@@ -1,6 +1,6 @@
 import { useDeposit } from '@/blockchain/hooks/useDeposit';
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NumericFormat } from 'react-number-format';
 import { useAccount } from 'wagmi';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
@@ -28,12 +28,20 @@ export interface DepositProps {
 export const Deposit = ({ markets }: DepositProps) => {
   const [amount, setAmount] = useState<number>(1);
   const { address, chain } = useAccount();
-  const { data: walletBalance } = useNativeCurrencyBalance(address);
+  const { data: walletBalance, refetch } = useNativeCurrencyBalance(address);
   const { write: writeDeposit } = useDeposit(amount);
   const isBsbNetwork = chain?.id === bigshortbetsChain.id;
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const market = findMarketById(markets, selectedMarketId);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleDeposit = () => {
     if (!address) {

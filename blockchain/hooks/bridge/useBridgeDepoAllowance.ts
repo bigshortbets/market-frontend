@@ -11,6 +11,7 @@ export const useBridgeDepoAllowance = (address: string) => {
     data: allowance,
     isLoading,
     queryKey,
+    refetch,
   } = useReadContract({
     address: mainnetUSDC,
     abi: erc20Abi,
@@ -19,5 +20,5 @@ export const useBridgeDepoAllowance = (address: string) => {
     args: [address! as `0x${string}`, bridgeDepoContract as `0x${string}`],
   });
 
-  return { allowance, isLoading, queryKey };
+  return { allowance, isLoading, queryKey, refetch };
 };

@@ -138,13 +138,13 @@ export const marketsData: MarketsDataProps[] = [
   {
     symbol: 'TRUMP',
     name: 'Trump Election',
-    path: './market-logos/TRUMP.jpg',
+    path: './market-logos/TRUMP.svg',
     category: 'election',
   },
   {
     symbol: 'BIDEN',
     name: 'Biden Election',
-    path: './market-logos/BIDEN.jpg',
+    path: './market-logos/BIDEN.svg',
     category: 'election',
   },
 ];

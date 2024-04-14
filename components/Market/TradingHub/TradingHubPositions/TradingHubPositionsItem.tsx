@@ -30,8 +30,10 @@ export const TradingHubPositionsItem = ({
         Number(position.market.contractUnit) *
         (Number(position.price.toString()) - Number(oraclePrice.toString()));
 
-  const { write: writeMarkToMarket, isLoading: isMarkToMarketLoading } =
-    useMarkToMarket(position.market.id, position.id);
+  const { write: writeMarkToMarket } = useMarkToMarket(
+    position.market.id,
+    position.id
+  );
 
   const [opponentsMargin] = useAtom(opponentsMarginsAtom);
 
@@ -85,7 +87,7 @@ export const TradingHubPositionsItem = ({
         >
           <button
             className="mr-4 text-xs font-semibold text-[#4ECB7D] hover:underline"
-            onClick={() => writeMarkToMarket?.()}
+            onClick={() => writeMarkToMarket()}
           >
             MTM
           </button>

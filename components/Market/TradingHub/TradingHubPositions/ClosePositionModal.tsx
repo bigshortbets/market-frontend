@@ -28,11 +28,12 @@ export const ClosePositionModal = ({
   );
   const [quantity, setQuantity] = useState(Number(position.quantityLeft));
 
-  const {
-    write: writeClosePosition,
-    isLoading: isClosePositionLoading,
-    isSuccess,
-  } = useClosePosition(position.market.id, position.id, price, quantity);
+  const { write: writeClosePosition, isSuccess } = useClosePosition(
+    position.market.id,
+    position.id,
+    price,
+    quantity
+  );
 
   useEffect(() => {
     if (isSuccess) {
@@ -158,7 +159,7 @@ export const ClosePositionModal = ({
                     disabled={
                       quantity < 1 || quantity > Number(position.quantityLeft)
                     }
-                    onClick={() => writeClosePosition?.()}
+                    onClick={() => writeClosePosition()}
                     className={`disabled:bg-gray-400 bg-[#D26D6C] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-2.5 mt-5 `}
                   >
                     Create close order

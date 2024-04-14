@@ -4,6 +4,7 @@ import { abi } from '../abi';
 import { useEffect } from 'react';
 import { handleBlockchainError } from '@/utils/handleBlockchainError';
 import toast from 'react-hot-toast';
+import { bigshortbetsChain } from '../chain';
 
 export const useCancelOrder = (marketId: string, orderId: string) => {
   const { writeContract, error, data, isSuccess } = useWriteContract();
@@ -16,11 +17,14 @@ export const useCancelOrder = (marketId: string, orderId: string) => {
       abi: abi,
       functionName: 'cancel_order',
       args: [BigInt(marketId), BigInt(orderId)],
+      chainId: bigshortbetsChain.id,
     });
 
   useEffect(() => {
     if (error) {
-      handleBlockchainError(error.stack!);
+      toast.error(error.message.split('\n')[0], {
+        duration: 4000,
+      });
     }
   }, [error]);
 
