@@ -38,15 +38,19 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
   };
 
   const possibleWithdraw =
-    selecteMarketMargin?.liquidationStatus === 'EverythingFine'
-      ? Number(selecteMarketMargin.margin) -
-        Number(selecteMarketMargin.requiredDeposit)
+    selecteMarketMargin?.liquidationStatus === 'EverythingFine' ||
+    selecteMarketMargin?.liquidationStatus === ('None' as any)
+      ? Number(selecteMarketMargin!.margin) -
+        Number(selecteMarketMargin!.requiredDeposit)
       : 0;
 
   const withdrawDisabled = amount <= 0 || amount > possibleWithdraw;
 
   return (
-    <div className="p-2.5 pb-4 flex flex-col gap-4">
+    <div
+      className="p-2.5 pb-4 flex flex-col gap-4"
+      onClick={() => console.log(selecteMarketMargin!.liquidationStatus)}
+    >
       <div className="flex flex-col gap-2">
         <p className="text-sm font-semibold text-secondary leading-[24px]">
           Withdraw
