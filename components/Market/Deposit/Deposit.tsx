@@ -56,7 +56,7 @@ export const Deposit = ({ markets }: DepositProps) => {
   };
 
   const depositDisabled =
-    Number(walletBalance?.formatted) < amount || amount <= 0;
+    Number(walletBalance?.formatted) < amount || amount <= 0 || !address;
 
   const [unsettledLosesArr] = useAtom(unsettledLossesAtom);
   const [collateralArr] = useAtom(collateralAtom);
@@ -269,11 +269,11 @@ export const Deposit = ({ markets }: DepositProps) => {
         </div>
 
         <button
-          disabled={address && isBsbNetwork ? depositDisabled : false}
+          disabled={depositDisabled}
           onClick={handleDeposit}
           className={`disabled:bg-gray-400 bg-[#4ECB7D] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-3`}
         >
-          {!address && 'Connect wallet'}
+          {!address && 'Deposit'}
           {address && isBsbNetwork && 'Deposit'}
           {address && !isBsbNetwork && 'Change network'}
         </button>

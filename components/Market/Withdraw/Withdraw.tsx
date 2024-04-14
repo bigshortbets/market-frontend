@@ -44,7 +44,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
         Number(selecteMarketMargin!.requiredDeposit)
       : 0;
 
-  const withdrawDisabled = amount <= 0 || amount > possibleWithdraw;
+  const withdrawDisabled = amount <= 0 || amount > possibleWithdraw || !address;
 
   return (
     <div
@@ -120,11 +120,11 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
           </div>
         </div>
         <button
-          disabled={address && isBsbNetwork ? withdrawDisabled : false}
+          disabled={withdrawDisabled}
           onClick={handleWithdraw}
           className={`disabled:bg-gray-400 bg-[#4ECB7D] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-3`}
         >
-          {!address && 'Connect wallet'}
+          {!address && 'Withdraw'}
           {address && isBsbNetwork && 'Withdraw'}
           {address && !isBsbNetwork && 'Change network'}
         </button>

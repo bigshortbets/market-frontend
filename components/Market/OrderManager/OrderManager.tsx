@@ -72,6 +72,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   const isBsbNetwork = chain?.id === bigshortbetsChain.id;
 
   const isActionDisabled =
+    !address ||
     isMarketClosed ||
     price === 0 ||
     orderCost > Number(formattedBalance) ||
@@ -227,7 +228,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
 
         <button
           onClick={handleWriteOrder}
-          disabled={address && isBsbNetwork ? isActionDisabled : false}
+          disabled={isActionDisabled}
           className={`disabled:bg-gray-400 w-full rounded-lg ${
             address && isBsbNetwork
               ? selectedSideOrder === OrderSideEnum.LONG
@@ -236,13 +237,13 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               : 'bg-[#4ECB7D]'
           } text-[#01083A] text-[13px] font-semibold py-3`}
         >
-          {!address && 'Connect wallet'}
+          {!address && 'Place order'}
           {address && isBsbNetwork && 'Place order'}
           {address && !isBsbNetwork && 'Change network'}
         </button>
       </div>
       {!address && (
-        <FinanceManagerInfo value="Connect your wallet to interact with the market." />
+        <FinanceManagerWarning error="Connect your wallet to interact with the market." />
       )}
       {address && orderCost > Number(formattedBalance) && (
         <FinanceManagerWarning error="Order cost is higher than your wallet balance. Please add funds to your wallet." />
