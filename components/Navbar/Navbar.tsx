@@ -2,7 +2,6 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import logo from '../../public/logo.svg';
 import { useAccount, useSwitchChain } from 'wagmi';
-import { WalletConnect } from '../WalletConnect';
 import banner from '../../public/banner.svg';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
