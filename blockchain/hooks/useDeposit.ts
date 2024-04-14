@@ -24,7 +24,9 @@ export const useDeposit = (amount: number) => {
 
   useEffect(() => {
     if (error) {
-      handleBlockchainError(error.stack!);
+      toast.error(error.message.split('\n')[0], {
+        duration: 4000,
+      });
     }
   }, [error]);
 
