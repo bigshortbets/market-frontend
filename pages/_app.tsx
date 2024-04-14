@@ -6,7 +6,11 @@ import type { AppProps } from 'next/app';
 import { WagmiProvider } from 'wagmi';
 import 'react-tooltip/dist/react-tooltip.css';
 
-import { RainbowKitProvider, getDefaultConfig } from '@rainbow-me/rainbowkit';
+import {
+  RainbowKitProvider,
+  darkTheme,
+  getDefaultConfig,
+} from '@rainbow-me/rainbowkit';
 import { sepolia } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@rainbow-me/rainbowkit/styles.css';
@@ -41,7 +45,12 @@ export default function App({ Component, pageProps }: AppProps) {
     <ApolloProvider client={apolloClient}>
       <QueryClientProvider client={queryClient}>
         <WagmiProvider config={config}>
-          <RainbowKitProvider>
+          <RainbowKitProvider
+            theme={darkTheme({
+              accentColor: '#4ECB7D',
+              accentColorForeground: 'black',
+            })}
+          >
             <Component {...pageProps} />
           </RainbowKitProvider>
         </WagmiProvider>

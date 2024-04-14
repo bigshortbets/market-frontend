@@ -40,7 +40,19 @@ export const Navbar = () => {
           {/*           {isConnected && <CurrentNetworkTab />} */}
           {/* <UIConfiguration /> */}
           {/* {isClient && <WalletConnect />} */}
-          {isClient && <ConnectButton />}
+          {isClient && (
+            <ConnectButton
+              accountStatus={{
+                smallScreen: 'avatar',
+                largeScreen: 'address',
+              }}
+              chainStatus={{
+                smallScreen: 'icon',
+                largeScreen: 'full',
+              }}
+              showBalance={false}
+            />
+          )}
         </div>
       </div>
     </nav>

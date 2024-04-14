@@ -3,6 +3,7 @@ import { type Chain } from 'viem';
 export const bigshortbetsChain = {
   id: 2137,
   name: 'BigShortBets',
+  iconUrl: 'https://r2.easyimg.io/6dw6zs8cj/logo.svg',
   nativeCurrency: {
     name: 'USD Coin',
     symbol: 'USDC',
@@ -28,7 +29,7 @@ export const bigshortbetsChain = {
       blockCreated: 1,
     },
   },
-} as const satisfies Chain;
+} as any;
 
 export const bigshortbetsChainNative = {
   chainId: `0x${(2137).toString(16)}`,
