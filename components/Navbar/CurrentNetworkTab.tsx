@@ -1,8 +1,8 @@
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
-import { useNetwork } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 export const CurrentNetworkTab = () => {
-  const { chain } = useNetwork();
+  const { chain } = useAccount();
 
   return (
     <div
@@ -16,7 +16,7 @@ export const CurrentNetworkTab = () => {
           chain?.id === 2137 ? 'bg-[#73D391]' : 'bg-gray-500 '
         }`}
       ></div>
-      <p className='text-xs'>{chain?.name}</p>
+      <p className="text-xs">{chain?.name}</p>
     </div>
   );
 };

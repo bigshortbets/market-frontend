@@ -13,7 +13,6 @@ import { useCurrentBlock } from '@/api/useCurrentBlock';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 import { useAtom } from 'jotai';
 import { useRouter } from 'next/router';
-import { useNetwork } from 'wagmi';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
 
