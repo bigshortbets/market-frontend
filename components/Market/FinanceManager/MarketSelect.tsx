@@ -27,7 +27,7 @@ export const MarketSelect = ({
 }: MarketSelectProps) => {
   const [activeCategory, setActiveCategory] = useState<
     MarketDataCategories | undefined
-  >(undefined);
+  >('election');
   const [currentBlock] = useAtom(currentBlockAtom);
   const selectRef = useRef<HTMLDivElement>(null);
   const enrichedMarkets = enrichMarketData(markets);
@@ -74,6 +74,16 @@ export const MarketSelect = ({
   };
 
   const categories = getUniqueCategories(enrichedMarkets);
+
+  function sortCategories(categories: string[]) {
+    const filteredCategories = categories.filter(
+      (category) => category !== 'election'
+    );
+
+    return filteredCategories.sort((a, b) => a.localeCompare(b));
+  }
+
+  const sortedCategories = sortCategories(categories);
 
   return (
     <div
@@ -125,11 +135,16 @@ export const MarketSelect = ({
             <div className="flex items-center gap-2 flex-wrap gap-y-2 ">
               <MarketSelectCategoryTab
                 activeCategory={activeCategory}
+                value={'election'}
+                handleSetCategory={handleSetCategory}
+              />
+              <MarketSelectCategoryTab
+                activeCategory={activeCategory}
                 value={undefined}
                 handleSetCategory={handleSetCategory}
               />
 
-              {categories.map((category, key) => (
+              {sortedCategories.map((category, key) => (
                 <MarketSelectCategoryTab
                   activeCategory={activeCategory}
                   key={key}
