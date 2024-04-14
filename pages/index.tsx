@@ -22,7 +22,7 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const isLoading = minimumLoadingTime || !markets;
+  const isLoading = !markets;
 
   return (
     <main className={`${inter.className} text-white`}>
