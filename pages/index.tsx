@@ -22,14 +22,20 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const isLoading = !markets;
+  const isLoading = minimumLoadingTime || !markets || loading;
 
   return (
     <main className={`${inter.className} text-white`}>
       <Head>
         <title>bigshortbet$ P2P Market</title>
       </Head>
-      {markets && <Market markets={markets} />}
+      {error ? (
+        <div>Error loading data...</div>
+      ) : isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <Market markets={markets} />
+      )}
       <Toaster position="top-center" />
     </main>
   );
