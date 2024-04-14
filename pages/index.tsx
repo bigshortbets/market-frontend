@@ -1,20 +1,11 @@
 import { Inter } from 'next/font/google';
 import { useMarkets } from '@/api/useMarkets';
 import { LoadingScreen } from '@/components/LoadingScreen';
-import {
-  Market,
-  currentBlockAtom,
-  selectedMarketIdAtom,
-} from '@/components/Market/Market';
+import { Market } from '@/components/Market/Market';
 import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Head from 'next/head';
 import { useCurrentBlock } from '@/api/useCurrentBlock';
-import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
-import { useAtom } from 'jotai';
-import { useRouter } from 'next/router';
-import { bigshortbetsChain } from '@/blockchain/chain';
-import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
 
 const inter = Inter({ subsets: ['latin'] });
 

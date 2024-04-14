@@ -1,4 +1,4 @@
-import React from 'react';
+/* import React from 'react';
 import { createWeb3Modal, useWeb3Modal } from '@web3modal/wagmi/react';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { wagmiConfig } from '@/pages/_app';
@@ -19,3 +19,4 @@ export const WalletConnect = () => {
     </div>
   );
 };
+ */
