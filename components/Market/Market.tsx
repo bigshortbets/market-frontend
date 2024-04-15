@@ -113,7 +113,12 @@ export const Market = ({ markets }: MarketProps) => {
   /* const [UIConfiguration] = useAtom(UIConfigurationAtom); */
 
   return (
-    <div className="h-[100dvh]  w-full bg-[#111217] flex flex-col">
+    <div className="h-[100dvh]  w-full bg-[#111217] flex flex-col relative">
+      <p className="absolute bottom-1.5 text-[9px] right-6 text-[#444650]">
+        DOLAR$ are virtual fun and have no real settlement value as "fake
+        money". They are an internal part of the software and as such cannot be
+        part of billing.
+      </p>
       <Navbar />
       <div className="flex-grow p-6 lg:flex gap-6 hidden">
         <MarketInterface markets={markets} />
