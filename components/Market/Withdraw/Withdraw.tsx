@@ -17,7 +17,7 @@ export interface WithdrawProps {
 }
 
 export const Withdraw = ({ markets }: WithdrawProps) => {
-  const [amount, setAmount] = useState<number>(1);
+  const [amount, setAmount] = useState<number>(0);
   const { address, chain } = useAccount();
   const { write } = useWithdraw(amount);
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
@@ -49,40 +49,40 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
 
   return (
     <div
-      className="p-2.5 pb-4 flex flex-col gap-4"
+      className='p-2.5 pb-4 flex flex-col gap-4'
       onClick={() => console.log(selecteMarketMargin!.liquidationStatus)}
     >
-      <div className="flex flex-col gap-2">
-        <p className="text-sm font-semibold text-secondary leading-[24px]">
+      <div className='flex flex-col gap-2'>
+        <p className='text-sm font-semibold text-secondary leading-[24px]'>
           Withdraw
         </p>
-        <div className="flex flex-col">
+        <div className='flex flex-col'>
           <label
-            htmlFor="orderPriceInput"
-            className="ml-1 mb-1 text-xs text-secondary font-semibold"
+            htmlFor='orderPriceInput'
+            className='ml-1 mb-1 text-xs text-secondary font-semibold'
           >
             Amount
           </label>
-          <div className="relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-6">
+          <div className='relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-6'>
             <NumericFormat
               allowNegative={false}
               id={'orderPriceInput'}
-              className="text-right outline-none  w-[85%] bg-[#23252E]"
+              className='text-right outline-none  w-[85%] bg-[#23252E]'
               onChange={(e) => setAmount(Number(e.target.value))}
               value={amount}
             />
-            <span className="absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs">
+            <span className='absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs'>
               {currencySymbol}
             </span>
           </div>
         </div>
       </div>
-      <div className="p-2 rounded-lg bg-[#000211] flex flex-col gap-4">
-        <p className="text-sm font-semibold text-secondary leading-[24px]">
+      <div className='p-2 rounded-lg bg-[#000211] flex flex-col gap-4'>
+        <p className='text-sm font-semibold text-secondary leading-[24px]'>
           Summary
         </p>
-        <div className="flex flex-col gap-2 ">
-          <div className="flex justify-between items-center text-xs text-tetriary ">
+        <div className='flex flex-col gap-2 '>
+          <div className='flex justify-between items-center text-xs text-tetriary '>
             <p>Current deposit</p>
             <p>
               {address
@@ -92,7 +92,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
                 : '-'}{' '}
             </p>
           </div>
-          <div className="flex justify-between items-center text-xs text-tetriary mb-2">
+          <div className='flex justify-between items-center text-xs text-tetriary mb-2'>
             <p>Required deposit</p>
             <p>
               {Number(selecteMarketMargin?.requiredDeposit) > 0 && address
@@ -103,12 +103,12 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
             </p>
           </div>
 
-          <div className="flex flex-col gap-2 ">
+          <div className='flex flex-col gap-2 '>
             {address && (
-              <div className="flex justify-between items-center text-xs text-secondary ">
+              <div className='flex justify-between items-center text-xs text-secondary '>
                 <p>Available for withdrawal</p>
                 <button
-                  className="underline"
+                  className='underline'
                   onClick={() => setAmount(possibleWithdraw)}
                 >
                   {possibleWithdraw.toFixed(2)} {currencySymbol}
@@ -116,7 +116,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
               </div>
             )}
 
-            <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
+            <div className='flex justify-between items-center font-semibold text-[13px] text-secondary '>
               <p>Amount</p>
               <p>
                 {amount.toFixed(2)} {currencySymbol}
@@ -135,10 +135,10 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
         </button>
       </div>
       {!address && (
-        <FinanceManagerWarning error="Connect your wallet to interact with the market. " />
+        <FinanceManagerWarning error='Connect your wallet to interact with the market. ' />
       )}
       {address && amount > possibleWithdraw && (
-        <FinanceManagerWarning error="Your given amount is greater than possible withdrawal value." />
+        <FinanceManagerWarning error='Your given amount is greater than possible withdrawal value.' />
       )}
     </div>
   );
