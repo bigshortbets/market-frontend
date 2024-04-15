@@ -17,6 +17,7 @@ import { currencyFormatter } from '@/utils/currencyFormatter';
 import { IoMdInformationCircle } from 'react-icons/io';
 import { Tooltip } from 'react-tooltip';
 import { FinanceManagerInfo } from '../FinanceManager/FinanceManagerInfo';
+import { currencySymbol } from '@/blockchain/constants';
 
 export enum OrderSideEnum {
   LONG,
@@ -129,7 +130,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           >
             Price
           </label>
-          <div className="relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-2">
+          <div className="relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-6">
             <NumericFormat
               allowNegative={false}
               id={'orderPriceInput'}
@@ -138,7 +139,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               value={price}
             />
             <span className="absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs">
-              USDC
+              {currencySymbol}
             </span>
           </div>
         </div>
@@ -205,7 +206,10 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
                 <IoMdInformationCircle className="text-[#7F828F] text-sm " />
               </a>
             </div>
-            <p>{!noMarkets ? currencyFormatter.format(orderCost) : '-'} USDC</p>
+            <p>
+              {!noMarkets ? currencyFormatter.format(orderCost) : '-'}{' '}
+              {currencySymbol}
+            </p>
           </div>
           <div className="flex justify-between items-center font-semibold text-xs text-tetriary ">
             <div className="flex items-center gap-1">
@@ -221,7 +225,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               {!noMarkets && selectedMarket?.oraclePrice != null
                 ? currencyFormatter.format(orderValue)
                 : '-'}{' '}
-              USDC
+              {currencySymbol}
             </p>
           </div>
         </div>

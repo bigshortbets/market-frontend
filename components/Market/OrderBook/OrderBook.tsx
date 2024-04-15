@@ -2,17 +2,18 @@ import {
   ORDER_BOOK_LONGS_SUBSCRIPTION,
   ORDER_BOOK_SHORTS_SUBSCRIPTION,
   RECENT_MARKET_POSITIONS_SUBSCRIPTION,
-} from "@/api/queries";
-import { useSubscription } from "@apollo/client";
-import { useAtom } from "jotai";
-import React from "react";
-import { selectedMarketIdAtom } from "../Market";
-import { OrderBookResponse } from "@/types/orderTypes";
-import { OrderBookItem } from "./OrderBookItem";
+} from '@/api/queries';
+import { useSubscription } from '@apollo/client';
+import { useAtom } from 'jotai';
+import React from 'react';
+import { selectedMarketIdAtom } from '../Market';
+import { OrderBookResponse } from '@/types/orderTypes';
+import { OrderBookItem } from './OrderBookItem';
+import { currencySymbol } from '@/blockchain/constants';
 
 export enum OrderSide {
-  LONG = "LONG",
-  SHORT = "SHORT",
+  LONG = 'LONG',
+  SHORT = 'SHORT',
 }
 
 interface OrderBooksProps {
@@ -26,8 +27,8 @@ export const OrderBook = ({ shortsRes, longsRes }: OrderBooksProps) => {
       <div className="flex justify-between items-center px-4">
         <div className="flex items-center gap-1.5">
           <p className="text-[#7F828F] font-semibold">Price</p>
-          <div className="w-10 h-4 rounded bg-[#7F828F] items-center flex justify-center text-[#191B24]">
-            USDC
+          <div className="w-14 h-4 rounded bg-[#7F828F] items-center flex justify-center text-[#191B24]">
+            {currencySymbol}
           </div>
         </div>
         <div className="flex items-center gap-1.5">

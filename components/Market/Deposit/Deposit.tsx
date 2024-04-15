@@ -20,6 +20,7 @@ import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { FinanceManagerInfo } from '../FinanceManager/FinanceManagerInfo';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
+import { currencySymbol } from '@/blockchain/constants';
 
 export interface DepositProps {
   markets: MarketType[];
@@ -117,7 +118,7 @@ export const Deposit = ({ markets }: DepositProps) => {
           >
             Amount
           </label>
-          <div className="relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-2">
+          <div className="relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-6">
             <NumericFormat
               allowNegative={false}
               id={'orderPriceInput'}
@@ -126,7 +127,7 @@ export const Deposit = ({ markets }: DepositProps) => {
               value={amount}
             />
             <span className="absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs">
-              USDC
+              {currencySymbol}
             </span>
           </div>
         </div>
@@ -140,7 +141,9 @@ export const Deposit = ({ markets }: DepositProps) => {
             <p>Current deposit</p>
             <p>
               {address
-                ? `${Number(selecteMarketMargin?.margin).toFixed(2)} USDC`
+                ? `${Number(selecteMarketMargin?.margin).toFixed(
+                    2
+                  )} ${currencySymbol}`
                 : '-'}{' '}
             </p>
           </div>
@@ -150,7 +153,7 @@ export const Deposit = ({ markets }: DepositProps) => {
               {Number(selecteMarketMargin?.requiredDeposit) > 0 && address
                 ? `${Number(selecteMarketMargin?.requiredDeposit).toFixed(
                     2
-                  )} USDC`
+                  )} ${currencySymbol}`
                 : '-'}
             </p>
           </div>
@@ -183,7 +186,7 @@ export const Deposit = ({ markets }: DepositProps) => {
                   {Number(toEverythingFine) > 0
                     ? `+${toEverythingFine}`
                     : toEverythingFine}{' '}
-                  USDC
+                  {currencySymbol}
                 </p>
               </div>
             )}
@@ -203,7 +206,7 @@ export const Deposit = ({ markets }: DepositProps) => {
                   }`}
                 >
                   {Number(toMarginCall) > 0 ? `+${toMarginCall}` : toMarginCall}{' '}
-                  USDC
+                  {currencySymbol}
                 </p>
               </div>
             )}
@@ -225,7 +228,7 @@ export const Deposit = ({ markets }: DepositProps) => {
                   {Number(toLiquidation) > 0
                     ? `+${toLiquidation}`
                     : toLiquidation}{' '}
-                  USDC
+                  {currencySymbol}
                 </p>
               </div>
             )}
@@ -264,7 +267,9 @@ export const Deposit = ({ markets }: DepositProps) => {
 
           <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
             <p>Amount</p>
-            <p>{amount.toFixed(2)} USDC</p>
+            <p>
+              {amount.toFixed(2)} {currencySymbol}
+            </p>
           </div>
         </div>
 
@@ -289,7 +294,7 @@ export const Deposit = ({ markets }: DepositProps) => {
             } to Everthing fine, you need to deposit ${(
               Number(selecteMarketMargin!.requiredDeposit) -
               Number(selecteMarketMargin!.margin)
-            ).toFixed(2)} USDC to ${market?.ticker} market.`}
+            ).toFixed(2)} ${currencySymbol} to ${market?.ticker} market.`}
           />
         )}
       {!address && (

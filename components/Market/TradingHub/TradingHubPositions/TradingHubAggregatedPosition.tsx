@@ -11,6 +11,7 @@ import { selectedMarketIdAtom, userMarginsAtom } from '../../Market';
 import MiniChartWidget from '../Widget/MiniChartWidget';
 import { LiquidationStatusTab } from '../../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
+import { currencySymbol } from '@/blockchain/constants';
 
 interface TradingHubAggregatedPositionProps {
   positions: PositionType[];
@@ -159,7 +160,7 @@ export const TradingHubAggregatedPosition = ({
                 }`}
               >
                 {sumLossProfit && sumLossProfit.toFixed(2)}{' '}
-                <span className="text-xs">USDC</span>
+                <span className="text-xs">{currencySymbol}</span>
               </p>
             </div>
 

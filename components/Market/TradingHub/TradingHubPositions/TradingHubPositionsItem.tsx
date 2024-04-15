@@ -10,6 +10,7 @@ import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { Tooltip } from 'react-tooltip';
 import { useMarkToMarket } from '@/blockchain/hooks/useMarkToMarket';
 import { ClosePositionModal } from './ClosePositionModal';
+import { currencySymbol } from '@/blockchain/constants';
 
 interface TradingHubPositionsItemProps {
   position: PositionWithSide;
@@ -67,7 +68,7 @@ export const TradingHubPositionsItem = ({
         }`}
       >
         {calculatedProfitOrLoss.toFixed(2)}{' '}
-        <span className={`text-xs`}>USDC</span>
+        <span className={`text-xs`}>{currencySymbol}</span>
       </td>
 
       <td className="align-middle">

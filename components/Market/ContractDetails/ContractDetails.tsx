@@ -5,6 +5,7 @@ import { findMarketById } from '@/utils/findMarketById';
 import { formatDate } from '@/utils/formatDate';
 
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
+import { currencySymbol } from '@/blockchain/constants';
 
 interface ContractDetailsProps {
   markets: MarketType[];
@@ -27,7 +28,7 @@ export const ContractDetails = ({ markets }: ContractDetailsProps) => {
     { label: 'Market duration', value: marketDurationRepresentation },
     {
       label: 'Tick size',
-      value: `${selectedMarket?.tickSize?.toString()!} USDC`,
+      value: `${selectedMarket?.tickSize?.toString()!} ${currencySymbol}`,
     },
     {
       label: 'Initial margin',

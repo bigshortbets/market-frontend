@@ -7,6 +7,7 @@ import { LiquidationStatusTab } from '../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { currencyFormatter } from '@/utils/currencyFormatter';
 import { useQueryClient } from '@tanstack/react-query';
+import { currencySymbol } from '@/blockchain/constants';
 
 export const MarketInterfaceLowerBar = () => {
   const { address } = useAccount();
@@ -29,9 +30,9 @@ export const MarketInterfaceLowerBar = () => {
           <p className="text-tetriary font-semibold">Wallet balance</p>
           <p className="text-white">
             {address
-              ? `${currencyFormatter.format(Number(data?.formatted))} ${
-                  data?.symbol
-                }`
+              ? `${currencyFormatter.format(
+                  Number(data?.formatted)
+                )} ${currencySymbol}`
               : '-'}
           </p>
         </div>
@@ -39,7 +40,9 @@ export const MarketInterfaceLowerBar = () => {
           <p className="text-tetriary font-semibold">Total deposits</p>
           <p className="text-white">
             {address
-              ? `${currencyFormatter.format(userMargins.totalMarginValue)} USDC`
+              ? `${currencyFormatter.format(
+                  userMargins.totalMarginValue
+                )} ${currencySymbol}`
               : '-'}
           </p>
         </div>
@@ -55,9 +58,9 @@ export const MarketInterfaceLowerBar = () => {
             <p className="text-tetriary font-semibold">Wallet balance</p>
             <p className="text-white">
               {address
-                ? `${currencyFormatter.format(Number(data?.formatted))} ${
-                    data?.symbol
-                  }`
+                ? `${currencyFormatter.format(
+                    Number(data?.formatted)
+                  )} ${currencySymbol}`
                 : '-'}
             </p>
           </div>
@@ -67,7 +70,7 @@ export const MarketInterfaceLowerBar = () => {
               {address
                 ? `${currencyFormatter.format(
                     userMargins.totalMarginValue
-                  )} USDC`
+                  )} ${currencySymbol}`
                 : '-'}
             </p>
           </div>
@@ -83,7 +86,7 @@ export const MarketInterfaceLowerBar = () => {
               {address
                 ? `${currencyFormatter.format(
                     Number(selectedMarketMargin?.margin)
-                  )} USDC`
+                  )} ${currencySymbol}`
                 : '-'}{' '}
             </p>
           </div>

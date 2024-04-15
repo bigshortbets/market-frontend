@@ -5,6 +5,7 @@ import { useSubscription } from '@apollo/client';
 import { RECENT_MARKET_POSITIONS_SUBSCRIPTION } from '@/api/queries';
 import { RecentPositionTypeResponse } from '@/types/positionTypes';
 import { RecentTradesItem } from './RecentTradesItem';
+import { currencySymbol } from '@/blockchain/constants';
 
 export const RecentTrades = () => {
   const [recentTrades] = useAtom(recentTradesAtom);
@@ -19,8 +20,8 @@ export const RecentTrades = () => {
         </div>
         <div className="flex items-center gap-1.5">
           <p className="text-[#7F828F] font-semibold">Price</p>
-          <div className="w-10 h-4 rounded bg-[#7F828F] items-center flex justify-center text-[#191B24]">
-            USDC
+          <div className="w-14 h-4 rounded bg-[#7F828F] items-center flex justify-center text-[#191B24]">
+            {currencySymbol}
           </div>
         </div>
       </div>

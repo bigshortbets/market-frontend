@@ -10,6 +10,7 @@ import { findMarketById } from '@/utils/findMarketById';
 import { MarketType } from '@/types/marketTypes';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
+import { currencySymbol } from '@/blockchain/constants';
 
 export interface WithdrawProps {
   markets: MarketType[];
@@ -62,7 +63,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
           >
             Amount
           </label>
-          <div className="relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-2">
+          <div className="relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-6">
             <NumericFormat
               allowNegative={false}
               id={'orderPriceInput'}
@@ -71,7 +72,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
               value={amount}
             />
             <span className="absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs">
-              USDC
+              {currencySymbol}
             </span>
           </div>
         </div>
@@ -85,7 +86,9 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
             <p>Current deposit</p>
             <p>
               {address
-                ? `${Number(selecteMarketMargin?.margin).toFixed(2)} USDC`
+                ? `${Number(selecteMarketMargin?.margin).toFixed(
+                    2
+                  )} ${currencySymbol}`
                 : '-'}{' '}
             </p>
           </div>
@@ -95,7 +98,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
               {Number(selecteMarketMargin?.requiredDeposit) > 0 && address
                 ? `${Number(selecteMarketMargin?.requiredDeposit).toFixed(
                     2
-                  )} USDC`
+                  )} ${currencySymbol}`
                 : '-'}
             </p>
           </div>
@@ -108,14 +111,16 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
                   className="underline"
                   onClick={() => setAmount(possibleWithdraw)}
                 >
-                  {possibleWithdraw.toFixed(2)} USDC
+                  {possibleWithdraw.toFixed(2)} {currencySymbol}
                 </button>
               </div>
             )}
 
             <div className="flex justify-between items-center font-semibold text-[13px] text-secondary ">
               <p>Amount</p>
-              <p>{amount.toFixed(2)} USDC</p>
+              <p>
+                {amount.toFixed(2)} {currencySymbol}
+              </p>
             </div>
           </div>
         </div>

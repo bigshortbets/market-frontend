@@ -7,6 +7,7 @@ import { getMarkeDetails } from '@/utils/getMarketDetails';
 import Image from 'next/image';
 import { IoClose } from 'react-icons/io5';
 import { useClosePosition } from '@/blockchain/hooks/useClosePosition';
+import { currencySymbol } from '@/blockchain/constants';
 
 interface ClosePositionModalProps {
   handleCloseModal: () => void;
@@ -117,7 +118,7 @@ export const ClosePositionModal = ({
                       {profitLoss >= 0
                         ? `+${profitLoss.toFixed(2)}`
                         : profitLoss.toFixed(2)}{' '}
-                      USDC
+                      {currencySymbol}
                     </p>
                   </div>
                   <div className="flex justify-between mt-6 items-center">
@@ -131,7 +132,7 @@ export const ClosePositionModal = ({
                         value={price}
                       />
                       <div className="absolute right-2 top-[7px] text-[10px] text-tetriary">
-                        USDC
+                        {currencySymbol}
                       </div>
                     </div>
                   </div>
