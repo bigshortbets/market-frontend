@@ -115,7 +115,7 @@ export const Market = ({ markets }: MarketProps) => {
   return (
     <div className='h-[100dvh]  w-full bg-[#111217] flex flex-col relative'>
       <p className='absolute bottom-1.5 text-[9px] right-6 text-tetriary'>
-        DOLAR$ are virtual fun and have no real settlement value as "fake
+        DOLAR$ are virtual funds and have no real settlement value as "fake
         money". They are an internal part of the software and as such cannot be
         part of billing.
       </p>
