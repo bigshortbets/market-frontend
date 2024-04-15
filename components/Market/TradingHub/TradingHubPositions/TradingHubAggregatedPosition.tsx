@@ -116,7 +116,10 @@ export const TradingHubAggregatedPosition = ({
               </div>
             </div> */}
 
-            <MiniChartWidget symbol={ticker} />
+            {marketId != '9223372036854776644' &&
+              marketId != '9223372036854776643' && (
+                <MiniChartWidget symbol={ticker} />
+              )}
           </div>
           {/* <div className="  h-[36px] w-[30%] flex relative ">
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-tertiary  text-xs opacity-40">
