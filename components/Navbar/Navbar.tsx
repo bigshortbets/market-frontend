@@ -5,9 +5,12 @@ import { useAccount, useSwitchChain } from 'wagmi';
 import banner from '../../public/banner.svg';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { selectedMarketIdAtom } from '../Market/Market';
+import { useAtom } from 'jotai';
 
 export const Navbar = () => {
   const [isClient, setIsClient] = useState(false);
+  const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
   const { isConnected, chain } = useAccount();
   const { switchChain } = useSwitchChain();
 
@@ -20,6 +23,16 @@ export const Navbar = () => {
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  const openTrumpOrBidenMarket = () => {
+    const trumpId = '9223372036854776644';
+    const bidenId = '9223372036854776643';
+
+    const randomNumber = Math.floor(Math.random() * 2);
+    const selectedId = randomNumber === 0 ? trumpId : bidenId;
+
+    setSelectedMarketId(selectedId);
+  };
 
   return (
     <nav className="bg-[#111217] w-full h-[64px] ">
@@ -35,7 +48,9 @@ export const Navbar = () => {
         </div>
         <div className="flex items-center gap-4">
           <div className="hidden md:block">
-            <Image src={banner} alt="banner" width={400} height={60} />
+            <button onClick={openTrumpOrBidenMarket}>
+              <Image src={banner} alt="banner" width={400} height={60} />
+            </button>
           </div>
           {/*           {isConnected && <CurrentNetworkTab />} */}
           {/* <UIConfiguration /> */}
