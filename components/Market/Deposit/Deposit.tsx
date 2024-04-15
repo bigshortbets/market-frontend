@@ -295,6 +295,9 @@ export const Deposit = ({ markets }: DepositProps) => {
       {!address && (
         <FinanceManagerWarning error="Connect your wallet to interact with the market. " />
       )}
+      {address && Number(walletBalance?.formatted) < amount && (
+        <FinanceManagerWarning error="Your given amount is greater than your wallet balance. " />
+      )}
     </div>
   );
 };

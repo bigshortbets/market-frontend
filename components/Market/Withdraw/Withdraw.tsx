@@ -132,6 +132,9 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
       {!address && (
         <FinanceManagerWarning error="Connect your wallet to interact with the market. " />
       )}
+      {address && amount > possibleWithdraw && (
+        <FinanceManagerWarning error="Your given amount is greater than possible withdrawal value." />
+      )}
     </div>
   );
 };
