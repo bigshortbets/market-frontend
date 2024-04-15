@@ -16,10 +16,14 @@ export const MarketSelectCategoryTab = ({
   return (
     <button
       onClick={() => handleSetCategory(value)}
-      className={`rounded-xl flex items-center ${
-        value === 'election' && 'bg-[#4ECB7D] text-black'
-      }   justify-center text-[10px] font-semibold py-1 px-3 ${
-        isActive ? 'bg-[#444650]' : 'bg-[#191B24] text-tetriary '
+      className={`rounded-xl flex items-center justify-center text-[10px] font-semibold py-1 px-3 ${
+        value === 'election'
+          ? isActive
+            ? 'bg-[#4ECB7D] text-black'
+            : 'bg-[#67c88c] text-[#485286]'
+          : isActive
+          ? 'bg-[#444650]'
+          : 'bg-[#191B24] text-tetriary'
       }`}
     >
       <span className="capitalize">{value ? value : 'All'}</span>
