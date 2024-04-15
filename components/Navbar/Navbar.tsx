@@ -35,21 +35,22 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="bg-[#111217] w-full h-[64px] ">
-      <div className=" flex justify-between h-full px-7 items-center">
-        <div className="flex gap-2">
-          <Image src={logo} alt="BigShortBet$ Logo" width={50} priority />
-          <div className="flex flex-col">
-            <p className="text-md">bigshortbet$</p>
-            <p className="text-xs font-semibold">
-              MARKET <span className="text-[#4ECB7D]">PEER2PEER</span>
+    <nav className='bg-[#111217] w-full h-[64px] '>
+      <div className=' flex justify-between h-full px-7 items-center'>
+        <div className='flex gap-2'>
+          <Image src={logo} alt='BigShortBet$ Logo' width={50} priority />
+          <div className='flex flex-col'>
+            <p className='text-md'>bigshortbet$</p>
+            <p className='text-xs font-semibold'>
+              MARKET <span className='text-[#4ECB7D]'>PEER2PEER</span>{' '}
+              <span className='text-[10px]'>TESTNET</span>
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="hidden md:block">
+        <div className='flex items-center gap-4'>
+          <div className='hidden md:block'>
             <button onClick={openTrumpOrBidenMarket}>
-              <Image src={banner} alt="banner" width={400} height={60} />
+              <Image src={banner} alt='banner' width={400} height={60} />
             </button>
           </div>
           {/*           {isConnected && <CurrentNetworkTab />} */}
