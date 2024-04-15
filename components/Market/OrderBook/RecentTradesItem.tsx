@@ -8,7 +8,7 @@ export const RecentTradesItem = ({ position }: RecentTradesItemProps) => {
   return (
     <div className="py-1 flex items-center justify-between text-tetriary">
       <p>{Number(position.quantity)}</p>
-      <p>{Number(position.price)}</p>
+      <p>{Number(position.createPrice)}</p>
     </div>
   );
 };

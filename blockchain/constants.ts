@@ -11,6 +11,8 @@ export const CHAIN_PREFIX = {
   arctic: 2208,
 };
 
+export const currencySymbol = 'DOLAR$';
+
 /* BRIDGE */
 
 export const MAX_ALLOWANCE =

@@ -27,6 +27,7 @@ export interface RecentPositionType {
   price: BigInt;
   timestamp: string;
   quantity: BigInt;
+  createPrice: BigInt;
 }
 
 export interface RecentPositionTypeResponse {
