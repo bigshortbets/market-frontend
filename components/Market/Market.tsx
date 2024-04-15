@@ -113,7 +113,7 @@ export const Market = ({ markets }: MarketProps) => {
   /* const [UIConfiguration] = useAtom(UIConfigurationAtom); */
 
   return (
-    <div className="h-screen  w-full bg-[#111217] flex flex-col">
+    <div className="h-[100dvh]  w-full bg-[#111217] flex flex-col">
       <Navbar />
       <div className="flex-grow p-6 lg:flex gap-6 hidden">
         <MarketInterface markets={markets} />
