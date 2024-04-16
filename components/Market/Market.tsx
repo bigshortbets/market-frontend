@@ -113,26 +113,26 @@ export const Market = ({ markets }: MarketProps) => {
   /* const [UIConfiguration] = useAtom(UIConfigurationAtom); */
 
   return (
-    <div className='h-[100dvh]  w-full bg-[#111217] flex flex-col relative'>
-      <p className='absolute bottom-1.5 text-[9px] right-6 text-tetriary'>
-        DOLAR$ are virtual funds and have no real settlement value as "fake
+    <div className="h-[100dvh]  w-full bg-[#111217] flex flex-col relative">
+      <p className="absolute bottom-1.5 text-[9px] right-6 text-tetriary">
+        DOLAR$ is virtual sandbox and have no real settlement value as "fake
         money". They are an internal part of the software and as such cannot be
         part of billing.
       </p>
       <Navbar />
-      <div className='flex-grow p-6 lg:flex gap-6 hidden'>
+      <div className="flex-grow p-6 lg:flex gap-6 hidden">
         <MarketInterface markets={markets} />
         <TradingHub />
       </div>
       <div>
         {/* Tablet view */}
-        <div className='p-6 flex-col hidden sm:flex flex-grow lg:hidden'>
+        <div className="p-6 flex-col hidden sm:flex flex-grow lg:hidden">
           {tabletView === 'market' && <MarketInterface markets={markets} />}
           {tabletView === 'positions' && <TradingHub />}
         </div>
       </div>
 
-      <div className='w-full h-[54px] bg-[#23252E] justify-center gap-2 items-center hidden sm:flex lg:hidden z-50'>
+      <div className="w-full h-[54px] bg-[#23252E] justify-center gap-2 items-center hidden sm:flex lg:hidden z-50">
         {tabletViewArr.map((view, key) => (
           <button
             key={key}
@@ -146,9 +146,9 @@ export const Market = ({ markets }: MarketProps) => {
         ))}
       </div>
       {/* Mobile view */}
-      <div className='p-6 flex-col flex flex-grow sm:hidden overflow-auto'>
+      <div className="p-6 flex-col flex flex-grow sm:hidden overflow-auto">
         {mobileView === 'manager' && (
-          <div className='border rounded-lg border-[#444650] bg-[#191B24] h-[calc(100vh-166px)]'>
+          <div className="border rounded-lg border-[#444650] bg-[#191B24] h-[calc(100vh-166px)]">
             <MarketSelect
               markets={markets}
               selectedMarketId={selectedMarketId}
@@ -157,14 +157,14 @@ export const Market = ({ markets }: MarketProps) => {
           </div>
         )}
         {mobileView === 'orderbook' && (
-          <div className='border border-[#444650] rounded-lg bg-[#191B24] h-[calc(100vh-166px)]'>
+          <div className="border border-[#444650] rounded-lg bg-[#191B24] h-[calc(100vh-166px)]">
             <OrderBookTop market={market!} recentTrades={recentTrades} />
             <OrderBookContainer />
           </div>
         )}
         {mobileView === 'portfolio' && <TradingHub />}
       </div>
-      <div className='w-full h-[54px] bg-[#23252E] flex justify-center gap-2 items-center sm:hidden z-50'>
+      <div className="w-full h-[54px] bg-[#23252E] flex justify-center gap-2 items-center sm:hidden z-50">
         {mobileViewArr.map((view, key) => (
           <button
             key={key}
