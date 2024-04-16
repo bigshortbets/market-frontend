@@ -23,15 +23,11 @@ export const useSetBridgeDepoAllowance = () => {
       args: [bridgeDepoContract, BigInt(MAX_ALLOWANCE)],
       chainId: bridgeDepoChainId,
     });
-
   useEffect(() => {
     if (error) {
-      toast.error(error.message.split('\n')[0], {
-        duration: 4000,
-      });
+      handleBlockchainError(error.stack!);
     }
   }, [error]);
-
   useEffect(() => {
     if (isSuccess) {
       toast.success(notifText, {

@@ -18,11 +18,10 @@ export const useStartDepoProcess = (amount: number) => {
       functionName: 'startDepositProcess',
       args: [BigInt(amount * 1_000_000)],
     });
+
   useEffect(() => {
     if (error) {
-      toast.error(error.message.split('\n')[0], {
-        duration: 4000,
-      });
+      handleBlockchainError(error.stack!);
     }
   }, [error]);
 

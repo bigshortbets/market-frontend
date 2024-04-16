@@ -4,6 +4,7 @@ import { abi } from '../abi';
 import toast from 'react-hot-toast';
 import { bigshortbetsChain } from '../chain';
 import { useEffect } from 'react';
+import { handleBlockchainError } from '@/utils/handleBlockchainError';
 
 export const useMarkToMarket = (marketId: string, positionId: string) => {
   const { writeContract, error, data, isSuccess } = useWriteContract();
@@ -21,9 +22,7 @@ export const useMarkToMarket = (marketId: string, positionId: string) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error.message.split('\n')[0], {
-        duration: 4000,
-      });
+      handleBlockchainError(error.stack!);
     }
   }, [error]);
 

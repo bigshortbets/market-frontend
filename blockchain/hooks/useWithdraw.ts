@@ -7,6 +7,7 @@ import { parseEther } from 'viem';
 import { bigshortbetsChain } from '../chain';
 import { useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { handleBlockchainError } from '@/utils/handleBlockchainError';
 
 export const useWithdraw = (amount: number) => {
   const { writeContract, error, data, isSuccess } = useWriteContract();
@@ -25,12 +26,9 @@ export const useWithdraw = (amount: number) => {
 
   useEffect(() => {
     if (error) {
-      toast.error(error.message.split('\n')[0], {
-        duration: 4000,
-      });
+      handleBlockchainError(error.stack!);
     }
   }, [error]);
-
   useEffect(() => {
     if (isSuccess) {
       toast.success(notifText, {

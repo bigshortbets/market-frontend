@@ -34,9 +34,7 @@ export const useCreateOrderWrite = (
 
   useEffect(() => {
     if (error) {
-      toast.error(error.message.split('\n')[0], {
-        duration: 4000,
-      });
+      handleBlockchainError(error.stack!);
     }
   }, [error]);
 

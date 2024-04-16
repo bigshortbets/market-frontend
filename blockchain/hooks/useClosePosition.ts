@@ -34,7 +34,6 @@ export const useClosePosition = (
   useEffect(() => {
     if (error) {
       handleBlockchainError(error.stack!);
-      console.log(error.stack!);
     }
   }, [error]);
 
