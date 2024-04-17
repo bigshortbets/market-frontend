@@ -1,7 +1,7 @@
 export type MarketDataCategories =
   | 'election'
   | 'currencies'
-  | 'indexes'
+  | 'indices'
   | 'commodities'
   | 'stocks'
   | 'crypto'
@@ -31,7 +31,7 @@ export const marketsData: MarketsDataProps[] = [
     symbol: 'NQ',
     name: 'Nasdaq',
     path: './market-logos/NQ.svg',
-    category: 'indexes',
+    category: 'indices',
   },
   {
     symbol: 'BTC',
@@ -112,13 +112,13 @@ export const marketsData: MarketsDataProps[] = [
     symbol: 'MNQ',
     name: 'Nasdaq',
     path: './market-logos/NQ.svg',
-    category: 'indexes',
+    category: 'indices',
   },
   {
     symbol: 'MES',
     name: 'S&P 500',
     path: './market-logos/SP500.svg',
-    category: 'indexes',
+    category: 'indices',
   },
   {
     symbol: 'M6E',
@@ -130,7 +130,7 @@ export const marketsData: MarketsDataProps[] = [
     symbol: 'MYM',
     name: 'Dow Jones',
     path: './market-logos/DOWJONES.svg',
-    category: 'indexes',
+    category: 'indices',
   },
 
   /* ELECTIOn */
