@@ -92,7 +92,7 @@ export const MarketSelect = ({
 
   //FinaSorted / filtered
 
-  const sortedaActiveMarkets = sortMarketsAlphabeticly(unsortedActiveMarkets);
+  const sortedActiveMarkets = sortMarketsAlphabeticly(unsortedActiveMarkets);
   const sortedClosedMarkets = sortMarketsAlphabeticly(unsortedClosedMarkets);
   const sortedCategories = sortCategories(categories);
 
@@ -167,7 +167,7 @@ export const MarketSelect = ({
           </div>
 
           <div>
-            {sortedaActiveMarkets.map(
+            {sortedActiveMarkets.map(
               (market, key) =>
                 (market.category === activeCategory || !activeCategory) && (
                   <MarketSelectItem
