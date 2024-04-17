@@ -68,6 +68,7 @@ export const USER_OPEN_POSITIONS_SUBSCRIPTION = gql`
     ) {
       id
       price
+      createPrice
       quantity
       timestamp
       short

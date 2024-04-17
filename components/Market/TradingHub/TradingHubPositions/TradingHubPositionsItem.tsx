@@ -62,6 +62,9 @@ export const TradingHubPositionsItem = ({
         {Number(position.quantityLeft)}
       </td>
       <td className="text-[10px] sm:text-xs px-6 sm:px-0">
+        {Number(position.createPrice)}
+      </td>
+      <td className="text-[10px] sm:text-xs px-6 sm:px-0">
         {Number(position.price)}
       </td>
       <td
