@@ -7,7 +7,10 @@ import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,
 } from 'react-icons/md';
-import { categorizeMarkets } from '@/utils/categorizeMarkets';
+import {
+  MarketWithDateType,
+  categorizeMarkets,
+} from '@/utils/categorizeMarkets';
 import { currentBlockAtom } from '../Market';
 import { useAtom } from 'jotai';
 import { MarketSelectItem } from '../MarketInteface/MarketSelectItem';
@@ -33,10 +36,10 @@ export const MarketSelect = ({
   const enrichedMarkets = enrichMarketData(markets);
   const market = findMarketById(markets, selectedMarketId);
   const marketDetails = market && getMarkeDetails(market.ticker);
-  const { activeMarkets, closedMarkets } = categorizeMarkets(
-    enrichedMarkets,
-    Number(currentBlock)
-  );
+  const {
+    activeMarkets: unsortedActiveMarkets,
+    closedMarkets: unsortedClosedMarkets,
+  } = categorizeMarkets(enrichedMarkets, Number(currentBlock));
 
   const noMarkets = markets.length < 1;
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
@@ -75,14 +78,22 @@ export const MarketSelect = ({
 
   const categories = getUniqueCategories(enrichedMarkets);
 
-  function sortCategories(categories: string[]) {
+  const sortCategories = (categories: string[]) => {
     const filteredCategories = categories.filter(
       (category) => category !== 'election'
     );
 
     return filteredCategories.sort((a, b) => a.localeCompare(b));
-  }
+  };
 
+  const sortMarketsAlphabeticly = (markets: MarketWithDateType[]) => {
+    return markets.sort((a, b) => a.name!.localeCompare(b.name!));
+  };
+
+  //FinaSorted / filtered
+
+  const sortedaActiveMarkets = sortMarketsAlphabeticly(unsortedActiveMarkets);
+  const sortedClosedMarkets = sortMarketsAlphabeticly(unsortedClosedMarkets);
   const sortedCategories = sortCategories(categories);
 
   return (
@@ -156,7 +167,7 @@ export const MarketSelect = ({
           </div>
 
           <div>
-            {activeMarkets.map(
+            {sortedaActiveMarkets.map(
               (market, key) =>
                 (market.category === activeCategory || !activeCategory) && (
                   <MarketSelectItem
@@ -169,7 +180,7 @@ export const MarketSelect = ({
           </div>
           <div className="h-1 w-full bg-[#444650]"></div>
           <div>
-            {closedMarkets.map(
+            {sortedClosedMarkets.map(
               (market, key) =>
                 (market.category === activeCategory || !activeCategory) && (
                   <MarketSelectItem
