@@ -57,6 +57,22 @@ export const TradingHubAggregatedPosition = ({
                 Number(oraclePrice.toString()));
     }, 0);
 
+  const experimentalSumLossProfit: number =
+    oraclePrice &&
+    positionsWithSide.reduce((acc, position) => {
+      return position.side === 'LONG'
+        ? acc +
+            Number(position.quantityLeft) *
+              Number(position.market.contractUnit) *
+              (Number(oraclePrice.toString()) -
+                Number(position.createPrice.toString()))
+        : acc +
+            Number(position.quantityLeft) *
+              Number(position.market.contractUnit) *
+              (Number(position.createPrice.toString()) -
+                Number(oraclePrice.toString()));
+    }, 0);
+
   const handleClick = () => {
     toggleExtended();
   };
@@ -100,10 +116,13 @@ export const TradingHubAggregatedPosition = ({
                 <p className="text-[10px] text-tetriary">Sum gain / loss</p>
                 <p
                   className={`text-[11px] font-semibold ${
-                    sumLossProfit < 0 ? 'text-red-500' : 'text-[#87DAA4]'
+                    experimentalSumLossProfit < 0
+                      ? 'text-red-500'
+                      : 'text-[#87DAA4]'
                   }`}
                 >
-                  {sumLossProfit && sumLossProfit.toFixed(2)}{' '}
+                  {experimentalSumLossProfit &&
+                    experimentalSumLossProfit.toFixed(2)}{' '}
                   <span className="text-xs">{currencySymbol}</span>
                 </p>
               </div>
@@ -207,10 +226,13 @@ export const TradingHubAggregatedPosition = ({
                 <p className="text-xs text-tetriary">Sum gain / loss</p>
                 <p
                   className={`text-xs font-semibold ${
-                    sumLossProfit < 0 ? 'text-red-500' : 'text-[#87DAA4]'
+                    experimentalSumLossProfit < 0
+                      ? 'text-red-500'
+                      : 'text-[#87DAA4]'
                   }`}
                 >
-                  {sumLossProfit && sumLossProfit.toFixed(2)}{' '}
+                  {experimentalSumLossProfit &&
+                    experimentalSumLossProfit.toFixed(2)}{' '}
                   <span className="text-xs">{currencySymbol}</span>
                 </p>
               </div>

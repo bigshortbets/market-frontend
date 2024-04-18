@@ -26,10 +26,12 @@ export const TradingHubPositionsItem = ({
     position.side === 'LONG'
       ? Number(position.quantityLeft) *
         Number(position.market.contractUnit) *
-        (Number(oraclePrice.toString()) - Number(position.price.toString()))
+        (Number(oraclePrice.toString()) -
+          Number(position.createPrice.toString()))
       : Number(position.quantityLeft) *
         Number(position.market.contractUnit) *
-        (Number(position.price.toString()) - Number(oraclePrice.toString()));
+        (Number(position.createPrice.toString()) -
+          Number(oraclePrice.toString()));
 
   const { write: writeMarkToMarket } = useMarkToMarket(
     position.market.id,
@@ -135,7 +137,6 @@ export const TradingHubPositionsItem = ({
         handleCloseModal={handleCloseModal}
         isModalOpened={isModalOpened}
         position={position}
-        profitLoss={calculatedProfitOrLoss}
       />
     </tr>
   );
