@@ -13,6 +13,7 @@ import { LiquidationStatusTab } from '../../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { currencySymbol } from '@/blockchain/constants';
 import { AbiEncodingArrayLengthMismatchError } from 'viem';
+import { FaChartBar } from 'react-icons/fa';
 
 interface TradingHubAggregatedPositionProps {
   positions: PositionType[];
@@ -99,7 +100,21 @@ export const TradingHubAggregatedPosition = ({
                 />
               )}
               <div>
-                <p className="text-[#EBEDFD] text-xs">{marketDetails?.name}</p>
+                <div className="flex items-center gap-1">
+                  <p className="text-[#EBEDFD] text-xs">
+                    {marketDetails?.name}
+                  </p>
+                  {marketId != '9223372036854776644' &&
+                    marketId != '9223372036854776643' && (
+                      <a
+                        className="text-tetriary text-[16px] hover:text-gray-400"
+                        href={`https://tradingview.com/symbols/${ticker}`}
+                        target="_blank"
+                      >
+                        <FaChartBar />
+                      </a>
+                    )}
+                </div>
                 <p className="text-[#ABACBA] text-[10px] mb-1">{ticker}</p>
                 <div className="flex gap-2 items-center">
                   {' '}
@@ -182,9 +197,9 @@ export const TradingHubAggregatedPosition = ({
           onClick={handleClick}
         >
           <div className="flex justify-between items-center h-full">
-            <div className="flex gap-4 h-full items-center">
+            <div className="flex gap-4 h-full items-end">
               <div>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-2">
                   <p className="text-[#EBEDFD] text-sm">
                     {marketDetails?.name}
                   </p>
@@ -197,14 +212,20 @@ export const TradingHubAggregatedPosition = ({
                       className="rounded-full"
                     />
                   )}
+
+                  {marketId != '9223372036854776644' &&
+                    marketId != '9223372036854776643' && (
+                      <a
+                        className="text-tetriary text-[16px] hover:text-gray-400"
+                        href={`https://tradingview.com/symbols/${ticker}`}
+                        target="_blank"
+                      >
+                        <FaChartBar />
+                      </a>
+                    )}
                 </div>
                 <p className="text-[#ABACBA] text-xs">{ticker}</p>
               </div>
-
-              {marketId != '9223372036854776644' &&
-                marketId != '9223372036854776643' && (
-                  <MiniChartWidget symbol={ticker} />
-                )}
             </div>
 
             <div className="flex gap-6">
