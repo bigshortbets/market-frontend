@@ -230,20 +230,18 @@ export const TradingHubAggregatedPosition = ({
 
             <div className="flex gap-6">
               {userMargins.details[marketId] && (
-                <div className="flex flex-col">
-                  <div className="flex items-center gap-1">
-                    <p className="text-xs text-tetriary">Status</p>
-                    <LiquidationStatusTab
-                      status={
-                        userMargins.details[marketId]
-                          .liquidationStatus as LiquidationStatusType
-                      }
-                    />
-                  </div>
+                <div className="flex items-start  gap-1.5 w-[150px]">
+                  <p className="text-xs text-tetriary">Status</p>
+                  <LiquidationStatusTab
+                    status={
+                      userMargins.details[marketId]
+                        .liquidationStatus as LiquidationStatusType
+                    }
+                  />
                 </div>
               )}
               {/* Sum profit / loss */}
-              <div className="flex flex-col text-right">
+              <div className="flex flex-col text-right min-w-[100px]">
                 <p className="text-xs text-tetriary">Sum gain / loss</p>
                 <p
                   className={`text-xs font-semibold ${
