@@ -8,7 +8,7 @@ const blockchainErrorMappings: ErrorMappings = {
   MarketDoesNotExist:
     'Sorry, but this market does not exist, or is already closed.',
   MarketIsClosed: 'This market is already closed!',
-  AlreadyOffsetting: 'You are already closing this position!',
+  AlreadyOffsetting: 'You already have closing order for this position!',
 };
 
 export const handleBlockchainError = (error: string) => {
