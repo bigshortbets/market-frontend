@@ -39,7 +39,7 @@ export function useUserMargin(
     const fetchAllMargins = async () => {
       if (!userAddress) {
         setUserMargins({ details: {}, totalMarginValue: 0 });
-        setSelectedMarketMargin(null); // Set to null if no user address, adjust according to your data handling strategy
+        setSelectedMarketMargin(null);
         return;
       }
 

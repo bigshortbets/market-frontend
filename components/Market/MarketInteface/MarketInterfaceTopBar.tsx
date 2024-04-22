@@ -6,6 +6,7 @@ import { useAtom } from 'jotai';
 import { currentBlockAtom, recentTradesAtom } from '../Market';
 import { categorizeMarkets } from '@/utils/categorizeMarkets';
 import { MarketSelect } from '../FinanceManager/MarketSelect';
+import ReactLoading from 'react-loading';
 
 interface MarketInterfaceTopBarProps {
   markets: MarketType[];
@@ -64,14 +65,35 @@ export const MarketInterfaceTopBar = ({
           <div>
             <p className="text-xs text-tetriary font-semibold">Oracle Price</p>
             <p className="text-xs font-normal">
-              {market?.oraclePrice ? market?.oraclePrice.toString() : '-'}
+              {market?.oraclePrice != undefined ? (
+                market?.oraclePrice.toString()
+              ) : (
+                <ReactLoading
+                  type="spin"
+                  width={14}
+                  height={14}
+                  color="#444650"
+                  className="mt-0.5"
+                />
+              )}
             </p>
           </div>
 
           <div className="border-l border-[#444650] text-xs pl-2">
             <p className="text-tetriary font-semibold">Market Price</p>
             <p>
-              {recentTrades.length > 0 ? Number(recentTrades[0].price) : '-'}
+              {recentTrades === undefined && (
+                <ReactLoading
+                  type="spin"
+                  width={14}
+                  height={14}
+                  color="#444650"
+                  className="mt-0.5"
+                />
+              )}
+              {recentTrades && recentTrades.length > 0
+                ? Number(recentTrades[0].price)
+                : '-'}
             </p>
           </div>
         </div>

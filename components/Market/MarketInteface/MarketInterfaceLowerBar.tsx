@@ -1,20 +1,19 @@
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
 import { useAtom } from 'jotai';
-import React, { useEffect } from 'react';
-import { useAccount, useBlockNumber } from 'wagmi';
+import { useEffect } from 'react';
+import { useAccount } from 'wagmi';
 import { selectedMarketMarginAtom, userMarginsAtom } from '../Market';
 import { LiquidationStatusTab } from '../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { currencyFormatter } from '@/utils/currencyFormatter';
-import { useQueryClient } from '@tanstack/react-query';
 import { currencySymbol } from '@/blockchain/constants';
+import ReactLoading from 'react-loading';
 
 export const MarketInterfaceLowerBar = () => {
   const { address } = useAccount();
   const { data, refetch } = useNativeCurrencyBalance(address);
   const [userMargins] = useAtom(userMarginsAtom);
   const [selectedMarketMargin] = useAtom(selectedMarketMarginAtom);
-  const { data: blockNumber } = useBlockNumber({ watch: true });
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -39,11 +38,12 @@ export const MarketInterfaceLowerBar = () => {
         <div className=" text-[11px]  ">
           <p className="text-tetriary font-semibold">Total deposits</p>
           <p className="text-white">
-            {address
-              ? `${currencyFormatter.format(
-                  userMargins.totalMarginValue
-                )} ${currencySymbol}`
-              : '-'}
+            {!address && '-'}
+            {address &&
+              userMargins.totalMarginValue &&
+              `${currencyFormatter.format(
+                userMargins.totalMarginValue
+              )} ${currencySymbol}`}
           </p>
         </div>
         <LiquidationStatusTab
@@ -81,13 +81,22 @@ export const MarketInterfaceLowerBar = () => {
               {' '}
               <p className="text-tetriary font-semibold">Market deposit</p>
             </div>
-
             <p className="text-white">
-              {address
-                ? `${currencyFormatter.format(
-                    Number(selectedMarketMargin?.margin)
-                  )} ${currencySymbol}`
-                : '-'}{' '}
+              {!address && '-'}
+              {address &&
+                selectedMarketMargin?.margin &&
+                `${currencyFormatter.format(
+                  Number(selectedMarketMargin?.margin)
+                )} ${currencySymbol}`}
+              {address && selectedMarketMargin?.margin === undefined && (
+                <ReactLoading
+                  type="spin"
+                  width={14}
+                  height={14}
+                  color="#444650"
+                  className="mt-0.5"
+                />
+              )}{' '}
             </p>
           </div>
           <LiquidationStatusTab
