@@ -26,12 +26,7 @@ export const TradingHubPositions = ({
   };
 
   const positionsByMarketTicker = aggregatePositionsByMarketTicker();
-  const [, setPositionsCount] = useAtom(tradingHubPositionsCountAtom);
   const { address } = useAccount();
-
-  useEffect(() => {
-    setPositionsCount(positions.length);
-  }, [positions]);
 
   return (
     <div

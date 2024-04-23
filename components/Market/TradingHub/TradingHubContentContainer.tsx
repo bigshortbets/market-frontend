@@ -6,9 +6,13 @@ import {
 import { convertToSS58 } from '@/utils/convertToSS58';
 import { useSubscription } from '@apollo/client';
 import { useAtom } from 'jotai';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAccount } from 'wagmi';
-import { tradingHubStateAtom } from './TradingHub';
+import {
+  tradingHubOrdersCountAtom,
+  tradingHubPositionsCountAtom,
+  tradingHubStateAtom,
+} from './TradingHub';
 import { TradingHubOrders } from './TradingHubOrders/TradingHubOrders';
 import { OrdersResponse } from '@/types/orderTypes';
 import { PositionsResponse } from '@/types/positionTypes';
@@ -21,6 +25,8 @@ import { useCollateral } from '@/hooks/useCollateral';
 
 export const TradingHubContentContainer = () => {
   const { address } = useAccount();
+  const [, setOrdersCount] = useAtom(tradingHubOrdersCountAtom);
+  const [, setPositionsCount] = useAtom(tradingHubPositionsCountAtom);
   const { data: ordersRes } = useSubscription<OrdersResponse>(
     USER_ORDERS_SUBSCRIPTION,
     {
@@ -47,6 +53,15 @@ export const TradingHubContentContainer = () => {
 
   const [tradingHubState] = useAtom(tradingHubStateAtom);
   useOpponentsMargin(positionsRes?.positions!, address!);
+
+  useEffect(() => {
+    if (ordersRes?.orders) {
+      setOrdersCount(ordersRes.orders.length);
+    }
+    if (positionsRes?.positions) {
+      setPositionsCount(positionsRes.positions.length);
+    }
+  }, [ordersRes?.orders, positionsRes?.positions]);
 
   return (
     <div className="w-full no-scrollbar">

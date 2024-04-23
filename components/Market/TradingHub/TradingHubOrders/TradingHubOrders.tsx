@@ -10,13 +10,6 @@ interface TradingHubOrdersProps {
 }
 
 export const TradingHubOrders = ({ orders }: TradingHubOrdersProps) => {
-  /* const [animationParent] = useAutoAnimate(); - Not working properly*/
-
-  const [, setOrdersCount] = useAtom(tradingHubOrdersCountAtom);
-
-  useEffect(() => {
-    setOrdersCount(orders.length);
-  }, [orders]);
   return (
     <div
       className="w-full h-full overflow-y-auto no-scrollbar"
