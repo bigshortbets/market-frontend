@@ -15,7 +15,7 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
   return (
     <tr className={`text-sm odd:bg-[#23252E] text-[#7F828F] `}>
       {/* Side */}
-      <td className="pl-3 py-2">
+      <td className='pl-3 py-2'>
         <SideLabel side={order.side} />
       </td>
       {/* Created */}
@@ -27,12 +27,12 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
       {/* Quantity */}
       <td>{Number(order.quantity)}</td>
       {/* Close */}
-      <td className=" text-right pr-3 ">
+      <td className=' text-right pr-3 '>
         <button
           className={`font-bold text-xs text-[#D26D6C] transition ease-in-out hover:text-[#C53F3A] duration-300`}
           onClick={() => writeCancelOrder()}
         >
-          CLOSE
+          CANCEL
         </button>
       </td>
     </tr>
