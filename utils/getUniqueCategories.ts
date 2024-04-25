@@ -1,6 +1,6 @@
-import { ExtendedMarketType } from './enrichMarkets';
+import { EnrichedMarketType } from '@/types/marketTypes';
 
-export function getUniqueCategories(items: ExtendedMarketType[]): string[] {
+export function getUniqueCategories(items: EnrichedMarketType[]): string[] {
   const uniqueCategories = new Set<string>();
 
   items.forEach((item) => {
