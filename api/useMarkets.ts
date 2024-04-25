@@ -1,42 +1,43 @@
-import { MarketType } from '@/types/marketTypes';
-import { gql, useSubscription } from '@apollo/client';
-
-const GET_ALL_MARKETS = gql`
-  subscription {
-    markets {
-      id
-      ticker
-      tickSize
-      lifetime
-      initialMargin
-      maintenanceMargin
-      contractUnit
-      blockHeight
-      timestamp
-      dailyVolume
-      oraclePrice
-    }
-  }
-`;
-
-type MarketsQueryResponse = {
-  markets: MarketType[];
-};
+import { useQuery } from '@apollo/client';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
+import { marketsAtom } from '@/store/store';
+import { EnrichedMarketType, MarketsQueryResponse } from '@/types/marketTypes';
+import { getMarkeDetails } from '@/utils/getMarketDetails';
+import { currentBlockAtom } from '@/components/Market/Market';
+import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
+import { GET_ALL_MARKETS } from './queries';
 
 export const useMarkets = () => {
-  const {
-    loading: marketsLoading,
-    error: marketsError,
-    data,
-  } = useSubscription<MarketsQueryResponse>(GET_ALL_MARKETS);
+  const [, setMarkets] = useAtom(marketsAtom);
+  const [blockHeight] = useAtom(currentBlockAtom);
 
-  const markets = data?.markets;
+  const { data } = useQuery<MarketsQueryResponse>(GET_ALL_MARKETS, {
+    pollInterval: 1000,
+  });
 
-  const initialMarket = markets?.[0];
-  return {
-    markets,
-    marketsLoading,
-    marketsError,
-    initialMarket,
-  };
+  useEffect(() => {
+    if (data) {
+      const extendedMarkets = data.markets.map((market) => {
+        let extendedMarket: EnrichedMarketType = market;
+
+        const details = getMarkeDetails(market.ticker);
+        if (details) {
+          extendedMarket = { ...extendedMarket, ...details };
+        }
+
+        const timingData = calculateMarketClosing(
+          blockHeight!,
+          Number(market.lifetime)
+        );
+
+        if (timingData) {
+          extendedMarket = { ...extendedMarket, ...timingData };
+        }
+
+        return extendedMarket;
+      });
+      setMarkets(extendedMarkets);
+    }
+  }, [data, setMarkets]);
 };

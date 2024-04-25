@@ -1,45 +1,35 @@
-import { MarketType } from '@/types/marketTypes';
-import { findMarketById } from '@/utils/findMarketById';
-import { getMarkeDetails } from '@/utils/getMarketDetails';
-import React, { useEffect, useRef, useState } from 'react';
+import { EnrichedMarketType } from '@/types/marketTypes';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import {
   MdOutlineKeyboardArrowDown,
   MdOutlineKeyboardArrowUp,
 } from 'react-icons/md';
-import {
-  MarketWithDateType,
-  categorizeMarkets,
-} from '@/utils/categorizeMarkets';
+import { categorizeMarkets } from '@/utils/categorizeMarkets';
 import { currentBlockAtom } from '../Market';
 import { useAtom } from 'jotai';
 import { MarketSelectItem } from '../MarketInteface/MarketSelectItem';
-import { ExtendedMarketType, enrichMarketData } from '@/utils/enrichMarkets';
 import { MarketDataCategories } from '@/data/marketsData';
 import { MarketSelectCategoryTab } from './MarketSelectCategoryTab';
 import { getUniqueCategories } from '@/utils/getUniqueCategories';
+import { chosenMarketAtom } from '@/store/store';
 
 interface MarketSelectProps {
-  markets: MarketType[];
-  selectedMarketId: string;
+  markets: EnrichedMarketType[];
 }
 
-export const MarketSelect = ({
-  markets,
-  selectedMarketId,
-}: MarketSelectProps) => {
+export const MarketSelect = ({ markets }: MarketSelectProps) => {
   const [activeCategory, setActiveCategory] = useState<
     MarketDataCategories | undefined
   >('election');
   const [currentBlock] = useAtom(currentBlockAtom);
+  const [chosenMarket] = useAtom(chosenMarketAtom);
   const selectRef = useRef<HTMLDivElement>(null);
-  const enrichedMarkets = enrichMarketData(markets);
-  const market = findMarketById(markets, selectedMarketId);
-  const marketDetails = market && getMarkeDetails(market.ticker);
+
   const {
     activeMarkets: unsortedActiveMarkets,
     closedMarkets: unsortedClosedMarkets,
-  } = categorizeMarkets(enrichedMarkets, Number(currentBlock));
+  } = categorizeMarkets(markets, Number(currentBlock));
 
   const noMarkets = markets.length < 1;
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
@@ -76,7 +66,7 @@ export const MarketSelect = ({
     setActiveCategory(val);
   };
 
-  const categories = getUniqueCategories(enrichedMarkets);
+  const categories = getUniqueCategories(markets);
 
   const sortCategories = (categories: string[]) => {
     const filteredCategories = categories.filter(
@@ -86,7 +76,7 @@ export const MarketSelect = ({
     return filteredCategories.sort((a, b) => a.localeCompare(b));
   };
 
-  const sortMarketsAlphabeticly = (markets: MarketWithDateType[]) => {
+  const sortMarketsAlphabeticly = (markets: EnrichedMarketType[]) => {
     return markets.sort((a, b) => a.name!.localeCompare(b.name!));
   };
 
@@ -109,30 +99,29 @@ export const MarketSelect = ({
         }`}
         onClick={handleToggleSelectOpen}
       >
-        <div className="flex items-center gap-4">
-          {marketDetails && (
+        <div className='flex items-center gap-4'>
+          {chosenMarket?.path && (
             <Image
-              src={marketDetails.path}
+              src={chosenMarket.path}
               width={28}
               height={28}
-              alt="Market logo"
-              className="rounded-full"
+              alt='Market logo'
+              className='rounded-full'
             />
           )}
           <div>
-            <p className="text-[13px] font-semibold">
-              {marketDetails ? marketDetails.name : market?.ticker}
+            <p className='text-[13px] font-semibold'>
+              {chosenMarket?.name ? chosenMarket.name : chosenMarket?.ticker}
             </p>
 
-            {marketDetails && (
-              <p className="text-[10px] font-normal">{market?.ticker}</p>
-            )}
+            <p className='text-[10px] font-normal'>{chosenMarket?.ticker}</p>
+
             {noMarkets && (
-              <p className="text-xs">Currently no markets available</p>
+              <p className='text-xs'>Currently no markets available</p>
             )}
           </div>
         </div>
-        <div className="text-[24px]">
+        <div className='text-[24px]'>
           {isSelectOpen ? (
             <MdOutlineKeyboardArrowUp />
           ) : (
@@ -141,9 +130,9 @@ export const MarketSelect = ({
         </div>
       </div>
       {isSelectOpen && (
-        <div className="absolute w-full bg-[#23252E] z-40">
-          <div className="p-2 border-b border-[#444650]">
-            <div className="flex items-center gap-2 flex-wrap gap-y-2 ">
+        <div className='absolute w-full bg-[#23252E] z-40'>
+          <div className='p-2 border-b border-[#444650]'>
+            <div className='flex items-center gap-2 flex-wrap gap-y-2 '>
               <MarketSelectCategoryTab
                 activeCategory={activeCategory}
                 value={'election'}
@@ -178,7 +167,7 @@ export const MarketSelect = ({
                 )
             )}
           </div>
-          <div className="h-1 w-full bg-[#444650]"></div>
+          <div className='h-1 w-full bg-[#444650]'></div>
           <div>
             {sortedClosedMarkets.map(
               (market, key) =>

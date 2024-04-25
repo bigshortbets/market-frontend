@@ -1,59 +1,47 @@
-import { MarketType } from '@/types/marketTypes';
 import { useAtom } from 'jotai';
-import { currentBlockAtom, selectedMarketIdAtom } from '../Market';
-import { findMarketById } from '@/utils/findMarketById';
 import { formatDate } from '@/utils/formatDate';
 
-import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 import { currencySymbol } from '@/blockchain/constants';
+import { chosenMarketAtom } from '@/store/store';
 
-interface ContractDetailsProps {
-  markets: MarketType[];
-}
-export const ContractDetails = ({ markets }: ContractDetailsProps) => {
-  const [selectedMarketId] = useAtom(selectedMarketIdAtom);
-  const selectedMarket = findMarketById(markets, selectedMarketId);
-  const [currentBlock] = useAtom(currentBlockAtom);
-  const { formattedDate } = calculateMarketClosing(
-    currentBlock!,
-    Number(selectedMarket?.lifetime)
-  );
+export const ContractDetails = () => {
+  const [chosenMarket] = useAtom(chosenMarketAtom);
 
   const marketDurationRepresentation = `${formatDate(
-    selectedMarket?.timestamp as unknown as string
-  )} - ${formattedDate}`;
+    chosenMarket?.timestamp as unknown as string
+  )} - ${chosenMarket?.formattedDate}`;
 
   const contractDetailsData = [
-    { label: 'Contract name', value: selectedMarket?.ticker },
+    { label: 'Contract name', value: chosenMarket?.ticker },
     { label: 'Market duration', value: marketDurationRepresentation },
     {
       label: 'Tick size',
-      value: `${selectedMarket?.tickSize?.toString()!} ${currencySymbol}`,
+      value: `${chosenMarket?.tickSize?.toString()!} ${currencySymbol}`,
     },
     {
       label: 'Initial margin',
-      value: `${selectedMarket?.initialMargin?.toString()!} %`,
+      value: `${chosenMarket?.initialMargin?.toString()!} %`,
     },
     {
       label: 'Maintenance margin',
-      value: `${selectedMarket?.maintenanceMargin?.toString()!} %`,
+      value: `${chosenMarket?.maintenanceMargin?.toString()!} %`,
     },
     {
       label: 'Contract unit',
-      value: `${selectedMarket?.contractUnit?.toString()!}`,
+      value: `${chosenMarket?.contractUnit?.toString()!}`,
     },
   ];
 
   return (
     <div className={`w-full  bg-[#000211] rounded-lg font-semibold`}>
-      <div className="justify-between items-center flex py-2  px-4">
-        <h3 className="text-sm ">Contract details</h3>
+      <div className='justify-between items-center flex py-2  px-4'>
+        <h3 className='text-sm '>Contract details</h3>
       </div>
 
-      <div className="flex flex-col font-normal text-xs">
+      <div className='flex flex-col font-normal text-xs'>
         {contractDetailsData.map((data, key) => (
           <div
-            className="px-4 py-2 text-tetriary flex justify-between items-center"
+            className='px-4 py-2 text-tetriary flex justify-between items-center'
             key={key}
           >
             <p>{data.label}</p>

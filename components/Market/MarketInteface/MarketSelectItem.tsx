@@ -1,8 +1,6 @@
 import { useAtom } from 'jotai';
-import React from 'react';
 import { currentBlockAtom, selectedMarketIdAtom } from '../Market';
-import { MarketType } from '@/types/marketTypes';
-import { getMarkeDetails } from '@/utils/getMarketDetails';
+import { EnrichedMarketType } from '@/types/marketTypes';
 import Image from 'next/image';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 import { CiCalendar } from 'react-icons/ci';
@@ -10,7 +8,7 @@ import { IoMdLock } from 'react-icons/io';
 import { useRouter } from 'next/router';
 
 interface MarketSelectItemProps {
-  market: MarketType;
+  market: EnrichedMarketType;
   handleCloseSelect: () => void;
 }
 
@@ -18,9 +16,8 @@ export const MarketSelectItem = ({
   market,
   handleCloseSelect,
 }: MarketSelectItemProps) => {
-  const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
+  const [_, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
   const [currentBlock] = useAtom(currentBlockAtom);
-  const details = getMarkeDetails(market.ticker);
 
   const { timeLeftMessage, isClosed } = calculateMarketClosing(
     Number(currentBlock),
@@ -41,39 +38,39 @@ export const MarketSelectItem = ({
       onClick={handleAction}
     >
       <div className={`flex  gap-4 items-center ${isClosed && 'opacity-30'}`}>
-        {details && (
+        {market.path && (
           <Image
-            src={details.path}
+            src={market.path}
             width={20}
             height={20}
-            alt="Market logo"
-            className="rounded-full"
+            alt='Market logo'
+            className='rounded-full'
           />
         )}
         <div>
-          <div className="flex items-center gap-1.5">
-            <p className="text-[13px] font-bold">
-              {details ? details.name : market.ticker}
+          <div className='flex items-center gap-1.5'>
+            <p className='text-[13px] font-bold'>
+              {market.name ? market.name : market.ticker}
             </p>
           </div>
-          {details && (
-            <p className="text-[10px] font-normal">({market?.ticker})</p>
+          {market.name && (
+            <p className='text-[10px] font-normal'>({market?.ticker})</p>
           )}
         </div>
       </div>
       {!isClosed ? (
-        <div className="flex items-center gap-1">
-          <p className="text-[10px] text-tetriary font-normal">
+        <div className='flex items-center gap-1'>
+          <p className='text-[10px] text-tetriary font-normal'>
             {timeLeftMessage}
           </p>
-          <div className="text-[12px] text-tetriary">
+          <div className='text-[12px] text-tetriary'>
             <CiCalendar />
           </div>
         </div>
       ) : (
-        <div className="flex items-center gap-1">
-          <p className="text-[10px] text-tetriary font-normal">Market closed</p>
-          <div className="text-[12px] text-tetriary">
+        <div className='flex items-center gap-1'>
+          <p className='text-[10px] text-tetriary font-normal'>Market closed</p>
+          <div className='text-[12px] text-tetriary'>
             <IoMdLock />
           </div>
         </div>

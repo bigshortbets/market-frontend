@@ -1,4 +1,3 @@
-import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
 import { useWithdraw } from '@/blockchain/hooks/useWithdraw';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
 import { useState } from 'react';
@@ -6,23 +5,16 @@ import { NumericFormat } from 'react-number-format';
 import { useAccount } from 'wagmi';
 import { selectedMarketIdAtom, selectedMarketMarginAtom } from '../Market';
 import { useAtom } from 'jotai';
-import { findMarketById } from '@/utils/findMarketById';
-import { MarketType } from '@/types/marketTypes';
+import { EnrichedMarketType } from '@/types/marketTypes';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
 import { currencySymbol } from '@/blockchain/constants';
 
-export interface WithdrawProps {
-  markets: MarketType[];
-}
-
-export const Withdraw = ({ markets }: WithdrawProps) => {
+export const Withdraw = () => {
   const [amount, setAmount] = useState<number>(0);
   const { address, chain } = useAccount();
   const { write } = useWithdraw(amount);
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
-  const [selectedMarketId] = useAtom(selectedMarketIdAtom);
-  const market = findMarketById(markets, selectedMarketId);
 
   const isBsbNetwork = chain?.id === bigshortbetsChain.id;
 

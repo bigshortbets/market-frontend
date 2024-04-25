@@ -1,9 +1,9 @@
-import { MarketType } from '@/types/marketTypes';
+import { EnrichedMarketType } from '@/types/marketTypes';
 
 export const findMarketById = (
-  marketArray: MarketType[],
+  marketArray: EnrichedMarketType[],
   marketId: string
-): MarketType | undefined => {
+): EnrichedMarketType | undefined => {
   for (const market of marketArray) {
     if (market.id === marketId) {
       return market;

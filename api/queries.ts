@@ -1,5 +1,25 @@
 import { gql } from '@apollo/client';
 
+/* QUuery for getting all makets */
+
+export const GET_ALL_MARKETS = gql`
+  query {
+    markets {
+      id
+      ticker
+      tickSize
+      lifetime
+      initialMargin
+      maintenanceMargin
+      contractUnit
+      blockHeight
+      timestamp
+      dailyVolume
+      oraclePrice
+    }
+  }
+`;
+
 /* Query for getting orders of given user */
 
 export const USER_ORDERS_SUBSCRIPTION = gql`

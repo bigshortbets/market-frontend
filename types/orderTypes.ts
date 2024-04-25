@@ -1,11 +1,12 @@
-import { MarketType } from "./marketTypes";
-
 export interface OrderType {
   timestamp: string;
   id: string;
-  market: MarketType;
+  market: {
+    id: string;
+    ticker: string;
+  };
   price: BigInt;
-  side: "LONG" | "SHORT";
+  side: 'LONG' | 'SHORT';
   quantity: BigInt;
 }
 

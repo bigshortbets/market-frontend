@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Navbar } from '../Navbar/Navbar';
-import { MarketType } from '@/types/marketTypes';
 import { atom, useAtom } from 'jotai';
 import { TradingHub } from './TradingHub/TradingHub';
 import { useAccount, useSwitchChain } from 'wagmi';
@@ -25,9 +24,10 @@ import { UnsettledLosses } from '@/hooks/useUnsettledLosses';
 import { Collateral } from '@/hooks/useCollateral';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 import { useRouter } from 'next/router';
+import { EnrichedMarketType } from '@/types/marketTypes';
 
 interface MarketProps {
-  markets: MarketType[];
+  markets: EnrichedMarketType[];
 }
 
 export type UIConfigurationType = 'HubOrder' | 'OrderHub';
@@ -153,10 +153,7 @@ export const Market = ({ markets }: MarketProps) => {
         <div className='p-6 flex-col flex flex-grow sm:hidden overflow-auto'>
           {mobileView === 'manager' && (
             <div className='border rounded-lg border-[#444650] bg-[#191B24] h-[calc(100vh-166px)]'>
-              <MarketSelect
-                markets={markets}
-                selectedMarketId={selectedMarketId}
-              />
+              <MarketSelect markets={markets} />
               <FinanceManager markets={markets} />
             </div>
           )}

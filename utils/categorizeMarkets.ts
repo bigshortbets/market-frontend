@@ -1,24 +1,15 @@
-import { MarketType } from '@/types/marketTypes';
+import { EnrichedMarketType } from '@/types/marketTypes';
 import { calculateMarketClosing } from './calculateMarketClosing';
-import { ExtendedMarketType } from './enrichMarkets';
-
-export interface MarketWithDateType extends ExtendedMarketType {
-  newDate: Date;
-  isClosed: boolean;
-  timeDiff: number;
-  timeLeftMessage: string;
-  formattedDate: string;
-}
 
 export const categorizeMarkets = (
-  markets: MarketType[],
+  markets: EnrichedMarketType[],
   blockHeight: number
 ): {
-  closedMarkets: MarketWithDateType[];
-  activeMarkets: MarketWithDateType[];
+  closedMarkets: EnrichedMarketType[];
+  activeMarkets: EnrichedMarketType[];
 } => {
-  const closedMarkets: MarketWithDateType[] = [];
-  const activeMarkets: MarketWithDateType[] = [];
+  const closedMarkets: EnrichedMarketType[] = [];
+  const activeMarkets: EnrichedMarketType[] = [];
 
   markets.forEach((market) => {
     const result = calculateMarketClosing(blockHeight, Number(market.lifetime));

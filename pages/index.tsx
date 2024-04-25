@@ -6,13 +6,21 @@ import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Head from 'next/head';
 import { useCurrentBlock } from '@/api/useCurrentBlock';
+import { useAtom } from 'jotai';
+import { marketsAtom } from '@/store/store';
+import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export default function Home() {
-  const { markets } = useMarkets();
-  const { loading, error } = useCurrentBlock();
+  /*  */
+  useMarkets();
+  useCurrentMarket();
+  useCurrentBlock();
+  /*  */
+
   const [minimumLoadingTime, setMinimumLoadingTime] = useState(true);
+  const [markets] = useAtom(marketsAtom);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -22,7 +30,7 @@ export default function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const isLoading = minimumLoadingTime || !markets;
+  const isLoading = minimumLoadingTime || markets.length < 1;
 
   return (
     <main className={`${inter.className} text-white`}>
@@ -30,7 +38,7 @@ export default function Home() {
         <title>bigshortbet$ P2P Market</title>
       </Head>
       {isLoading ? <LoadingScreen /> : <Market markets={markets} />}
-      <Toaster position="top-center" />
+      <Toaster position='top-center' />
     </main>
   );
 }

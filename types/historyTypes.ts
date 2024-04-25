@@ -1,14 +1,17 @@
-import { MarketType } from "./marketTypes";
+import { EnrichedMarketType } from './marketTypes';
 
 export interface HistoryOrderType {
   timestamp: string;
   id: string;
-  market: MarketType;
+  market: {
+    id: string;
+    ticker: string;
+  };
   price: BigInt;
-  side: "LONG" | "SHORT";
+  side: 'LONG' | 'SHORT';
   quantity: BigInt;
   initialQuantity: BigInt;
-  status: "COMPLETED" | "CANCELLED";
+  status: 'COMPLETED' | 'CANCELLED';
 }
 
 export interface HistoryResponse {

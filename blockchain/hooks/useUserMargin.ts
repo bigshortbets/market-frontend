@@ -2,7 +2,7 @@ import {
   selectedMarketMarginAtom,
   userMarginsAtom,
 } from '@/components/Market/Market';
-import { MarketType } from '@/types/marketTypes';
+import { EnrichedMarketType } from '@/types/marketTypes';
 import { fetchMarginInfo } from '@/utils/fetchMarginInfo';
 import { scaleNumber } from '@/utils/scaleNumber';
 import { useAtom } from 'jotai';
@@ -26,7 +26,7 @@ export interface UserMargins {
 }
 
 export function useUserMargin(
-  markets: MarketType[],
+  markets: EnrichedMarketType[],
   userAddress: string | null,
   selectedMarketId: string
 ) {

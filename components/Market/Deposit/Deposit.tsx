@@ -11,30 +11,29 @@ import {
   selectedMarketMarginAtom,
   unsettledLossesAtom,
 } from '../Market';
-import { getMarkeDetails } from '@/utils/getMarketDetails';
 import { findMarketById } from '@/utils/findMarketById';
-import { MarketType } from '@/types/marketTypes';
-import { FaLongArrowAltRight } from 'react-icons/fa';
+import { EnrichedMarketType } from '@/types/marketTypes';
 import { LiquidationStatusTab } from '../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { FinanceManagerInfo } from '../FinanceManager/FinanceManagerInfo';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
 import { currencySymbol } from '@/blockchain/constants';
+import { chosenMarketAtom } from '@/store/store';
 
 export interface DepositProps {
-  markets: MarketType[];
+  markets: EnrichedMarketType[];
 }
 
 export const Deposit = ({ markets }: DepositProps) => {
   const [amount, setAmount] = useState<number>(0);
+  const [chosenMarket] = useAtom(chosenMarketAtom);
   const { address, chain } = useAccount();
   const { data: walletBalance, refetch } = useNativeCurrencyBalance(address);
   const { write: writeDeposit } = useDeposit(amount);
   const isBsbNetwork = chain?.id === bigshortbetsChain.id;
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
-  const market = findMarketById(markets, selectedMarketId);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -73,7 +72,7 @@ export const Deposit = ({ markets }: DepositProps) => {
   const toMarginCall = (
     Number(selecteMarketMargin?.margin) -
     Number(
-      collateral * (Number(market!.initialMargin.toString()) / 100) +
+      collateral * (Number(chosenMarket!.initialMargin.toString()) / 100) +
         unsettledLoses
     )
   ).toFixed(2);
@@ -81,7 +80,7 @@ export const Deposit = ({ markets }: DepositProps) => {
   const toLiquidation = (
     Number(selecteMarketMargin?.margin) -
     Number(
-      collateral * (Number(market!.maintenanceMargin.toString()) / 100) +
+      collateral * (Number(chosenMarket!.maintenanceMargin.toString()) / 100) +
         unsettledLoses
     )
   ).toFixed(2);
@@ -281,7 +280,7 @@ export const Deposit = ({ markets }: DepositProps) => {
             } to Everthing fine, you need to deposit ${(
               Number(selecteMarketMargin!.requiredDeposit) -
               Number(selecteMarketMargin!.margin)
-            ).toFixed(2)} ${currencySymbol} to ${market?.ticker} market.`}
+            ).toFixed(2)} ${currencySymbol} to ${chosenMarket?.ticker} market.`}
           />
         )}
       {!address && (

@@ -5,7 +5,7 @@ import { useAccount } from 'wagmi';
 import { useAtom } from 'jotai';
 import { currentBlockAtom, selectedMarketIdAtom } from '../Market';
 import { findMarketById } from '@/utils/findMarketById';
-import { MarketType } from '@/types/marketTypes';
+import { EnrichedMarketType } from '@/types/marketTypes';
 import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
 import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
 import { checkIfDivisible } from '@/utils/checkIfDivisible';
@@ -16,7 +16,6 @@ import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 import { currencyFormatter } from '@/utils/currencyFormatter';
 import { IoMdInformationCircle } from 'react-icons/io';
 import { Tooltip } from 'react-tooltip';
-import { FinanceManagerInfo } from '../FinanceManager/FinanceManagerInfo';
 import { currencySymbol } from '@/blockchain/constants';
 
 export enum OrderSideEnum {
@@ -25,7 +24,7 @@ export enum OrderSideEnum {
 }
 
 interface OrderManagerProps {
-  markets: MarketType[];
+  markets: EnrichedMarketType[];
 }
 
 export const OrderManager = ({ markets }: OrderManagerProps) => {

@@ -1,4 +1,4 @@
-export interface MarketType {
+export interface BasicMarketType {
   id: string;
   ticker: string;
   tickSize: BigInt;
@@ -11,3 +11,19 @@ export interface MarketType {
   dailyVolume: BigInt;
   oraclePrice: BigInt;
 }
+
+export interface EnrichedMarketType extends BasicMarketType {
+  name?: string;
+  path?: string;
+  symbol?: string;
+  category?: string;
+  newDate?: Date;
+  isClosed?: boolean;
+  timeDiff?: number;
+  timeLeftMessage?: string;
+  formattedDate?: string;
+}
+
+export type MarketsQueryResponse = {
+  markets: BasicMarketType[];
+};
