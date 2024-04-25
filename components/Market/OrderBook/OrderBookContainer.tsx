@@ -1,16 +1,10 @@
 import { atom, useAtom } from 'jotai';
-import React from 'react';
 import { OrderBookStateTab } from './OrderBookStateTab';
 import { OrderBook, OrderSide } from './OrderBook';
 import { RecentTrades } from './RecentTrades';
 import { useAccount } from 'wagmi';
-import { useSubscription } from '@apollo/client';
-import { RecentPositionTypeResponse } from '@/types/positionTypes';
-import {
-  ORDER_BOOK_LONGS_SUBSCRIPTION,
-  ORDER_BOOK_SHORTS_SUBSCRIPTION,
-  RECENT_MARKET_POSITIONS_SUBSCRIPTION,
-} from '@/api/queries';
+import { useQuery } from '@apollo/client';
+import { ORDER_BOOK_LONGS_QUERY, ORDER_BOOK_SHORTS_QUERY } from '@/api/queries';
 import { selectedMarketIdAtom } from '../Market';
 import { OrderBookResponse } from '@/types/orderTypes';
 
@@ -26,16 +20,19 @@ export const OrderBookContainer = () => {
   const { address } = useAccount();
   const [orderBookState] = useAtom(orderBookStateAtom);
 
-  const { data: longsRes } = useSubscription<OrderBookResponse>(
-    ORDER_BOOK_LONGS_SUBSCRIPTION,
+  const { data: longsRes } = useQuery<OrderBookResponse>(
+    ORDER_BOOK_LONGS_QUERY,
+
     {
+      pollInterval: 1000,
       variables: { marketId: selectedMarketId, limit: 5, side: OrderSide.LONG },
     }
   );
 
-  const { data: shortsRes } = useSubscription<OrderBookResponse>(
-    ORDER_BOOK_SHORTS_SUBSCRIPTION,
+  const { data: shortsRes } = useQuery<OrderBookResponse>(
+    ORDER_BOOK_SHORTS_QUERY,
     {
+      pollInterval: 1000,
       variables: {
         marketId: selectedMarketId,
         limit: 5,
@@ -45,11 +42,11 @@ export const OrderBookContainer = () => {
   );
   return (
     <div
-      className="h-full lg:w-[320px] flex-1 lg:flex-none overflow-auto no-scrollbar"
+      className='h-full lg:w-[320px] flex-1 lg:flex-none overflow-auto no-scrollbar'
       style={{ maxHeight: 'calc(100vh - 228px)' }}
     >
-      <div className="flex flex-col h-full">
-        <div className="py-3 px-4 border-b border-[#444650] flex flex-row-reverse items-center gap-2">
+      <div className='flex flex-col h-full'>
+        <div className='py-3 px-4 border-b border-[#444650] flex flex-row-reverse items-center gap-2'>
           {tabs.map((tab, key) => (
             <OrderBookStateTab key={key} value={tab} />
           ))}

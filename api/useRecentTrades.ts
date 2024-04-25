@@ -1,14 +1,15 @@
-import { useSubscription } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { recentTradesAtom } from '@/components/Market/Market';
 import { RecentPositionTypeResponse } from '@/types/positionTypes';
-import { RECENT_MARKET_POSITIONS_SUBSCRIPTION } from './queries';
+import { RECENT_MARKET_POSITIONS_QUERY } from './queries';
 
 export const useRecentTrades = (selectedMarketId: string) => {
-  const { data, error, loading } = useSubscription<RecentPositionTypeResponse>(
-    RECENT_MARKET_POSITIONS_SUBSCRIPTION,
+  const { data, error, loading } = useQuery<RecentPositionTypeResponse>(
+    RECENT_MARKET_POSITIONS_QUERY,
     {
+      pollInterval: 1000,
       variables: { marketId: selectedMarketId },
     }
   );

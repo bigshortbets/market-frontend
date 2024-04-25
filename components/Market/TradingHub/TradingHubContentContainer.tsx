@@ -1,12 +1,12 @@
 import {
-  USER_HISTORY_SUBSCRIPTION,
-  USER_OPEN_POSITIONS_SUBSCRIPTION,
-  USER_ORDERS_SUBSCRIPTION,
+  USER_HISTORY_QUERY,
+  USER_OPEN_POSITIONS_QUERY,
+  USER_ORDERS_QUERY,
 } from '@/api/queries';
 import { convertToSS58 } from '@/utils/convertToSS58';
-import { useSubscription } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useAtom } from 'jotai';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import {
   tradingHubOrdersCountAtom,
@@ -27,26 +27,24 @@ export const TradingHubContentContainer = () => {
   const { address } = useAccount();
   const [, setOrdersCount] = useAtom(tradingHubOrdersCountAtom);
   const [, setPositionsCount] = useAtom(tradingHubPositionsCountAtom);
-  const { data: ordersRes } = useSubscription<OrdersResponse>(
-    USER_ORDERS_SUBSCRIPTION,
+  const { data: ordersRes } = useQuery<OrdersResponse>(USER_ORDERS_QUERY, {
+    pollInterval: 1000,
+    variables: { userId: convertToSS58(address!) },
+  });
+
+  const { data: positionsRes } = useQuery<PositionsResponse>(
+    USER_OPEN_POSITIONS_QUERY,
+
     {
+      pollInterval: 1000,
       variables: { userId: convertToSS58(address!) },
     }
   );
 
-  const { data: positionsRes } = useSubscription<PositionsResponse>(
-    USER_OPEN_POSITIONS_SUBSCRIPTION,
-    {
-      variables: { userId: convertToSS58(address!) },
-    }
-  );
-
-  const { data: historyRes } = useSubscription<HistoryResponse>(
-    USER_HISTORY_SUBSCRIPTION,
-    {
-      variables: { userId: convertToSS58(address!) },
-    }
-  );
+  const { data: historyRes } = useQuery<HistoryResponse>(USER_HISTORY_QUERY, {
+    pollInterval: 1000,
+    variables: { userId: convertToSS58(address!) },
+  });
 
   useUnsettledLosses(positionsRes?.positions, address!);
   useCollateral(positionsRes?.positions, address!);
@@ -64,7 +62,7 @@ export const TradingHubContentContainer = () => {
   }, [ordersRes?.orders, positionsRes?.positions]);
 
   return (
-    <div className="w-full no-scrollbar">
+    <div className='w-full no-scrollbar'>
       {tradingHubState === 'orders' && ordersRes && (
         <TradingHubOrders orders={ordersRes.orders} />
       )}

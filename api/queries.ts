@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 /* QUuery for getting all makets */
 
-export const GET_ALL_MARKETS = gql`
+export const GET_ALL_MARKETS_QUERY = gql`
   query {
     markets {
       id
@@ -22,8 +22,8 @@ export const GET_ALL_MARKETS = gql`
 
 /* Query for getting orders of given user */
 
-export const USER_ORDERS_SUBSCRIPTION = gql`
-  subscription orders($userId: String!) {
+export const USER_ORDERS_QUERY = gql`
+  query orders($userId: String!) {
     orders(
       where: { status_eq: ACTIVE, who_eq: $userId }
       orderBy: timestamp_DESC
@@ -47,8 +47,8 @@ export const USER_ORDERS_SUBSCRIPTION = gql`
 
 /* Query for getting history of given user */
 
-export const USER_HISTORY_SUBSCRIPTION = gql`
-  subscription orders($userId: String!) {
+export const USER_HISTORY_QUERY = gql`
+  query orders($userId: String!) {
     orders(
       where: {
         who_eq: $userId
@@ -75,8 +75,8 @@ export const USER_HISTORY_SUBSCRIPTION = gql`
 
 /* Query for getting open positions of given user */
 
-export const USER_OPEN_POSITIONS_SUBSCRIPTION = gql`
-  subscription positions($userId: String!) {
+export const USER_OPEN_POSITIONS_QUERY = gql`
+  query positions($userId: String!) {
     positions(
       where: {
         AND: [
@@ -106,8 +106,8 @@ export const USER_OPEN_POSITIONS_SUBSCRIPTION = gql`
 
 /* Query for recent positions of given market*/
 
-export const RECENT_MARKET_POSITIONS_SUBSCRIPTION = gql`
-  subscription SubscribePositions($marketId: String!) {
+export const RECENT_MARKET_POSITIONS_QUERY = gql`
+  query SubscribePositions($marketId: String!) {
     positions(
       where: { market: { id_eq: $marketId } }
       limit: 10
@@ -124,8 +124,8 @@ export const RECENT_MARKET_POSITIONS_SUBSCRIPTION = gql`
 
 /* Query for order book shorts */
 
-export const ORDER_BOOK_SHORTS_SUBSCRIPTION = gql`
-  subscription aggregatedOrdersByPrices(
+export const ORDER_BOOK_SHORTS_QUERY = gql`
+  query aggregatedOrdersByPrices(
     $marketId: String!
     $limit: Int!
     $side: OrderSide!
@@ -144,8 +144,8 @@ export const ORDER_BOOK_SHORTS_SUBSCRIPTION = gql`
 
 /* Query for order book longs */
 
-export const ORDER_BOOK_LONGS_SUBSCRIPTION = gql`
-  subscription aggregatedOrdersByPrices(
+export const ORDER_BOOK_LONGS_QUERY = gql`
+  query aggregatedOrdersByPrices(
     $marketId: String!
     $limit: Int!
     $side: OrderSide!

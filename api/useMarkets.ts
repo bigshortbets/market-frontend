@@ -6,13 +6,13 @@ import { EnrichedMarketType, MarketsQueryResponse } from '@/types/marketTypes';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
 import { currentBlockAtom } from '@/components/Market/Market';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
-import { GET_ALL_MARKETS } from './queries';
+import { GET_ALL_MARKETS_QUERY } from './queries';
 
 export const useMarkets = () => {
   const [, setMarkets] = useAtom(marketsAtom);
   const [blockHeight] = useAtom(currentBlockAtom);
 
-  const { data } = useQuery<MarketsQueryResponse>(GET_ALL_MARKETS, {
+  const { data } = useQuery<MarketsQueryResponse>(GET_ALL_MARKETS_QUERY, {
     pollInterval: 1000,
   });
 
