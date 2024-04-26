@@ -2,6 +2,7 @@ import { ApolloClient, HttpLink, InMemoryCache, split } from '@apollo/client';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { httpEndpoint, wsEndpoint } from './endpoints';
 import { createClient } from 'graphql-ws';
+import { WebSocketLink } from '@apollo/client/link/ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 
 const httpLink = new HttpLink({
@@ -13,7 +14,7 @@ const wsLink = new GraphQLWsLink(
     url: wsEndpoint,
   })
 );
-const splitLink = split(
+/* const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
     return (
@@ -23,10 +24,10 @@ const splitLink = split(
   },
   wsLink,
   httpLink
-);
+); */
 
 export const apolloClient = new ApolloClient({
-  link: splitLink,
+  link: wsLink,
   cache: new InMemoryCache(),
   connectToDevTools: true,
 });
