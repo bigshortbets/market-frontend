@@ -5,13 +5,16 @@ import { useAtom } from 'jotai';
 import { unsettledLossesAtom } from '../../Market';
 import { tradingHubPositionsCountAtom } from '../TradingHub';
 import { useAccount } from 'wagmi';
+import { TradingHubNonAggregatedPositions } from './TradingHubNonAggregatedPositions';
 
 interface TradingHubPositionsProps {
   positions: PositionType[];
+  isAggregated: boolean;
 }
 
 export const TradingHubPositions = ({
   positions,
+  isAggregated,
 }: TradingHubPositionsProps) => {
   const aggregatePositionsByMarketTicker = () => {
     const aggregatedPositions: Record<string, PositionType[]> = {};
@@ -30,24 +33,30 @@ export const TradingHubPositions = ({
 
   return (
     <div
-      className="w-full h-full  px-2.5  overflow-y-auto no-scrollbar"
+      className='w-full h-full  px-2.5  overflow-y-auto no-scrollbar'
       style={{ maxHeight: 'calc(100vh - 230px)' }}
     >
       {positions.length > 0 ? (
-        <div className="flex flex-col gap-4">
-          {Object.entries(positionsByMarketTicker).map(
-            ([ticker, positions]) => (
-              <TradingHubAggregatedPosition
-                key={ticker}
-                ticker={ticker}
-                positions={positions}
-              />
-            )
+        <>
+          {isAggregated ? (
+            <div className='flex flex-col gap-4'>
+              {Object.entries(positionsByMarketTicker).map(
+                ([ticker, positions]) => (
+                  <TradingHubAggregatedPosition
+                    key={ticker}
+                    ticker={ticker}
+                    positions={positions}
+                  />
+                )
+              )}
+            </div>
+          ) : (
+            <TradingHubNonAggregatedPositions positions={positions} />
           )}
-        </div>
+        </>
       ) : (
-        <div className="flex items-center justify-center ">
-          <p className="opacity-20 text-2xl mt-5">
+        <div className='flex items-center justify-center '>
+          <p className='opacity-20 text-2xl mt-5'>
             Currently no open positions
           </p>
         </div>

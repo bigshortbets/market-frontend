@@ -175,7 +175,6 @@ export const TradingHubAggregatedPosition = ({
                       <TradingHubPositionsItem
                         position={position}
                         key={position.id}
-                        oraclePrice={oraclePrice}
                       />
                     ))}
                   </tbody>
@@ -281,7 +280,6 @@ export const TradingHubAggregatedPosition = ({
                   <TradingHubPositionsItem
                     position={position}
                     key={position.id}
-                    oraclePrice={oraclePrice}
                   />
                 ))}
               </tbody>

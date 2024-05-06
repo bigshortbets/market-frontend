@@ -23,7 +23,13 @@ import { useOpponentsMargin } from '@/blockchain/hooks/useOpponentsMargin';
 import { useUnsettledLosses } from '@/hooks/useUnsettledLosses';
 import { useCollateral } from '@/hooks/useCollateral';
 
-export const TradingHubContentContainer = () => {
+interface TradingHubContentContainerProps {
+  isAggregated: boolean;
+}
+
+export const TradingHubContentContainer = ({
+  isAggregated,
+}: TradingHubContentContainerProps) => {
   const { address } = useAccount();
   const [, setOrdersCount] = useAtom(tradingHubOrdersCountAtom);
   const [, setPositionsCount] = useAtom(tradingHubPositionsCountAtom);
@@ -67,7 +73,10 @@ export const TradingHubContentContainer = () => {
         <TradingHubOrders orders={ordersRes.orders} />
       )}
       {tradingHubState === 'positions' && positionsRes && (
-        <TradingHubPositions positions={positionsRes.positions} />
+        <TradingHubPositions
+          isAggregated={isAggregated}
+          positions={positionsRes.positions}
+        />
       )}
       {tradingHubState === 'history' && historyRes && (
         <TradingHubHistory history={historyRes.orders} />

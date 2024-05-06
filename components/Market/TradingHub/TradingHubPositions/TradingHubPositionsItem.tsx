@@ -11,16 +11,18 @@ import { Tooltip } from 'react-tooltip';
 import { useMarkToMarket } from '@/blockchain/hooks/useMarkToMarket';
 import { ClosePositionModal } from './ClosePositionModal';
 import { currencySymbol } from '@/blockchain/constants';
+import { getMarkeDetails } from '@/utils/getMarketDetails';
 
 interface TradingHubPositionsItemProps {
   position: PositionWithSide;
-  oraclePrice: BigInt;
+  isNotAggregated?: boolean;
 }
 
 export const TradingHubPositionsItem = ({
   position,
-  oraclePrice,
+  isNotAggregated,
 }: TradingHubPositionsItemProps) => {
+  const oraclePrice = position.market.oraclePrice;
   const opponent = position.side === 'LONG' ? position.short : position.long;
   const calculatedProfitOrLoss =
     position.side === 'LONG'
@@ -51,22 +53,28 @@ export const TradingHubPositionsItem = ({
   const handleCloseModal = () => {
     setIsModalOpened(false);
   };
+  const marketDetails = getMarkeDetails(position.market.ticker);
 
   return (
     <tr
       className={`text-sm even:bg-[#23252E] text-[#7F828F]  overflow-x-scroll
   }`}
     >
-      <td className="px-6 sm:pr-0 sm:pl-3 py-3">
+      <td className='px-6 sm:pr-0 sm:pl-3 py-3'>
         <SideLabel side={position.side} />
       </td>
-      <td className="text-[10px] sm:text-xs px-6 sm:px-0">
+      {isNotAggregated && (
+        <td className='text-[10px] sm:text-xs px-6 sm:px-0'>
+          {marketDetails?.name}
+        </td>
+      )}
+      <td className='text-[10px] sm:text-xs px-6 sm:px-0'>
         {Number(position.quantityLeft)}
       </td>
-      <td className="text-[10px] sm:text-xs px-6 sm:px-0">
+      <td className='text-[10px] sm:text-xs px-6 sm:px-0'>
         {Number(position.createPrice)}
       </td>
-      <td className="text-[10px] sm:text-xs px-6 sm:px-0">
+      <td className='text-[10px] sm:text-xs px-6 sm:px-0'>
         {Number(position.price)}
       </td>
       <td
@@ -80,9 +88,9 @@ export const TradingHubPositionsItem = ({
         <span className={`text-[10px] sm:text-xs`}>{currencySymbol}</span>
       </td>
 
-      <td className="align-middle px-6 sm:px-0 ">
-        <div className="flex items-center space-x-2">
-          <p className="text-[10px] sm:text-xs">{truncateAddress(opponent)}</p>
+      <td className='align-middle px-6 sm:px-0 '>
+        <div className='flex items-center space-x-2'>
+          <p className='text-[10px] sm:text-xs'>{truncateAddress(opponent)}</p>
           <LiquidationStatusTab
             status={marginData?.liquidationStatus! as LiquidationStatusType}
             small
@@ -90,13 +98,13 @@ export const TradingHubPositionsItem = ({
         </div>
       </td>
 
-      <td className=" text-right pr-3 hidden sm:table-cell">
+      <td className=' text-right pr-3 hidden sm:table-cell'>
         <a
-          data-tooltip-id="m2m-tooltip"
-          data-tooltip-html="Mark-to-Market (MTM): Instantly updates your</br> asset values based  on current market conditions.</br> On our peer-to-peer market, this action is </br>executed on demand, ensuring transparency without</br> daily automatic adjustments."
+          data-tooltip-id='m2m-tooltip'
+          data-tooltip-html='Mark-to-Market (MTM): Instantly updates your</br> asset values based  on current market conditions.</br> On our peer-to-peer market, this action is </br>executed on demand, ensuring transparency without</br> daily automatic adjustments.'
         >
           <button
-            className="mr-4 text-xs font-semibold text-[#4ECB7D] hover:underline"
+            className='mr-4 text-xs font-semibold text-[#4ECB7D] hover:underline'
             onClick={() => writeMarkToMarket()}
           >
             MTM
@@ -110,21 +118,21 @@ export const TradingHubPositionsItem = ({
           CLOSE
         </button>
       </td>
-      <td className="sm:hidden sm:pr-3 sm:pl-0 text-right px-6 ">
+      <td className='sm:hidden sm:pr-3 sm:pl-0 text-right px-6 '>
         {' '}
         <a
-          data-tooltip-id="m2m-tooltip"
-          data-tooltip-html="Mark-to-Market (MTM): Instantly updates your</br> asset values based  on current market conditions.</br> On our peer-to-peer market, this action is </br>executed on demand, ensuring transparency without</br> daily automatic adjustments."
+          data-tooltip-id='m2m-tooltip'
+          data-tooltip-html='Mark-to-Market (MTM): Instantly updates your</br> asset values based  on current market conditions.</br> On our peer-to-peer market, this action is </br>executed on demand, ensuring transparency without</br> daily automatic adjustments.'
         >
           <button
-            className="mr-4 text-[10px] sm:text-xs font-semibold text-[#4ECB7D] hover:underline "
+            className='mr-4 text-[10px] sm:text-xs font-semibold text-[#4ECB7D] hover:underline '
             onClick={() => writeMarkToMarket()}
           >
             MTM
           </button>
         </a>
       </td>
-      <td className="sm:hidden sm:pr-3 sm:pl-0 px-6  ">
+      <td className='sm:hidden sm:pr-3 sm:pl-0 px-6  '>
         <button
           onClick={() => setIsModalOpened(true)}
           className={`font-bold text-[10px] sm:text-xs hover:underline transition ease-in-out text-[#C53F3A] duration-300`}
@@ -132,7 +140,7 @@ export const TradingHubPositionsItem = ({
           CLOSE
         </button>
       </td>
-      <Tooltip id="m2m-tooltip" />
+      <Tooltip id='m2m-tooltip' />
       <ClosePositionModal
         handleCloseModal={handleCloseModal}
         isModalOpened={isModalOpened}
