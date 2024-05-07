@@ -132,6 +132,12 @@ export const marketsData: MarketsDataProps[] = [
     path: './market-logos/DOWJONES.svg',
     category: 'indices',
   },
+  {
+    symbol: 'MSTF',
+    name: 'Microsoft',
+    path: './market-logos/MICROSOFT.svg',
+    category: 'stocks',
+  },
 
   /* ELECTIOn */
 
