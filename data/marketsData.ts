@@ -138,6 +138,18 @@ export const marketsData: MarketsDataProps[] = [
     path: './market-logos/MICROSOFT.svg',
     category: 'stocks',
   },
+  {
+    symbol: 'MSTF',
+    name: 'Microsoft',
+    path: './market-logos/MICROSOFT.svg',
+    category: 'stocks',
+  },
+  {
+    symbol: '10Y',
+    name: '10-Year Yields',
+    path: './market-logos/10YEAR.svg',
+    category: 'indices',
+  },
 
   /* ELECTIOn */
 
