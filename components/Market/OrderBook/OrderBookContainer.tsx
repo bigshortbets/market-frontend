@@ -25,7 +25,11 @@ export const OrderBookContainer = () => {
 
     {
       pollInterval: 1000,
-      variables: { marketId: selectedMarketId, limit: 5, side: OrderSide.LONG },
+      variables: {
+        marketId: selectedMarketId,
+        limit: 10,
+        side: OrderSide.LONG,
+      },
     }
   );
 
@@ -35,14 +39,14 @@ export const OrderBookContainer = () => {
       pollInterval: 1000,
       variables: {
         marketId: selectedMarketId,
-        limit: 5,
+        limit: 10,
         side: OrderSide.SHORT,
       },
     }
   );
   return (
     <div
-      className='h-full lg:w-[320px] flex-1 lg:flex-none overflow-auto no-scrollbar'
+      className='h-full lg:w-[320px] flex-1 lg:flex-none'
       style={{ maxHeight: 'calc(100vh - 228px)' }}
     >
       <div className='flex flex-col h-full'>

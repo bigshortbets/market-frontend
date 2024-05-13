@@ -1,6 +1,7 @@
 import { OrderBookResponse } from '@/types/orderTypes';
 import { OrderBookItem } from './OrderBookItem';
 import { currencySymbol } from '@/blockchain/constants';
+import { useEffect, useRef } from 'react';
 
 export enum OrderSide {
   LONG = 'LONG',
@@ -13,9 +14,21 @@ interface OrderBooksProps {
 }
 
 export const OrderBook = ({ shortsRes, longsRes }: OrderBooksProps) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      // Center the scroll on the <hr>
+      const halfHeight = container.scrollHeight / 2;
+      container.scrollTop = halfHeight - container.clientHeight / 2;
+    }
+  }, [shortsRes, longsRes]);
+
   return (
-    <div className='flex flex-col pt-[14px]  text-xs h-full'>
-      <div className='flex justify-between items-center px-4'>
+    <div className='flex flex-col pt-[14px] text-xs h-full max-h-[calc(100%-66px)]'>
+      {/* Static header */}
+      <div className='flex justify-between items-center px-4 mb-3'>
         <div className='flex items-center gap-1.5'>
           <p className='text-[#7F828F] font-semibold'>Price</p>
           <div className='w-14 h-4 rounded bg-[#7F828F] items-center flex justify-center text-[#191B24]'>
@@ -29,8 +42,12 @@ export const OrderBook = ({ shortsRes, longsRes }: OrderBooksProps) => {
           </div>
         </div>
       </div>
-      <div className='flex-grow flex flex-col justify-center'>
-        <div className='flex-col-reverse flex flex-1 gap-[1px]'>
+      {/* Scrollable content area */}
+      <div
+        ref={scrollContainerRef}
+        className='flex-grow flex flex-col justify-center overflow-y-auto no-scrollbar'
+      >
+        <div className='flex-1 flex flex-col-reverse gap-[1px]'>
           {shortsRes &&
             shortsRes.aggregatedOrdersByPrices.map((data, key) => (
               <OrderBookItem
@@ -54,39 +71,6 @@ export const OrderBook = ({ shortsRes, longsRes }: OrderBooksProps) => {
             ))}
         </div>
       </div>
-      {/*   <div className="py-2 flex pl-2 text-xs">
-        <p className="flex-1">Price</p>
-        <p className="flex-1">Quantity</p>
-      </div>
-      <div className="flex-1 flex-col-reverse flex">
-        {shortsRes &&
-          shortsRes.aggregatedOrdersByPrices.map((data, key) => (
-            <OrderBookItem
-              side={OrderSide.SHORT}
-              empty={false}
-              data={data}
-              key={key}
-            />
-          ))}
-        {shortPlaceholders.map((_, key) => (
-          <OrderBookItem side={OrderSide.SHORT} empty key={key} />
-        ))}
-      </div>
-      <hr className="opacity-[8%] " />
-      <div className="flex-1 flex flex-col">
-        {longsRes &&
-          longsRes.aggregatedOrdersByPrices.map((data, key) => (
-            <OrderBookItem
-              side={OrderSide.LONG}
-              empty={false}
-              data={data}
-              key={key}
-            />
-          ))}
-        {longsPlaceholders.map((_, key) => (
-          <OrderBookItem side={OrderSide.LONG} empty key={key} />
-        ))}
-      </div> */}
     </div>
   );
 };

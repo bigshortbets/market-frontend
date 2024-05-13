@@ -25,6 +25,7 @@ import { Collateral } from '@/hooks/useCollateral';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 import { useRouter } from 'next/router';
 import { EnrichedMarketType } from '@/types/marketTypes';
+import ChatContainer from '../Chat/ChatContainer';
 
 interface MarketProps {
   markets: EnrichedMarketType[];
@@ -114,6 +115,7 @@ export const Market = ({ markets }: MarketProps) => {
 
   return (
     <div className='h-[100dvh] bg-[#111217] '>
+      {/* <ChatContainer /> */}
       <div className='h-full flex flex-col relative max-w-[2000px] mx-auto'>
         <p className='absolute bottom-1.5 text-[9px] left-6 text-[#555866]'>
           DOLAR$ is virtual sandbox and have no real settlement value as "fake

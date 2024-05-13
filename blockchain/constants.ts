@@ -20,7 +20,7 @@ export const MAX_ALLOWANCE =
 
 export const bridgeDepoChainId = 11155111;
 
-export const bridgeDepoContract = '0xAcAC2a546722a0d470f17b4b5eA2F77DA90770a9';
+export const bridgeDepoContract = '0x3B5bda1d0238A718fBadF20F40684A0D42741fe9';
 
 export const mainnetUSDC = '0xB7A00fF77B59eb5DA1de62741e84a4b8a88598CE';
 
