@@ -4,21 +4,16 @@ import { ChatMessage, ChatMessageProps } from './ChatMessage';
 import { useAccount } from 'wagmi';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { FaSearch } from 'react-icons/fa';
+import { exampleMessages } from './mockedData';
+import { useAtom } from 'jotai';
+import { chosenInterlocutorAtom } from '@/store/store';
 
 export const ChatContainer = () => {
-  const exampleMessages: ChatMessageProps[] = [
-    { author: 'user', value: 'hej' },
-    { author: 'interlocutor', value: 'witam' },
-    {
-      author: 'user',
-      value:
-        'lorem lorem orem lorem orem lorem orem lorem orem lorem orem lorem orem lorem orem lorem orem lorem',
-    },
-    { author: 'interlocutor', value: 'test' },
-  ];
-
   const [messages, setMessages] = useState<ChatMessageProps[]>(exampleMessages);
   const [inputVal, setInputVal] = useState<string>('');
+  const [chosenInterlocutor, setChosenInterlocutor] = useAtom(
+    chosenInterlocutorAtom
+  );
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleSendMessage = () => {
@@ -91,7 +86,7 @@ export const ChatContainer = () => {
             <div className='flex items-center gap-1.5'>
               <div className='h-4 w-4 rounded-full bg-white'></div>
               <p className='text-tetriary text-sm'>
-                {truncateAddress(address!)}
+                {truncateAddress(chosenInterlocutor)}
               </p>
             </div>
             <div>

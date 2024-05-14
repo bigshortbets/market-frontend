@@ -11,7 +11,6 @@ import { useAccount } from 'wagmi';
 import {
   tradingHubOrdersCountAtom,
   tradingHubPositionsCountAtom,
-  tradingHubStateAtom,
 } from './TradingHub';
 import { TradingHubOrders } from './TradingHubOrders/TradingHubOrders';
 import { OrdersResponse } from '@/types/orderTypes';
@@ -22,7 +21,7 @@ import { HistoryResponse } from '@/types/historyTypes';
 import { useOpponentsMargin } from '@/blockchain/hooks/useOpponentsMargin';
 import { useUnsettledLosses } from '@/hooks/useUnsettledLosses';
 import { useCollateral } from '@/hooks/useCollateral';
-import { ChatContainer } from './Chat/ChatContainer';
+import { tradingHubStateAtom } from '@/store/store';
 
 interface TradingHubContentContainerProps {
   isAggregated: boolean;
@@ -82,7 +81,7 @@ export const TradingHubContentContainer = ({
       {tradingHubState === 'history' && historyRes && (
         <TradingHubHistory history={historyRes.orders} />
       )}
-      {/* {tradingHubState === 'chat' && <ChatContainer />} */}
+      {/*       {tradingHubState === 'chat' && <ChatContainer />} */}
     </div>
   );
 };

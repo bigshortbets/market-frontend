@@ -12,6 +12,8 @@ import { useMarkToMarket } from '@/blockchain/hooks/useMarkToMarket';
 import { ClosePositionModal } from './ClosePositionModal';
 import { currencySymbol } from '@/blockchain/constants';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
+import { FaMessage } from 'react-icons/fa6';
+import { tradingHubStateAtom } from '@/store/store';
 
 interface TradingHubPositionsItemProps {
   position: PositionWithSide;
@@ -55,6 +57,8 @@ export const TradingHubPositionsItem = ({
   };
   const marketDetails = getMarkeDetails(position.market.ticker);
 
+  const [_, setTradingHubState] = useAtom(tradingHubStateAtom);
+
   return (
     <tr
       className={`text-sm even:bg-[#23252E] text-[#7F828F]  overflow-x-scroll
@@ -95,6 +99,14 @@ export const TradingHubPositionsItem = ({
             status={marginData?.liquidationStatus! as LiquidationStatusType}
             small
           />
+
+          {/* CHAT LOGIC */}
+
+          {/*  <button onClick={() => setTradingHubState('chat')}>
+            <FaMessage className='text-sm' />
+          </button> */}
+
+          {/*  */}
         </div>
       </td>
 

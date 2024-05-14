@@ -5,12 +5,12 @@ import { TradingHubContentContainer } from './TradingHubContentContainer';
 import Image from 'next/image';
 import { AggregatedPositionsCheckbox } from './TradingHubPositions/AggregatedPositionsCheckbox';
 import { useState } from 'react';
+import { tradingHubStateAtom } from '@/store/store';
 
-const tabs = ['positions', 'orders', 'history'] as const;
+const tabs = ['positions', 'orders', 'history' /* 'chat' */] as const;
 
 export type TradingHubStateType = (typeof tabs)[number];
 
-export const tradingHubStateAtom = atom<TradingHubStateType>('positions');
 export const tradingHubPositionsCountAtom = atom<number>(0);
 export const tradingHubOrdersCountAtom = atom<number>(0);
 

@@ -1,12 +1,12 @@
 import React from 'react';
 import {
   TradingHubStateType,
-  tradingHubStateAtom,
   tradingHubPositionsCountAtom,
   tradingHubOrdersCountAtom,
 } from './TradingHub';
 import { useAtom } from 'jotai';
 import { useAccount } from 'wagmi';
+import { tradingHubStateAtom } from '@/store/store';
 
 interface TradingHubTabProps {
   value: TradingHubStateType;
@@ -34,7 +34,7 @@ export const TradingHubTab = ({ value }: TradingHubTabProps) => {
       }`}
       onClick={() => setTradingHubState(value)}
     >
-      <p className="capitalize">
+      <p className='capitalize'>
         {value} {count != null && address ? `(${count})` : ''}
       </p>
     </button>
