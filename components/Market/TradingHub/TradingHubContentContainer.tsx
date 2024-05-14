@@ -22,6 +22,7 @@ import { HistoryResponse } from '@/types/historyTypes';
 import { useOpponentsMargin } from '@/blockchain/hooks/useOpponentsMargin';
 import { useUnsettledLosses } from '@/hooks/useUnsettledLosses';
 import { useCollateral } from '@/hooks/useCollateral';
+import { ChatContainer } from './Chat/ChatContainer';
 
 interface TradingHubContentContainerProps {
   isAggregated: boolean;
@@ -81,6 +82,7 @@ export const TradingHubContentContainer = ({
       {tradingHubState === 'history' && historyRes && (
         <TradingHubHistory history={historyRes.orders} />
       )}
+      {/* {tradingHubState === 'chat' && <ChatContainer />} */}
     </div>
   );
 };
