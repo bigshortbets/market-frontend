@@ -13,6 +13,8 @@ export const chosenMarketAtom = atom<EnrichedMarketType | undefined>(undefined);
 /* TRADING HUB */
 
 export const tradingHubStateAtom = atom<TradingHubStateType>('positions');
+export const tradingHubPositionsCountAtom = atom<number>(0);
+export const tradingHubOrdersCountAtom = atom<number>(0);
 
 /* CHAT */
 

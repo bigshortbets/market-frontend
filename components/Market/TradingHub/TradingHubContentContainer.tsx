@@ -8,10 +8,7 @@ import { useQuery } from '@apollo/client';
 import { useAtom } from 'jotai';
 import { useEffect } from 'react';
 import { useAccount } from 'wagmi';
-import {
-  tradingHubOrdersCountAtom,
-  tradingHubPositionsCountAtom,
-} from './TradingHub';
+import {} from './TradingHub';
 import { TradingHubOrders } from './TradingHubOrders/TradingHubOrders';
 import { OrdersResponse } from '@/types/orderTypes';
 import { PositionsResponse } from '@/types/positionTypes';
@@ -21,7 +18,11 @@ import { HistoryResponse } from '@/types/historyTypes';
 import { useOpponentsMargin } from '@/blockchain/hooks/useOpponentsMargin';
 import { useUnsettledLosses } from '@/hooks/useUnsettledLosses';
 import { useCollateral } from '@/hooks/useCollateral';
-import { tradingHubStateAtom } from '@/store/store';
+import {
+  tradingHubOrdersCountAtom,
+  tradingHubPositionsCountAtom,
+  tradingHubStateAtom,
+} from '@/store/store';
 
 interface TradingHubContentContainerProps {
   isAggregated: boolean;

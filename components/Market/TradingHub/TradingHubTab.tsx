@@ -1,12 +1,12 @@
 import React from 'react';
-import {
-  TradingHubStateType,
-  tradingHubPositionsCountAtom,
-  tradingHubOrdersCountAtom,
-} from './TradingHub';
+import { TradingHubStateType } from './TradingHub';
 import { useAtom } from 'jotai';
 import { useAccount } from 'wagmi';
-import { tradingHubStateAtom } from '@/store/store';
+import {
+  tradingHubOrdersCountAtom,
+  tradingHubPositionsCountAtom,
+  tradingHubStateAtom,
+} from '@/store/store';
 
 interface TradingHubTabProps {
   value: TradingHubStateType;
