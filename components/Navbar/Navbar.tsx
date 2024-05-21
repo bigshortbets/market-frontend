@@ -7,11 +7,17 @@ import { bigshortbetsChain } from '@/blockchain/chain';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { selectedMarketIdAtom } from '../Market/Market';
 import { useAtom } from 'jotai';
+import { mintMessage } from '@/blockchain/constants';
+import ReactLoading from 'react-loading';
+import { useMutation } from '@tanstack/react-query';
+import { MintData, bridgeApi } from '@/api/bidgeApi/bridgeApi';
+import axios from 'axios';
+import { MintButton } from './MintButton';
 
 export const Navbar = () => {
   const [isClient, setIsClient] = useState(false);
   const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
-  const { isConnected, chain } = useAccount();
+  const { isConnected, chain, address } = useAccount();
   const { switchChain } = useSwitchChain();
 
   useEffect(() => {
@@ -24,8 +30,6 @@ export const Navbar = () => {
     setIsClient(true);
   }, []);
 
-  /*  const { signMessage, data } = useSignMessage(); */
-
   const openTrumpOrBidenMarket = () => {
     const trumpId = '9223372036854776644';
     const bidenId = '9223372036854776643';
@@ -36,12 +40,8 @@ export const Navbar = () => {
     setSelectedMarketId(selectedId);
   };
 
-  /*   useEffect(() => {
-    console.log(data);
-  }, [data]); */
-
   return (
-    <nav className='bg-[#111217] w-full h-[64px] '>
+    <nav className='bg-[#111217] w-full h-[64px]'>
       <div className=' flex justify-between h-full px-7 items-center'>
         <div className='flex gap-2'>
           <Image src={logo} alt='BigShortBet$ Logo' width={50} priority />
@@ -59,12 +59,7 @@ export const Navbar = () => {
               <Image src={banner} alt='banner' width={400} height={60} />
             </button>
           </div>
-          {/*   <button
-            className='bg-[#4ECB7D] rounded text-black p-2 font-semibold '
-            onClick={() => signMessage({ message: 'hello world' })}
-          >
-            Heli money
-          </button> */}
+          {/* <MintButton /> */}
           {/*           {isConnected && <CurrentNetworkTab />} */}
           {/* <UIConfiguration /> */}
           {/* {isClient && <WalletConnect />} */}
