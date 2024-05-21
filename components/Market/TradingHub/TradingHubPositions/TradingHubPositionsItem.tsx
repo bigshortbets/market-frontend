@@ -91,7 +91,6 @@ export const TradingHubPositionsItem = ({
         {calculatedProfitOrLoss.toFixed(2)}{' '}
         <span className={`text-[10px] sm:text-xs`}>{currencySymbol}</span>
       </td>
-
       <td className='align-middle px-6 sm:px-0 '>
         <div className='flex items-center space-x-2'>
           <p className='text-[10px] sm:text-xs'>{truncateAddress(opponent)}</p>
@@ -109,7 +108,6 @@ export const TradingHubPositionsItem = ({
           {/*  */}
         </div>
       </td>
-
       <td className=' text-right pr-3 hidden sm:table-cell'>
         <a
           data-tooltip-id='m2m-tooltip'

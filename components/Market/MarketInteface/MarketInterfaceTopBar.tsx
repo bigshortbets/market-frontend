@@ -62,7 +62,7 @@ export const MarketInterfaceTopBar = ({
         <div className='pr-6 pl-12 py-2 h-full flex items-center gap-6'>
           <div>
             <p className='text-xs text-tetriary font-semibold'>Oracle Price</p>
-            <p className='text-xs font-normal'>
+            <div className='text-xs font-normal'>
               {chosenMarket?.oraclePrice != undefined ? (
                 chosenMarket?.oraclePrice.toString()
               ) : (
@@ -74,7 +74,7 @@ export const MarketInterfaceTopBar = ({
                   className='mt-0.5'
                 />
               )}
-            </p>
+            </div>
           </div>
 
           <div className='border-l border-[#444650] text-xs pl-2'>

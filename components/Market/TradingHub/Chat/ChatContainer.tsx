@@ -39,11 +39,11 @@ export const ChatContainer = () => {
     >
       <div className='w-[200px]  h-full border-r border-[#444650] border-t'>
         <div className='w-full px-2 my-4'>
-          <div className='mb-4'>
+          {/* <div className='mb-4'>
             <p className='font-semibold text-tetriary'>
               <span className='font-bold text-[#87DAA4]'>P2P</span> Chat
             </p>
-          </div>
+          </div> */}
           <div className='w-full bg-[#23252E] h-[32px] rounded-[100px] flex justify-between items-center mb-3'>
             <input
               placeholder='Search'
@@ -98,7 +98,7 @@ export const ChatContainer = () => {
               </p>
             </div>
           </div>
-          <div className='flex-1 overflow-auto pb-[16px]'>
+          <div className='flex-1 overflow-auto pb-[16px] no-scrollbar'>
             <div className=' flex flex-col p-3 first:mt-2'>
               {messages.map((message, key) => (
                 <ChatMessage

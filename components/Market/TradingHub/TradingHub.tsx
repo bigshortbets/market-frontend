@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { tradingHubStateAtom } from '@/store/store';
 import { TradingHubFooter } from './TradingHubFooter';
 
-const tabs = ['positions', 'orders', 'history' /* 'chat' */] as const;
+const tabs = ['positions', 'orders', 'history' /* , 'chat' */] as const;
 export type TradingHubStateType = (typeof tabs)[number];
 
 export const TradingHub = () => {

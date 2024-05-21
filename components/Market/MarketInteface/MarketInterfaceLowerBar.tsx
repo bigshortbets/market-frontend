@@ -23,11 +23,11 @@ export const MarketInterfaceLowerBar = () => {
     return () => clearInterval(interval);
   }, []);
   return (
-    <div className="h-[58px] border-t border-[#444650] px-5 py-3">
-      <div className="sm:hidden flex items-center justify-between h-full">
-        <div className=" text-[11px] ">
-          <p className="text-tetriary font-semibold">Wallet balance</p>
-          <p className="text-white">
+    <div className='h-[58px] border-t border-[#444650] px-5 py-3'>
+      <div className='sm:hidden flex items-center justify-between h-full'>
+        <div className=' text-[11px] '>
+          <p className='text-tetriary font-semibold'>Wallet balance</p>
+          <p className='text-white'>
             {address
               ? `${currencyFormatter.format(
                   Number(data?.formatted)
@@ -35,9 +35,9 @@ export const MarketInterfaceLowerBar = () => {
               : '-'}
           </p>
         </div>
-        <div className=" text-[11px]  ">
-          <p className="text-tetriary font-semibold">Total deposits</p>
-          <p className="text-white">
+        <div className=' text-[11px]  '>
+          <p className='text-tetriary font-semibold'>Total deposits</p>
+          <p className='text-white'>
             {!address && '-'}
             {address &&
               userMargins.totalMarginValue &&
@@ -52,11 +52,11 @@ export const MarketInterfaceLowerBar = () => {
           }
         />
       </div>
-      <div className=" hidden sm:flex items-center justify-between ">
-        <div className="flex items-center gap-10">
-          <div className=" text-xs ">
-            <p className="text-tetriary font-semibold">Wallet balance</p>
-            <p className="text-white">
+      <div className=' hidden sm:flex items-center justify-between '>
+        <div className='flex items-center gap-10'>
+          <div className=' text-xs '>
+            <p className='text-tetriary font-semibold'>Wallet balance</p>
+            <p className='text-white'>
               {address
                 ? `${currencyFormatter.format(
                     Number(data?.formatted)
@@ -64,8 +64,8 @@ export const MarketInterfaceLowerBar = () => {
                 : '-'}
             </p>
           </div>
-          <div className="sm:border-l sm:border-[#444650]  sm:h-[32px] text-xs pl-2">
-            <p className="text-tetriary font-semibold">Total deposits</p>
+          <div className='sm:border-l sm:border-[#444650]  sm:h-[32px] text-xs pl-2'>
+            <p className='text-tetriary font-semibold'>Total deposits</p>
             <p>
               {address
                 ? `${currencyFormatter.format(
@@ -75,13 +75,13 @@ export const MarketInterfaceLowerBar = () => {
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="text-xs">
-            <div className="flex items-center gap-1">
+        <div className='flex items-center gap-4'>
+          <div className='text-xs'>
+            <div className='flex items-center gap-1'>
               {' '}
-              <p className="text-tetriary font-semibold">Market deposit</p>
+              <p className='text-tetriary font-semibold'>Market deposit</p>
             </div>
-            <p className="text-white">
+            <div className='text-white'>
               {!address && '-'}
               {address &&
                 selectedMarketMargin?.margin &&
@@ -90,14 +90,14 @@ export const MarketInterfaceLowerBar = () => {
                 )} ${currencySymbol}`}
               {address && selectedMarketMargin?.margin === undefined && (
                 <ReactLoading
-                  type="spin"
+                  type='spin'
                   width={14}
                   height={14}
-                  color="#444650"
-                  className="mt-0.5"
+                  color='#444650'
+                  className='mt-0.5'
                 />
               )}{' '}
-            </p>
+            </div>
           </div>
           <LiquidationStatusTab
             status={

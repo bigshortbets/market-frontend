@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import logo from '../../public/logo.svg';
-import { useAccount, useSwitchChain } from 'wagmi';
+import { useAccount, useSignMessage, useSwitchChain } from 'wagmi';
 import banner from '../../public/banner.svg';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
@@ -24,6 +24,8 @@ export const Navbar = () => {
     setIsClient(true);
   }, []);
 
+  /*  const { signMessage, data } = useSignMessage(); */
+
   const openTrumpOrBidenMarket = () => {
     const trumpId = '9223372036854776644';
     const bidenId = '9223372036854776643';
@@ -33,6 +35,10 @@ export const Navbar = () => {
 
     setSelectedMarketId(selectedId);
   };
+
+  /*   useEffect(() => {
+    console.log(data);
+  }, [data]); */
 
   return (
     <nav className='bg-[#111217] w-full h-[64px] '>
@@ -53,6 +59,12 @@ export const Navbar = () => {
               <Image src={banner} alt='banner' width={400} height={60} />
             </button>
           </div>
+          {/*   <button
+            className='bg-[#4ECB7D] rounded text-black p-2 font-semibold '
+            onClick={() => signMessage({ message: 'hello world' })}
+          >
+            Heli money
+          </button> */}
           {/*           {isConnected && <CurrentNetworkTab />} */}
           {/* <UIConfiguration /> */}
           {/* {isClient && <WalletConnect />} */}

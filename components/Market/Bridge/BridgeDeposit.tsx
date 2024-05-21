@@ -6,13 +6,13 @@ import { useAccount, useBalance, useBlockNumber, useSwitchChain } from 'wagmi';
 import { bridgeDepoChainId, mainnetUSDC } from '@/blockchain/constants';
 import { useBridgeDepoAllowance } from '@/blockchain/hooks/bridge/useBridgeDepoAllowance';
 import { useStartDepoProcess } from '@/blockchain/hooks/bridge/useStartDepoProcess';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSetBridgeDepoAllowance } from '@/blockchain/hooks/bridge/useSetBridgeDepoAllowance';
+import { bridgeApi } from '@/api/bidgeApi/bridgeApi';
 
 export const BridgeDeposit = () => {
   const [amount, setAmount] = useState<number>(1);
   const { switchChain } = useSwitchChain();
-  const queryClient = useQueryClient();
 
   const { address, chain } = useAccount();
   const {
@@ -20,6 +20,11 @@ export const BridgeDeposit = () => {
     queryKey: bridgeDepoQueryKey,
     refetch: refetchAllowance,
   } = useBridgeDepoAllowance(address!);
+
+  const { data } = useQuery({
+    queryKey: ['deposits', address!],
+    queryFn: bridgeApi.getDeposits,
+  });
 
   const { write: writeAllowance } = useSetBridgeDepoAllowance();
   const { write: writeStartDepo } = useStartDepoProcess(amount);
@@ -134,6 +139,26 @@ export const BridgeDeposit = () => {
             isAllowance &&
             'Deposit'}
         </button>
+      </div>
+      <div>
+        <p
+          className='text-sm mb-2'
+          onClick={() => console.log(data?.data.data)}
+        >
+          Deposits
+        </p>
+        <div className='flex flex-col gap-1'>
+          {data?.data?.data?.map((item: any, index: number) => (
+            <div className='odd:bg-[#23252E] p-2 flex justify-between items-center'>
+              <p className='text-xs' key={index}>
+                {Number(item.amount / 1_000_000).toFixed(2)} USDC
+              </p>
+              <p className='text-xs capitalize' key={index}>
+                {item.status}
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -23,6 +23,7 @@ import {
   tradingHubPositionsCountAtom,
   tradingHubStateAtom,
 } from '@/store/store';
+import { ChatContainer } from './Chat/ChatContainer';
 
 interface TradingHubContentContainerProps {
   isAggregated: boolean;
@@ -82,7 +83,7 @@ export const TradingHubContentContainer = ({
       {tradingHubState === 'history' && historyRes && (
         <TradingHubHistory history={historyRes.orders} />
       )}
-      {/*       {tradingHubState === 'chat' && <ChatContainer />} */}
+      {/*  {tradingHubState === 'chat' && <ChatContainer />} */}
     </div>
   );
 };
