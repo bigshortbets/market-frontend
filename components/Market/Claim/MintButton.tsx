@@ -47,13 +47,13 @@ export const MintButton = () => {
   };
   return (
     <button
-      className='bg-[#4ECB7D] rounded-lg text-black font-semibold w-[120px] h-[36px] flex items-center justify-center'
+      className='bg-[#4ECB7D] rounded-lg text-[13px] font-semibold  text-black w-full h-[43.5px] flex items-center justify-center disabled:bg-gray-400'
       onClick={handleMint}
     >
       {mintLoading ? (
         <ReactLoading type='spin' height={20} width={20} color='black' />
       ) : (
-        'Heli money'
+        'Claim DOLAR$'
       )}
     </button>
   );

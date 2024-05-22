@@ -7,12 +7,17 @@ import { Withdraw } from '../Withdraw/Withdraw';
 import { ContractDetails } from '../ContractDetails/ContractDetails';
 import { Bridge } from '../Bridge/Bridge';
 import { MarketInterfaceLowerBar } from '../MarketInteface/MarketInterfaceLowerBar';
+import { Claim } from '../Claim/Claim';
 
 interface FinanceManagerProps {
   markets: EnrichedMarketType[];
 }
 
-const tabs = ['order', 'deposit', 'withdraw', 'bridge'];
+const tabs = [
+  'order',
+  'deposit',
+  'withdraw' /* , 'claim' */ /*, 'bridge' */,
+] as const;
 
 export type FinanceManagerTabsType = (typeof tabs)[number];
 export const financeManagerAtom = atom<FinanceManagerTabsType>('order');
@@ -36,7 +41,8 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
         {financeManagerState === 'order' && <OrderManager markets={markets} />}
         {financeManagerState === 'deposit' && <Deposit markets={markets} />}
         {financeManagerState === 'withdraw' && <Withdraw />}
-        {financeManagerState === 'bridge' && <Bridge />}
+        {/* {financeManagerState === 'bridge' && <Bridge />} */}
+        {/*    {financeManagerState === 'claim' && <Claim />} */}
       </div>
       {!noMarkets && (
         <div className='px-[10px] pb-2'>

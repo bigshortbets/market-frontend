@@ -12,7 +12,7 @@ import ReactLoading from 'react-loading';
 import { useMutation } from '@tanstack/react-query';
 import { MintData, bridgeApi } from '@/api/bidgeApi/bridgeApi';
 import axios from 'axios';
-import { MintButton } from './MintButton';
+import { MintButton } from '../Market/Claim/MintButton';
 
 export const Navbar = () => {
   const [isClient, setIsClient] = useState(false);
