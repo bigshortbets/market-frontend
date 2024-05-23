@@ -15,4 +15,10 @@ export const bridgeApi = {
   mint: async (obj: MintData) => {
     return axios.post(`https://signature-store.bigsb.network/mints/mint`, obj);
   },
+  isMinted: async ({ queryKey }: any) => {
+    const [, address] = queryKey;
+    return axios.get(
+      `https://signature-store.bigsb.network/mints/minted?userAddress=${address}`
+    );
+  },
 };
