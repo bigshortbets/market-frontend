@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import { TradingHubAggregatedPosition } from './TradingHubAggregatedPosition';
 import { useAtom } from 'jotai';
 import { unsettledLossesAtom } from '../../Market';
-import { tradingHubPositionsCountAtom } from '../TradingHub';
 import { useAccount } from 'wagmi';
 import { TradingHubNonAggregatedPositions } from './TradingHubNonAggregatedPositions';
 
