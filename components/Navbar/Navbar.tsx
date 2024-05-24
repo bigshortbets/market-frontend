@@ -13,6 +13,8 @@ import { useMutation } from '@tanstack/react-query';
 import { MintData, bridgeApi } from '@/api/bidgeApi/bridgeApi';
 import axios from 'axios';
 import { MintButton } from '../Market/Claim/MintButton';
+import { FaChartSimple, FaTrophy } from 'react-icons/fa6';
+import { useRouter } from 'next/router';
 
 export const Navbar = () => {
   const [isClient, setIsClient] = useState(false);
@@ -39,20 +41,52 @@ export const Navbar = () => {
 
     setSelectedMarketId(selectedId);
   };
+  const router = useRouter();
+
+  const changeRoute = (route: string) => {
+    if (router.pathname != 'route') {
+      router.push(route);
+    }
+  };
 
   return (
     <nav className='bg-[#111217] w-full h-[64px]'>
       <div className=' flex justify-between h-full px-7 items-center'>
-        <div className='flex gap-2'>
-          <Image src={logo} alt='BigShortBet$ Logo' width={50} priority />
-          <div className='flex flex-col'>
-            <p className='text-md'>bigshortbet$</p>
-            <p className='text-xs font-semibold'>
-              MARKET <span className='text-[#4ECB7D]'>PEER2PEER</span>{' '}
-              <span className='text-[10px]'>TESTNET</span>
-            </p>
+        <div className='flex gap-6 items-center'>
+          <div className='flex gap-2'>
+            <Image src={logo} alt='BigShortBet$ Logo' width={50} priority />
+            <div className='flex flex-col'>
+              <p className='text-md'>bigshortbet$</p>
+              <p className='text-xs font-semibold'>
+                MARKET <span className='text-[#4ECB7D]'>PEER2PEER</span>{' '}
+                <span className='text-[10px]'>TESTNET</span>
+              </p>
+            </div>
           </div>
+          {/*  <div className='flex items-center gap-2'>
+            <button
+              className='p-2 rounded bg-[#191B24]'
+              onClick={() => changeRoute('/')}
+            >
+              <FaChartSimple
+                className={`text-sm hover:text-[#4ECB7D] cursor-pointer  transition ${
+                  router.pathname === '/' && 'text-[#4ECB7D]'
+                }`}
+              />
+            </button>
+            <button
+              className='p-2 rounded bg-[#191B24]'
+              onClick={() => changeRoute('/leaderboard')}
+            >
+              <FaTrophy
+                className={`text-sm hover:text-[#4ECB7D] cursor-pointer  transition ${
+                  router.pathname === '/leaderboard' && 'text-[#4ECB7D]'
+                }`}
+              />
+            </button>
+          </div> */}
         </div>
+
         <div className='flex items-center gap-4'>
           <div className='hidden md:block'>
             <button onClick={openTrumpOrBidenMarket}>
