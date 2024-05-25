@@ -17,7 +17,7 @@ export const FinanceManagerTab = ({
   const isActive = financeManagerState === value;
   return (
     <button
-      disabled={disabled || value === 'bridge'}
+      disabled={disabled}
       className={` rounded-lg flex items-center justify-center text-xs font-semibold py-1.5 px-3 ${
         isActive
           ? 'bg-[#444650]'
