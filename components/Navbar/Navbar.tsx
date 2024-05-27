@@ -10,7 +10,7 @@ import { useAtom } from 'jotai';
 import { mintMessage } from '@/blockchain/constants';
 import ReactLoading from 'react-loading';
 import { useMutation } from '@tanstack/react-query';
-import { MintData, bridgeApi } from '@/api/bidgeApi/bridgeApi';
+import { MintData, bridgeApi } from '@/requests/bidgeApi/bridgeApi';
 import axios from 'axios';
 import { MintButton } from '../Market/Claim/MintButton';
 import { FaChartSimple, FaTrophy } from 'react-icons/fa6';

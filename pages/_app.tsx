@@ -1,4 +1,4 @@
-import { apolloClient } from '@/api/graphql';
+import { apolloClient } from '@/requests/graphql';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import '@/styles/globals.css';
 import { ApolloProvider } from '@apollo/client';

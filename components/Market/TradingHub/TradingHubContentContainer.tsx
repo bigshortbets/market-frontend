@@ -2,7 +2,7 @@ import {
   USER_HISTORY_QUERY,
   USER_OPEN_POSITIONS_QUERY,
   USER_ORDERS_QUERY,
-} from '@/api/queries';
+} from '@/requests/queries';
 import { convertToSS58 } from '@/utils/convertToSS58';
 import { useQuery } from '@apollo/client';
 import { useAtom } from 'jotai';

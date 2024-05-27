@@ -8,7 +8,7 @@ import { useBridgeDepoAllowance } from '@/blockchain/hooks/bridge/useBridgeDepoA
 import { useStartDepoProcess } from '@/blockchain/hooks/bridge/useStartDepoProcess';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSetBridgeDepoAllowance } from '@/blockchain/hooks/bridge/useSetBridgeDepoAllowance';
-import { bridgeApi } from '@/api/bidgeApi/bridgeApi';
+import { bridgeApi } from '@/requests/bidgeApi/bridgeApi';
 
 export const BridgeDeposit = () => {
   const [amount, setAmount] = useState<number>(1);

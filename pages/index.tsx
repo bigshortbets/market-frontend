@@ -1,11 +1,11 @@
 import { Inter } from 'next/font/google';
-import { useMarkets } from '@/api/useMarkets';
+import { useMarkets } from '@/requests/useMarkets';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { Market } from '@/components/Market/Market';
 import { useEffect, useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import Head from 'next/head';
-import { useCurrentBlock } from '@/api/useCurrentBlock';
+import { useCurrentBlock } from '@/requests/useCurrentBlock';
 import { useAtom } from 'jotai';
 import { marketsAtom } from '@/store/store';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';

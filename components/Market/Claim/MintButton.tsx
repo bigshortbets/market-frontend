@@ -1,4 +1,4 @@
-import { MintData, bridgeApi } from '@/api/bidgeApi/bridgeApi';
+import { MintData, bridgeApi } from '@/requests/bidgeApi/bridgeApi';
 import { mintMessage } from '@/blockchain/constants';
 import { useMutation } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';

@@ -4,7 +4,10 @@ import { OrderBook, OrderSide } from './OrderBook';
 import { RecentTrades } from './RecentTrades';
 import { useAccount } from 'wagmi';
 import { useQuery } from '@apollo/client';
-import { ORDER_BOOK_LONGS_QUERY, ORDER_BOOK_SHORTS_QUERY } from '@/api/queries';
+import {
+  ORDER_BOOK_LONGS_QUERY,
+  ORDER_BOOK_SHORTS_QUERY,
+} from '@/requests/queries';
 import { selectedMarketIdAtom } from '../Market';
 import { OrderBookResponse } from '@/types/orderTypes';
 
