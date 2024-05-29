@@ -13,7 +13,7 @@ import { useMutation } from '@tanstack/react-query';
 import { MintData, bridgeApi } from '@/requests/bidgeApi/bridgeApi';
 import axios from 'axios';
 import { MintButton } from '../Market/Claim/MintButton';
-import { FaChartSimple, FaTrophy } from 'react-icons/fa6';
+import { FaChartLine, FaChartSimple, FaTrophy, FaUser } from 'react-icons/fa6';
 import { useRouter } from 'next/router';
 
 export const Navbar = () => {
@@ -53,7 +53,10 @@ export const Navbar = () => {
     <nav className='bg-[#111217] w-full h-[64px]'>
       <div className=' flex justify-between h-full px-7 items-center'>
         <div className='flex gap-6 items-center'>
-          <div className='flex gap-2'>
+          <div
+            className='flex gap-2 cursor-pointer'
+            onClick={() => changeRoute('/')}
+          >
             <Image src={logo} alt='BigShortBet$ Logo' width={50} priority />
             <div className='flex flex-col'>
               <p className='text-md'>bigshortbet$</p>
@@ -63,12 +66,12 @@ export const Navbar = () => {
               </p>
             </div>
           </div>
-          {/*  <div className='flex items-center gap-2'>
+          {/* <div className='flex items-center gap-2'>
             <button
               className='p-2 rounded bg-[#191B24]'
               onClick={() => changeRoute('/')}
             >
-              <FaChartSimple
+              <FaChartLine
                 className={`text-sm hover:text-[#4ECB7D] cursor-pointer  transition ${
                   router.pathname === '/' && 'text-[#4ECB7D]'
                 }`}
@@ -93,6 +96,16 @@ export const Navbar = () => {
               <Image src={banner} alt='banner' width={400} height={60} />
             </button>
           </div>
+          {/*  <button
+            className='p-2 rounded bg-[#191B24]'
+            onClick={() => changeRoute('/')}
+          >
+            <FaUser
+              className={`text-sm hover:text-[#4ECB7D] cursor-pointer  transition ${
+                router.pathname === '/' && 'text-[#4ECB7D]'
+              }`}
+            />
+          </button> */}
           {/* <MintButton /> */}
           {/*           {isConnected && <CurrentNetworkTab />} */}
           {/* <UIConfiguration /> */}

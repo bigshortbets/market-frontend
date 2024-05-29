@@ -11,7 +11,7 @@ export const CHAIN_PREFIX = {
   arctic: 2208,
 };
 
-export const currencySymbol = 'DOLAR$';
+export const currencySymbol = 'DOLARZ';
 
 /* BRIDGE */
 

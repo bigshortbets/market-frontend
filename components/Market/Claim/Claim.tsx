@@ -6,7 +6,7 @@ export const Claim = () => {
     <div className='p-2.5 pb-4 flex flex-col gap-4'>
       <div className='flex flex-col gap-2'>
         <p className='text-sm font-semibold text-secondary leading-[24px]'>
-          Claim
+          Claim Free DOLAR$
         </p>
         <MintButton />
       </div>

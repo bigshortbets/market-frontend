@@ -17,6 +17,7 @@ import { currencyFormatter } from '@/utils/currencyFormatter';
 import { IoMdInformationCircle } from 'react-icons/io';
 import { Tooltip } from 'react-tooltip';
 import { currencySymbol } from '@/blockchain/constants';
+import { FinanceManagerInfo } from '../FinanceManager/FinanceManagerInfo';
 
 export enum OrderSideEnum {
   LONG,
@@ -242,6 +243,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           {address && !isBsbNetwork && 'Change network'}
         </button>
       </div>
+      {/* <FinanceManagerInfo value='Placing orders take your funds ' /> */}
       {!address && (
         <FinanceManagerWarning error='Connect your wallet to interact with the market.' />
       )}

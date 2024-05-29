@@ -5,7 +5,7 @@ import { useAccount } from 'wagmi';
 import { FaSearch } from 'react-icons/fa';
 
 export const Leaderboard = () => {
-  const arr = [1, 2, 3, 4, 5, 6, 7];
+  const arr = [1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7];
   const { address } = useAccount();
   return (
     <div className='bg-[#111217] relative min-h-screen'>
