@@ -5,6 +5,7 @@ export interface OrderType {
     id: string;
     ticker: string;
   };
+  type: 'CLOSING' | 'OPENING';
   price: BigInt;
   side: 'LONG' | 'SHORT';
   quantity: BigInt;

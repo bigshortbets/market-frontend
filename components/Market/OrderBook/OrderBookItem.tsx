@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react';
 import { OrderSide } from './OrderBook';
 import { OrderBookOrder } from '@/types/orderTypes';
+import { fetchOrderCollateral } from '@/utils/fetchOrderCollateral';
+import { useAccount } from 'wagmi';
 
 interface OrderBookItem {
   empty: boolean;
@@ -17,7 +20,7 @@ export const OrderBookItem = ({ empty, side, data }: OrderBookItem) => {
       }`}
     >
       {!empty && data && (
-        <div className="w-full justify-between h-full flex px-4 text-xs">
+        <div className='w-full justify-between h-full flex px-4 text-xs'>
           <div>{data.price}</div>
           <div>{data.quantity}</div>
         </div>
