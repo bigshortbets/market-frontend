@@ -26,7 +26,7 @@ export const MarketInterfaceLowerBar = () => {
     <div className='h-[58px] border-t border-[#444650] px-5 py-3'>
       <div className='sm:hidden flex items-center justify-between h-full'>
         <div className=' text-[11px] '>
-          <p className='text-tetriary font-semibold'>Wallet balance</p>
+          <p className='text-tetriary font-semibold'>Wallet Balance</p>
           <p className='text-white'>
             {address
               ? `${currencyFormatter.format(
@@ -36,7 +36,7 @@ export const MarketInterfaceLowerBar = () => {
           </p>
         </div>
         <div className=' text-[11px]  '>
-          <p className='text-tetriary font-semibold'>Total deposits</p>
+          <p className='text-tetriary font-semibold'>Total Margin</p>
           <p className='text-white'>
             {!address && '-'}
             {address &&
@@ -55,7 +55,7 @@ export const MarketInterfaceLowerBar = () => {
       <div className=' hidden sm:flex items-center justify-between '>
         <div className='flex items-center gap-10'>
           <div className=' text-xs '>
-            <p className='text-tetriary font-semibold'>Wallet balance</p>
+            <p className='text-tetriary font-semibold'>Wallet Balance</p>
             <p className='text-white'>
               {address
                 ? `${currencyFormatter.format(
@@ -65,7 +65,7 @@ export const MarketInterfaceLowerBar = () => {
             </p>
           </div>
           <div className='sm:border-l sm:border-[#444650]  sm:h-[32px] text-xs pl-2'>
-            <p className='text-tetriary font-semibold'>Total deposits</p>
+            <p className='text-tetriary font-semibold'>Total Margin</p>
             <p>
               {address
                 ? `${currencyFormatter.format(
@@ -79,7 +79,7 @@ export const MarketInterfaceLowerBar = () => {
           <div className='text-xs'>
             <div className='flex items-center gap-1'>
               {' '}
-              <p className='text-tetriary font-semibold'>Market deposit</p>
+              <p className='text-tetriary font-semibold'>Market Margin</p>
             </div>
             <div className='text-white'>
               {!address && '-'}
