@@ -80,7 +80,7 @@ export const ClosePositionModal = ({
                       as='h3'
                       className='text-lg font-medium leading-6 text-white'
                     >
-                      Create close order
+                      Create Closing Order
                     </Dialog.Title>
                     <button className='text-xl' onClick={handleCloseModal}>
                       <IoClose />
@@ -110,23 +110,7 @@ export const ClosePositionModal = ({
                     <p className='text-sm font-semibold'>Side</p>
                     <SideLabel side={'LONG'} />
                   </div>
-                  <div className='flex justify-between mt-4 items-center'>
-                    <p className='text-sm font-semibold'>
-                      Position profit/loss
-                    </p>
-                    <p
-                      className={` font-semibold ${
-                        profitLoss < 0
-                          ? 'text-red-500 text-sm'
-                          : 'text-[#73D391]  text-sm'
-                      }`}
-                    >
-                      {profitLoss >= 0
-                        ? `+${profitLoss.toFixed(2)}`
-                        : profitLoss.toFixed(2)}{' '}
-                      {currencySymbol}
-                    </p>
-                  </div>
+
                   <div className='flex justify-between mt-6 items-center'>
                     <p className='text-sm font-semibold'>Price</p>
                     <div className='relative w-[125px] bg-[#23252E] py-0.5  rounded-lg '>
@@ -162,6 +146,23 @@ export const ClosePositionModal = ({
                       </div>
                     </div>
                   </div>
+                  <div className='flex justify-between mt-4 items-center'>
+                    <p className='text-sm font-semibold'>
+                      Position Profit/Loss
+                    </p>
+                    <p
+                      className={` font-semibold ${
+                        profitLoss < 0
+                          ? 'text-red-500 text-sm'
+                          : 'text-[#73D391]  text-sm'
+                      }`}
+                    >
+                      {profitLoss >= 0
+                        ? `+${profitLoss.toFixed(2)}`
+                        : profitLoss.toFixed(2)}{' '}
+                      {currencySymbol}
+                    </p>
+                  </div>
                   <button
                     disabled={
                       quantity < 1 || quantity > Number(position.quantityLeft)
@@ -169,7 +170,7 @@ export const ClosePositionModal = ({
                     onClick={() => writeClosePosition()}
                     className={`disabled:bg-gray-400 bg-[#D26D6C] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-2.5 mt-5 `}
                   >
-                    Create close order
+                    Create Closing Order
                   </button>
                 </Dialog.Panel>
               </Transition.Child>
