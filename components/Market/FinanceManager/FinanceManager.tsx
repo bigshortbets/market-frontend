@@ -42,7 +42,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
         {financeManagerState === 'deposit' && <Deposit markets={markets} />}
         {financeManagerState === 'withdraw' && <Withdraw />}
         {/* {financeManagerState === 'bridge' && <Bridge />} */}
-        {/*  {financeManagerState === 'claim' && <Claim />} */}
+        {/* {financeManagerState === 'claim' && <Claim />} */}
       </div>
       {!noMarkets && (
         <div className='px-[10px] pb-2'>
