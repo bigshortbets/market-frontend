@@ -66,7 +66,7 @@ export const Navbar = () => {
               </p>
             </div>
           </div>
-          {/* <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-2'>
             <button
               className='p-2 rounded bg-[#191B24]'
               onClick={() => changeRoute('/')}
@@ -87,7 +87,7 @@ export const Navbar = () => {
                 }`}
               />
             </button>
-          </div> */}
+          </div>
         </div>
 
         <div className='flex items-center gap-4'>

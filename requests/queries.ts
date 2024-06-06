@@ -159,3 +159,14 @@ export const ORDER_BOOK_LONGS_QUERY = gql`
     }
   }
 `;
+
+/* Query for getting leaderboard data */
+
+export const LEADERBOARD_QUERY = gql`
+  query generalLeaderboards {
+    generalLeaderboards(orderBy: balanceChange_DESC) {
+      balanceChange
+      user
+    }
+  }
+`;
