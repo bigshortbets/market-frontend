@@ -7,9 +7,10 @@ import { PrizesModal } from './PrizesModal';
 import { useQuery as gqlQuery } from '@apollo/client';
 
 import { LeaderboardResponse } from '@/types/leaderboardTypes';
-import { LEADERBOARD_QUERY } from '@/requests/queries';
+import { LEADERBOARD_QUERY, LEADERBOARD_USER_QUERY } from '@/requests/queries';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { truncateAddress } from '@/utils/truncateAddress';
 
 export const Leaderboard = () => {
   const { address } = useAccount();
@@ -18,9 +19,18 @@ export const Leaderboard = () => {
   const handleCloseModal = () => {
     setIsModalOpened(false);
   };
+  const add = '5EY2vCTgQqZ7ETroTrEyjbkufPCjgVjTwzpDoiG6QZUceHcJ';
 
   const { data: leaderboardRes } =
     gqlQuery<LeaderboardResponse>(LEADERBOARD_QUERY);
+
+  const { data: userLeaderboardRes, loading } = gqlQuery<LeaderboardResponse>(
+    LEADERBOARD_USER_QUERY,
+    {
+      skip: !address,
+      variables: { userAddress: address },
+    }
+  );
 
   const [currentRanking, setCurrentRanking] = useState('general');
 
@@ -33,8 +43,16 @@ export const Leaderboard = () => {
         )
         .then((res) => res.data),
   });
+
+  const userScore =
+    userLeaderboardRes && userLeaderboardRes.generalLeaderboards[0]
+      ? userLeaderboardRes.generalLeaderboards[0].balanceChange
+      : '-';
   return (
-    <div className='bg-[#111217] relative min-h-screen'>
+    <div
+      className='bg-[#111217] relative min-h-screen'
+      onClick={() => console.log(userLeaderboardRes)}
+    >
       <img
         src='/chartbg.svg'
         alt=''
@@ -116,12 +134,15 @@ export const Leaderboard = () => {
                     <div className='w-[100px] items-center text-[13px]'>
                       312
                     </div>
-                    <div className='text-[13px] flex items-center gap-2'>
-                      <p>{`0sda...dasd (You)`}</p>
+                    <div className='text-[13px] flex items-center gap-2 w-[130px]'>
+                      <p>{`${truncateAddress(address)} (You)`}</p>
+                    </div>
+                    <div className=' items-center  text-[10px] w-[150px] flex text-tetriary'>
+                      -
                     </div>
                   </div>
                   <div className='text-right items-center text-[12px]'>
-                    +3.000 $DOLARS
+                    {userScore}
                   </div>
                 </div>
               )}
@@ -132,7 +153,7 @@ export const Leaderboard = () => {
                     key={key}
                     address={item.user}
                     score={item.balanceChange}
-                    bigsbPrice={data.bigshortbets.usd}
+                    bigsbPrice={data?.bigshortbets.usd}
                   />
                 ))}
             </div>
@@ -142,7 +163,7 @@ export const Leaderboard = () => {
       <PrizesModal
         handleCloseModal={handleCloseModal}
         isModalOpened={isModalOpened}
-        bigsbPrice={data.bigshortbets.usd}
+        bigsbPrice={data?.bigshortbets.usd}
       />
     </div>
   );

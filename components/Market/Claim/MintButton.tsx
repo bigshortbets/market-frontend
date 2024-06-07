@@ -1,5 +1,5 @@
 import { MintData, bridgeApi } from '@/requests/bidgeApi/bridgeApi';
-import { mintMessage } from '@/blockchain/constants';
+import { currencySymbol, mintMessage } from '@/blockchain/constants';
 import { useMutation } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -53,7 +53,7 @@ export const MintButton = () => {
       {mintLoading ? (
         <ReactLoading type='spin' height={20} width={20} color='black' />
       ) : (
-        'Claim DOLAR$'
+        `Claim ${currencySymbol}`
       )}
     </button>
   );

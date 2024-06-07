@@ -170,3 +170,15 @@ export const LEADERBOARD_QUERY = gql`
     }
   }
 `;
+
+export const LEADERBOARD_USER_QUERY = gql`
+  query userLeaderboards($userAddress: String!) {
+    generalLeaderboards(
+      where: { user_eq: $userAddress }
+      orderBy: balanceChange_DESC
+    ) {
+      balanceChange
+      user
+    }
+  }
+`;

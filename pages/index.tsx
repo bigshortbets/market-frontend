@@ -35,7 +35,10 @@ export default function Home() {
   return (
     <main className={`${inter.className} text-white`}>
       <Head>
-        <title>bigshortbet$ P2P Market</title>
+        <title>
+          BigShortBet$ P2P Market - Trade on Unique & Event-Based Markets
+          Without Intermediaries
+        </title>
       </Head>
       {isLoading ? <LoadingScreen /> : <Market markets={markets} />}
       <Toaster position='top-center' />
