@@ -12,11 +12,13 @@ import { currencySymbol } from '@/blockchain/constants';
 interface PrizeModalProps {
   handleCloseModal: () => void;
   isModalOpened: boolean;
+  bigsbPrice: number | undefined;
 }
 
 export const PrizesModal = ({
   isModalOpened,
   handleCloseModal,
+  bigsbPrice,
 }: PrizeModalProps) => {
   return (
     <>
@@ -57,12 +59,35 @@ export const PrizesModal = ({
                       <IoClose />
                     </button>
                   </div>
-                  <div>
-                    <p>
-                      50-100 - 500szt bigsb razem 25k 51-6 - 1000szt bigsb razem
-                      45k 5-2k 4- 4k 3-6k 2-8k 1-10k hmm razem 100k nagrod w
-                      bigsb
-                    </p>
+                  <div className='gap-2.5 flex flex-col'>
+                    <h2 className='mb-3 text-sm'>
+                      {`Total Prize Pool: 50,000 BigSB
+                      (${bigsbPrice && Number(50_000 * bigsbPrice)}$)`}
+                    </h2>
+                    <p className='text-xs'>{`1st place: 10,000 BigSB (${
+                      bigsbPrice && Number(10_000 * bigsbPrice).toFixed(2)
+                    }$)`}</p>
+                    <p className='text-xs'>{`2nd place: 8,000 BigSB (${
+                      bigsbPrice && Number(8_000 * bigsbPrice).toFixed(2)
+                    }$)`}</p>
+                    <p className='text-xs'>{`3rd place: 6,000 BigSB (${
+                      bigsbPrice && Number(6_000 * bigsbPrice).toFixed(2)
+                    }$)`}</p>
+                    <p className='text-xs'>{`4th place: 4,000 BigSB (${
+                      bigsbPrice && Number(4_000 * bigsbPrice).toFixed(2)
+                    }$)`}</p>
+                    <p className='text-xs'>{`5th place: 2,000 BigSB (${
+                      bigsbPrice && Number(2_000 * bigsbPrice).toFixed(2)
+                    }$)`}</p>
+                    <p className='text-xs'>{`Places 6-10: 700 BigSB (${
+                      bigsbPrice && Number(700 * bigsbPrice).toFixed(2)
+                    }$)`}</p>
+                    <p className='text-xs'>{`Places 11-15: 500 BigSB (${
+                      bigsbPrice && Number(500 * bigsbPrice).toFixed(2)
+                    }$)`}</p>
+                    <p className='text-xs'>{`Places 16-50: 400 BigSB (${
+                      bigsbPrice && Number(400 * bigsbPrice).toFixed(2)
+                    }$)`}</p>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

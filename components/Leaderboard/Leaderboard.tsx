@@ -12,7 +12,6 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 export const Leaderboard = () => {
-  const arr = [1, 2, 3, 4, 5, 6, 7, 1, 2, 3, 4, 5, 6, 7];
   const { address } = useAccount();
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
 
@@ -28,9 +27,11 @@ export const Leaderboard = () => {
   const { isPending, error, data } = useQuery({
     queryKey: ['bigsbPrice'],
     queryFn: () =>
-      fetch(
-        'https://api.coingecko.com/api/v3/simple/price?ids=bigshortbets&vs_currencies=usd'
-      ).then((res) => res.json()),
+      axios
+        .get(
+          'https://api.coingecko.com/api/v3/simple/price?ids=bigshortbets&vs_currencies=usd'
+        )
+        .then((res) => res.data),
   });
   return (
     <div className='bg-[#111217] relative min-h-screen'>
@@ -101,7 +102,7 @@ export const Leaderboard = () => {
                   <div className='w-[130px] items-center text-[13px] font-semibold'>
                     Address
                   </div>
-                  <div className='w-[100px] items-center text-[13px] font-semibold'>
+                  <div className='w-[150px] items-center text-[13px] font-semibold'>
                     Prize
                   </div>
                 </div>
@@ -141,6 +142,7 @@ export const Leaderboard = () => {
       <PrizesModal
         handleCloseModal={handleCloseModal}
         isModalOpened={isModalOpened}
+        bigsbPrice={data.bigshortbets.usd}
       />
     </div>
   );
