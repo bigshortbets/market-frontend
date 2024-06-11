@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Navbar } from '../Navbar/Navbar';
 import { LeaderboardItem } from './LeaderboardItem';
 import { useAccount } from 'wagmi';
@@ -16,16 +17,17 @@ import { LeaderboardUserItem } from './LeaderboardUserItem';
 export const Leaderboard = () => {
   const { address } = useAccount();
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+  const router = useRouter();
+  const { query } = router;
 
   const handleCloseModal = () => {
     setIsModalOpened(false);
   };
-  const add = '5EY2vCTgQqZ7ETroTrEyjbkufPCjgVjTwzpDoiG6QZUceHcJ';
 
   const { data: leaderboardRes } =
     gqlQuery<LeaderboardResponse>(LEADERBOARD_QUERY);
 
-  const [currentRanking, setCurrentRanking] = useState('general');
+  const [currentRanking, setCurrentRanking] = useState<string>('general');
 
   const {
     isPending,
@@ -55,6 +57,20 @@ export const Leaderboard = () => {
     leaderboardRes &&
     findUserData(leaderboardRes.generalLeaderboards, address);
 
+  useEffect(() => {
+    if (query.mode && query.mode !== currentRanking) {
+      setCurrentRanking(query.mode as string);
+    }
+  }, [query.mode]);
+
+  const handleRankingChange = (ranking: string) => {
+    setCurrentRanking(ranking);
+    const params = new URLSearchParams(window.location.search);
+    params.set('mode', ranking);
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    router.push(newUrl, undefined, { shallow: true });
+  };
+
   return (
     <div className='bg-[#111217] relative min-h-screen'>
       <img
@@ -82,7 +98,7 @@ export const Leaderboard = () => {
                 <div className='lg:flex lg:items-center lg:gap-4'>
                   <div className='flex items-center gap-2'>
                     <button
-                      onClick={() => setCurrentRanking('general')}
+                      onClick={() => handleRankingChange('general')}
                       className={`h-[35px] flex-1 lg:w-[160px]  text-xs rounded-lg ${
                         currentRanking === 'general'
                           ? 'text-black bg-[#4ECB7D]  font-bold'
@@ -92,7 +108,7 @@ export const Leaderboard = () => {
                       General ranking
                     </button>
                     <button
-                      onClick={() => setCurrentRanking('usa')}
+                      onClick={() => handleRankingChange('usa')}
                       className={`h-[35px] w-[160px]  text-xs rounded-lg ${
                         currentRanking === 'usa'
                           ? 'text-black bg-[#4ECB7D]  font-bold'
