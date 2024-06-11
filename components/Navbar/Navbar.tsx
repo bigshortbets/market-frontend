@@ -59,10 +59,10 @@ export const Navbar = () => {
           >
             <Image src={logo} alt='BigShortBet$ Logo' width={50} priority />
             <div className='flex flex-col'>
-              <p className='text-md'>bigshortbet$</p>
-              <p className='text-xs font-semibold'>
+              <p className='text-md hidden md:block'>bigshortbet$</p>
+              <p className='md:text-xs text-[10px] font-semibold'>
                 MARKET <span className='text-[#4ECB7D]'>PEER2PEER</span>{' '}
-                <span className='text-[10px]'>TESTNET</span>
+                <span className='text-[8px] md:text-[10px]'>TESTNET</span>
               </p>
             </div>
           </div>

@@ -62,28 +62,28 @@ export const Leaderboard = () => {
         alt=''
         className='w-full h-full absolute inset-0 pointer-events-none z-0'
       />
-      <div className='h-[100dvh] max-w-[2000px] mx-auto flex flex-col pb-4 items-center relative z-10'>
+      <div className='h-[100dvh] max-w-[2000px]  lg:mx-auto mx-4 flex flex-col pb-4 items-center relative z-10'>
         <Navbar />
-        <div className='max-w-[1420px] flex-grow border-[#444650] border-2 rounded-[10px] w-full mt-4 bg-[#191B24] overflow-auto no-scrollbar'>
-          <div className='pt-6 px-6'>
-            <div className='mb-8 flex items-center justify-between'>
-              <div className='flex items-center gap-5'>
-                <h2 className='text-white text-lg font-semibold'>
+        <div className='lg:max-w-[1420px] flex-grow border-[#444650] border-2 rounded-[10px] w-full mt-4 bg-[#191B24] overflow-auto no-scrollbar'>
+          <div className='pt-6 lg:px-6 px-4'>
+            <div className='mb-8 lg:flex lg:items-center lg:justify-between'>
+              <div className='lg:flex lg:items-center lg:gap-5'>
+                <h2 className='text-white text-lg font-semibold mb-4 lg:mb-0'>
                   Leaderboard 🏆
                 </h2>
                 <button
-                  className='h-[35px] w-[100px] bg-[#1e2029] text-white text-[13px] rounded-lg font-bold border-[#444650] border-2'
+                  className='mb-4 lg:mb-0 h-[35px] w-[100px] bg-[#1e2029] text-white text-[13px] rounded-lg font-bold border-[#444650] border-2'
                   onClick={() => setIsModalOpened(true)}
                 >
                   Prizes 🎁
                 </button>
               </div>
               <div>
-                <div className='flex items-center gap-4'>
+                <div className='lg:flex lg:items-center lg:gap-4'>
                   <div className='flex items-center gap-2'>
                     <button
                       onClick={() => setCurrentRanking('general')}
-                      className={`h-[35px] w-[160px]  text-xs rounded-lg ${
+                      className={`h-[35px] flex-1 lg:w-[160px]  text-xs rounded-lg ${
                         currentRanking === 'general'
                           ? 'text-black bg-[#4ECB7D]  font-bold'
                           : 'bg-[#23252E] text-white'
@@ -102,7 +102,7 @@ export const Leaderboard = () => {
                       Trump/Biden ranking
                     </button>
                   </div>
-                  <div className='h-[35px] w-[200px] flex bg-[#23252E] rounded-lg'>
+                  <div className='h-[35px] mt-4 lg:mt-0 w-[200px] flex bg-[#23252E] rounded-lg'>
                     <input
                       type='text'
                       className=' text-white  px-3 text-xs  rounded-lg h-full w-[85%] bg-[#23252E]  outline-none'
@@ -116,7 +116,7 @@ export const Leaderboard = () => {
               </div>
             </div>
             <div className='flex flex-col gap-[5px]'>
-              <div className='w-full rounded-lg mb-1 h-[40px] bg-[#23252E] flex items-center px-4 justify-between even:bg-[#191B24]'>
+              <div className='w-full  rounded-lg mb-1 h-[40px] bg-[#23252E] lg:flex hidden items-center px-4 justify-between even:bg-[#191B24]'>
                 <div className='flex'>
                   <div className='w-[100px] items-center text-[13px] font-semibold'>
                     Position
@@ -133,7 +133,11 @@ export const Leaderboard = () => {
                 </div>
               </div>
               {address && userData && (
-                <LeaderboardUserItem address={address} userData={userData} />
+                <LeaderboardUserItem
+                  address={address}
+                  userData={userData}
+                  bigsbPrice={bigsbPriceData?.bigshortbets.usd}
+                />
               )}
               {leaderboardRes &&
                 leaderboardRes.generalLeaderboards.map((item, key) => (
