@@ -151,7 +151,7 @@ export const Leaderboard = () => {
                   <LeaderboardItem
                     position={key + 1}
                     key={key}
-                    address={item.user}
+                    address={item.id}
                     score={item.balanceChange}
                     bigsbPrice={data?.bigshortbets.usd}
                   />

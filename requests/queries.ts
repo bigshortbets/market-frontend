@@ -166,7 +166,7 @@ export const LEADERBOARD_QUERY = gql`
   query generalLeaderboards {
     generalLeaderboards(orderBy: balanceChange_DESC) {
       balanceChange
-      user
+      id
     }
   }
 `;
@@ -174,11 +174,11 @@ export const LEADERBOARD_QUERY = gql`
 export const LEADERBOARD_USER_QUERY = gql`
   query userLeaderboards($userAddress: String!) {
     generalLeaderboards(
-      where: { user_eq: $userAddress }
+      where: { id_eq: $userAddress }
       orderBy: balanceChange_DESC
     ) {
       balanceChange
-      user
+      id
     }
   }
 `;

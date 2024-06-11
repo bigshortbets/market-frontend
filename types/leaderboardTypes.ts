@@ -1,5 +1,5 @@
 export interface LeaderboardType {
-  user: string;
+  id: string;
   balanceChange: number;
 }
 
