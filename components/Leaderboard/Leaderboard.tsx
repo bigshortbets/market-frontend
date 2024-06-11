@@ -6,11 +6,12 @@ import { FaSearch } from 'react-icons/fa';
 import { PrizesModal } from './PrizesModal';
 import { useQuery as gqlQuery } from '@apollo/client';
 
-import { LeaderboardResponse } from '@/types/leaderboardTypes';
-import { LEADERBOARD_QUERY, LEADERBOARD_USER_QUERY } from '@/requests/queries';
+import { LeaderboardResponse, LeaderboardType } from '@/types/leaderboardTypes';
+import { LEADERBOARD_QUERY } from '@/requests/queries';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { truncateAddress } from '@/utils/truncateAddress';
+import { LeaderboardUserItem } from './LeaderboardUserItem';
 
 export const Leaderboard = () => {
   const { address } = useAccount();
@@ -24,17 +25,13 @@ export const Leaderboard = () => {
   const { data: leaderboardRes } =
     gqlQuery<LeaderboardResponse>(LEADERBOARD_QUERY);
 
-  const { data: userLeaderboardRes, loading } = gqlQuery<LeaderboardResponse>(
-    LEADERBOARD_USER_QUERY,
-    {
-      skip: !address,
-      variables: { userAddress: address },
-    }
-  );
-
   const [currentRanking, setCurrentRanking] = useState('general');
 
-  const { isPending, error, data } = useQuery({
+  const {
+    isPending,
+    error,
+    data: bigsbPriceData,
+  } = useQuery({
     queryKey: ['bigsbPrice'],
     queryFn: () =>
       axios
@@ -44,15 +41,22 @@ export const Leaderboard = () => {
         .then((res) => res.data),
   });
 
-  const userScore =
-    userLeaderboardRes && userLeaderboardRes.generalLeaderboards[0]
-      ? userLeaderboardRes.generalLeaderboards[0].balanceChange
-      : '-';
+  const findUserData = (
+    leaderboard: LeaderboardType[],
+    id: string
+  ): { data: LeaderboardType | undefined; index: number } => {
+    const index = leaderboard.findIndex((record) => record.id === id);
+    const data = index !== -1 ? leaderboard[index] : undefined;
+    return { data, index };
+  };
+
+  const userData =
+    address &&
+    leaderboardRes &&
+    findUserData(leaderboardRes.generalLeaderboards, address);
+
   return (
-    <div
-      className='bg-[#111217] relative min-h-screen'
-      onClick={() => console.log(userLeaderboardRes)}
-    >
+    <div className='bg-[#111217] relative min-h-screen'>
       <img
         src='/chartbg.svg'
         alt=''
@@ -128,23 +132,8 @@ export const Leaderboard = () => {
                   Score
                 </div>
               </div>
-              {address && (
-                <div className='w-full rounded-lg h-[40px] bg-[#23252E] flex items-center px-4 justify-between even:bg-[#1e2029] mb-4'>
-                  <div className='flex'>
-                    <div className='w-[100px] items-center text-[13px]'>
-                      312
-                    </div>
-                    <div className='text-[13px] flex items-center gap-2 w-[130px]'>
-                      <p>{`${truncateAddress(address)} (You)`}</p>
-                    </div>
-                    <div className=' items-center  text-[10px] w-[150px] flex text-tetriary'>
-                      -
-                    </div>
-                  </div>
-                  <div className='text-right items-center text-[12px]'>
-                    {userScore}
-                  </div>
-                </div>
+              {address && userData && (
+                <LeaderboardUserItem address={address} userData={userData} />
               )}
               {leaderboardRes &&
                 leaderboardRes.generalLeaderboards.map((item, key) => (
@@ -153,7 +142,7 @@ export const Leaderboard = () => {
                     key={key}
                     address={item.id}
                     score={item.balanceChange}
-                    bigsbPrice={data?.bigshortbets.usd}
+                    bigsbPrice={bigsbPriceData?.bigshortbets.usd}
                   />
                 ))}
             </div>
@@ -163,7 +152,7 @@ export const Leaderboard = () => {
       <PrizesModal
         handleCloseModal={handleCloseModal}
         isModalOpened={isModalOpened}
-        bigsbPrice={data?.bigshortbets.usd}
+        bigsbPrice={bigsbPriceData?.bigshortbets.usd}
       />
     </div>
   );
