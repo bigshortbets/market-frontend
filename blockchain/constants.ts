@@ -11,6 +11,15 @@ export const CHAIN_PREFIX = {
   arctic: 2208,
 };
 
+/* CHAIN INFO */
+
+export const chainInfoChainId = 2137;
+export const chainInfoChainName = 'BigShortBets';
+export const chainInfoCurrencyName = 'USD Coin';
+export const chainInfoCurrencySymbol = 'USDC';
+
+/*  */
+
 export const currencySymbol = 'DOLARZ';
 
 /* BRIDGE */
