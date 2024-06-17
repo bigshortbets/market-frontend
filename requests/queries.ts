@@ -23,8 +23,11 @@ export const GET_ALL_MARKETS_QUERY = gql`
 /* Query for getting orders of given user */
 
 export const USER_ORDERS_QUERY = gql`
-  query {
-    orders {
+  query orders($userId: String!) {
+    orders(
+      where: { status_eq: ACTIVE, who_eq: $userId }
+      orderBy: timestamp_DESC
+    ) {
       who
       timestamp
       quantity
@@ -34,10 +37,6 @@ export const USER_ORDERS_QUERY = gql`
       blockHeight
       side
       status
-      market {
-        id
-        ticker
-      }
       type {
         ... on OpeningOrder {
           type
@@ -46,6 +45,10 @@ export const USER_ORDERS_QUERY = gql`
           type
           value
         }
+      }
+      market {
+        id
+        ticker
       }
     }
   }
