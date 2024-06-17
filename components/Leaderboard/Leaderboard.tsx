@@ -148,23 +148,34 @@ export const Leaderboard = () => {
                   Score
                 </div>
               </div>
-              {address && userData && (
-                <LeaderboardUserItem
-                  address={address}
-                  userData={userData}
-                  bigsbPrice={bigsbPriceData?.bigshortbets.usd}
-                />
+
+              {currentRanking === 'general' && (
+                <>
+                  {' '}
+                  {address && userData && (
+                    <LeaderboardUserItem
+                      address={address}
+                      userData={userData}
+                      bigsbPrice={bigsbPriceData?.bigshortbets.usd}
+                    />
+                  )}
+                  {leaderboardRes &&
+                    leaderboardRes.generalLeaderboards.map((item, key) => (
+                      <LeaderboardItem
+                        position={key + 1}
+                        key={key}
+                        address={item.id}
+                        score={item.balanceChange}
+                        bigsbPrice={bigsbPriceData?.bigshortbets.usd}
+                      />
+                    ))}
+                </>
               )}
-              {leaderboardRes &&
-                leaderboardRes.generalLeaderboards.map((item, key) => (
-                  <LeaderboardItem
-                    position={key + 1}
-                    key={key}
-                    address={item.id}
-                    score={item.balanceChange}
-                    bigsbPrice={bigsbPriceData?.bigshortbets.usd}
-                  />
-                ))}
+              {currentRanking === 'usa' && (
+                <p className='text-2xl font-semibold text-center mt-6 opacity-30'>
+                  Coming soon...
+                </p>
+              )}
             </div>
           </div>
         </div>

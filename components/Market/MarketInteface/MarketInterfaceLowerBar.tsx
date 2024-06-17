@@ -23,7 +23,10 @@ export const MarketInterfaceLowerBar = () => {
     return () => clearInterval(interval);
   }, []);
   return (
-    <div className='h-[58px] border-t border-[#444650] px-5 py-3'>
+    <div
+      className='h-[58px] border-t border-[#444650] px-5 py-3'
+      onClick={() => console.log(data)}
+    >
       <div className='sm:hidden flex items-center justify-between h-full'>
         <div className=' text-[11px] '>
           <p className='text-tetriary font-semibold'>Wallet Balance</p>
