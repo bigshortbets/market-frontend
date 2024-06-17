@@ -5,11 +5,28 @@ export interface OrderType {
     id: string;
     ticker: string;
   };
+
   price: BigInt;
   side: 'LONG' | 'SHORT';
   quantity: BigInt;
+  type: OrderTypeUnion;
 }
 
+enum OrderTypeEnum {
+  OpeningOrder = 'OpeningOrder',
+  ClosingOrder = 'ClosingOrder',
+}
+
+type OpeningOrder = {
+  type: OrderTypeEnum.OpeningOrder;
+};
+
+type ClosingOrder = {
+  type: OrderTypeEnum.ClosingOrder;
+  value: BigInt;
+};
+
+type OrderTypeUnion = OpeningOrder | ClosingOrder;
 export interface OrdersResponse {
   orders: OrderType[];
 }

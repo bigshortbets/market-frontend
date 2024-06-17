@@ -16,7 +16,7 @@ interface FinanceManagerProps {
 const tabs = [
   'order',
   'deposit',
-  'withdraw' /* 'claim' */ /*, 'bridge' */,
+  'withdraw' /* , 'claim' */ /*, 'bridge' */,
 ] as const;
 
 export type FinanceManagerTabsType = (typeof tabs)[number];
@@ -27,9 +27,13 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
 
   const noMarkets = markets.length < 1;
 
+  const showContractDetails = ['order', 'deposit', 'withdraw'].includes(
+    financeManagerState
+  );
+
   return (
     <div
-      className='h-full w-full sm:w-[360px] sm:border-r border-[#444650]  overflow-auto no-scrollbar'
+      className='h-full w-full sm:w-[360px] sm:border-r border-[#444650] overflow-auto no-scrollbar'
       style={{ maxHeight: 'calc(100vh - 227px)' }}
     >
       <div className='flex flex-col '>
@@ -42,9 +46,9 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
         {financeManagerState === 'deposit' && <Deposit markets={markets} />}
         {financeManagerState === 'withdraw' && <Withdraw />}
         {/* {financeManagerState === 'bridge' && <Bridge />} */}
-        {/* {financeManagerState === 'claim' && <Claim />} */}
+        {/*  {financeManagerState === 'claim' && <Claim />} */}
       </div>
-      {!noMarkets && (
+      {!noMarkets && showContractDetails && (
         <div className='px-[10px] pb-2'>
           <ContractDetails />
         </div>

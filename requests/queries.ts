@@ -37,6 +37,15 @@ export const USER_ORDERS_QUERY = gql`
       blockHeight
       side
       status
+      type {
+        ... on OpeningOrder {
+          type
+        }
+        ... on ClosingOrder {
+          type
+          value
+        }
+      }
       market {
         id
         ticker
@@ -157,6 +166,17 @@ export const ORDER_BOOK_LONGS_QUERY = gql`
     ) {
       quantity
       price
+      id
+    }
+  }
+`;
+
+/* Query for getting leaderboard data */
+
+export const LEADERBOARD_QUERY = gql`
+  query generalLeaderboards {
+    generalLeaderboards(orderBy: balanceChange_DESC) {
+      balanceChange
       id
     }
   }

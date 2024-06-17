@@ -8,12 +8,14 @@ import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { currencyFormatter } from '@/utils/currencyFormatter';
 import { currencySymbol } from '@/blockchain/constants';
 import ReactLoading from 'react-loading';
+import { marketsAtom } from '@/store/store';
 
 export const MarketInterfaceLowerBar = () => {
   const { address } = useAccount();
   const { data, refetch } = useNativeCurrencyBalance(address);
   const [userMargins] = useAtom(userMarginsAtom);
   const [selectedMarketMargin] = useAtom(selectedMarketMarginAtom);
+  const [markets] = useAtom(marketsAtom);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -23,7 +25,10 @@ export const MarketInterfaceLowerBar = () => {
     return () => clearInterval(interval);
   }, []);
   return (
-    <div className='h-[58px] border-t border-[#444650] px-5 py-3'>
+    <div
+      className='h-[58px] border-t border-[#444650] px-5 py-3'
+      onClick={() => console.log(data)}
+    >
       <div className='sm:hidden flex items-center justify-between h-full'>
         <div className=' text-[11px] '>
           <p className='text-tetriary font-semibold'>Wallet Balance</p>
@@ -82,21 +87,24 @@ export const MarketInterfaceLowerBar = () => {
               <p className='text-tetriary font-semibold'>Market Margin</p>
             </div>
             <div className='text-white'>
+              {markets.length < 1 && '-'}
               {!address && '-'}
               {address &&
                 selectedMarketMargin?.margin &&
                 `${currencyFormatter.format(
                   Number(selectedMarketMargin?.margin)
                 )} ${currencySymbol}`}
-              {address && selectedMarketMargin?.margin === undefined && (
-                <ReactLoading
-                  type='spin'
-                  width={14}
-                  height={14}
-                  color='#444650'
-                  className='mt-0.5'
-                />
-              )}{' '}
+              {address &&
+                selectedMarketMargin?.margin === undefined &&
+                markets.length > 1 && (
+                  <ReactLoading
+                    type='spin'
+                    width={14}
+                    height={14}
+                    color='#444650'
+                    className='mt-0.5'
+                  />
+                )}{' '}
             </div>
           </div>
           <LiquidationStatusTab

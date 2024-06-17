@@ -63,17 +63,20 @@ export const MarketInterfaceTopBar = ({
           <div>
             <p className='text-xs text-tetriary font-semibold'>Oracle Price</p>
             <div className='text-xs font-normal'>
-              {chosenMarket?.oraclePrice != undefined ? (
-                chosenMarket?.oraclePrice.toString()
-              ) : (
-                <ReactLoading
-                  type='spin'
-                  width={14}
-                  height={14}
-                  color='#444650'
-                  className='mt-0.5'
-                />
-              )}
+              {chosenMarket?.oraclePrice === undefined &&
+                markets.length > 1 && (
+                  <ReactLoading
+                    type='spin'
+                    width={14}
+                    height={14}
+                    color='#444650'
+                    className='mt-0.5'
+                  />
+                )}
+              {chosenMarket?.oraclePrice != undefined &&
+                markets.length > 1 &&
+                chosenMarket?.oraclePrice.toString()}
+              {markets.length < 1 && '-'}
             </div>
           </div>
 

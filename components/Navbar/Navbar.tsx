@@ -52,19 +52,19 @@ export const Navbar = () => {
 
   return (
     <nav className='bg-[#111217] w-full h-[64px]'>
-      <div className=' flex justify-between h-full px-7 items-center'>
+      <div className='flex justify-between h-full px-7 items-center'>
         <div className='flex gap-6 items-center'>
           <Link className='flex gap-2 cursor-pointer' href='/'>
             <Image src={logo} alt='BigShortBet$ Logo' width={50} priority />
-            <div className='flex flex-col'>
-              <p className='text-md'>bigshortbet$</p>
-              <p className='text-xs font-semibold'>
+            <div className='md:flex flex-col hidden'>
+              <p className='text-md hidden md:block'>bigshortbet$</p>
+              <p className='md:text-xs text-[10px] font-semibold'>
                 MARKET <span className='text-[#4ECB7D]'>PEER2PEER</span>{' '}
-                <span className='text-[10px]'>TESTNET</span>
+                <span className='text-[8px] md:text-[10px]'>TESTNET</span>
               </p>
             </div>
           </Link>
-          {/* <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-2'>
             <button
               className='p-2 rounded bg-[#191B24]'
               onClick={() => changeRoute('/')}
@@ -85,7 +85,7 @@ export const Navbar = () => {
                 }`}
               />
             </button>
-          </div> */}
+          </div>
         </div>
 
         <div className='flex items-center gap-4'>
@@ -94,7 +94,7 @@ export const Navbar = () => {
               <Image src={banner} alt='banner' width={400} height={60} />
             </button>
           </div>
-          {/*  <button
+          {/* <button
             className='p-2 rounded bg-[#191B24]'
             onClick={() => changeRoute('/')}
           >
@@ -105,7 +105,7 @@ export const Navbar = () => {
             />
           </button> */}
           {/* <MintButton /> */}
-          {/*           {isConnected && <CurrentNetworkTab />} */}
+          {/* {isConnected && <CurrentNetworkTab />} */}
           {/* <UIConfiguration /> */}
           {/* {isClient && <WalletConnect />} */}
           {isClient && (
