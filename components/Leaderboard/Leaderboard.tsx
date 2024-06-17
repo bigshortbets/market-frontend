@@ -118,7 +118,7 @@ export const Leaderboard = () => {
                       Trump/Biden ranking
                     </button>
                   </div>
-                  <div className='h-[35px] mt-4 lg:mt-0 w-[200px] flex bg-[#23252E] rounded-lg'>
+                  {/* <div className='h-[35px] mt-4 lg:mt-0 w-[200px] flex bg-[#23252E] rounded-lg'>
                     <input
                       type='text'
                       className=' text-white  px-3 text-xs  rounded-lg h-full w-[85%] bg-[#23252E]  outline-none'
@@ -127,7 +127,7 @@ export const Leaderboard = () => {
                     <div className='flex-grow text-[#444650] flex items-center'>
                       <FaSearch />
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

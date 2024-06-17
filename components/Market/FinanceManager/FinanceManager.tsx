@@ -13,7 +13,11 @@ interface FinanceManagerProps {
   markets: EnrichedMarketType[];
 }
 
-const tabs = ['order', 'deposit', 'withdraw', 'claim' /*, 'bridge' */] as const;
+const tabs = [
+  'order',
+  'deposit',
+  'withdraw' /* , 'claim' */ /*, 'bridge' */,
+] as const;
 
 export type FinanceManagerTabsType = (typeof tabs)[number];
 export const financeManagerAtom = atom<FinanceManagerTabsType>('order');
@@ -42,7 +46,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
         {financeManagerState === 'deposit' && <Deposit markets={markets} />}
         {financeManagerState === 'withdraw' && <Withdraw />}
         {/* {financeManagerState === 'bridge' && <Bridge />} */}
-        {financeManagerState === 'claim' && <Claim />}
+        {/*  {financeManagerState === 'claim' && <Claim />} */}
       </div>
       {!noMarkets && showContractDetails && (
         <div className='px-[10px] pb-2'>
