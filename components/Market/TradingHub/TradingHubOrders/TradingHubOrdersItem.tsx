@@ -18,7 +18,7 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
 
   const { address } = useAccount();
   const [state, setState] = useState<number>();
-  useEffect(() => {
+  /*   useEffect(() => {
     const fetchCollateral = async () => {
       if (order && address) {
         try {
@@ -31,7 +31,7 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
     };
 
     fetchCollateral();
-  }, [order]);
+  }, [order]); */
   return (
     <tr
       className={`text-sm odd:bg-[#23252E] text-[#7F828F]  overflow-x-scroll sm:text-xs 

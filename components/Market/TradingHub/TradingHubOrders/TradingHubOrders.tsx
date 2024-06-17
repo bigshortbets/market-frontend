@@ -24,9 +24,9 @@ export const TradingHubOrders = ({ orders }: TradingHubOrdersProps) => {
   ): { open: OrderType[]; close: OrderType[] } => {
     return orders.reduce(
       (acc, order) => {
-        if (order.type === 'OPENING') {
+        if (order.type.type === 'OpeningOrder') {
           acc.open.push(order);
-        } else if (order.type === 'CLOSING') {
+        } else if (order.type.type === 'ClosingOrder') {
           acc.close.push(order);
         }
         return acc;

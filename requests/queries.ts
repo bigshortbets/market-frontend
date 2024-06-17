@@ -34,10 +34,18 @@ export const USER_ORDERS_QUERY = gql`
       blockHeight
       side
       status
-      type
       market {
         id
         ticker
+      }
+      type {
+        ... on OpeningOrder {
+          type
+        }
+        ... on ClosingOrder {
+          type
+          value
+        }
       }
     }
   }
