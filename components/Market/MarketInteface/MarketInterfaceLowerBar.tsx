@@ -96,7 +96,7 @@ export const MarketInterfaceLowerBar = () => {
                 )} ${currencySymbol}`}
               {address &&
                 selectedMarketMargin?.margin === undefined &&
-                markets.length > 1 && (
+                markets.length >= 1 && (
                   <ReactLoading
                     type='spin'
                     width={14}
