@@ -13,7 +13,7 @@ export const CHAIN_PREFIX = {
 
 /* CHAIN INFO */
 
-export const chainInfoChainId = 2137;
+export const chainInfoChainId = 2136;
 export const chainInfoChainName = 'BigShortBets';
 export const chainInfoCurrencyName = 'USD Coin';
 export const chainInfoCurrencySymbol = 'USDC';

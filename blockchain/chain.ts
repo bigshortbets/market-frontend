@@ -1,12 +1,12 @@
 import { type Chain } from 'viem';
 
 export const bigshortbetsChain = {
-  id: 2137,
-  name: 'BigShortBets',
+  id: 2136,
+  name: 'BigShortBets Testnet',
   iconUrl: 'https://r2.easyimg.io/6dw6zs8cj/logo.svg',
   nativeCurrency: {
-    name: 'USD Coin',
-    symbol: 'USDC',
+    name: 'Dolarz',
+    symbol: 'Dolarz',
     decimals: 18,
   },
   rpcUrls: {
@@ -32,7 +32,7 @@ export const bigshortbetsChain = {
 } as any;
 
 export const bigshortbetsChainNative = {
-  chainId: `0x${(2137).toString(16)}`,
+  chainId: `0x${(2136).toString(16)}`,
   chainName: 'BigShortBets',
   nativeCurrency: {
     name: 'USD Coin',
