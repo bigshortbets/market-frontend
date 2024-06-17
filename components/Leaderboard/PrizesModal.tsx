@@ -62,7 +62,9 @@ export const PrizesModal = ({
                   <div className='gap-2.5 flex flex-col'>
                     <h2 className='mb-3 text-sm'>
                       {`Total Prize Pool: 50,000 BigSB
-                      (${bigsbPrice && Number(50_000 * bigsbPrice)}$)`}
+                      (${
+                        bigsbPrice && Number(50_000 * bigsbPrice).toFixed(2)
+                      }$)`}
                     </h2>
                     <p className='text-xs'>{`1st place: 10,000 BigSB (${
                       bigsbPrice && Number(10_000 * bigsbPrice).toFixed(2)
