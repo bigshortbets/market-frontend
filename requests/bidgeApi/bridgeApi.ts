@@ -24,4 +24,18 @@ export const bridgeApi = {
       params: obj,
     });
   },
+  available: async (obj: isMintedData) => {
+    return axios.get(
+      `https://signature-store.bigsb.network/mints/availablemint`,
+      {
+        params: obj,
+      }
+    );
+  },
+  bigsbMint: async (obj: MintData) => {
+    return axios.post(
+      `https://signature-store.bigsb.network/mints/bigsbmint`,
+      obj
+    );
+  },
 };
