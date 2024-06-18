@@ -25,7 +25,7 @@ export const financeManagerAtom = atom<FinanceManagerTabsType>('order');
 export const FinanceManager = ({ markets }: FinanceManagerProps) => {
   const [financeManagerState] = useAtom(financeManagerAtom);
 
-  const noMarkets = markets.length < 1;
+  const noMarkets = markets.length < 0;
 
   const showContractDetails = ['order', 'deposit', 'withdraw'].includes(
     financeManagerState
