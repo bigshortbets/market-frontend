@@ -139,7 +139,7 @@ export const Market = ({ markets }: MarketProps) => {
     <div className='h-[100dvh] bg-[#111217] '>
       <div className='h-full flex flex-col relative max-w-[2000px] mx-auto'>
         <p className='absolute bottom-1.5 text-[9px] left-6 text-[#555866]'>
-          DOLAR$ is virtual sandbox and have no real settlement value as "fake
+          $DOLARZ is virtual sandbox and have no real settlement value as "fake
           money". They are an internal part of the software and as such cannot
           be part of billing.
         </p>
