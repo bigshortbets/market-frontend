@@ -6,6 +6,7 @@ import { FaXTwitter } from 'react-icons/fa6';
 import { FaTelegramPlane } from 'react-icons/fa';
 import { FaBook } from 'react-icons/fa';
 import { SiGitbook } from 'react-icons/si';
+import { FaLink } from 'react-icons/fa';
 
 export const TradingHubFooter = () => {
   const {
@@ -46,12 +47,25 @@ export const TradingHubFooter = () => {
         >
           <SiGitbook />
         </a>
+        <a
+          href='https://ln.ki/bigsb'
+          target='_blank'
+          className='text-[20px] text-[#4ECB7D]'
+        >
+          <FaLink />
+        </a>
       </div>
       <div className='pr-5 flex items-center gap-2.5'>
-        <p className='text-[13px] mr-2'>
-          $BigSB: {Number(bigsbPriceData?.bigshortbets.usd).toFixed(2)}$
-        </p>
         <a
+          className='px-3 py-1 rounded-xl  bg-[#4ECB7D] text-black font-semibold text-xs transition ease-in hover:bg-[#57db8a]'
+          href='https://www.dextools.io'
+          target='_blank'
+        >
+          <p className='text-[13px]'>
+            $BigSB: {Number(bigsbPriceData?.bigshortbets.usd).toFixed(2)}$
+          </p>
+        </a>
+        {/*  <a
           href='https://coinmarketcap.com/currencies/bigshortbets/'
           target='_blank'
         >
@@ -79,7 +93,7 @@ export const TradingHubFooter = () => {
           target='_blank'
         >
           <Image src='/uniswap.svg' alt='uniswap' height={21} width={21} />
-        </a>
+        </a> */}
       </div>
     </div>
   );
