@@ -77,9 +77,12 @@ export const MarketSelect = ({ markets }: MarketSelectProps) => {
   };
 
   const sortMarketsAlphabeticly = (markets: EnrichedMarketType[]) => {
-    return markets.sort((a, b) => a.name!.localeCompare(b.name!));
+    return markets.sort((a, b) => {
+      if (!a.name) return 1; // a nie ma name, umieść go na końcu
+      if (!b.name) return -1; // b nie ma name, umieść go na końcu
+      return a.name.localeCompare(b.name); // oba mają name, porównaj alfabetycznie
+    });
   };
-
   //FinaSorted / filtered
 
   const sortedActiveMarkets = sortMarketsAlphabeticly(unsortedActiveMarkets);
