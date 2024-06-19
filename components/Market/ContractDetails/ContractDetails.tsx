@@ -35,7 +35,7 @@ export const ContractDetails = () => {
   return (
     <div className={`w-full  bg-[#000211] rounded-lg font-semibold`}>
       <div className='justify-between items-center flex py-2  px-4'>
-        <h3 className='text-sm '>Contract details</h3>
+        <h3 className='text-sm '>Contract Details</h3>
       </div>
 
       <div className='flex flex-col font-normal text-xs'>
@@ -44,7 +44,7 @@ export const ContractDetails = () => {
             className='px-4 py-2 text-tetriary flex justify-between items-center'
             key={key}
           >
-            <p>{data.label}</p>
+            <p className='capitalize'>{data.label}</p>
             <p>{data.value}</p>
           </div>
         ))}

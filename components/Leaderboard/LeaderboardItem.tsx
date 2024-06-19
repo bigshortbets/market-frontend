@@ -1,3 +1,4 @@
+import { currencySymbol } from '@/blockchain/constants';
 import { truncateAddress } from '@/utils/truncateAddress';
 import React from 'react';
 import { FaTrophy } from 'react-icons/fa';
@@ -72,7 +73,9 @@ export const LeaderboardItem = ({
       </div>
       <div className='text-right lg:items-center flex lg:block flex-col  lg:text-[12px] text-[11px]'>
         <div className='lg:hidden text-tetriary'>Score:</div>
-        <div>{Number(score).toFixed(2)} $DOLARS</div>
+        <div>
+          {Number(score).toFixed(2)} ${currencySymbol}
+        </div>
       </div>
     </div>
   );

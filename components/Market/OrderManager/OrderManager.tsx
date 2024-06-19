@@ -193,7 +193,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
         <div className='flex flex-col gap-2 '>
           <div className='flex justify-between items-center font-semibold text-[13px] text-secondary '>
             <div className='flex items-center gap-1'>
-              <p>Order cost</p>
+              <p>Order Cost</p>
               <a
                 data-tooltip-id='order-cost-tooltip'
                 data-tooltip-html={`Mandatory initial deposit, set at ${Number(
@@ -210,7 +210,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           </div>
           <div className='flex justify-between items-center font-semibold text-xs text-tetriary '>
             <div className='flex items-center gap-1'>
-              <p>Order value</p>
+              <p>Order Value</p>
               <a
                 data-tooltip-id='order-value-tooltip'
                 data-tooltip-html={`Represents the total value of the underlying asset.</br> It considers the current price of the asset,</br> the quantity of contracts traded, and the</br> standardized units per contract.`}
@@ -238,9 +238,9 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               : 'bg-[#4ECB7D]'
           } text-[#01083A] text-[13px] font-semibold py-3`}
         >
-          {!address && 'Place order'}
-          {address && isBsbNetwork && 'Place order'}
-          {address && !isBsbNetwork && 'Change network'}
+          {!address && 'Place Order'}
+          {address && isBsbNetwork && 'Place Order'}
+          {address && !isBsbNetwork && 'Change Network'}
         </button>
       </div>
       {/* <FinanceManagerInfo value='Placing orders take your funds ' /> */}

@@ -71,6 +71,13 @@ export const Leaderboard = () => {
     router.push(newUrl, undefined, { shallow: true });
   };
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    params.set('mode', currentRanking);
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    router.push(newUrl, undefined, { shallow: true });
+  }, []);
+
   return (
     <div className='bg-[#111217] relative min-h-screen'>
       <img
@@ -87,12 +94,38 @@ export const Leaderboard = () => {
                 <h2 className='text-white text-lg font-semibold mb-4 lg:mb-0'>
                   Leaderboard 🏆
                 </h2>
-                <button
-                  className='mb-4 lg:mb-0 h-[35px] w-[100px] bg-[#1e2029] text-white text-[13px] rounded-lg font-bold border-[#444650] border-2'
-                  onClick={() => setIsModalOpened(true)}
-                >
-                  Prizes 🎁
-                </button>
+                <div className='flex  gap-3'>
+                  <button
+                    className='mb-4 lg:mb-0 h-[35px] w-[100px] bg-[#1e2029] text-white text-[13px] rounded-lg font-bold border-[#444650] border-2'
+                    onClick={() => setIsModalOpened(true)}
+                  >
+                    Prizes 🎁
+                  </button>
+                  <div className='md:hidden '>
+                    <p className='text-xs text-tetriary font-semibold mb-[2px]'>
+                      Prize Pool Value:
+                    </p>
+                    <p className='text-xs font-semibold'>
+                      100 000 $BigSB ={' '}
+                      {Number(
+                        100_000 * bigsbPriceData?.bigshortbets.usd
+                      ).toFixed(2)}
+                      $
+                    </p>
+                  </div>
+                </div>
+                <div className='hidden md:block'>
+                  <p className='text-xs text-tetriary font-semibold'>
+                    Prize Pool Value:
+                  </p>
+                  <p className='text-xs font-semibold'>
+                    100 000 $BigSB ={' '}
+                    {Number(100_000 * bigsbPriceData?.bigshortbets.usd).toFixed(
+                      2
+                    )}
+                    $
+                  </p>
+                </div>
               </div>
               <div>
                 <div className='lg:flex lg:items-center lg:gap-4'>
@@ -105,7 +138,7 @@ export const Leaderboard = () => {
                           : 'bg-[#23252E] text-white'
                       }`}
                     >
-                      General ranking
+                      General Ranking
                     </button>
                     <button
                       onClick={() => handleRankingChange('usa')}
@@ -115,7 +148,7 @@ export const Leaderboard = () => {
                           : 'bg-[#23252E] text-white'
                       }`}
                     >
-                      Trump/Biden ranking
+                      Election Markets Ranking
                     </button>
                   </div>
                   {/* <div className='h-[35px] mt-4 lg:mt-0 w-[200px] flex bg-[#23252E] rounded-lg'>
@@ -172,9 +205,26 @@ export const Leaderboard = () => {
                 </>
               )}
               {currentRanking === 'usa' && (
-                <p className='text-2xl font-semibold text-center mt-6 opacity-30'>
-                  Coming soon...
-                </p>
+                <>
+                  {' '}
+                  {address && userData && (
+                    <LeaderboardUserItem
+                      address={address}
+                      userData={userData}
+                      bigsbPrice={bigsbPriceData?.bigshortbets.usd}
+                    />
+                  )}
+                  {leaderboardRes &&
+                    leaderboardRes.generalLeaderboards.map((item, key) => (
+                      <LeaderboardItem
+                        position={key + 1}
+                        key={key}
+                        address={item.id}
+                        score={item.balanceChange}
+                        bigsbPrice={bigsbPriceData?.bigshortbets.usd}
+                      />
+                    ))}
+                </>
               )}
             </div>
           </div>

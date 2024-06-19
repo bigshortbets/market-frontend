@@ -7,6 +7,7 @@ import { FaTelegramPlane } from 'react-icons/fa';
 import { FaBook } from 'react-icons/fa';
 import { SiGitbook } from 'react-icons/si';
 import { FaLink } from 'react-icons/fa';
+import { FaBookOpen } from 'react-icons/fa';
 
 export const TradingHubFooter = () => {
   const {
@@ -45,7 +46,7 @@ export const TradingHubFooter = () => {
           target='_blank'
           className='text-[20px] text-[#4ECB7D]'
         >
-          <SiGitbook />
+          <FaBookOpen />
         </a>
         <a
           href='https://ln.ki/bigsb'

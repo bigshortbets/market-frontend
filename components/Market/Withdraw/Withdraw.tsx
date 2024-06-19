@@ -72,7 +72,7 @@ export const Withdraw = () => {
         </p>
         <div className='flex flex-col gap-2 '>
           <div className='flex justify-between items-center text-xs text-tetriary '>
-            <p>Current deposit</p>
+            <p>Current Deposit</p>
             <p>
               {address
                 ? `${Number(selecteMarketMargin?.margin).toFixed(
@@ -82,7 +82,7 @@ export const Withdraw = () => {
             </p>
           </div>
           <div className='flex justify-between items-center text-xs text-tetriary mb-2'>
-            <p>Required deposit</p>
+            <p>Required Deposit</p>
             <p>
               {Number(selecteMarketMargin?.requiredDeposit) > 0 && address
                 ? `${Number(selecteMarketMargin?.requiredDeposit).toFixed(
@@ -120,7 +120,7 @@ export const Withdraw = () => {
         >
           {!address && 'Withdraw'}
           {address && isBsbNetwork && 'Withdraw'}
-          {address && !isBsbNetwork && 'Change network'}
+          {address && !isBsbNetwork && 'Change Network'}
         </button>
       </div>
       {!address && (

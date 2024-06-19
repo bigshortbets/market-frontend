@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Navbar } from '../Navbar/Navbar';
 import { atom, useAtom } from 'jotai';
 import { TradingHub } from './TradingHub/TradingHub';
@@ -25,6 +25,8 @@ import { Collateral } from '@/hooks/useCollateral';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 import { useRouter } from 'next/router';
 import { EnrichedMarketType } from '@/types/marketTypes';
+import { EntryModal } from './EntryModal';
+import { useCookies } from 'react-cookie';
 
 interface MarketProps {
   markets: EnrichedMarketType[];
@@ -104,6 +106,27 @@ export const Market = ({ markets }: MarketProps) => {
     }
   }, [blockHeight, markets, router]);
 
+  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+  const [cookies, setCookie] = useCookies(['hideModal']);
+
+  useEffect(() => {
+    const showModal = cookies.hideModal !== 'true';
+    if (showModal) {
+      setIsModalOpened(true);
+    }
+  }, [cookies]);
+
+  const handleCloseModal = () => {
+    setIsModalOpened(false);
+  };
+
+  const handleNeverShowModal = () => {
+    const farFuture = new Date();
+    farFuture.setFullYear(farFuture.getFullYear() + 10); // Set cookie to expire in 10 years
+    setCookie('hideModal', 'true', { path: '/', expires: farFuture });
+    setIsModalOpened(false);
+  };
+
   /*   useEffect(() => {
     if (chain?.id != bigshortbetsChain.id) {
       switchToBigShortBetsChain();
@@ -179,6 +202,11 @@ export const Market = ({ markets }: MarketProps) => {
           ))}
         </div>
       </div>
+      {/* <EntryModal
+        handleCloseModal={handleCloseModal}
+        isModalOpened={isModalOpened}
+        handleNeverShowModal={handleNeverShowModal}
+      /> */}
     </div>
   );
 };

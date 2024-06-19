@@ -9,6 +9,7 @@ import { currencyFormatter } from '@/utils/currencyFormatter';
 import { currencySymbol } from '@/blockchain/constants';
 import ReactLoading from 'react-loading';
 import { marketsAtom } from '@/store/store';
+import { Tooltip } from 'react-tooltip';
 
 export const MarketInterfaceLowerBar = () => {
   const { address } = useAccount();
@@ -60,7 +61,14 @@ export const MarketInterfaceLowerBar = () => {
       <div className=' hidden sm:flex items-center justify-between '>
         <div className='flex items-center gap-10'>
           <div className=' text-xs '>
-            <p className='text-tetriary font-semibold'>Wallet Balance</p>
+            <a
+              data-tooltip-id='wallet-balance-tooltip'
+              data-tooltip-html={`Source of funds reseved for Initial Margin when Open Order is created. `}
+            >
+              <p className='text-tetriary font-semibold cursor-default'>
+                Wallet Balance
+              </p>
+            </a>
             <p className='text-white'>
               {address
                 ? `${currencyFormatter.format(
@@ -84,7 +92,16 @@ export const MarketInterfaceLowerBar = () => {
           <div className='text-xs'>
             <div className='flex items-center gap-1'>
               {' '}
-              <p className='text-tetriary font-semibold'>Market Margin</p>
+              <a
+                data-tooltip-id='market-margin-tooltip'
+                data-tooltip-html={`Total of:</br>
+Initial Margins of Open Positions in the Current Market</br>
+Margin Added to the Current Market `}
+              >
+                <p className='text-tetriary font-semibold cursor-default'>
+                  Market Margin
+                </p>
+              </a>
             </div>
             <div className='text-white'>
               {markets.length < 1 && '-'}
@@ -114,6 +131,8 @@ export const MarketInterfaceLowerBar = () => {
           />
         </div>
       </div>
+      <Tooltip id='wallet-balance-tooltip' style={{ fontSize: '12px' }} />
+      <Tooltip id='market-margin-tooltip' style={{ fontSize: '12px' }} />
     </div>
   );
 };

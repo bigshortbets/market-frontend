@@ -9,17 +9,16 @@ import { IoClose } from 'react-icons/io5';
 import { useClosePosition } from '@/blockchain/hooks/useClosePosition';
 import { currencySymbol } from '@/blockchain/constants';
 
-interface PrizeModalProps {
+interface EntryModalProps {
   handleCloseModal: () => void;
   isModalOpened: boolean;
-  bigsbPrice: number | undefined;
+  handleNeverShowModal: () => void;
 }
-
-export const PrizesModal = ({
+export const EntryModal = ({
   isModalOpened,
   handleCloseModal,
-  bigsbPrice,
-}: PrizeModalProps) => {
+  handleNeverShowModal,
+}: EntryModalProps) => {
   return (
     <>
       <Transition appear show={isModalOpened} as={Fragment}>
@@ -47,19 +46,20 @@ export const PrizesModal = ({
                 leaveFrom='opacity-100 scale-100'
                 leaveTo='opacity-0 scale-95'
               >
-                <Dialog.Panel className='w-full max-w-[350px] transform overflow-hidden  bg-[#191B24] border-[#444650] border rounded-[10px] p-6 text-left align-middle shadow-xl transition-all'>
-                  <div className='flex justify-between items-center mb-6'>
+                <Dialog.Panel className='w-full max-w-[450px] transform overflow-hidden  bg-[#191B24] border-[#444650] border rounded-[10px] p-6 text-left align-middle shadow-xl transition-all'>
+                  <div className='flex justify-between items-start mb-6'>
                     <Dialog.Title
                       as='h3'
                       className='text-lg font-medium leading-6 text-white'
                     >
-                      Prizes 🎁
+                      Welcome to the BigShortBet$ P2P Market Trading
+                      Competition!
                     </Dialog.Title>
                     <button className='text-xl' onClick={handleCloseModal}>
                       <IoClose />
                     </button>
                   </div>
-                  <div className='gap-2.5 flex flex-col mb-4'>
+                  {/* <div className='gap-2.5 flex flex-col mb-4'>
                     <h2 className='mb-1 font-semibold'>General Ranking:</h2>
                     <p className='text-xs'>{`1st place: 10,000 BigSB ($${
                       bigsbPrice && Number(10_000 * bigsbPrice).toFixed(2)
@@ -92,8 +92,8 @@ export const PrizesModal = ({
                         bigsbPrice && Number(50_000 * bigsbPrice).toFixed(2)
                       })`}
                     </p>
-                  </div>
-                  <hr className='text-gray-200 bg-gray-900 h-[1px] opacity-[20%] mb-4' />
+                  </div> */}
+                  {/* <hr className='text-gray-200 bg-gray-900 h-[1px] opacity-[20%] mb-4' />
                   <div className='gap-2.5 flex flex-col'>
                     <h2 className='mb-1 font-semibold'>
                       Election Markets Ranking:
@@ -136,7 +136,7 @@ export const PrizesModal = ({
                     >
                       Read more
                     </a>
-                  </div>
+                  </div> */}
                 </Dialog.Panel>
               </Transition.Child>
             </div>
