@@ -58,7 +58,7 @@ export const TradingHubFooter = () => {
       <div className='pr-5 flex items-center gap-2.5'>
         <a
           className='px-3 py-1 rounded-xl  bg-[#4ECB7D] text-black font-semibold text-xs transition ease-in hover:bg-[#57db8a]'
-          href='https://www.dextools.io'
+          href='https://www.dextools.io/app/ether/pair-explorer/0x149148acc3b06b8cc73af3a10e84189243a35925'
           target='_blank'
         >
           <p className='text-[13px]'>
