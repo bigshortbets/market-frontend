@@ -22,10 +22,12 @@ export const FinanceManagerTab = ({
         isActive
           ? 'bg-[#444650]'
           : 'bg-[#23252E] text-tetriary disabled:bg-[#141414]'
-      }`}
+      } `}
       onClick={() => setFinanceManagerState(value)}
     >
-      <p className='capitalize'>{value}</p>
+      <p className='capitalize'>
+        {/* {value === 'claim' ? 'Get Free 10K' : value} */}
+      </p>
     </button>
   );
 };

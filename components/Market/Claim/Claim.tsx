@@ -32,6 +32,9 @@ export const Claim = () => {
       refetchIsMinted();
       refetchAvailableMintData();
       setMintLoading(false);
+      toast.success('Mint successful', {
+        duration: 4000,
+      });
     },
   });
 
@@ -50,6 +53,9 @@ export const Claim = () => {
       refetchIsMinted();
       refetchAvailableMintData();
       setMintLoading(false);
+      toast.success('Mint successful', {
+        duration: 4000,
+      });
     },
   });
 
@@ -100,7 +106,7 @@ export const Claim = () => {
 
   const buttonText = hasUserMinted
     ? `Claim Bonus $BigSB ${currencySymbol}`
-    : `Claim ${currencySymbol}`;
+    : `Claim Free 10K ${currencySymbol}`;
 
   const buttonDisabled =
     !availableMintData || Number(availableMintData?.data?.availableMint) <= 0;

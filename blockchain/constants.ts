@@ -71,4 +71,4 @@ export const sepo = /*#__PURE__*/ defineChain({
 });
 
 export const mintMessage =
-  'I hereby claim my $DOLARS from the specified address. By signing this message, I confirm that I am the rightful owner of this address.';
+  'I hereby claim my $DOLARZ from the specified address. By signing this message, I confirm that I am the rightful owner of this address.';

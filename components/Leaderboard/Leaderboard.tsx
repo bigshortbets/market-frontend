@@ -7,12 +7,21 @@ import { FaSearch } from 'react-icons/fa';
 import { PrizesModal } from './PrizesModal';
 import { useQuery as gqlQuery } from '@apollo/client';
 
-import { LeaderboardResponse, LeaderboardType } from '@/types/leaderboardTypes';
-import { LEADERBOARD_QUERY } from '@/requests/queries';
+import {
+  ElectionLeaderboardResponse,
+  ElectionLeaderboardType,
+  LeaderboardResponse,
+  LeaderboardType,
+} from '@/types/leaderboardTypes';
+import {
+  LEADERBOARD_ELECTION_QUERY,
+  LEADERBOARD_QUERY,
+} from '@/requests/queries';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { LeaderboardUserItem } from './LeaderboardUserItem';
+import { LeaderboardElectionUserItem } from './LeaderboardElectionUserItem';
 
 export const Leaderboard = () => {
   const { address } = useAccount();
@@ -26,6 +35,9 @@ export const Leaderboard = () => {
 
   const { data: leaderboardRes } =
     gqlQuery<LeaderboardResponse>(LEADERBOARD_QUERY);
+
+  const { data: electionLeaderboardRes } =
+    gqlQuery<ElectionLeaderboardResponse>(LEADERBOARD_ELECTION_QUERY);
 
   const [currentRanking, setCurrentRanking] = useState<string>('general');
 
@@ -48,6 +60,15 @@ export const Leaderboard = () => {
     id: string
   ): { data: LeaderboardType | undefined; index: number } => {
     const index = leaderboard.findIndex((record) => record.id === id);
+    const data = index !== -1 ? leaderboard[index] : undefined;
+    return { data, index };
+  };
+
+  const findUserElectionData = (
+    leaderboard: ElectionLeaderboardType[],
+    id: string
+  ): { data: ElectionLeaderboardType | undefined; index: number } => {
+    const index = leaderboard.findIndex((record) => record.user === id);
     const data = index !== -1 ? leaderboard[index] : undefined;
     return { data, index };
   };
@@ -78,8 +99,29 @@ export const Leaderboard = () => {
     router.push(newUrl, undefined, { shallow: true });
   }, []);
 
+  const aggregatedBalances = (
+    electionLeaderboardRes?.userBalances ?? []
+  ).reduce((acc, { balanceChange, user }) => {
+    if (acc[user]) {
+      acc[user] += balanceChange;
+    } else {
+      acc[user] = balanceChange;
+    }
+    return acc;
+  }, {} as Record<string, number>);
+
+  const result = Object.entries(aggregatedBalances).map(
+    ([user, balanceChange]) => ({ user, balanceChange })
+  );
+
+  const userDataElection =
+    address && electionLeaderboardRes && findUserElectionData(result, address);
+
   return (
-    <div className='bg-[#111217] relative min-h-screen'>
+    <div
+      className='bg-[#111217] relative min-h-screen'
+      onClick={() => console.log(electionLeaderboardRes)}
+    >
       <img
         src='/chartbg.svg'
         alt=''
@@ -207,19 +249,19 @@ export const Leaderboard = () => {
               {currentRanking === 'usa' && (
                 <>
                   {' '}
-                  {address && userData && (
-                    <LeaderboardUserItem
+                  {address && userDataElection && (
+                    <LeaderboardElectionUserItem
                       address={address}
-                      userData={userData}
+                      userData={userDataElection}
                       bigsbPrice={bigsbPriceData?.bigshortbets.usd}
                     />
                   )}
-                  {leaderboardRes &&
-                    leaderboardRes.generalLeaderboards.map((item, key) => (
+                  {result &&
+                    result.map((item, key) => (
                       <LeaderboardItem
                         position={key + 1}
                         key={key}
-                        address={item.id}
+                        address={item.user}
                         score={item.balanceChange}
                         bigsbPrice={bigsbPriceData?.bigshortbets.usd}
                       />

@@ -181,3 +181,14 @@ export const LEADERBOARD_QUERY = gql`
     }
   }
 `;
+
+/* Query for getting leaderboard data for election */
+
+export const LEADERBOARD_ELECTION_QUERY = gql`
+  query LeaderboardElection {
+    userBalances(where: { market: { ticker_startsWith: "BIGSB_EL" } }) {
+      balanceChange
+      user
+    }
+  }
+`;

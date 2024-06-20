@@ -30,7 +30,7 @@ export const MintButton = ({
         hasMinted && !disabled && 'animate-pulse'
       }`}
       onClick={handleAction}
-      disabled={disabled}
+      /*    disabled={disabled} */
     >
       {mintLoading ? (
         <ReactLoading type='spin' height={20} width={20} color='black' />
