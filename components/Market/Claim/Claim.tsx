@@ -134,8 +134,8 @@ export const Claim = ({
               : `Claim 10,000 DOLARZ to participate in the trading competition. This can be done once per address.`}
           </p>
           <p className='text-xs'>
-            For security reasons, only addresses with at least one mainnet
-            transaction are eligible.
+            For security reasons, only addresses with at least one transaction
+            on the Ethereum mainnet are eligible.
           </p>
           {hasUserMinted && availableMintData && (
             <p className='text-xs font-semibold mt-4'>
