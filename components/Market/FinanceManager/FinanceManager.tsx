@@ -20,7 +20,7 @@ interface FinanceManagerProps {
 const tabs = ['order', 'deposit', 'withdraw', 'claim' /*, 'bridge' */] as const;
 
 export type FinanceManagerTabsType = (typeof tabs)[number];
-export const financeManagerAtom = atom<FinanceManagerTabsType>('order');
+export const financeManagerAtom = atom<FinanceManagerTabsType>('claim');
 
 export const FinanceManager = ({ markets }: FinanceManagerProps) => {
   const [financeManagerState] = useAtom(financeManagerAtom);
