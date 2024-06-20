@@ -25,9 +25,7 @@ export const FinanceManagerTab = ({
       } `}
       onClick={() => setFinanceManagerState(value)}
     >
-      <p className='capitalize'>
-        {/* {value === 'claim' ? 'Get Free 10K' : value} */}
-      </p>
+      <p className='capitalize'>{value}</p>
     </button>
   );
 };
