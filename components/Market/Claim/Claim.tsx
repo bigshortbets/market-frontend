@@ -3,13 +3,31 @@ import { MintButton } from './MintButton';
 import { currencySymbol, mintMessage } from '@/blockchain/constants';
 import { useAccount, useSignMessage } from 'wagmi';
 import { MintData, bridgeApi } from '@/requests/bidgeApi/bridgeApi';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  useMutation,
+  useQuery,
+} from '@tanstack/react-query';
 import { formatEther } from 'viem';
 import toast from 'react-hot-toast';
+import { AxiosResponse } from 'axios';
 
-export const Claim = () => {
+interface ClaimProps {
+  hasUserMinted: boolean;
+  setHasUserMinted: (val: boolean) => void;
+  refetchIsMinted: (
+    options?: RefetchOptions | undefined
+  ) => Promise<QueryObserverResult<AxiosResponse<any, any>, Error>>;
+}
+
+export const Claim = ({
+  hasUserMinted,
+  setHasUserMinted,
+  refetchIsMinted,
+}: ClaimProps) => {
   const [mintLoading, setMintLoading] = useState<boolean>(false);
-  const [hasUserMinted, setHasUserMinted] = useState<boolean>(false);
+
   const { address } = useAccount();
   const {
     signMessage,
@@ -38,6 +56,8 @@ export const Claim = () => {
     },
   });
 
+  const obj = { userAddress: address as string };
+
   const bigsbMintMutation = useMutation({
     mutationFn: bridgeApi.bigsbMint,
     onError: (error: any) => {
@@ -57,13 +77,6 @@ export const Claim = () => {
         duration: 4000,
       });
     },
-  });
-
-  const obj = { userAddress: address as string };
-
-  const { data: isMintedData, refetch: refetchIsMinted } = useQuery({
-    queryKey: ['isMinted'],
-    queryFn: () => bridgeApi.isMinted(obj),
   });
 
   const { data: availableMintData, refetch: refetchAvailableMintData } =
@@ -92,11 +105,9 @@ export const Claim = () => {
     }
   }, [mintStatus]);
 
-  const userMinted = isMintedData?.data ? true : false;
-
   useEffect(() => {
-    setHasUserMinted(userMinted);
-  }, [userMinted]);
+    refetchIsMinted();
+  });
 
   const handleMint = () => {
     signMessage({ message: mintMessage });

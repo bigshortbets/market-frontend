@@ -22,6 +22,9 @@ export const MintButton = ({
   hasMinted,
   disabled,
 }: MintButtonProps) => {
+  const { address } = useAccount();
+
+  const text = address ? buttonText : 'Connect wallet';
   return (
     <button
       className={` ${
@@ -30,12 +33,12 @@ export const MintButton = ({
         hasMinted && !disabled && 'animate-pulse'
       }`}
       onClick={handleAction}
-      /*    disabled={disabled} */
+      disabled={!address}
     >
       {mintLoading ? (
         <ReactLoading type='spin' height={20} width={20} color='black' />
       ) : (
-        buttonText
+        text
       )}
     </button>
   );

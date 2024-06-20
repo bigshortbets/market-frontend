@@ -8,28 +8,51 @@ import { ContractDetails } from '../ContractDetails/ContractDetails';
 import { Bridge } from '../Bridge/Bridge';
 import { MarketInterfaceLowerBar } from '../MarketInteface/MarketInterfaceLowerBar';
 import { Claim } from '../Claim/Claim';
+import { useEffect, useState } from 'react';
+import { bridgeApi } from '@/requests/bidgeApi/bridgeApi';
+import { useQuery } from '@tanstack/react-query';
+import { useAccount } from 'wagmi';
 
 interface FinanceManagerProps {
   markets: EnrichedMarketType[];
 }
 
-const tabs = [
-  'order',
-  'deposit',
-  'withdraw' /* , 'claim' */ /*, 'bridge' */,
-] as const;
+const tabs = ['order', 'deposit', 'withdraw', 'claim' /*, 'bridge' */] as const;
 
 export type FinanceManagerTabsType = (typeof tabs)[number];
 export const financeManagerAtom = atom<FinanceManagerTabsType>('order');
 
 export const FinanceManager = ({ markets }: FinanceManagerProps) => {
   const [financeManagerState] = useAtom(financeManagerAtom);
+  const [hasUserMinted, setHasUserMinted] = useState<boolean>(false);
+  const { address } = useAccount();
+
+  const obj = { userAddress: address as string };
+
+  const { data: isMintedData, refetch: refetchIsMinted } = useQuery({
+    queryKey: ['isMinted'],
+    queryFn: () => bridgeApi.isMinted(obj),
+  });
+
+  const userMinted = isMintedData?.data ? true : false;
+
+  useEffect(() => {
+    setHasUserMinted(userMinted);
+  }, [userMinted]);
+
+  useEffect(() => {
+    refetchIsMinted();
+  }, [address]);
 
   const noMarkets = markets.length < 0;
 
   const showContractDetails = ['order', 'deposit', 'withdraw'].includes(
     financeManagerState
   );
+
+  const handleSetUserMinted = (val: boolean) => {
+    setHasUserMinted(val);
+  };
 
   return (
     <div
@@ -39,14 +62,25 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
       <div className='flex flex-col '>
         <div className='py-3 px-2.5 border-b border-[#444650] flex items-center gap-2'>
           {tabs.map((tab, key) => (
-            <FinanceManagerTab value={tab} key={key} disabled={noMarkets} />
+            <FinanceManagerTab
+              value={tab}
+              key={key}
+              disabled={noMarkets}
+              hasUserMinted={hasUserMinted}
+            />
           ))}
         </div>
         {financeManagerState === 'order' && <OrderManager markets={markets} />}
         {financeManagerState === 'deposit' && <Deposit markets={markets} />}
         {financeManagerState === 'withdraw' && <Withdraw />}
         {/* {financeManagerState === 'bridge' && <Bridge />} */}
-        {/*  {financeManagerState === 'claim' && <Claim />} */}
+        {financeManagerState === 'claim' && (
+          <Claim
+            refetchIsMinted={refetchIsMinted}
+            hasUserMinted={hasUserMinted}
+            setHasUserMinted={handleSetUserMinted}
+          />
+        )}
       </div>
       {!noMarkets && showContractDetails && (
         <div className='px-[10px] pb-2'>
