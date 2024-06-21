@@ -23,7 +23,7 @@ export const LeaderboardElectionUserItem = ({
   const { address: metamaskAddres } = useAccount();
   const position = userData.index + 1;
   return (
-    <div className='w-full rounded-lg py-4 lg:py-2  lg:h-[48px] mb-6 lg:mb-4 bg-[#23252E] flex items-center px-4 justify-between even:bg-[#1e2029]'>
+    <div className='w-full rounded-lg py-4 lg:py-2  lg:h-[48px] mb-6 lg:mb-4 flex items-center px-4 justify-between bg-[#4ECB7D] text-black font-semibold'>
       <div className='lg:flex'>
         <div className='flex  items-center mb-1 lg:mb-0'>
           <p className='lg:hidden text-xs lg:text-[13px] mr-1'>Position:</p>
@@ -49,7 +49,7 @@ export const LeaderboardElectionUserItem = ({
             </p>
           </div>
         </div>
-        <div className=' items-center  text-[10px] lg:w-[150px] flex text-tetriary'>
+        <div className=' items-center  text-[10px] lg:w-[150px] flex text-black'>
           <span className='lg:hidden mr-1'>Prize:</span>
           {position === 1 &&
             `10,000 BIGSB (${
@@ -85,7 +85,7 @@ export const LeaderboardElectionUserItem = ({
         </div>
       </div>
       <div className='text-right lg:items-center flex lg:block flex-col  lg:text-[12px] text-[11px]'>
-        <div className='lg:hidden text-tetriary'>Score:</div>
+        <div className='lg:hidden text-black'>Score:</div>
         <div>
           {userData.data
             ? `${Number(userData.data.balanceChange).toFixed(

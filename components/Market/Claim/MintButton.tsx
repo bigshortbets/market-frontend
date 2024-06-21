@@ -24,7 +24,6 @@ export const MintButton = ({
 }: MintButtonProps) => {
   const { address } = useAccount();
 
-  const text = address ? buttonText : 'Connect wallet';
   return (
     <button
       className={` ${
@@ -38,7 +37,7 @@ export const MintButton = ({
       {mintLoading ? (
         <ReactLoading type='spin' height={20} width={20} color='black' />
       ) : (
-        text
+        buttonText
       )}
     </button>
   );

@@ -12,6 +12,7 @@ import {
 import { formatEther } from 'viem';
 import toast from 'react-hot-toast';
 import { AxiosResponse } from 'axios';
+import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
 
 interface ClaimProps {
   hasUserMinted: boolean;
@@ -152,6 +153,9 @@ export const Claim = ({
           hasMinted={hasUserMinted}
         />
       </div>
+      {!address && (
+        <FinanceManagerWarning error='Connect your wallet to claim funds.' />
+      )}
     </div>
   );
 };
