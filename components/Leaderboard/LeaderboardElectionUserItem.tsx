@@ -7,6 +7,7 @@ import { convertToSS58 } from '@/utils/convertToSS58';
 import { truncateAddress } from '@/utils/truncateAddress';
 import React from 'react';
 import { FaTrophy } from 'react-icons/fa6';
+import { useAccount } from 'wagmi';
 
 interface LeaderboardElectionUserItem {
   userData: { data: ElectionLeaderboardType | undefined; index: number };
@@ -19,6 +20,7 @@ export const LeaderboardElectionUserItem = ({
   address,
   bigsbPrice,
 }: LeaderboardElectionUserItem) => {
+  const { address: metamaskAddres } = useAccount();
   const position = userData.index + 1;
   return (
     <div className='w-full rounded-lg py-4 lg:py-2  lg:h-[48px] mb-6 lg:mb-4 bg-[#23252E] flex items-center px-4 justify-between even:bg-[#1e2029]'>
@@ -28,19 +30,22 @@ export const LeaderboardElectionUserItem = ({
           <div className='lg:w-[100px] items-center  text-xs lg:text-[13px] mr-2 lg:mr-0 '>
             {userData.data ? position : '-'}
           </div>
-          <div className='  text-[13px] flex items-center gap-2 w-[130px]'>
+          <div className='  text-[13px] flex items-center gap-2 w-[170px]'>
             {position === 1 && <FaTrophy className='text-[#9ca150]' />}
             {position === 2 && <FaTrophy className='text-[#c1c2b4]' />}
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}
             <p className='hidden lg:block'>{`${truncateAddress(
-              convertToSS58(address)
-            )} (You)`}</p>
+              metamaskAddres as string
+            )} (${truncateAddress(convertToSS58(address))})`}</p>
           </div>
         </div>
         <div className='lg:hidden mb-1'>
           <div className='flex items-center'>
             <p className='lg:hidden text-xs mr-1'>
-              Address: {`${truncateAddress(convertToSS58(address))} (You)`}
+              Address:{' '}
+              {`${truncateAddress(metamaskAddres as string)} (${truncateAddress(
+                convertToSS58(address)
+              )})`}
             </p>
           </div>
         </div>

@@ -24,7 +24,7 @@ export const LeaderboardItem = ({
           <div className='lg:w-[100px] items-center  text-xs lg:text-[13px] mr-2 lg:mr-0 '>
             {position}
           </div>
-          <div className='  text-[13px] flex items-center gap-2 w-[130px]'>
+          <div className='  text-[13px] flex items-center gap-2 w-[170px]'>
             {position === 1 && <FaTrophy className='text-[#9ca150]' />}
             {position === 2 && <FaTrophy className='text-[#c1c2b4]' />}
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}

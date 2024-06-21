@@ -216,7 +216,7 @@ export const Leaderboard = () => {
                   <div className='w-[100px] items-center text-[13px] font-semibold'>
                     Position
                   </div>
-                  <div className='w-[130px] items-center text-[13px] font-semibold'>
+                  <div className='w-[170px] items-center text-[13px] font-semibold'>
                     Address
                   </div>
                   <div className='w-[150px] items-center text-[13px] font-semibold'>
