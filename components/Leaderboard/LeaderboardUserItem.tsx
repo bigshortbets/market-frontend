@@ -64,14 +64,15 @@ export const LeaderboardUserItem = ({
               bigsbPrice && Number(2_000 * bigsbPrice).toFixed(2)
             }$)`}
           {position > 5 &&
-            position <= 50 &&
-            `1,000 BIGSB (${
-              bigsbPrice && Number(1_000 * bigsbPrice).toFixed(2)
-            }$)`}
-          {position >= 51 &&
-            position <= 100 &&
+            position <= 10 &&
+            `700 BIGSB (${bigsbPrice && Number(700 * bigsbPrice).toFixed(2)}$)`}
+          {position >= 11 &&
+            position <= 15 &&
             `500 BIGSB (${bigsbPrice && Number(500 * bigsbPrice).toFixed(2)}$)`}
-          {position > 100 && `-`}
+          {position >= 16 &&
+            position <= 50 &&
+            `200 BIGSB (${bigsbPrice && Number(200 * bigsbPrice).toFixed(2)}$)`}
+          {position > 50 && `-`}
           {position === 0 && `-`}
         </div>
       </div>
