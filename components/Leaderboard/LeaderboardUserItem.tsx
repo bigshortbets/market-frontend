@@ -26,7 +26,7 @@ export const LeaderboardUserItem = ({
         <div className='flex  items-center mb-1 lg:mb-0'>
           <p className='lg:hidden text-xs lg:text-[13px] mr-1'>Position:</p>
           <div className='lg:w-[100px] items-center  text-xs lg:text-[13px] mr-2 lg:mr-0 '>
-            {userData.data ? position : '-'}
+            {userData.data ? `${position} (You)` : '-'}
           </div>
           <div className='  text-[13px] flex items-center gap-2 w-[170px]'>
             {position === 1 && <FaTrophy className='text-[#9ca150]' />}
