@@ -1,3 +1,4 @@
+import { currencySymbol } from '@/blockchain/constants';
 import { LeaderboardType } from '@/types/leaderboardTypes';
 import { convertToSS58 } from '@/utils/convertToSS58';
 import { truncateAddress } from '@/utils/truncateAddress';
@@ -77,7 +78,9 @@ export const LeaderboardUserItem = ({
       <div className='text-right lg:items-center flex lg:block flex-col  lg:text-[12px] text-[11px]'>
         <div className='lg:hidden text-tetriary'>Score:</div>
         <div>
-          {userData.data ? `${userData.data.balanceChange} $DOLARS` : '-'}
+          {userData.data
+            ? `${userData.data.balanceChange} $${currencySymbol}`
+            : '-'}
         </div>
       </div>
     </div>

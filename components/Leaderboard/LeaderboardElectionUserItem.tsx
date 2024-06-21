@@ -1,3 +1,4 @@
+import { currencySymbol } from '@/blockchain/constants';
 import {
   ElectionLeaderboardType,
   LeaderboardType,
@@ -80,7 +81,9 @@ export const LeaderboardElectionUserItem = ({
       <div className='text-right lg:items-center flex lg:block flex-col  lg:text-[12px] text-[11px]'>
         <div className='lg:hidden text-tetriary'>Score:</div>
         <div>
-          {userData.data ? `${userData.data.balanceChange} $DOLARS` : '-'}
+          {userData.data
+            ? `${userData.data.balanceChange} $${currencySymbol}`
+            : '-'}
         </div>
       </div>
     </div>
