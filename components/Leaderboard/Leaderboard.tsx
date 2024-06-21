@@ -22,6 +22,7 @@ import axios from 'axios';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { LeaderboardUserItem } from './LeaderboardUserItem';
 import { LeaderboardElectionUserItem } from './LeaderboardElectionUserItem';
+import { convertToSS58 } from '@/utils/convertToSS58';
 
 export const Leaderboard = () => {
   const { address } = useAccount();
@@ -59,16 +60,8 @@ export const Leaderboard = () => {
     leaderboard: LeaderboardType[],
     id: string
   ): { data: LeaderboardType | undefined; index: number } => {
-    const index = leaderboard.findIndex((record) => record.id === id);
-    const data = index !== -1 ? leaderboard[index] : undefined;
-    return { data, index };
-  };
-
-  const findUserElectionData = (
-    leaderboard: ElectionLeaderboardType[],
-    id: string
-  ): { data: ElectionLeaderboardType | undefined; index: number } => {
-    const index = leaderboard.findIndex((record) => record.user === id);
+    const ss58Id = convertToSS58(id);
+    const index = leaderboard.findIndex((record) => record.id === ss58Id);
     const data = index !== -1 ? leaderboard[index] : undefined;
     return { data, index };
   };
@@ -77,6 +70,16 @@ export const Leaderboard = () => {
     address &&
     leaderboardRes &&
     findUserData(leaderboardRes.generalLeaderboards, address);
+
+  const findUserElectionData = (
+    leaderboard: ElectionLeaderboardType[],
+    id: string
+  ): { data: ElectionLeaderboardType | undefined; index: number } => {
+    const ss58Id = convertToSS58(id);
+    const index = leaderboard.findIndex((record) => record.user === ss58Id);
+    const data = index !== -1 ? leaderboard[index] : undefined;
+    return { data, index };
+  };
 
   useEffect(() => {
     if (query.mode && query.mode !== currentRanking) {
@@ -120,7 +123,7 @@ export const Leaderboard = () => {
   return (
     <div
       className='bg-[#111217] relative min-h-screen'
-      onClick={() => console.log(result)}
+      onClick={() => console.log(userData)}
     >
       <img
         src='/chartbg.svg'
