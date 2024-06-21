@@ -209,8 +209,9 @@ export const TradingHubAggregatedPosition = ({
                     />
                   )}
 
-                  {marketId != '9223372036854776644' &&
-                    marketId != '9223372036854776643' && (
+                  {marketId != '9223372036854775819' &&
+                    marketId != '9223372036854775820' &&
+                    marketId != '9223372036854775821' && (
                       <a
                         className='text-tetriary text-[16px] hover:text-gray-400'
                         href={`https://tradingview.com/symbols/${ticker}`}
