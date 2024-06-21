@@ -105,10 +105,11 @@ export const Leaderboard = () => {
   const aggregatedBalances = (
     electionLeaderboardRes?.userBalances ?? []
   ).reduce((acc, { balanceChange, user }) => {
+    const change = Number(balanceChange); // Explicitly convert to number
     if (acc[user]) {
-      acc[user] += balanceChange;
+      acc[user] += change;
     } else {
-      acc[user] = balanceChange;
+      acc[user] = change;
     }
     return acc;
   }, {} as Record<string, number>);
@@ -123,7 +124,7 @@ export const Leaderboard = () => {
   return (
     <div
       className='bg-[#111217] relative min-h-screen'
-      onClick={() => console.log(userData)}
+      onClick={() => console.log(electionLeaderboardRes)}
     >
       <img
         src='/chartbg.svg'
