@@ -110,9 +110,9 @@ export const Leaderboard = () => {
     return acc;
   }, {} as Record<string, number>);
 
-  const result = Object.entries(aggregatedBalances).map(
-    ([user, balanceChange]) => ({ user, balanceChange })
-  );
+  const result = Object.entries(aggregatedBalances)
+    .map(([user, balanceChange]) => ({ user, balanceChange }))
+    .sort((a, b) => b.balanceChange - a.balanceChange);
 
   const userDataElection =
     address && electionLeaderboardRes && findUserElectionData(result, address);
@@ -120,7 +120,7 @@ export const Leaderboard = () => {
   return (
     <div
       className='bg-[#111217] relative min-h-screen'
-      onClick={() => console.log(electionLeaderboardRes)}
+      onClick={() => console.log(result)}
     >
       <img
         src='/chartbg.svg'
