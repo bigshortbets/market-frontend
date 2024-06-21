@@ -79,7 +79,9 @@ export const LeaderboardUserItem = ({
         <div className='lg:hidden text-tetriary'>Score:</div>
         <div>
           {userData.data
-            ? `${userData.data.balanceChange} $${currencySymbol}`
+            ? `${Number(userData.data.balanceChange).toFixed(
+                2
+              )} $${currencySymbol}`
             : '-'}
         </div>
       </div>
