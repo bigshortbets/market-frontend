@@ -107,7 +107,7 @@ export const Claim = ({
 
   useEffect(() => {
     refetchIsMinted();
-  });
+  }, []);
 
   const handleMint = () => {
     signMessage({ message: mintMessage });
