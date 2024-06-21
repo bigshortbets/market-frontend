@@ -1,4 +1,5 @@
 import { LeaderboardType } from '@/types/leaderboardTypes';
+import { convertToSS58 } from '@/utils/convertToSS58';
 import { truncateAddress } from '@/utils/truncateAddress';
 import React from 'react';
 import { FaTrophy } from 'react-icons/fa6';
@@ -28,14 +29,14 @@ export const LeaderboardUserItem = ({
             {position === 2 && <FaTrophy className='text-[#c1c2b4]' />}
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}
             <p className='hidden lg:block'>{`${truncateAddress(
-              address
+              convertToSS58(address)
             )} (You)`}</p>
           </div>
         </div>
         <div className='lg:hidden mb-1'>
           <div className='flex items-center'>
             <p className='lg:hidden text-xs mr-1'>
-              Address: {`${truncateAddress(address)} (You)`}
+              Address: {`${truncateAddress(convertToSS58(address))} (You)`}
             </p>
           </div>
         </div>
