@@ -19,7 +19,7 @@ export const LeaderboardUserItem = ({
 }: LeaderboardUserItem) => {
   const position = userData.index + 1;
 
-  const { address: metamaskAddres } = useAccount();
+  const { address: h160address } = useAccount();
   return (
     <div className='w-full rounded-lg py-4 lg:py-2  lg:h-[48px] mb-6 lg:mb-4 bg-[#4ECB7D] flex items-center px-4 justify-between text-black font-semibold'>
       <div className='lg:flex'>
@@ -34,7 +34,7 @@ export const LeaderboardUserItem = ({
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}
             <p className='hidden lg:block'>
               {' '}
-              {`${truncateAddress(metamaskAddres as string)} (${truncateAddress(
+              {`${truncateAddress(h160address as string)} (${truncateAddress(
                 convertToSS58(address)
               )})`}
             </p>
@@ -44,7 +44,7 @@ export const LeaderboardUserItem = ({
           <div className='flex items-center'>
             <p className='lg:hidden text-xs mr-1'>
               Address:{' '}
-              {`${truncateAddress(metamaskAddres as string)} (${truncateAddress(
+              {`${truncateAddress(h160address as string)} (${truncateAddress(
                 convertToSS58(address)
               )})`}
             </p>

@@ -1,7 +1,9 @@
 import { currencySymbol } from '@/blockchain/constants';
+import { convertToSS58 } from '@/utils/convertToSS58';
 import { truncateAddress } from '@/utils/truncateAddress';
 import React from 'react';
 import { FaTrophy } from 'react-icons/fa';
+import { useAccount } from 'wagmi';
 
 interface LeaderboardItemProps {
   position: number;
@@ -16,8 +18,17 @@ export const LeaderboardItem = ({
   score,
   bigsbPrice,
 }: LeaderboardItemProps) => {
+  const { address: h160address } = useAccount();
+
+  const isUser = convertToSS58(h160address as string) === address;
   return (
-    <div className='w-full rounded-lg py-4 lg:py-2  lg:h-[48px] bg-[#23252E] flex items-center px-4 justify-between even:bg-[#1e2029]'>
+    <div
+      className={`w-full rounded-lg py-4 lg:py-2  lg:h-[48px] bg-[#23252E] flex items-center px-4 justify-between  ${
+        isUser
+          ? 'bg-[#4ECB7D] text-black font-semibold'
+          : 'even:bg-[#1e2029] bg-[#23252E]'
+      }`}
+    >
       <div className='lg:flex'>
         <div className='flex  items-center mb-1 lg:mb-0'>
           <p className='lg:hidden text-xs lg:text-[13px] mr-1'>Position:</p>
@@ -38,7 +49,11 @@ export const LeaderboardItem = ({
             </p>
           </div>
         </div>
-        <div className=' items-center  text-[10px] lg:w-[150px] flex text-tetriary'>
+        <div
+          className={`items-center  text-[10px] lg:w-[150px] flex  ${
+            !isUser ? 'text-tetriary' : 'text-black'
+          }`}
+        >
           <span className='lg:hidden mr-1'>Prize: {}</span>
           {position === 1 &&
             `10,000 BIGSB (${

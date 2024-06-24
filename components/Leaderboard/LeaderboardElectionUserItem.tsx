@@ -20,7 +20,7 @@ export const LeaderboardElectionUserItem = ({
   address,
   bigsbPrice,
 }: LeaderboardElectionUserItem) => {
-  const { address: metamaskAddres } = useAccount();
+  const { address: h160address } = useAccount();
   const position = userData.index + 1;
   return (
     <div className='w-full rounded-lg py-4 lg:py-2  lg:h-[48px] mb-6 lg:mb-4 flex items-center px-4 justify-between bg-[#4ECB7D] text-black font-semibold'>
@@ -35,7 +35,7 @@ export const LeaderboardElectionUserItem = ({
             {position === 2 && <FaTrophy className='text-[#c1c2b4]' />}
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}
             <p className='hidden lg:block'>{`${truncateAddress(
-              metamaskAddres as string
+              h160address as string
             )} (${truncateAddress(convertToSS58(address))})`}</p>
           </div>
         </div>
@@ -43,7 +43,7 @@ export const LeaderboardElectionUserItem = ({
           <div className='flex items-center'>
             <p className='lg:hidden text-xs mr-1'>
               Address:{' '}
-              {`${truncateAddress(metamaskAddres as string)} (${truncateAddress(
+              {`${truncateAddress(h160address as string)} (${truncateAddress(
                 convertToSS58(address)
               )})`}
             </p>
