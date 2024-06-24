@@ -122,10 +122,7 @@ export const Leaderboard = () => {
     address && electionLeaderboardRes && findUserElectionData(result, address);
 
   return (
-    <div
-      className='bg-[#111217] relative min-h-screen'
-      onClick={() => console.log(electionLeaderboardRes)}
-    >
+    <div className='bg-[#111217] relative min-h-screen'>
       <img
         src='/chartbg.svg'
         alt=''

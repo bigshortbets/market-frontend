@@ -61,12 +61,7 @@ export const MarketInterfaceTopBar = ({
       <div className='lg:w-[320px]  h-[55px] '>
         <div className='pr-6 pl-12 py-2 h-full flex items-center gap-6'>
           <div>
-            <p
-              className='text-xs text-tetriary font-semibold'
-              onClick={() => console.log(markets)}
-            >
-              Oracle Price
-            </p>
+            <p className='text-xs text-tetriary font-semibold'>Oracle Price</p>
             <div className='text-xs font-normal'>
               {chosenMarket?.oraclePrice === undefined &&
                 markets.length >= 1 && (

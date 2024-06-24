@@ -45,10 +45,7 @@ export const TradingHubOrders = ({ orders }: TradingHubOrdersProps) => {
       className='w-full h-full overflow-y-auto no-scrollbar'
       style={{ maxHeight: 'calc(100vh - 230px)' }}
     >
-      <div
-        className='px-3 mb-2 mt-1 text-sm flex gap-2'
-        onClick={() => console.log(openOrders, closeOrders, currentOrdersType)}
-      >
+      <div className='px-3 mb-2 mt-1 text-sm flex gap-2'>
         {tabs.map((tab, key) => (
           <TradingHubOrderTypeTab
             key={key}

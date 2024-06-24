@@ -45,7 +45,6 @@ export const Claim = ({
       setMintLoading(false);
     },
     onSuccess: (data) => {
-      console.log(data);
       setMintLoading(false);
       setHasUserMinted(true);
       refetchIsMinted();
@@ -68,7 +67,6 @@ export const Claim = ({
       setMintLoading(false);
     },
     onSuccess: (data) => {
-      console.log(data);
       setMintLoading(false);
       setHasUserMinted(true);
       refetchIsMinted();

@@ -36,7 +36,6 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
     <tr
       className={`text-sm odd:bg-[#23252E] text-[#7F828F]  overflow-x-scroll sm:text-xs 
   }`}
-      onClick={() => console.log(state)}
     >
       {/* Side */}
       <td className='pl-3 py-2'>

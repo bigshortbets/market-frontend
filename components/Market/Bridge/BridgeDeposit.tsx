@@ -141,12 +141,7 @@ export const BridgeDeposit = () => {
         </button>
       </div>
       <div>
-        <p
-          className='text-sm mb-2'
-          onClick={() => console.log(data?.data.data)}
-        >
-          Deposits
-        </p>
+        <p className='text-sm mb-2'>Deposits</p>
         <div className='flex flex-col gap-1'>
           {data?.data?.data?.map((item: any, index: number) => (
             <div className='odd:bg-[#23252E] p-2 flex justify-between items-center'>
