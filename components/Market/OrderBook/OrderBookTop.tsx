@@ -19,7 +19,11 @@ export const OrderBookTop = ({ recentTrades, market }: OrderBookTopProps) => {
 
         <div className='border-l border-[#444650] text-xs pl-2'>
           <p className='text-tetriary font-semibold'>Market Price</p>
-          <p>{recentTrades.length > 0 ? Number(recentTrades[0].price) : '-'}</p>
+          <p>
+            {recentTrades.length > 0
+              ? Number(recentTrades[0].createPrice)
+              : '-'}
+          </p>
         </div>
       </div>
     </div>

@@ -94,7 +94,7 @@ export const MarketInterfaceTopBar = ({
                 />
               )}
               {recentTrades && recentTrades.length > 0
-                ? Number(recentTrades[0].price)
+                ? Number(recentTrades[0].createPrice)
                 : '-'}
             </p>
           </div>
