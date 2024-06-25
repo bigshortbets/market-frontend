@@ -34,9 +34,9 @@ export const LeaderboardUserItem = ({
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}
             <p className='hidden lg:block'>
               {' '}
-              {`${truncateAddress(h160address as string)} (${truncateAddress(
-                convertToSS58(address)
-              )})`}
+              {`${truncateAddress(h160address as string)} (${
+                address && truncateAddress(convertToSS58(address))
+              })`}
             </p>
           </div>
         </div>
@@ -44,9 +44,9 @@ export const LeaderboardUserItem = ({
           <div className='flex items-center'>
             <p className='lg:hidden text-xs mr-1'>
               Address:{' '}
-              {`${truncateAddress(h160address as string)} (${truncateAddress(
-                convertToSS58(address)
-              )})`}
+              {`${truncateAddress(h160address as string)} (${
+                address && truncateAddress(convertToSS58(address))
+              })`}
             </p>
           </div>
         </div>

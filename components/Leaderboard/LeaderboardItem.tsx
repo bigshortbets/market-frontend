@@ -20,7 +20,9 @@ export const LeaderboardItem = ({
 }: LeaderboardItemProps) => {
   const { address: h160address } = useAccount();
 
-  const isUser = convertToSS58(h160address as string) === address;
+  const isUser = h160address
+    ? convertToSS58(h160address as string) === address
+    : false;
   return (
     <div
       className={`w-full rounded-lg py-4 lg:py-2  lg:h-[48px] bg-[#23252E] flex items-center px-4 justify-between  ${
