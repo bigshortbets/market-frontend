@@ -1,5 +1,6 @@
 import {
   USER_HISTORY_QUERY,
+  USER_MARKET_SETTLEMENTS_QUERY,
   USER_OPEN_POSITIONS_QUERY,
   USER_ORDERS_QUERY,
 } from '@/requests/queries';
@@ -24,6 +25,7 @@ import {
   tradingHubStateAtom,
 } from '@/store/store';
 import { ChatContainer } from './Chat/ChatContainer';
+import { MarketSettlementsResponse } from '@/types/marketSettlementsTypes';
 
 interface TradingHubContentContainerProps {
   isAggregated: boolean;
@@ -54,6 +56,14 @@ export const TradingHubContentContainer = ({
     variables: { userId: convertToSS58(address!) },
   });
 
+  const { data: marketSettlementsRes } = useQuery<MarketSettlementsResponse>(
+    USER_MARKET_SETTLEMENTS_QUERY,
+    {
+      pollInterval: 1000,
+      variables: { userId: convertToSS58(address!) },
+    }
+  );
+
   useUnsettledLosses(positionsRes?.positions, address!);
   useCollateral(positionsRes?.positions, address!);
 
@@ -70,7 +80,10 @@ export const TradingHubContentContainer = ({
   }, [ordersRes?.orders, positionsRes?.positions]);
 
   return (
-    <div className='w-full no-scrollbar'>
+    <div
+      className='w-full no-scrollbar'
+      onClick={() => console.log(marketSettlementsRes)}
+    >
       {tradingHubState === 'orders' && ordersRes && (
         <TradingHubOrders orders={ordersRes.orders} />
       )}

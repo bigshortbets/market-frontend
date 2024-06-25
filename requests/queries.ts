@@ -82,6 +82,22 @@ export const USER_HISTORY_QUERY = gql`
   }
 `;
 
+/* Query for getting market settlements of given user */
+
+export const USER_MARKET_SETTLEMENTS_QUERY = gql`
+  query marketSettlements($userId: String!) {
+    marketSettlements(where: { user_eq: $userId }, orderBy: timestamp_DESC) {
+      amount
+      market {
+        id
+        ticker
+      }
+      type
+      timestamp
+    }
+  }
+`;
+
 /* Query for getting open positions of given user */
 
 export const USER_OPEN_POSITIONS_QUERY = gql`
