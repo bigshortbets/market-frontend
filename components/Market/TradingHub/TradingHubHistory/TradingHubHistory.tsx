@@ -69,7 +69,9 @@ export const TradingHubHistory = ({ history }: TradingHubHistoryProps) => {
                 <p>Amount</p>
                 <p
                   className={`text-[13px] font-semibold ${
-                    obj.type === 'OUTGOING' ? 'text-red-500' : 'text-[#87DAA4]'
+                    obj.type === 'OUTGOING'
+                      ? 'text-[#DA8787]'
+                      : 'text-[#87DAA4]'
                   }`}
                 >
                   {obj.type === 'OUTGOING' && '-'}
