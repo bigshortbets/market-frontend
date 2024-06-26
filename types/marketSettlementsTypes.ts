@@ -5,7 +5,7 @@ export interface MarketSettlementsType {
     id: string;
     ticker: string;
   };
-  type: 'INGOING' | 'ONGOING';
+  type: 'INGOING' | 'OUTGOING';
 }
 
 export interface MarketSettlementsResponse {

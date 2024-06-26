@@ -93,8 +93,11 @@ export const TradingHubContentContainer = ({
           positions={positionsRes.positions}
         />
       )}
-      {tradingHubState === 'history' && historyRes && (
-        <TradingHubHistory history={historyRes.orders} />
+      {tradingHubState === 'history' && historyRes && marketSettlementsRes && (
+        <TradingHubHistory
+          history={historyRes.orders}
+          settlements={marketSettlementsRes.marketSettlements}
+        />
       )}
       {/*  {tradingHubState === 'chat' && <ChatContainer />} */}
     </div>
