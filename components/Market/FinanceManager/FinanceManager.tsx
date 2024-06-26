@@ -44,7 +44,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
     refetchIsMinted();
   }, [address]);
 
-  const noMarkets = markets.length < 0;
+  const noMarkets = markets.length < 1;
 
   const showContractDetails = ['order', 'deposit', 'withdraw'].includes(
     financeManagerState
