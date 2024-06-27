@@ -121,10 +121,7 @@ export const Claim = ({
   const buttonDisabled =
     !availableMintData || Number(availableMintData?.data?.availableMint) <= 0;
   return (
-    <div
-      className='p-2.5 pb-4 flex flex-col gap-4'
-      onClick={() => console.log(availableMintData)}
-    >
+    <div className='p-2.5 pb-4 flex flex-col gap-4'>
       <div className='flex flex-col gap-2'>
         {hasUserMinted && (
           <p className='text-sm font-semibold'>Claim Bonus {currencySymbol}</p>
@@ -164,23 +161,37 @@ export const Claim = ({
               </span>
             )}
           </p>
-          <p className='text-xs'>
-            To ensure fair play and a positive experience for all participants,
-            the address claiming the funds must hold at least{' '}
-            <a
-              className='underline text-[#4ECB7D] font-semibold'
-              href='https://app.uniswap.org/#/swap?use=V2&outputCurrency=0x131157c6760f78f7ddf877c0019eba175ba4b6f6'
-              target='_blank'
-            >
-              1 BigSB token
-            </a>
-            .
-          </p>
+          {!hasUserMinted && (
+            <p className='text-xs'>
+              To ensure fair play and a positive experience for all
+              participants, the address claiming the funds must hold at least{' '}
+              <a
+                className='underline text-[#4ECB7D] font-semibold'
+                href='https://app.uniswap.org/#/swap?use=V2&outputCurrency=0x131157c6760f78f7ddf877c0019eba175ba4b6f6'
+                target='_blank'
+              >
+                1 BigSB token
+              </a>
+              .
+            </p>
+          )}
+
           {hasUserMinted && availableMintData && (
             <p className='text-xs font-semibold mt-4'>
-              Available $BigSB Mint:{' '}
-              {formatEther(availableMintData?.data?.availableMint)}{' '}
-              {currencySymbol}
+              Bonus DOLARZ Available for Minting:{' '}
+              {formatEther(availableMintData?.data?.availableMint)}
+            </p>
+          )}
+          {hasUserMinted && (
+            <p className='text-xs mt-2'>
+              <a
+                className='underline text-[#4ECB7D] font-semibold'
+                href='https://app.uniswap.org/#/swap?use=V2&outputCurrency=0x131157c6760f78f7ddf877c0019eba175ba4b6f6'
+                target='_blank'
+              >
+                Buy BigSB
+              </a>{' '}
+              to increase the amount of bonus DOLARZ available for minting.
             </p>
           )}
         </div>
