@@ -75,7 +75,7 @@ export const Leaderboard = () => {
     leaderboard: ElectionLeaderboardType[],
     id: string
   ): { data: ElectionLeaderboardType | undefined; index: number } => {
-    const ss58Id = id ?? convertToSS58(id);
+    const ss58Id = convertToSS58(id);
     const index = leaderboard.findIndex((record) => record.user === ss58Id);
     const data = index !== -1 ? leaderboard[index] : undefined;
     return { data, index };
