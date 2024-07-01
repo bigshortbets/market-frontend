@@ -3,13 +3,20 @@ import { formatDate } from '@/utils/formatDate';
 
 import { currencySymbol } from '@/blockchain/constants';
 import { chosenMarketAtom } from '@/store/store';
+import { currentBlockAtom } from '../Market';
+import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 
 export const ContractDetails = () => {
   const [chosenMarket] = useAtom(chosenMarketAtom);
+  const [blockHeight] = useAtom(currentBlockAtom);
+  const { formattedDate } = calculateMarketClosing(
+    Number(blockHeight),
+    Number(chosenMarket?.lifetime)
+  );
 
   const marketDurationRepresentation = `${formatDate(
     chosenMarket?.timestamp as unknown as string
-  )} - ${chosenMarket?.formattedDate}`;
+  )} - ${formattedDate}`;
 
   const contractDetailsData = [
     { label: 'Contract name', value: chosenMarket?.ticker },
@@ -33,7 +40,10 @@ export const ContractDetails = () => {
   ];
 
   return (
-    <div className={`w-full  bg-[#000211] rounded-lg font-semibold`}>
+    <div
+      className={`w-full  bg-[#000211] rounded-lg font-semibold`}
+      onClick={() => console.log(chosenMarket)}
+    >
       <div className='justify-between items-center flex py-2  px-4'>
         <h3 className='text-sm '>Contract Details</h3>
       </div>

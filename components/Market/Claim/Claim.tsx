@@ -9,7 +9,7 @@ import {
   useMutation,
   useQuery,
 } from '@tanstack/react-query';
-import { formatEther } from 'viem';
+import { formatEther, parseEther } from 'viem';
 import toast from 'react-hot-toast';
 import { AxiosResponse } from 'axios';
 import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
@@ -115,7 +115,7 @@ export const Claim = ({
   };
 
   const buttonText = hasUserMinted
-    ? `Claim Bonus $BigSB ${currencySymbol}`
+    ? `Claim Bonus ${currencySymbol}`
     : `Claim Free 10K ${currencySymbol}`;
 
   const buttonDisabled =
@@ -123,23 +123,75 @@ export const Claim = ({
   return (
     <div className='p-2.5 pb-4 flex flex-col gap-4'>
       <div className='flex flex-col gap-2'>
-        <p className='text-sm font-semibold text-secondary leading-[24px]'>
-          Claim Free {currencySymbol}
-        </p>
+        {hasUserMinted && (
+          <p className='text-sm font-semibold'>Claim Bonus {currencySymbol}</p>
+        )}
+        {!hasUserMinted && (
+          <div>
+            <p className='text-sm font-semibold text-secondary mb-2'>
+              {/* Claim Free {currencySymbol} */} Welcome to the{' '}
+              <span className='text-[#4ECB7D]'>
+                BigShortBet$ Trading Competition!
+              </span>
+            </p>
+            <p className='text-xs mb-1'>1.Connect your wallet.</p>
+            <p className='text-xs mb-1'>2.Claim free funds.</p>
+            <p className='text-xs mb-2'>3.Trade and win real prizes!</p>
+          </div>
+        )}
         <div className='mb-2'>
           <p className='text-xs mb-2'>
-            {hasUserMinted
-              ? 'Receive 10x the amount of BigSB held in your address, up to a maximum of 200,000 DOLARZ.'
-              : `Claim 10,000 DOLARZ to participate in the trading competition. This can be done once per address.`}
+            {hasUserMinted ? (
+              <span>
+                Receive 5x the amount of BigSB held in your address, up to a
+                maximum of{' '}
+                <span className='font-semibold text-[#4ECB7D]'>
+                  50,000 DOLARZ
+                </span>
+                .
+              </span>
+            ) : (
+              <span>
+                Claim{' '}
+                <span className='text-[#4ECB7D] font-semibold'>
+                  10,000 DOLARZ for free
+                </span>{' '}
+                to trade and compete for real prizes. This claim is available
+                once per address.
+              </span>
+            )}
           </p>
-          <p className='text-xs'>
-            For security reasons, only addresses with at least one transaction
-            on the Ethereum mainnet are eligible.
-          </p>
+          {!hasUserMinted && (
+            <p className='text-xs'>
+              To ensure fair play and a positive experience for all
+              participants, the address claiming the funds must hold at least{' '}
+              <a
+                className='underline text-[#4ECB7D] font-semibold'
+                href='https://app.uniswap.org/#/swap?use=V2&outputCurrency=0x131157c6760f78f7ddf877c0019eba175ba4b6f6'
+                target='_blank'
+              >
+                1 BigSB token
+              </a>
+              .
+            </p>
+          )}
+
           {hasUserMinted && availableMintData && (
             <p className='text-xs font-semibold mt-4'>
-              Available $BigSB Mint: {availableMintData?.data?.availableMint}{' '}
-              {currencySymbol}
+              Bonus DOLARZ Available for Minting:{' '}
+              {formatEther(availableMintData?.data?.availableMint)}
+            </p>
+          )}
+          {hasUserMinted && (
+            <p className='text-xs mt-2'>
+              <a
+                className='underline text-[#4ECB7D] font-semibold'
+                href='https://app.uniswap.org/#/swap?use=V2&outputCurrency=0x131157c6760f78f7ddf877c0019eba175ba4b6f6'
+                target='_blank'
+              >
+                Buy BigSB
+              </a>{' '}
+              to increase the amount of bonus DOLARZ available for minting.
             </p>
           )}
         </div>
