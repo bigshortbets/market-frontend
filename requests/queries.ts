@@ -146,7 +146,6 @@ export const ORDER_BOOK_SHORTS_QUERY = gql`
     ) {
       quantity
       price
-      id
     }
   }
 `;
@@ -166,7 +165,6 @@ export const ORDER_BOOK_LONGS_QUERY = gql`
     ) {
       quantity
       price
-      id
     }
   }
 `;
