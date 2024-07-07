@@ -1,48 +1,61 @@
-import { TradingHubTab } from './TradingHubTab';
+import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { useAccount } from 'wagmi';
+import { useQuery } from '@apollo/client';
+import { TradingHubTab } from './TradingHubTab';
 import { TradingHubContentContainer } from './TradingHubContentContainer';
 import { AggregatedPositionsCheckbox } from './TradingHubPositions/AggregatedPositionsCheckbox';
-import { useState } from 'react';
 import { tradingHubStateAtom } from '@/store/store';
 import { TradingHubFooter } from './TradingHubFooter';
-import {
-  Chart,
-  LineSeries,
-  CandlestickSeries,
-} from 'lightweight-charts-react-wrapper';
+import { Chart, LineSeries } from 'lightweight-charts-react-wrapper';
+import { CHART_FEED_QUERY } from '@/requests/queries';
+import { selectedMarketIdAtom } from '../Market';
+import { ChartFeedResponse } from '@/types/chartTypes';
+import { UTCTimestamp } from 'lightweight-charts';
 
-const tabs = ['positions', 'orders', 'history' /* , 'chat' */] as const;
+const tabs = ['positions', 'orders', 'history'] as const;
 export type TradingHubStateType = (typeof tabs)[number];
 
 export const TradingHub = () => {
   const { address } = useAccount();
+  const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const [tradingHubState] = useAtom(tradingHubStateAtom);
   const [isAggregated, setIsAggregated] = useState<boolean>(true);
 
   const toggleIsAggregated = () => {
-    isAggregated ? setIsAggregated(false) : setIsAggregated(true);
+    setIsAggregated(!isAggregated);
   };
 
-  const [data, setData] = useState([
-    { time: '2019-04-11', value: 80.01 },
-    { time: '2019-04-12', value: 96.63 },
-    { time: '2019-04-13', value: 76.64 },
-    { time: '2019-04-14', value: 81.89 },
-    { time: '2019-04-15', value: 74.43 },
-    { time: '2019-04-16', value: 80.01 },
-    { time: '2019-04-17', value: 96.63 },
-    { time: '2019-04-18', value: 76.64 },
-    { time: '2019-04-19', value: 81.89 },
-    { time: '2019-04-20', value: 74.43 },
-    { time: '2019-04-22', value: 80.01 },
-    { time: '2019-04-25', value: 100.01 },
-    { time: '2019-04-26', value: 105.01 },
-    { time: '2019-04-27', value: 1.01 },
-  ]);
+  const {
+    data: chartData,
+    error,
+    loading,
+  } = useQuery<ChartFeedResponse>(CHART_FEED_QUERY, {
+    pollInterval: 5000,
+    variables: { marketId: selectedMarketId },
+  });
+
+  const [data, setData] = useState<{ time: UTCTimestamp; value: number }[]>([]);
+  const [dataKey, setDataKey] = useState<number>(0); // Key for forcing re-render
+
+  useEffect(() => {
+    console.log('chartData:', chartData);
+    if (chartData && chartData.positions) {
+      const formattedData = chartData.positions.map((item) => ({
+        time: (new Date(item.timestamp).getTime() / 1000) as UTCTimestamp,
+        value: Number(item.createPrice),
+      }));
+      console.log('formattedData:', formattedData);
+      setData(formattedData);
+      setDataKey((prevKey) => prevKey + 1); // Update key to force re-render
+    }
+  }, [chartData]);
 
   return (
-    <div className=' h-[calc(100vh-166px)] lg:flex-1 lg:h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]'>
+    <div
+      className='h-[calc(100vh-166px)] lg:flex-1 lg:h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]'
+      onClick={() => console.log(data, chartData?.positions)}
+    >
       <div className='flex-grow'>
         <div className='flex items-center justify-between px-2.5 pt-3 pb-2.5'>
           <div className='flex gap-1'>
@@ -62,7 +75,7 @@ export const TradingHub = () => {
         {address && <TradingHubContentContainer isAggregated={isAggregated} />}
       </div>
       <Chart width={400} height={200}>
-        <LineSeries data={data} />
+        {data.length > 0 && <LineSeries key={dataKey} data={data} />}
       </Chart>
       <TradingHubFooter />
     </div>
