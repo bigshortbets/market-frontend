@@ -1,5 +1,5 @@
 export interface ChartFeedType {
-  price: BigInt;
+  createPrice: BigInt;
   timestamp: string;
 }
 
