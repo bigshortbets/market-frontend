@@ -72,19 +72,25 @@ export const TradingHub = () => {
         </div>
         {address && <TradingHubContentContainer isAggregated={isAggregated} />}
       </div>
-      <Chart
-        width={500}
-        height={300}
-        grid={{
-          horzLines: { color: '#444650' },
-          vertLines: { color: '#444650' },
-        }}
-        layout={{ background: { color: '#191B24' }, textColor: 'white' }}
-      >
-        {data.length > 0 && (
-          <LineSeries data={data} reactive color={'#4ECB7D'} />
-        )}
-      </Chart>
+      <div className='mb-4'>
+        <Chart
+          width={500}
+          height={300}
+          grid={{
+            horzLines: { color: '#444650' },
+            vertLines: { color: '#444650' },
+          }}
+          layout={{ background: { color: '#191B24' }, textColor: 'white' }}
+        >
+          {data.length > 0 && (
+            <LineSeries data={data} reactive color={'#4ECB7D'} />
+          )}
+        </Chart>
+      </div>
+      <div className='m-3 flex items-center gap-1.5'>
+        <div className='w-[11px] h-[11px] rounded-full bg-[#4ECB7D]'></div>
+        <p className='text-xs'>- Market price</p>
+      </div>
       <TradingHubFooter />
     </div>
   );
