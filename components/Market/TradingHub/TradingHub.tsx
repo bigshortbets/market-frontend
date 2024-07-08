@@ -11,7 +11,7 @@ import { Chart, LineSeries } from 'lightweight-charts-react-wrapper';
 import { CHART_FEED_QUERY } from '@/requests/queries';
 import { selectedMarketIdAtom } from '../Market';
 import { ChartFeedResponse } from '@/types/chartTypes';
-import { UTCTimestamp } from 'lightweight-charts';
+import { Background, SolidColor, UTCTimestamp } from 'lightweight-charts';
 
 const tabs = ['positions', 'orders', 'history'] as const;
 export type TradingHubStateType = (typeof tabs)[number];
@@ -36,7 +36,6 @@ export const TradingHub = () => {
   });
 
   const [data, setData] = useState<{ time: UTCTimestamp; value: number }[]>([]);
-  const [dataKey, setDataKey] = useState<number>(0); // Key for forcing re-render
 
   useEffect(() => {
     console.log('chartData:', chartData);
@@ -47,7 +46,6 @@ export const TradingHub = () => {
       }));
       console.log('formattedData:', formattedData);
       setData(formattedData);
-      setDataKey((prevKey) => prevKey + 1); // Update key to force re-render
     }
   }, [chartData]);
 
@@ -74,8 +72,18 @@ export const TradingHub = () => {
         </div>
         {address && <TradingHubContentContainer isAggregated={isAggregated} />}
       </div>
-      <Chart width={400} height={200}>
-        {data.length > 0 && <LineSeries key={dataKey} data={data} />}
+      <Chart
+        width={500}
+        height={300}
+        grid={{
+          horzLines: { color: '#444650' },
+          vertLines: { color: '#444650' },
+        }}
+        layout={{ background: { color: '#191B24' }, textColor: 'white' }}
+      >
+        {data.length > 0 && (
+          <LineSeries data={data} reactive color={'#4ECB7D'} />
+        )}
       </Chart>
       <TradingHubFooter />
     </div>
