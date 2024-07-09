@@ -1,6 +1,6 @@
 export function getPrecision(num: number): number {
-  if (!isFinite(num)) {
-    throw new Error('Input must be a finite number');
+  if (typeof num !== 'number' || !isFinite(num)) {
+    return 0;
   }
 
   const numStr = num.toString();
