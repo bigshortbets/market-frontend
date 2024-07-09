@@ -98,6 +98,8 @@ export const USER_OPEN_POSITIONS_QUERY = gql`
       id
       price
       createPrice
+      createPriceShort
+      createPriceLong
       quantity
       timestamp
       short

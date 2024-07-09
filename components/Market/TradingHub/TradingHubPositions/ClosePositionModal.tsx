@@ -43,10 +43,10 @@ export const ClosePositionModal = ({
     position.side === 'LONG'
       ? Number(quantity) *
         Number(position.market.contractUnit) *
-        (Number(price) - Number(position.createPrice.toString()))
+        (Number(price) - Number(position.createPriceLong.toString()))
       : Number(quantity) *
         Number(position.market.contractUnit) *
-        (Number(position.createPrice.toString()) - Number(price));
+        (Number(position.createPriceShort.toString()) - Number(price));
   return (
     <>
       <Transition appear show={isModalOpened} as={Fragment}>
