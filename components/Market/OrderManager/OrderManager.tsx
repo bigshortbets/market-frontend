@@ -154,6 +154,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               className='text-right outline-none  w-[85%] bg-[#23252E]'
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
+              decimalScale={0}
             />
             <span className='absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs'>
               UNIT
