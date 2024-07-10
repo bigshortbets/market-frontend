@@ -77,8 +77,8 @@ export const TradingHubPositionsItem = ({
       </td>
       <td className='text-[10px] sm:text-xs px-6 sm:px-0'>
         {position.side === 'LONG'
-          ? Number(position.createPrice)
-          : Number(position.createPrice)}
+          ? Number(position.createPriceLong)
+          : Number(position.createPriceShort)}
       </td>
       <td className='text-[10px] sm:text-xs px-6 sm:px-0'>
         {Number(position.price)}
