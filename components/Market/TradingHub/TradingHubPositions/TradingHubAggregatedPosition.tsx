@@ -63,11 +63,11 @@ export const TradingHubAggregatedPosition = ({
             Number(position.quantityLeft) *
               Number(position.market.contractUnit) *
               (Number(oraclePrice.toString()) -
-                Number(position.createPrice.toString()))
+                Number(position.createPriceLong.toString()))
         : acc +
             Number(position.quantityLeft) *
               Number(position.market.contractUnit) *
-              (Number(position.createPrice.toString()) -
+              (Number(position.createPriceShort.toString()) -
                 Number(oraclePrice.toString()));
     }, 0);
 
