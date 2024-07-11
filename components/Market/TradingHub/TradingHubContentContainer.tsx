@@ -1,4 +1,5 @@
 import {
+  CHART_FEED_QUERY,
   USER_HISTORY_QUERY,
   USER_OPEN_POSITIONS_QUERY,
   USER_ORDERS_QUERY,
@@ -6,7 +7,7 @@ import {
 import { convertToSS58 } from '@/utils/convertToSS58';
 import { useQuery } from '@apollo/client';
 import { useAtom } from 'jotai';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import {} from './TradingHub';
 import { TradingHubOrders } from './TradingHubOrders/TradingHubOrders';
@@ -23,7 +24,10 @@ import {
   tradingHubPositionsCountAtom,
   tradingHubStateAtom,
 } from '@/store/store';
-import { ChatContainer } from './Chat/ChatContainer';
+import { ChartFeedResponse } from '@/types/chartTypes';
+import { selectedMarketIdAtom } from '../Market';
+import { UTCTimestamp } from 'lightweight-charts';
+import { TradingHubChart } from './TradingHubChart/TradingHubChart';
 
 interface TradingHubContentContainerProps {
   isAggregated: boolean;
@@ -69,6 +73,33 @@ export const TradingHubContentContainer = ({
     }
   }, [ordersRes?.orders, positionsRes?.positions]);
 
+  /* Chart logic  */
+
+  const [selectedMarketId] = useAtom(selectedMarketIdAtom);
+
+  const {
+    data: chartData,
+    error,
+    loading,
+  } = useQuery<ChartFeedResponse>(CHART_FEED_QUERY, {
+    pollInterval: 5000,
+    variables: { marketId: selectedMarketId },
+  });
+
+  const [data, setData] = useState<{ time: UTCTimestamp; value: number }[]>([]);
+
+  useEffect(() => {
+    if (chartData && chartData.positions) {
+      const formattedData = chartData.positions.map((item) => ({
+        time: (new Date(item.timestamp).getTime() / 1000) as UTCTimestamp,
+        value: Number(item.createPrice),
+      }));
+      setData(formattedData);
+    }
+  }, [chartData]);
+
+  /*  */
+
   return (
     <div className='w-full no-scrollbar'>
       {tradingHubState === 'orders' && ordersRes && (
@@ -83,6 +114,7 @@ export const TradingHubContentContainer = ({
       {tradingHubState === 'history' && historyRes && (
         <TradingHubHistory history={historyRes.orders} />
       )}
+      {tradingHubState === 'chart' && data && <TradingHubChart data={data} />}
       {/*  {tradingHubState === 'chat' && <ChatContainer />} */}
     </div>
   );
