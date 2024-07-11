@@ -98,6 +98,8 @@ export const USER_OPEN_POSITIONS_QUERY = gql`
       id
       price
       createPrice
+      createPriceShort
+      createPriceLong
       quantity
       timestamp
       short
@@ -146,7 +148,6 @@ export const ORDER_BOOK_SHORTS_QUERY = gql`
     ) {
       quantity
       price
-      id
     }
   }
 `;
@@ -166,7 +167,6 @@ export const ORDER_BOOK_LONGS_QUERY = gql`
     ) {
       quantity
       price
-      id
     }
   }
 `;

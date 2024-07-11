@@ -76,7 +76,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
     !address ||
     isMarketClosed ||
     price === 0 ||
-    orderCost > Number(formattedBalance) ||
+    orderCost + 50 > Number(formattedBalance) ||
     !isDivisibleByTickSize ||
     quantity === 0 ||
     selectedMarket?.oraclePrice === null;
@@ -154,6 +154,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               className='text-right outline-none  w-[85%] bg-[#23252E]'
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
+              decimalScale={0}
             />
             <span className='absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs'>
               UNIT
@@ -247,9 +248,26 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       {!address && (
         <FinanceManagerWarning error='Connect your wallet to interact with the market.' />
       )}
-      {address && orderCost > Number(formattedBalance) && (
-        <FinanceManagerWarning error='Order cost is higher than your wallet balance. Please add funds to your wallet.' />
+      {address && Number(formattedBalance) === 0 && (
+        <FinanceManagerWarning
+          error={`Your wallet has no funds. Please add ${currencySymbol} to proceed with your order.`}
+        />
       )}
+      {address &&
+        orderCost + 50 > Number(formattedBalance) &&
+        Number(formattedBalance) > 0 &&
+        Number(formattedBalance) > orderCost && (
+          <FinanceManagerWarning
+            error={`Your wallet balance is enough to cover the order cost, but an additional buffer of 50 ${currencySymbol} is required to cover potential gas in the future.`}
+          />
+        )}
+      {address &&
+        orderCost > Number(formattedBalance) &&
+        Number(formattedBalance) > 0 && (
+          <FinanceManagerWarning
+            error={`The cost of your order exceeds your current wallet balance. Please add more funds to continue.`}
+          />
+        )}
       {address && selectedMarket?.oraclePrice === null && (
         <FinanceManagerWarning error='There is no oracle price for this market yet, placing orders is not available.' />
       )}

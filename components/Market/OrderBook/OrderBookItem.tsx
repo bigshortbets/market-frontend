@@ -3,6 +3,9 @@ import { OrderSide } from './OrderBook';
 import { OrderBookOrder } from '@/types/orderTypes';
 import { fetchOrderCollateral } from '@/utils/fetchOrderCollateral';
 import { useAccount } from 'wagmi';
+import { useAtom } from 'jotai';
+import { chosenMarketAtom } from '@/store/store';
+import { getPrecision } from '@/utils/getPrecision';
 
 interface OrderBookItem {
   empty: boolean;
@@ -11,6 +14,10 @@ interface OrderBookItem {
 }
 
 export const OrderBookItem = ({ empty, side, data }: OrderBookItem) => {
+  const [chosenMarket] = useAtom(chosenMarketAtom);
+
+  const precision = getPrecision(Number(chosenMarket?.tickSize));
+
   return (
     <div
       className={`w-full bg-opacity-[15%]  text-opacity-50 py-2   ${
@@ -21,7 +28,9 @@ export const OrderBookItem = ({ empty, side, data }: OrderBookItem) => {
     >
       {!empty && data && (
         <div className='w-full justify-between h-full flex px-4 text-xs'>
-          <div>{data.price}</div>
+          <div className='text-right min-w-[60px]'>
+            {Number(data.price).toFixed(precision)}
+          </div>
           <div>{data.quantity}</div>
         </div>
       )}

@@ -56,7 +56,7 @@ export const Deposit = ({ markets }: DepositProps) => {
   };
 
   const depositDisabled =
-    Number(walletBalance?.formatted) < amount || amount <= 0 || !address;
+    Number(walletBalance?.formatted) < amount + 50 || amount <= 0 || !address;
 
   const [unsettledLosesArr] = useAtom(unsettledLossesAtom);
   const [collateralArr] = useAtom(collateralAtom);
@@ -283,11 +283,28 @@ export const Deposit = ({ markets }: DepositProps) => {
             ).toFixed(2)} ${currencySymbol} to ${chosenMarket?.ticker} market.`}
           />
         )}
+      {address &&
+        amount + 50 > Number(walletBalance?.formatted) &&
+        Number(walletBalance?.formatted) > 0 &&
+        Number(walletBalance?.formatted) > amount && (
+          <FinanceManagerWarning
+            error={`Your wallet balance is enough to cover the deposit cost, but an additional buffer of 50 ${currencySymbol} is required to cover potential gas in the future.`}
+          />
+        )}
       {!address && (
         <FinanceManagerWarning error='Connect your wallet to interact with the market. ' />
       )}
-      {address && Number(walletBalance?.formatted) < amount && (
-        <FinanceManagerWarning error='Your given amount is greater than your wallet balance. ' />
+      {address &&
+        Number(walletBalance?.formatted) < amount &&
+        Number(walletBalance?.formatted) > 0 && (
+          <FinanceManagerWarning
+            error={`Your given amount is greater than your wallet balance.`}
+          />
+        )}
+      {address && Number(walletBalance?.formatted) === 0 && (
+        <FinanceManagerWarning
+          error={`Your wallet has no funds. Please add ${currencySymbol} to proceed with your deposit.`}
+        />
       )}
     </div>
   );

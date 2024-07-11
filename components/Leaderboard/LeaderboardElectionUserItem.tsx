@@ -79,7 +79,7 @@ export const LeaderboardElectionUserItem = ({
             `500 BIGSB (${bigsbPrice && Number(500 * bigsbPrice).toFixed(2)}$)`}
           {position >= 16 &&
             position <= 50 &&
-            `200 BIGSB (${bigsbPrice && Number(200 * bigsbPrice).toFixed(2)}$)`}
+            `400 BIGSB (${bigsbPrice && Number(400 * bigsbPrice).toFixed(2)}$)`}
           {position > 50 && `-`}
           {position === 0 && `-`}
         </div>

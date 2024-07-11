@@ -32,7 +32,6 @@ export interface OrdersResponse {
 }
 
 export interface OrderBookOrder {
-  id: string;
   price: string;
   quantity: number;
 }

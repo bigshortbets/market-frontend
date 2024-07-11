@@ -31,10 +31,10 @@ export const TradingHubPositionsItem = ({
       ? Number(position.quantityLeft) *
         Number(position.market.contractUnit) *
         (Number(oraclePrice.toString()) -
-          Number(position.createPrice.toString()))
+          Number(position.createPriceLong.toString()))
       : Number(position.quantityLeft) *
         Number(position.market.contractUnit) *
-        (Number(position.createPrice.toString()) -
+        (Number(position.createPriceShort.toString()) -
           Number(oraclePrice.toString()));
 
   const { write: writeMarkToMarket } = useMarkToMarket(
@@ -76,7 +76,9 @@ export const TradingHubPositionsItem = ({
         {Number(position.quantityLeft)}
       </td>
       <td className='text-[10px] sm:text-xs px-6 sm:px-0'>
-        {Number(position.createPrice)}
+        {position.side === 'LONG'
+          ? Number(position.createPriceLong)
+          : Number(position.createPriceShort)}
       </td>
       <td className='text-[10px] sm:text-xs px-6 sm:px-0'>
         {Number(position.price)}
