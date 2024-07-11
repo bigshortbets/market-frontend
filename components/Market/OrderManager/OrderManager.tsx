@@ -76,7 +76,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
     !address ||
     isMarketClosed ||
     price === 0 ||
-    orderCost + 5 > Number(formattedBalance) ||
+    orderCost + 50 > Number(formattedBalance) ||
     !isDivisibleByTickSize ||
     quantity === 0 ||
     selectedMarket?.oraclePrice === null;
