@@ -1,4 +1,5 @@
 import {
+  CHART_FEED_QUERY,
   USER_HISTORY_QUERY,
   USER_OPEN_POSITIONS_QUERY,
   USER_ORDERS_QUERY,
@@ -6,7 +7,7 @@ import {
 import { convertToSS58 } from '@/utils/convertToSS58';
 import { useQuery } from '@apollo/client';
 import { useAtom } from 'jotai';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import {} from './TradingHub';
 import { TradingHubOrders } from './TradingHubOrders/TradingHubOrders';
@@ -23,7 +24,10 @@ import {
   tradingHubPositionsCountAtom,
   tradingHubStateAtom,
 } from '@/store/store';
-import { ChatContainer } from './Chat/ChatContainer';
+import { ChartFeedResponse } from '@/types/chartTypes';
+import { selectedMarketIdAtom } from '../Market';
+import { UTCTimestamp } from 'lightweight-charts';
+import { TradingHubChart } from './TradingHubChart/TradingHubChart';
 
 interface TradingHubContentContainerProps {
   isAggregated: boolean;
@@ -83,6 +87,9 @@ export const TradingHubContentContainer = ({
       {tradingHubState === 'history' && historyRes && (
         <TradingHubHistory history={historyRes.orders} />
       )}
+      {/* {tradingHubState === 'chart' && chartData && (
+        <TradingHubChart data={chartData} />
+      )} */}
       {/*  {tradingHubState === 'chat' && <ChatContainer />} */}
     </div>
   );

@@ -192,3 +192,14 @@ export const LEADERBOARD_ELECTION_QUERY = gql`
     }
   }
 `;
+
+/* Query for recent positions of given market*/
+
+export const CHART_FEED_QUERY = gql`
+  query chartFeed($marketId: String!) {
+    positions(where: { market: { id_eq: $marketId } }, orderBy: timestamp_ASC) {
+      createPrice
+      timestamp
+    }
+  }
+`;
