@@ -45,7 +45,7 @@ export const TradingHub = () => {
   >([]);
 
   useEffect(() => {
-    if (chartRes && chartRes.positions) {
+    if (chartRes?.positions) {
       const formattedData = chartRes.positions.map((item) => ({
         time: (new Date(item.timestamp).getTime() / 1000) as UTCTimestamp,
         value: Number(item.createPrice),
