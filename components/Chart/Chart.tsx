@@ -9,6 +9,8 @@ import {
   Chart as ChartComponent,
   LineSeries,
 } from 'lightweight-charts-react-wrapper';
+import { chosenMarketAtom } from '@/store/store';
+import Image from 'next/image';
 
 interface ChartProps {
   data: { time: UTCTimestamp; value: number }[];
@@ -17,7 +19,7 @@ interface ChartProps {
 export const Chart = ({ data }: ChartProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-
+  const [chosenMarket] = useAtom(chosenMarketAtom);
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
@@ -36,7 +38,27 @@ export const Chart = ({ data }: ChartProps) => {
     };
   }, []);
   return (
-    <div ref={containerRef} className='w-full h-[80%]'>
+    <div ref={containerRef} className='w-full h-[85%]'>
+      <div className='flex justify-between flex-col md:flex-row md:items-center gap-2 md:gap-0 mt-2 mb-6 md:mr-3'>
+        <div className='flex items-center gap-2 '>
+          {' '}
+          {chosenMarket?.path && (
+            <Image
+              src={chosenMarket.path}
+              width={20}
+              height={20}
+              alt='Market logo'
+              className='rounded-full'
+            />
+          )}
+          <p className=' text-sm font-semibold'>{chosenMarket?.name} Chart</p>
+        </div>
+        <div className='flex items-center gap-1.5 ml-1 md:ml-0'>
+          <div className='w-[11px] h-[11px] rounded-full bg-[#4ECB7D]'></div>
+          <p className='text-xs'>- Market price</p>
+        </div>
+      </div>
+
       {dimensions.width > 0 && dimensions.height > 0 && (
         <ChartComponent
           width={dimensions.width}
@@ -52,10 +74,6 @@ export const Chart = ({ data }: ChartProps) => {
           )}
         </ChartComponent>
       )}
-      <div className='m-3 flex items-center gap-1.5'>
-        <div className='w-[11px] h-[11px] rounded-full bg-[#4ECB7D]'></div>
-        <p className='text-xs'>- Market price</p>
-      </div>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
 import { useAccount } from 'wagmi';
 import { TradingHubTab } from './TradingHubTab';
@@ -6,6 +6,13 @@ import { TradingHubContentContainer } from './TradingHubContentContainer';
 import { AggregatedPositionsCheckbox } from './TradingHubPositions/AggregatedPositionsCheckbox';
 import { tradingHubStateAtom } from '@/store/store';
 import { TradingHubFooter } from './TradingHubFooter';
+import { selectedMarketIdAtom } from '../Market';
+import { ChartFeedResponse } from '@/types/chartTypes';
+import { useQuery } from '@apollo/client';
+import { CHART_FEED_QUERY } from '@/requests/queries';
+import { UTCTimestamp } from 'lightweight-charts';
+import { ChatContainer } from './Chat/ChatContainer';
+import { TradingHubChart } from './TradingHubChart/TradingHubChart';
 
 const tabs = ['chart', 'positions', 'orders', 'history'] as const;
 export type TradingHubStateType = (typeof tabs)[number];
@@ -19,6 +26,35 @@ export const TradingHub = () => {
   const toggleIsAggregated = () => {
     setIsAggregated(!isAggregated);
   };
+
+  /* Chart logic  */
+
+  const [selectedMarketId] = useAtom(selectedMarketIdAtom);
+
+  const {
+    data: chartRes,
+    error,
+    loading,
+  } = useQuery<ChartFeedResponse>(CHART_FEED_QUERY, {
+    pollInterval: 5000,
+    variables: { marketId: selectedMarketId },
+  });
+
+  const [chartData, setChartData] = useState<
+    { time: UTCTimestamp; value: number }[]
+  >([]);
+
+  useEffect(() => {
+    if (chartRes && chartRes.positions) {
+      const formattedData = chartRes.positions.map((item) => ({
+        time: (new Date(item.timestamp).getTime() / 1000) as UTCTimestamp,
+        value: Number(item.createPrice),
+      }));
+      setChartData(formattedData);
+    }
+  }, [chartRes]);
+
+  /*  */
 
   return (
     <div className='h-[calc(100vh-166px)] lg:flex-1 lg:h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]'>
@@ -39,6 +75,11 @@ export const TradingHub = () => {
           )}
         </div>
         {address && <TradingHubContentContainer isAggregated={isAggregated} />}
+        {tradingHubState === 'chart' && (
+          <div className='w-full no-scrollbar'>
+            <TradingHubChart data={chartData} />
+          </div>
+        )}
       </div>
 
       <TradingHubFooter />

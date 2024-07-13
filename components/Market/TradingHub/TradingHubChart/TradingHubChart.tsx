@@ -10,7 +10,7 @@ export const TradingHubChart = ({ data }: TradingHubChartProps) => {
   return (
     <div
       className='w-full h-full  px-2.5  overflow-y-auto no-scrollbar'
-      style={{ height: 'calc(100vh - 230px)' }}
+      style={{ height: 'calc(100vh - 290px)' }}
     >
       <Chart data={data} />
     </div>

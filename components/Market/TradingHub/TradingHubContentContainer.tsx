@@ -73,33 +73,6 @@ export const TradingHubContentContainer = ({
     }
   }, [ordersRes?.orders, positionsRes?.positions]);
 
-  /* Chart logic  */
-
-  const [selectedMarketId] = useAtom(selectedMarketIdAtom);
-
-  const {
-    data: chartData,
-    error,
-    loading,
-  } = useQuery<ChartFeedResponse>(CHART_FEED_QUERY, {
-    pollInterval: 5000,
-    variables: { marketId: selectedMarketId },
-  });
-
-  const [data, setData] = useState<{ time: UTCTimestamp; value: number }[]>([]);
-
-  useEffect(() => {
-    if (chartData && chartData.positions) {
-      const formattedData = chartData.positions.map((item) => ({
-        time: (new Date(item.timestamp).getTime() / 1000) as UTCTimestamp,
-        value: Number(item.createPrice),
-      }));
-      setData(formattedData);
-    }
-  }, [chartData]);
-
-  /*  */
-
   return (
     <div className='w-full no-scrollbar'>
       {tradingHubState === 'orders' && ordersRes && (
@@ -114,7 +87,9 @@ export const TradingHubContentContainer = ({
       {tradingHubState === 'history' && historyRes && (
         <TradingHubHistory history={historyRes.orders} />
       )}
-      {tradingHubState === 'chart' && data && <TradingHubChart data={data} />}
+      {/* {tradingHubState === 'chart' && chartData && (
+        <TradingHubChart data={chartData} />
+      )} */}
       {/*  {tradingHubState === 'chat' && <ChatContainer />} */}
     </div>
   );
