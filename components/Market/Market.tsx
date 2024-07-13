@@ -106,26 +106,26 @@ export const Market = ({ markets }: MarketProps) => {
     }
   }, [blockHeight, markets, router]);
 
-  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
-  const [cookies, setCookie] = useCookies(['hideModal']);
+  /*   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
+  const [cookies, setCookie] = useCookies(['hideModal']); */
 
-  useEffect(() => {
+  /*  useEffect(() => {
     const showModal = cookies.hideModal !== 'true';
     if (showModal) {
       setIsModalOpened(true);
     }
   }, [cookies]);
-
-  const handleCloseModal = () => {
+ */
+  /*  const handleCloseModal = () => {
     setIsModalOpened(false);
   };
-
-  const handleNeverShowModal = () => {
+ */
+  /*   const handleNeverShowModal = () => {
     const farFuture = new Date();
-    farFuture.setFullYear(farFuture.getFullYear() + 10); // Set cookie to expire in 10 years
+    farFuture.setFullYear(farFuture.getFullYear() + 10); 
     setCookie('hideModal', 'true', { path: '/', expires: farFuture });
     setIsModalOpened(false);
-  };
+  }; */
 
   /*   useEffect(() => {
     if (chain?.id != bigshortbetsChain.id) {
