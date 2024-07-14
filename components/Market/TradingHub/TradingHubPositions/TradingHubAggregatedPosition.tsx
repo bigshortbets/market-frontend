@@ -23,7 +23,6 @@ export const TradingHubAggregatedPosition = ({
   positions,
   ticker,
 }: TradingHubAggregatedPositionProps) => {
-  const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
   const [tradingHubState, setTradingHubState] = useAtom(tradingHubStateAtom);
   const [isExtended, setIsExtended] = useState(false);
   const { address } = useAccount();
