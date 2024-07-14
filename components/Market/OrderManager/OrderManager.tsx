@@ -133,6 +133,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               id={'orderPriceInput'}
               className='text-right outline-none  w-[85%] bg-[#23252E] '
               onChange={(e) => setPrice(Number(e.target.value))}
+              value={price}
             />
 
             <span className='absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs'>
@@ -154,6 +155,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               className='text-right outline-none  w-[85%] bg-[#23252E]'
               onChange={(e) => setQuantity(Number(e.target.value))}
               decimalScale={0}
+              value={quantity}
             />
             <span className='absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs'>
               UNIT
