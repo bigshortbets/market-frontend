@@ -7,11 +7,12 @@ import { TradingHubPositionsItem } from './TradingHubPositionsItem';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
 import Image from 'next/image';
 import { useAtom } from 'jotai';
-import { userMarginsAtom } from '../../Market';
+import { selectedMarketIdAtom, userMarginsAtom } from '../../Market';
 import { LiquidationStatusTab } from '../../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { currencySymbol } from '@/blockchain/constants';
 import { FaChartBar } from 'react-icons/fa';
+import { tradingHubStateAtom } from '@/store/store';
 
 interface TradingHubAggregatedPositionProps {
   positions: PositionType[];
@@ -22,6 +23,8 @@ export const TradingHubAggregatedPosition = ({
   positions,
   ticker,
 }: TradingHubAggregatedPositionProps) => {
+  const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
+  const [tradingHubState, setTradingHubState] = useAtom(tradingHubStateAtom);
   const [isExtended, setIsExtended] = useState(false);
   const { address } = useAccount();
   const convertedAddress = convertToSS58(address!);
@@ -35,6 +38,11 @@ export const TradingHubAggregatedPosition = ({
 
   const toggleExtended = () => {
     setIsExtended((prevState) => !prevState);
+  };
+
+  const handleOpenChart = () => {
+    setSelectedMarketId(marketId);
+    setTradingHubState('chart');
   };
 
   const marketDetails = getMarkeDetails(ticker);
@@ -101,16 +109,13 @@ export const TradingHubAggregatedPosition = ({
                   <p className='text-[#EBEDFD] text-xs'>
                     {marketDetails?.name}
                   </p>
-                  {marketId != '9223372036854776644' &&
-                    marketId != '9223372036854776643' && (
-                      <a
-                        className='text-tetriary text-[16px] hover:text-gray-400'
-                        href={`https://tradingview.com/symbols/${ticker}`}
-                        target='_blank'
-                      >
-                        <FaChartBar />
-                      </a>
-                    )}
+
+                  <button
+                    className='text-tetriary text-[16px] hover:text-gray-400'
+                    onClick={handleOpenChart}
+                  >
+                    <FaChartBar />
+                  </button>
                 </div>
                 <p className='text-[#ABACBA] text-[10px] mb-1'>{ticker}</p>
                 <div className='flex gap-2 items-center'>
@@ -209,17 +214,12 @@ export const TradingHubAggregatedPosition = ({
                     />
                   )}
 
-                  {marketId != '9223372036854775819' &&
-                    marketId != '9223372036854775820' &&
-                    marketId != '9223372036854775821' && (
-                      <a
-                        className='text-tetriary text-[16px] hover:text-gray-400'
-                        href={`https://tradingview.com/symbols/${ticker}`}
-                        target='_blank'
-                      >
-                        <FaChartBar />
-                      </a>
-                    )}
+                  <button
+                    className='text-tetriary text-[16px] hover:text-gray-400'
+                    onClick={handleOpenChart}
+                  >
+                    <FaChartBar />
+                  </button>
                 </div>
                 <p className='text-[#ABACBA] text-xs'>{ticker}</p>
               </div>
