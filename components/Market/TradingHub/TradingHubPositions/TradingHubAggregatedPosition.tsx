@@ -7,7 +7,7 @@ import { TradingHubPositionsItem } from './TradingHubPositionsItem';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
 import Image from 'next/image';
 import { useAtom } from 'jotai';
-import { userMarginsAtom } from '../../Market';
+import { selectedMarketIdAtom, userMarginsAtom } from '../../Market';
 import { LiquidationStatusTab } from '../../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { currencySymbol } from '@/blockchain/constants';
@@ -27,6 +27,7 @@ export const TradingHubAggregatedPosition = ({
   const convertedAddress = convertToSS58(address!);
   const marketId = positions[0].market.id;
   const oraclePrice = positions[0].market.oraclePrice;
+  const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
 
   const positionsWithSide = extendPositionsWithSide(
     positions,
@@ -73,6 +74,7 @@ export const TradingHubAggregatedPosition = ({
 
   const handleClick = () => {
     toggleExtended();
+    setSelectedMarketId(marketId);
   };
 
   const [userMargins] = useAtom(userMarginsAtom);
