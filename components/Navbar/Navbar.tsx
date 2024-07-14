@@ -33,15 +33,6 @@ export const Navbar = () => {
     setIsClient(true);
   }, []);
 
-  const openTrumpOrBidenMarket = () => {
-    const trumpId = '9223372036854776644';
-    const bidenId = '9223372036854776643';
-
-    const randomNumber = Math.floor(Math.random() * 2);
-    const selectedId = randomNumber === 0 ? trumpId : bidenId;
-
-    setSelectedMarketId(selectedId);
-  };
   const router = useRouter();
 
   const changeRoute = (route: string) => {
@@ -90,9 +81,7 @@ export const Navbar = () => {
 
         <div className='flex items-center gap-4'>
           <div className='hidden md:block'>
-            <button onClick={openTrumpOrBidenMarket}>
-              <Image src={banner} alt='banner' width={400} height={60} />
-            </button>
+            <Image src={banner} alt='banner' width={400} height={60} />
           </div>
           {/* <button
             className='p-2 rounded bg-[#191B24]'
