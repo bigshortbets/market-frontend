@@ -179,7 +179,9 @@ export const Claim = ({
           {hasUserMinted && availableMintData && (
             <p className='text-xs font-semibold mt-4'>
               Bonus DOLARZ Available for Minting:{' '}
-              {formatEther(availableMintData?.data?.availableMint)}
+              {Number(
+                formatEther(availableMintData?.data?.availableMint)
+              ).toFixed(2)}
             </p>
           )}
           {hasUserMinted && (
