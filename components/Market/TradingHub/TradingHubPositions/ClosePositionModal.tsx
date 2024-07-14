@@ -119,7 +119,6 @@ export const ClosePositionModal = ({
                         className='rounded-lg bg-[#23252E] w-[60%] h-full close-position-input text-xs outline-none px-2'
                         placeholder='Price to close'
                         allowNegative={false}
-                        value={price}
                       />
                       <div className='absolute right-2 top-[7px] text-[10px] text-tetriary'>
                         {currencySymbol}
@@ -137,7 +136,6 @@ export const ClosePositionModal = ({
                         className='rounded-lg bg-[#23252E] w-[60%] h-full close-position-input text-xs outline-none px-2'
                         placeholder='Quantity'
                         allowNegative={false}
-                        value={quantity}
                         min={1}
                         max={4}
                       />
