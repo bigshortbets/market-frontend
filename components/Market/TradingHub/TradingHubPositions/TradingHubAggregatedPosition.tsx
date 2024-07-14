@@ -30,6 +30,7 @@ export const TradingHubAggregatedPosition = ({
   const convertedAddress = convertToSS58(address!);
   const marketId = positions[0].market.id;
   const oraclePrice = positions[0].market.oraclePrice;
+  const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
 
   const positionsWithSide = extendPositionsWithSide(
     positions,
@@ -81,6 +82,7 @@ export const TradingHubAggregatedPosition = ({
 
   const handleClick = () => {
     toggleExtended();
+    setSelectedMarketId(marketId);
   };
 
   const [userMargins] = useAtom(userMarginsAtom);
