@@ -27,17 +27,3 @@ export const RecentTrades = () => {
     </div>
   );
 };
-
-/* Badge components */
-
-{
-  /* <div className='w-10 h-4 rounded bg-[#7F828F] items-center flex justify-center text-[#191B24]'>
-              UNT
-            </div> */
-}
-
-{
-  /* <div className='w-14 h-4 rounded bg-[#7F828F] items-center flex justify-center text-[#191B24]'>
-              {currencySymbol}
-            </div> */
-}
