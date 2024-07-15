@@ -67,9 +67,11 @@ export const TradingHubAggregatedPosition = ({
     }, 0);
 
   const handleClick = () => {
+    if (!isExtended) {
+      setSelectedMarketId(marketId);
+      router.push(`?market=${ticker}`);
+    }
     toggleExtended();
-    setSelectedMarketId(marketId);
-    router.push(`?market=${ticker}`);
   };
 
   const [userMargins] = useAtom(userMarginsAtom);
