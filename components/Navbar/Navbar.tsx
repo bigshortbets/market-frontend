@@ -1,26 +1,17 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import logo from '../../public/logo.svg';
-import { useAccount, useSignMessage, useSwitchChain } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 import banner from '../../public/banner.svg';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { selectedMarketIdAtom } from '../Market/Market';
-import { useAtom } from 'jotai';
-import { mintMessage } from '@/blockchain/constants';
-import ReactLoading from 'react-loading';
-import { useMutation } from '@tanstack/react-query';
-import { MintData, bridgeApi } from '@/requests/bidgeApi/bridgeApi';
-import axios from 'axios';
-import { MintButton } from '../Market/Claim/MintButton';
-import { FaChartLine, FaChartSimple, FaTrophy, FaUser } from 'react-icons/fa6';
+import { FaChartLine, FaTrophy } from 'react-icons/fa6';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 export const Navbar = () => {
   const [isClient, setIsClient] = useState(false);
-  const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
-  const { isConnected, chain, address } = useAccount();
+  const { isConnected, chain } = useAccount();
   const { switchChain } = useSwitchChain();
 
   useEffect(() => {
