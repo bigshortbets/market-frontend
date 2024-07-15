@@ -121,7 +121,7 @@ export const RECENT_MARKET_POSITIONS_QUERY = gql`
   query SubscribePositions($marketId: String!) {
     positions(
       where: { market: { id_eq: $marketId } }
-      limit: 10
+      limit: 30
       orderBy: timestamp_DESC
     ) {
       id
