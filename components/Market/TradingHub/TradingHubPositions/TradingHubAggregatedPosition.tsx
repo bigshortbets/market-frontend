@@ -13,6 +13,7 @@ import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { currencySymbol } from '@/blockchain/constants';
 import { FaChartBar } from 'react-icons/fa';
 import { tradingHubStateAtom } from '@/store/store';
+import { useRouter } from 'next/router';
 
 interface TradingHubAggregatedPositionProps {
   positions: PositionType[];
@@ -29,7 +30,8 @@ export const TradingHubAggregatedPosition = ({
   const convertedAddress = convertToSS58(address!);
   const marketId = positions[0].market.id;
   const oraclePrice = positions[0].market.oraclePrice;
-  const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
+  const [, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
+  const router = useRouter();
 
   const positionsWithSide = extendPositionsWithSide(
     positions,
@@ -42,26 +44,11 @@ export const TradingHubAggregatedPosition = ({
 
   const handleOpenChart = () => {
     setSelectedMarketId(marketId);
+    router.push(`?market=${ticker}`);
     setTradingHubState('chart');
   };
 
   const marketDetails = getMarkeDetails(ticker);
-
-  /*   const sumLossProfit: number =
-    oraclePrice &&
-    positionsWithSide.reduce((acc, position) => {
-      return position.side === 'LONG'
-        ? acc +
-            Number(position.quantityLeft) *
-              Number(position.market.contractUnit) *
-              (Number(oraclePrice.toString()) -
-                Number(position.price.toString()))
-        : acc +
-            Number(position.quantityLeft) *
-              Number(position.market.contractUnit) *
-              (Number(position.price.toString()) -
-                Number(oraclePrice.toString()));
-    }, 0); */
 
   const experimentalSumLossProfit: number =
     oraclePrice &&
@@ -82,6 +69,7 @@ export const TradingHubAggregatedPosition = ({
   const handleClick = () => {
     toggleExtended();
     setSelectedMarketId(marketId);
+    router.push(`?market=${ticker}`);
   };
 
   const [userMargins] = useAtom(userMarginsAtom);
