@@ -59,7 +59,11 @@ export const LeaderboardItem = ({
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}
             <div className='hidden lg:flex items-center gap-1.5'>
               <p>{truncateAddress(address)}</p>
-              <button className='text-xs text-[#434552]' onClick={handleCopy}>
+              <button
+                className='text-xs text-[#434552]'
+                onClick={handleCopy}
+                aria-label='Copy address'
+              >
                 <FaCopy />
               </button>
             </div>
@@ -69,7 +73,11 @@ export const LeaderboardItem = ({
           <div className='flex items-center'>
             <div className='lg:hidden text-xs mr-1 flex items-center gap-1.5'>
               <p>Address: {truncateAddress(address)}</p>
-              <button className='text-xs text-[#434552]' onClick={handleCopy}>
+              <button
+                className='text-xs text-[#434552]'
+                onClick={handleCopy}
+                aria-label='Copy address'
+              >
                 <FaCopy />
               </button>
             </div>
