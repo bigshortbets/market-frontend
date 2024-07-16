@@ -4,6 +4,8 @@ import { truncateAddress } from '@/utils/truncateAddress';
 import React from 'react';
 import { FaTrophy } from 'react-icons/fa';
 import { useAccount } from 'wagmi';
+import { FaCopy } from 'react-icons/fa';
+import toast from 'react-hot-toast';
 
 interface LeaderboardItemProps {
   position: number;
@@ -23,6 +25,20 @@ export const LeaderboardItem = ({
   const isUser = h160address
     ? convertToSS58(h160address as string) === address
     : false;
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(address);
+      toast.success('Address copied to clipboard', {
+        duration: 1111,
+      });
+    } catch (err) {
+      toast.error('Something went wrong', {
+        duration: 1111,
+      });
+    }
+  };
+
   return (
     <div
       className={`w-full rounded-lg py-4 lg:py-2  lg:h-[48px] bg-[#23252E] flex items-center px-4 justify-between  ${
@@ -41,14 +57,30 @@ export const LeaderboardItem = ({
             {position === 1 && <FaTrophy className='text-[#9ca150]' />}
             {position === 2 && <FaTrophy className='text-[#c1c2b4]' />}
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}
-            <p className='hidden lg:block'>{truncateAddress(address)}</p>
+            <div className='hidden lg:flex items-center gap-1.5'>
+              <p>{truncateAddress(address)}</p>
+              <button
+                className='text-xs text-[#434552]'
+                onClick={handleCopy}
+                aria-label='Copy address'
+              >
+                <FaCopy />
+              </button>
+            </div>
           </div>
         </div>
         <div className='lg:hidden mb-1'>
           <div className='flex items-center'>
-            <p className='lg:hidden text-xs mr-1'>
-              Address: {truncateAddress(address)}
-            </p>
+            <div className='lg:hidden text-xs mr-1 flex items-center gap-1.5'>
+              <p>Address: {truncateAddress(address)}</p>
+              <button
+                className='text-xs text-[#434552]'
+                onClick={handleCopy}
+                aria-label='Copy address'
+              >
+                <FaCopy />
+              </button>
+            </div>
           </div>
         </div>
         <div
