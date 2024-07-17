@@ -7,12 +7,12 @@ import { AggregatedPositionsCheckbox } from './TradingHubPositions/AggregatedPos
 import { tradingHubStateAtom } from '@/store/store';
 import { TradingHubFooter } from './TradingHubFooter';
 import { selectedMarketIdAtom } from '../Market';
-import { ChartFeedResponse } from '@/types/chartTypes';
 import { useQuery } from '@apollo/client';
-import { CHART_FEED_QUERY } from '@/requests/queries';
+
 import { UTCTimestamp } from 'lightweight-charts';
-import { ChatContainer } from './Chat/ChatContainer';
 import { TradingHubChart } from './TradingHubChart/TradingHubChart';
+import { MARKET_PRICE_FEED_QUERY } from '@/requests/queries';
+import { MarketPriceChartResponse } from '@/types/chartTypes';
 
 const tabs = ['chart', 'positions', 'orders', 'history'] as const;
 export type TradingHubStateType = (typeof tabs)[number];
@@ -32,10 +32,10 @@ export const TradingHub = () => {
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
 
   const {
-    data: chartRes,
+    data: marketPriceChartRes,
     error,
     loading,
-  } = useQuery<ChartFeedResponse>(CHART_FEED_QUERY, {
+  } = useQuery<MarketPriceChartResponse>(MARKET_PRICE_FEED_QUERY, {
     pollInterval: 5000,
     variables: { marketId: selectedMarketId },
   });
@@ -45,14 +45,14 @@ export const TradingHub = () => {
   >([]);
 
   useEffect(() => {
-    if (chartRes?.positions) {
-      const formattedData = chartRes.positions.map((item) => ({
+    if (marketPriceChartRes?.positions) {
+      const formattedData = marketPriceChartRes.positions.map((item) => ({
         time: (new Date(item.timestamp).getTime() / 1000) as UTCTimestamp,
         value: Number(item.createPrice),
       }));
       setChartData(formattedData);
     }
-  }, [chartRes]);
+  }, [marketPriceChartRes]);
 
   /*  */
 

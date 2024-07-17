@@ -1,8 +1,8 @@
-export interface ChartFeedType {
+export interface MarketPriceChartType {
   createPrice: bigint;
   timestamp: string;
 }
 
-export interface ChartFeedResponse {
-  positions: ChartFeedType[];
+export interface MarketPriceChartResponse {
+  positions: MarketPriceChartType[];
 }
