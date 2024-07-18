@@ -1,5 +1,3 @@
-import { CHART_FEED_QUERY } from '@/requests/queries';
-import { ChartFeedResponse } from '@/types/chartTypes';
 import { useQuery } from '@apollo/client';
 import { useAtom } from 'jotai';
 import React, { useEffect, useRef, useState } from 'react';
@@ -13,10 +11,11 @@ import { chosenMarketAtom } from '@/store/store';
 import Image from 'next/image';
 
 interface ChartProps {
-  data: { time: UTCTimestamp; value: number }[];
+  marketPriceData: { time: UTCTimestamp; value: number }[];
+  oraclePriceData: { time: UTCTimestamp; value: number }[];
 }
 
-export const Chart = ({ data }: ChartProps) => {
+export const Chart = ({ marketPriceData, oraclePriceData }: ChartProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [chosenMarket] = useAtom(chosenMarketAtom);
@@ -68,9 +67,32 @@ export const Chart = ({ data }: ChartProps) => {
             vertLines: { color: '#444650' },
           }}
           layout={{ background: { color: '#191B24' }, textColor: 'white' }}
+          timeScale={{
+            timeVisible: true,
+            secondsVisible: true,
+            tickMarkFormatter: (time: any, tickMarkType: any, locale: any) => {
+              const date = new Date(time * 1000);
+              const hours = date.getHours().toString().padStart(2, '0');
+              const minutes = date.getMinutes().toString().padStart(2, '0');
+              const seconds = date.getSeconds().toString().padStart(2, '0');
+
+              if (tickMarkType === 'second') {
+                return `${hours}:${minutes}:${seconds}`;
+              } else if (tickMarkType === 'minute') {
+                return `${hours}:${minutes}`;
+              } else if (tickMarkType === 'hour') {
+                return `${hours}:00`;
+              } else {
+                return date.toLocaleDateString(locale);
+              }
+            },
+          }}
         >
-          {data.length > 0 && (
-            <LineSeries data={data} reactive color={'#4ECB7D'} />
+          {marketPriceData.length > 0 && (
+            <LineSeries data={marketPriceData} reactive color={'#4ECB7D'} />
+          )}
+          {oraclePriceData.length > 0 && (
+            <LineSeries data={oraclePriceData} reactive color={'#ffc0cb'} />
           )}
         </ChartComponent>
       )}
