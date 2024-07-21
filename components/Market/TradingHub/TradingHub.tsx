@@ -7,12 +7,18 @@ import { AggregatedPositionsCheckbox } from './TradingHubPositions/AggregatedPos
 import { tradingHubStateAtom } from '@/store/store';
 import { TradingHubFooter } from './TradingHubFooter';
 import { selectedMarketIdAtom } from '../Market';
-import { ChartFeedResponse } from '@/types/chartTypes';
 import { useQuery } from '@apollo/client';
-import { CHART_FEED_QUERY } from '@/requests/queries';
+
 import { UTCTimestamp } from 'lightweight-charts';
-import { ChatContainer } from './Chat/ChatContainer';
 import { TradingHubChart } from './TradingHubChart/TradingHubChart';
+import {
+  MARKET_PRICE_FEED_QUERY,
+  ORACLE_PRICE_FEED_QUERY,
+} from '@/requests/queries';
+import {
+  MarketPriceChartResponse,
+  OraclePriceChartResponse,
+} from '@/types/chartTypes';
 
 const tabs = ['chart', 'positions', 'orders', 'history'] as const;
 export type TradingHubStateType = (typeof tabs)[number];
@@ -32,32 +38,57 @@ export const TradingHub = () => {
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
 
   const {
-    data: chartRes,
-    error,
-    loading,
-  } = useQuery<ChartFeedResponse>(CHART_FEED_QUERY, {
-    pollInterval: 5000,
+    data: marketPriceChartRes,
+    error: marketPriceChartError,
+    loading: marketPriceChartLoading,
+  } = useQuery<MarketPriceChartResponse>(MARKET_PRICE_FEED_QUERY, {
+    pollInterval: 10000,
     variables: { marketId: selectedMarketId },
   });
 
-  const [chartData, setChartData] = useState<
+  const {
+    data: oraclePriceChartRes,
+    error: oraclePriceChartError,
+    loading: oraclePriceChartLoading,
+  } = useQuery<OraclePriceChartResponse>(ORACLE_PRICE_FEED_QUERY, {
+    pollInterval: 10000,
+    variables: { marketId: selectedMarketId },
+  });
+
+  const [marketPriceChartData, setMarketPriceChartData] = useState<
+    { time: UTCTimestamp; value: number }[]
+  >([]);
+
+  const [oraclePriceChartData, setOraclePriceChartData] = useState<
     { time: UTCTimestamp; value: number }[]
   >([]);
 
   useEffect(() => {
-    if (chartRes?.positions) {
-      const formattedData = chartRes.positions.map((item) => ({
+    if (marketPriceChartRes?.positions) {
+      const formattedData = marketPriceChartRes.positions.map((item) => ({
         time: (new Date(item.timestamp).getTime() / 1000) as UTCTimestamp,
         value: Number(item.createPrice),
       }));
-      setChartData(formattedData);
+      setMarketPriceChartData(formattedData);
     }
-  }, [chartRes]);
+    if (oraclePriceChartRes?.historicalMarketPrices) {
+      const formattedData = oraclePriceChartRes.historicalMarketPrices.map(
+        (item) => ({
+          time: (new Date(item.timestamp).getTime() / 1000) as UTCTimestamp,
+          value: Number(item.price),
+        })
+      );
+      setOraclePriceChartData(formattedData);
+    }
+  }, [marketPriceChartRes, oraclePriceChartRes]);
 
   /*  */
 
   return (
-    <div className='h-[calc(100vh-166px)] lg:flex-1 lg:h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]'>
+    <div
+      className='h-[calc(100vh-166px)] lg:flex-1 lg:h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]'
+      onClick={() => console.log(oraclePriceChartData, marketPriceChartData)}
+    >
       <div className='flex-grow'>
         <div className='flex items-center justify-between px-2.5 pt-3 pb-2.5'>
           <div className='flex gap-1'>
@@ -77,7 +108,10 @@ export const TradingHub = () => {
         {address && <TradingHubContentContainer isAggregated={isAggregated} />}
         {tradingHubState === 'chart' && (
           <div className='w-full no-scrollbar'>
-            <TradingHubChart data={chartData} />
+            <TradingHubChart
+              marketPriceData={marketPriceChartData}
+              oraclePriceData={oraclePriceChartData}
+            />
           </div>
         )}
       </div>
