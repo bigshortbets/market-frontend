@@ -19,6 +19,8 @@ export const Chart = ({ marketPriceData, oraclePriceData }: ChartProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [chosenMarket] = useAtom(chosenMarketAtom);
+  const [marketPriceDisplay, setMarketPriceDisplay] = useState<boolean>(true);
+  const [oraclePriceDisplay, setOraclePriceDisplay] = useState<boolean>(false);
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
@@ -36,6 +38,19 @@ export const Chart = ({ marketPriceData, oraclePriceData }: ChartProps) => {
       window.removeEventListener('resize', updateDimensions);
     };
   }, []);
+
+  const toggleDisplay = (type: 'MarketPrice' | 'OraclePrice') => {
+    if (type === 'MarketPrice') {
+      marketPriceDisplay
+        ? setMarketPriceDisplay(false)
+        : setMarketPriceDisplay(true);
+    }
+    if (type === 'OraclePrice') {
+      oraclePriceDisplay
+        ? setOraclePriceDisplay(false)
+        : setOraclePriceDisplay(true);
+    }
+  };
   return (
     <div ref={containerRef} className='w-full h-[85%]'>
       <div className='flex justify-between flex-col md:flex-row md:items-center gap-2 md:gap-0 mt-2 mb-6 md:mr-3'>
@@ -52,9 +67,29 @@ export const Chart = ({ marketPriceData, oraclePriceData }: ChartProps) => {
           )}
           <p className=' text-sm font-semibold'>{chosenMarket?.name} Chart</p>
         </div>
-        <div className='flex items-center gap-1.5 ml-1 md:ml-0'>
-          <div className='w-[11px] h-[11px] rounded-full bg-[#4ECB7D]'></div>
-          <p className='text-xs'>- Market price</p>
+        <div className='flex items-center gap-4'>
+          <div className='flex items-center gap-1.5 ml-1 md:ml-0'>
+            <input
+              disabled={marketPriceDisplay && !oraclePriceDisplay}
+              type='checkbox'
+              checked={marketPriceDisplay}
+              onClick={() => toggleDisplay('MarketPrice')}
+            />
+
+            <p className='text-xs'>Market Price</p>
+            <div className='w-[11px] h-[11px] rounded-full bg-[#4ECB7D]'></div>
+          </div>
+          <div className='flex items-center gap-1.5 ml-1 md:ml-0'>
+            <input
+              disabled={oraclePriceDisplay && !marketPriceDisplay}
+              type='checkbox'
+              checked={oraclePriceDisplay}
+              onClick={() => toggleDisplay('OraclePrice')}
+            />
+
+            <p className='text-xs'>Oracle Price</p>
+            <div className='w-[11px] h-[11px] rounded-full bg-white'></div>
+          </div>
         </div>
       </div>
 
@@ -88,11 +123,11 @@ export const Chart = ({ marketPriceData, oraclePriceData }: ChartProps) => {
             },
           }}
         >
-          {marketPriceData.length > 0 && (
+          {marketPriceData.length > 0 && marketPriceDisplay && (
             <LineSeries data={marketPriceData} reactive color={'#4ECB7D'} />
           )}
-          {oraclePriceData.length > 0 && (
-            <LineSeries data={oraclePriceData} reactive color={'#ffc0cb'} />
+          {oraclePriceData.length > 0 && oraclePriceDisplay && (
+            <LineSeries data={oraclePriceData} reactive color={'white'} />
           )}
         </ChartComponent>
       )}
