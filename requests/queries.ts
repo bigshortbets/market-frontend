@@ -193,26 +193,12 @@ export const LEADERBOARD_ELECTION_QUERY = gql`
   }
 `;
 
-/* Query for getting market price feed for chart*/
+/* Query for recent positions of given market*/
 
-export const MARKET_PRICE_FEED_QUERY = gql`
-  query marketPriceFeed($marketId: String!) {
+export const CHART_FEED_QUERY = gql`
+  query chartFeed($marketId: String!) {
     positions(where: { market: { id_eq: $marketId } }, orderBy: timestamp_ASC) {
       createPrice
-      timestamp
-    }
-  }
-`;
-
-/* Query for getting oracle price feed for chart*/
-
-export const ORACLE_PRICE_FEED_QUERY = gql`
-  query oraclePriceFeed($marketId: String!) {
-    historicalMarketPrices(
-      where: { market: { id_eq: $marketId } }
-      orderBy: timestamp_ASC
-    ) {
-      price
       timestamp
     }
   }

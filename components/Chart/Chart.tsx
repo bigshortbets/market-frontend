@@ -1,3 +1,5 @@
+import { CHART_FEED_QUERY } from '@/requests/queries';
+import { ChartFeedResponse } from '@/types/chartTypes';
 import { useQuery } from '@apollo/client';
 import { useAtom } from 'jotai';
 import React, { useEffect, useRef, useState } from 'react';
@@ -11,16 +13,13 @@ import { chosenMarketAtom } from '@/store/store';
 import Image from 'next/image';
 
 interface ChartProps {
-  marketPriceData: { time: UTCTimestamp; value: number }[];
-  oraclePriceData: { time: UTCTimestamp; value: number }[];
+  data: { time: UTCTimestamp; value: number }[];
 }
 
-export const Chart = ({ marketPriceData, oraclePriceData }: ChartProps) => {
+export const Chart = ({ data }: ChartProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [chosenMarket] = useAtom(chosenMarketAtom);
-  const [marketPriceDisplay, setMarketPriceDisplay] = useState<boolean>(true);
-  const [oraclePriceDisplay, setOraclePriceDisplay] = useState<boolean>(false);
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
@@ -38,19 +37,6 @@ export const Chart = ({ marketPriceData, oraclePriceData }: ChartProps) => {
       window.removeEventListener('resize', updateDimensions);
     };
   }, []);
-
-  const toggleDisplay = (type: 'MarketPrice' | 'OraclePrice') => {
-    if (type === 'MarketPrice') {
-      marketPriceDisplay
-        ? setMarketPriceDisplay(false)
-        : setMarketPriceDisplay(true);
-    }
-    if (type === 'OraclePrice') {
-      oraclePriceDisplay
-        ? setOraclePriceDisplay(false)
-        : setOraclePriceDisplay(true);
-    }
-  };
   return (
     <div ref={containerRef} className='w-full h-[85%]'>
       <div className='flex justify-between flex-col md:flex-row md:items-center gap-2 md:gap-0 mt-2 mb-6 md:mr-3'>
@@ -67,29 +53,9 @@ export const Chart = ({ marketPriceData, oraclePriceData }: ChartProps) => {
           )}
           <p className=' text-sm font-semibold'>{chosenMarket?.name} Chart</p>
         </div>
-        <div className='flex items-center gap-4'>
-          <div className='flex items-center gap-1.5 ml-1 md:ml-0'>
-            <input
-              disabled={marketPriceDisplay && !oraclePriceDisplay}
-              type='checkbox'
-              checked={marketPriceDisplay}
-              onClick={() => toggleDisplay('MarketPrice')}
-            />
-
-            <p className='text-xs'>Market Price</p>
-            <div className='w-[11px] h-[11px] rounded-full bg-[#4ECB7D]'></div>
-          </div>
-          <div className='flex items-center gap-1.5 ml-1 md:ml-0'>
-            <input
-              disabled={oraclePriceDisplay && !marketPriceDisplay}
-              type='checkbox'
-              checked={oraclePriceDisplay}
-              onClick={() => toggleDisplay('OraclePrice')}
-            />
-
-            <p className='text-xs'>Oracle Price</p>
-            <div className='w-[11px] h-[11px] rounded-full bg-white'></div>
-          </div>
+        <div className='flex items-center gap-1.5 ml-1 md:ml-0'>
+          <div className='w-[11px] h-[11px] rounded-full bg-[#4ECB7D]'></div>
+          <p className='text-xs'>- Market price</p>
         </div>
       </div>
 
@@ -102,32 +68,9 @@ export const Chart = ({ marketPriceData, oraclePriceData }: ChartProps) => {
             vertLines: { color: '#444650' },
           }}
           layout={{ background: { color: '#191B24' }, textColor: 'white' }}
-          timeScale={{
-            timeVisible: true,
-            secondsVisible: true,
-            tickMarkFormatter: (time: any, tickMarkType: any, locale: any) => {
-              const date = new Date(time * 1000);
-              const hours = date.getHours().toString().padStart(2, '0');
-              const minutes = date.getMinutes().toString().padStart(2, '0');
-              const seconds = date.getSeconds().toString().padStart(2, '0');
-
-              if (tickMarkType === 'second') {
-                return `${hours}:${minutes}:${seconds}`;
-              } else if (tickMarkType === 'minute') {
-                return `${hours}:${minutes}`;
-              } else if (tickMarkType === 'hour') {
-                return `${hours}:00`;
-              } else {
-                return date.toLocaleDateString(locale);
-              }
-            },
-          }}
         >
-          {marketPriceData.length > 0 && marketPriceDisplay && (
-            <LineSeries data={marketPriceData} reactive color={'#4ECB7D'} />
-          )}
-          {oraclePriceData.length > 0 && oraclePriceDisplay && (
-            <LineSeries data={oraclePriceData} reactive color={'white'} />
+          {data.length > 0 && (
+            <LineSeries data={data} reactive color={'#4ECB7D'} />
           )}
         </ChartComponent>
       )}

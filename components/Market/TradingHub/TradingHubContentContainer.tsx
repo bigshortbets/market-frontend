@@ -1,4 +1,5 @@
 import {
+  CHART_FEED_QUERY,
   USER_HISTORY_QUERY,
   USER_OPEN_POSITIONS_QUERY,
   USER_ORDERS_QUERY,
@@ -23,7 +24,7 @@ import {
   tradingHubPositionsCountAtom,
   tradingHubStateAtom,
 } from '@/store/store';
-
+import { ChartFeedResponse } from '@/types/chartTypes';
 import { selectedMarketIdAtom } from '../Market';
 import { UTCTimestamp } from 'lightweight-charts';
 import { TradingHubChart } from './TradingHubChart/TradingHubChart';
