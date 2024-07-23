@@ -62,11 +62,13 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
     OrderSideEnum.LONG
   );
 
-  const orderCost =
+  const orderCost = Math.max(
+    500,
     (Number(selectedMarket?.initialMargin) / 100) *
-    (Number(selectedMarket?.oraclePrice) *
-      quantity *
-      Number(selectedMarket?.contractUnit));
+      (Number(selectedMarket?.oraclePrice) *
+        quantity *
+        Number(selectedMarket?.contractUnit))
+  );
 
   const orderValue = price * quantity * Number(selectedMarket?.contractUnit);
 
@@ -200,7 +202,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
                 data-tooltip-id='order-cost-tooltip'
                 data-tooltip-html={`Mandatory initial deposit, set at ${Number(
                   selectedMarket?.initialMargin
-                )}%</br> of the contract value being traded.`}
+                )}%</br> of the contract value being traded,</br> but not lower than 500 ${currencySymbol}.`}
               >
                 <IoMdInformationCircle className='text-[#7F828F] text-sm ' />
               </a>
