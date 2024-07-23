@@ -1,10 +1,7 @@
 import { PositionType } from '@/types/positionTypes';
-import React, { useEffect } from 'react';
 import { TradingHubAggregatedPosition } from './TradingHubAggregatedPosition';
-import { useAtom } from 'jotai';
-import { unsettledLossesAtom } from '../../Market';
-import { useAccount } from 'wagmi';
 import { TradingHubNonAggregatedPositions } from './TradingHubNonAggregatedPositions';
+import { getMarkeDetails } from '@/utils/getMarketDetails';
 
 interface TradingHubPositionsProps {
   positions: PositionType[];
@@ -28,7 +25,29 @@ export const TradingHubPositions = ({
   };
 
   const positionsByMarketTicker = aggregatePositionsByMarketTicker();
-  const { address } = useAccount();
+
+  /* Sorting alphabetically  */
+
+  const sortPositionsByMarketName = (
+    positionsByMarketTicker: Record<string, PositionType[]>
+  ) => {
+    const sortedTickers = Object.keys(positionsByMarketTicker).sort((a, b) => {
+      const nameA = getMarkeDetails(a)?.name || a;
+      const nameB = getMarkeDetails(b)?.name || b;
+      return nameA.localeCompare(nameB);
+    });
+
+    const sortedPositionsByMarketTicker: Record<string, PositionType[]> = {};
+    sortedTickers.forEach((ticker) => {
+      sortedPositionsByMarketTicker[ticker] = positionsByMarketTicker[ticker];
+    });
+
+    return sortedPositionsByMarketTicker;
+  };
+
+  const sortedPositions = sortPositionsByMarketName(positionsByMarketTicker);
+
+  /*  */
 
   return (
     <div
@@ -39,15 +58,13 @@ export const TradingHubPositions = ({
         <>
           {isAggregated ? (
             <div className='flex flex-col gap-4'>
-              {Object.entries(positionsByMarketTicker).map(
-                ([ticker, positions]) => (
-                  <TradingHubAggregatedPosition
-                    key={ticker}
-                    ticker={ticker}
-                    positions={positions}
-                  />
-                )
-              )}
+              {Object.entries(sortedPositions).map(([ticker, positions]) => (
+                <TradingHubAggregatedPosition
+                  key={ticker}
+                  ticker={ticker}
+                  positions={positions}
+                />
+              ))}
             </div>
           ) : (
             <TradingHubNonAggregatedPositions positions={positions} />
