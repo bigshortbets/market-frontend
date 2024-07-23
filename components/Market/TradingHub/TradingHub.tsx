@@ -85,10 +85,7 @@ export const TradingHub = () => {
   /*  */
 
   return (
-    <div
-      className='h-[calc(100vh-166px)] lg:flex-1 lg:h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]'
-      onClick={() => console.log(oraclePriceChartData, marketPriceChartData)}
-    >
+    <div className='h-[calc(100vh-166px)] lg:flex-1 lg:h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]'>
       <div className='flex-grow'>
         <div className='flex items-center justify-between px-2.5 pt-3 pb-2.5'>
           <div className='flex gap-1'>

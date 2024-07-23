@@ -41,10 +41,7 @@ export const TradingHubOrders = ({ orders }: TradingHubOrdersProps) => {
     (currentOrdersType === 'open' && openOrders.length > 0) ||
     (currentOrdersType === 'close' && closeOrders.length > 0);
   return (
-    <div
-      className='w-full h-full overflow-y-auto no-scrollbar'
-      style={{ maxHeight: 'calc(100vh - 230px)' }}
-    >
+    <div className='w-full h-full overflow-y-auto no-scrollbar max-h-[calc(100vh-290px)] md:max-h-[calc(100vh-230px)]'>
       <div className='px-3 mb-2 mt-1 text-sm flex gap-2'>
         {tabs.map((tab, key) => (
           <TradingHubOrderTypeTab

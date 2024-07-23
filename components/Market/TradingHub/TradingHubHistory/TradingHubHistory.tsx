@@ -7,20 +7,17 @@ interface TradingHubHistoryProps {
 
 export const TradingHubHistory = ({ history }: TradingHubHistoryProps) => {
   return (
-    <div
-      className="w-full h-full overflow-y-auto no-scrollbar"
-      style={{ maxHeight: 'calc(100vh - 230px)' }}
-    >
+    <div className='w-full h-full overflow-y-auto no-scrollbar max-h-[calc(100vh-290px)] md:max-h-[calc(100vh-230px)]'>
       {history.length > 0 ? (
-        <table className="table-auto w-full ">
-          <thead className="bg-secondary-bg text-sm text-left text-[#ABACBA]">
+        <table className='table-auto w-full '>
+          <thead className='bg-secondary-bg text-sm text-left text-[#ABACBA]'>
             <tr>
-              <th className="font-normal py-3 pl-3">Side</th>
-              <th className="font-normal">Created</th>
-              <th className="font-normal">Market</th>
-              <th className="font-normal">Price</th>
-              <th className="font-normal">Quantity</th>
-              <th className="font-normal">Status</th>
+              <th className='font-normal py-3 pl-3'>Side</th>
+              <th className='font-normal'>Created</th>
+              <th className='font-normal'>Market</th>
+              <th className='font-normal'>Price</th>
+              <th className='font-normal'>Quantity</th>
+              <th className='font-normal'>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -30,8 +27,8 @@ export const TradingHubHistory = ({ history }: TradingHubHistoryProps) => {
           </tbody>
         </table>
       ) : (
-        <div className="flex items-center justify-center h-full">
-          <p className="opacity-20 text-2xl mt-5">
+        <div className='flex items-center justify-center h-full'>
+          <p className='opacity-20 text-2xl mt-5'>
             Currently no orders in the history
           </p>
         </div>

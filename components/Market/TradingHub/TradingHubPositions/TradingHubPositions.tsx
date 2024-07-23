@@ -50,10 +50,7 @@ export const TradingHubPositions = ({
   /*  */
 
   return (
-    <div
-      className='w-full h-full  px-2.5  overflow-y-auto no-scrollbar'
-      style={{ maxHeight: 'calc(100vh - 230px)' }}
-    >
+    <div className='w-full h-full  px-2.5  overflow-y-auto no-scrollbar max-h-[calc(100vh-290px)] md:max-h-[calc(100vh-230px)]'>
       {positions.length > 0 ? (
         <>
           {isAggregated ? (

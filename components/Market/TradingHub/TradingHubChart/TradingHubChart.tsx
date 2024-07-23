@@ -12,10 +12,7 @@ export const TradingHubChart = ({
   oraclePriceData,
 }: TradingHubChartProps) => {
   return (
-    <div
-      className='w-full h-full  px-2.5  overflow-y-auto no-scrollbar'
-      style={{ height: 'calc(100vh - 290px)' }}
-    >
+    <div className='w-full   px-2.5  overflow-y-auto no-scrollbar h-[calc(100vh-290px)] md:h-[calc(100vh-230px)]'>
       <Chart
         marketPriceData={marketPriceData}
         oraclePriceData={oraclePriceData}
