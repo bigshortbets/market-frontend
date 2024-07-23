@@ -1,9 +1,5 @@
 import { PositionType } from '@/types/positionTypes';
-import React, { useEffect } from 'react';
 import { TradingHubAggregatedPosition } from './TradingHubAggregatedPosition';
-import { useAtom } from 'jotai';
-import { unsettledLossesAtom } from '../../Market';
-import { useAccount } from 'wagmi';
 import { TradingHubNonAggregatedPositions } from './TradingHubNonAggregatedPositions';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
 
@@ -29,7 +25,6 @@ export const TradingHubPositions = ({
   };
 
   const positionsByMarketTicker = aggregatePositionsByMarketTicker();
-  const { address } = useAccount();
 
   /* Sorting alphabetically  */
 
@@ -50,30 +45,26 @@ export const TradingHubPositions = ({
     return sortedPositionsByMarketTicker;
   };
 
+  const sortedPositions = sortPositionsByMarketName(positionsByMarketTicker);
+
   /*  */
 
-  const sortedPositionsByMarketTicker = sortPositionsByMarketName(
-    positionsByMarketTicker
-  );
   return (
     <div
       className='w-full h-full  px-2.5  overflow-y-auto no-scrollbar'
       style={{ maxHeight: 'calc(100vh - 230px)' }}
-      onClick={() => console.log(positionsByMarketTicker)}
     >
       {positions.length > 0 ? (
         <>
           {isAggregated ? (
             <div className='flex flex-col gap-4'>
-              {Object.entries(sortedPositionsByMarketTicker).map(
-                ([ticker, positions]) => (
-                  <TradingHubAggregatedPosition
-                    key={ticker}
-                    ticker={ticker}
-                    positions={positions}
-                  />
-                )
-              )}
+              {Object.entries(sortedPositions).map(([ticker, positions]) => (
+                <TradingHubAggregatedPosition
+                  key={ticker}
+                  ticker={ticker}
+                  positions={positions}
+                />
+              ))}
             </div>
           ) : (
             <TradingHubNonAggregatedPositions positions={positions} />
