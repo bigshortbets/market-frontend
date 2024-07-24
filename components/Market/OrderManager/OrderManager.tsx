@@ -14,10 +14,9 @@ import { bigshortbetsChain } from '@/blockchain/chain';
 import { switchToBigShortBetsChain } from '@/utils/switchToBigShortBetsChain';
 import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 import { currencyFormatter } from '@/utils/currencyFormatter';
-import { IoMdInformationCircle } from 'react-icons/io';
 import { Tooltip } from 'react-tooltip';
 import { currencySymbol } from '@/blockchain/constants';
-import { FinanceManagerInfo } from '../FinanceManager/FinanceManagerInfo';
+import ReactLoading from 'react-loading';
 
 export enum OrderSideEnum {
   LONG,
@@ -31,9 +30,6 @@ interface OrderManagerProps {
 export const OrderManager = ({ markets }: OrderManagerProps) => {
   const [price, setPrice] = useState<number>(1);
   const [quantity, setQuantity] = useState<number>(1);
-  const [selectedSideOrder, setSelectedSideOrder] = useState<OrderSideEnum>(
-    OrderSideEnum.LONG
-  );
 
   const [currentBlock] = useAtom(currentBlockAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
@@ -48,19 +44,12 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   );
 
   const { address, chain } = useAccount();
-
   const { formattedBalance } = useNativeCurrencyBalance(address);
 
-  const { write: writeShortOrder } = useCreateOrderWrite(
-    price,
-    quantity,
-    OrderSideEnum.SHORT
-  );
-  const { write: writeLongOrder } = useCreateOrderWrite(
-    price,
-    quantity,
-    OrderSideEnum.LONG
-  );
+  const { write: writeShortOrder, isLoading: isShortLoading } =
+    useCreateOrderWrite(price, quantity, OrderSideEnum.SHORT);
+  const { write: writeLongOrder, isLoading: isLongLoading } =
+    useCreateOrderWrite(price, quantity, OrderSideEnum.LONG);
 
   const orderCost = Math.max(
     500,
@@ -97,7 +86,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
     setIsDivisibleByTickSize(res);
   }, [price]);
 
-  const handleWriteOrder = () => {
+  const handleWriteOrder = (side: OrderSideEnum) => {
     if (!address) {
       open();
       return;
@@ -106,10 +95,10 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       switchToBigShortBetsChain();
       return;
     }
-    if (selectedSideOrder === OrderSideEnum.LONG) {
+    if (side === OrderSideEnum.LONG) {
       writeLongOrder();
     }
-    if (selectedSideOrder === OrderSideEnum.SHORT) {
+    if (side === OrderSideEnum.SHORT) {
       writeShortOrder();
     }
   };
@@ -117,11 +106,9 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   const noMarkets = markets.length < 1;
 
   return (
-    <div className='p-2.5 pb-4 flex flex-col gap-4'>
-      <div className='flex flex-col gap-2'>
-        <p className='text-sm font-semibold text-secondary leading-[24px]'>
-          Order
-        </p>
+    <div className='px-2.5 pt-3 pb-4 flex flex-col gap-4'>
+      <div className='flex flex-col gap-2.5'>
+        {/* Price input */}
         <div className='flex flex-col'>
           <label
             htmlFor='orderPriceInput'
@@ -143,6 +130,8 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
             </span>
           </div>
         </div>
+        {/*  */}
+        {/* Quantity input */}
         <div className='flex flex-col'>
           <label
             htmlFor='quantityInput'
@@ -164,9 +153,81 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
             </span>
           </div>
         </div>
+        {/*  */}
+        <div className='flex flex-col gap-1 px-1 mt-1'>
+          <div className='flex items-center justify-between gap-2 mt-1'>
+            <a
+              className='text-[13px] decoration-dotted	underline cursor-help	'
+              data-tooltip-id='order-cost-tooltip'
+              data-tooltip-html={`Order Cost is mandatory initial deposit,</br> set at ${Number(
+                selectedMarket?.initialMargin
+              )}% of the contract value being traded,</br> but not lower than 500 ${currencySymbol}.`}
+            >
+              Order Cost
+            </a>
+            <p className='text-[13px] font-semibold'>
+              {!noMarkets ? currencyFormatter.format(orderCost) : '-'}{' '}
+              {currencySymbol}
+            </p>
+          </div>
+          <div className='flex items-center gap-2 mt-1 justify-between'>
+            <a
+              className='text-[12px] text-tetriary decoration-dotted	underline cursor-help	'
+              data-tooltip-id='order-value-tooltip'
+              data-tooltip-html={`Order Value represents the total value of the</br> underlying asset. It considers the current price of</br>  the asset,the quantity of contracts traded, and the</br> standardized units per contract.`}
+            >
+              Order Value
+            </a>
+            <p className='text-[12px] text-tetriary font-semibold'>
+              {!noMarkets && selectedMarket?.oraclePrice != null
+                ? currencyFormatter.format(orderValue)
+                : '-'}{' '}
+              {currencySymbol}
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className='flex items-center gap-2 '>
+        <button
+          onClick={() => handleWriteOrder(OrderSideEnum.LONG)}
+          disabled={isActionDisabled}
+          className={`transition justify-center ease-in flex-1 text-white flex flex-col items-center rounded-lg h-[50px] ${
+            isActionDisabled
+              ? 'bg-gray-400 cursor-not-allowed text-green-100'
+              : 'bg-[#569b6e] hover:bg-[#4c8660]'
+          }`}
+        >
+          {isLongLoading ? (
+            <ReactLoading type='spin' height={22} width={22} color='white' />
+          ) : (
+            <div>
+              <p className=' text-[13px] font-semibold'>Buy</p>
+              <p className=' text-[10px]'>Long</p>
+            </div>
+          )}
+        </button>
+        <button
+          onClick={() => handleWriteOrder(OrderSideEnum.SHORT)}
+          disabled={isActionDisabled}
+          className={`transition justify-center ease-in flex-1 text-white flex flex-col items-center rounded-lg h-[50px] ${
+            isActionDisabled
+              ? 'bg-gray-400 cursor-not-allowed text-red-100'
+              : 'bg-[#8f605f] hover:bg-[#7a504f]'
+          }`}
+        >
+          {isShortLoading ? (
+            <ReactLoading type='spin' height={22} width={22} color='white' />
+          ) : (
+            <div>
+              <p className=' text-[13px] font-semibold'>Sell</p>
+              <p className='text-[10px]'>Short</p>
+            </div>
+          )}
+        </button>
+      </div>
+
+      {/* <div className='flex items-center gap-2 '>
         <div
           className={`${
             selectedSideOrder === OrderSideEnum.LONG
@@ -189,8 +250,10 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           <p className=' text-[13px] font-semibold'>Sell</p>
           <p className='text-[10px]'>Short</p>
         </div>
-      </div>
-      <div className='p-2 rounded-lg bg-[#000211] flex flex-col gap-4'>
+      </div> */}
+
+      {/* Summary component */}
+      {/* <div className='p-2 rounded-lg bg-[#000211] flex flex-col gap-4'>
         <p className='text-sm font-semibold text-secondary leading-[24px]'>
           Summary
         </p>
@@ -246,10 +309,11 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           {address && isBsbNetwork && 'Place Order'}
           {address && !isBsbNetwork && 'Change Network'}
         </button>
-      </div>
-      {/* <FinanceManagerInfo value='Placing orders take your funds ' /> */}
+      </div> */}
+      {/*  */}
+
       {!address && (
-        <FinanceManagerWarning error='Connect your wallet to interact with the market.' />
+        <FinanceManagerWarning error='Connect your wallet to place your order.' />
       )}
       {address && Number(formattedBalance) === 0 && (
         <FinanceManagerWarning
