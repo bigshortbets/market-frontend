@@ -20,6 +20,7 @@ import { bigshortbetsChain } from '@/blockchain/chain';
 import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
 import { currencySymbol } from '@/blockchain/constants';
 import { chosenMarketAtom } from '@/store/store';
+import { checkIfBidenMarket } from '@/utils/checkIfBidenMarket';
 
 export interface DepositProps {
   markets: EnrichedMarketType[];
@@ -34,6 +35,8 @@ export const Deposit = ({ markets }: DepositProps) => {
   const isBsbNetwork = chain?.id === bigshortbetsChain.id;
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
+
+  const selectedMarket = findMarketById(markets, selectedMarketId);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -90,6 +93,8 @@ export const Deposit = ({ markets }: DepositProps) => {
       setAmount(Math.abs(val));
     }
   };
+
+  const isBidenMarket = checkIfBidenMarket(selectedMarket?.ticker);
 
   return (
     <div className='p-2.5 pb-4 flex flex-col gap-4'>
@@ -268,6 +273,9 @@ export const Deposit = ({ markets }: DepositProps) => {
           {address && !isBsbNetwork && 'Change network'}
         </button>
       </div>
+      {isBidenMarket && (
+        <FinanceManagerWarning error='This market (BIGSB_EL:BIDENX2024) will close at 18:00 UTC on 26 July 2024. ' />
+      )}
       {selecteMarketMargin?.liquidationStatus != 'EverythingFine' &&
         selecteMarketMargin?.liquidationStatus != ('None' as any) &&
         selecteMarketMargin &&

@@ -17,6 +17,7 @@ import { currencyFormatter } from '@/utils/currencyFormatter';
 import { Tooltip } from 'react-tooltip';
 import { currencySymbol } from '@/blockchain/constants';
 import ReactLoading from 'react-loading';
+import { checkIfBidenMarket } from '@/utils/checkIfBidenMarket';
 
 export enum OrderSideEnum {
   LONG,
@@ -108,6 +109,8 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   };
 
   const noMarkets = markets.length < 1;
+
+  const isBidenMarket = checkIfBidenMarket(selectedMarket?.ticker);
 
   return (
     <div className='px-2.5 pt-3 pb-4 flex flex-col gap-4'>
@@ -230,7 +233,9 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           )}
         </button>
       </div>
-
+      {isBidenMarket && (
+        <FinanceManagerWarning error='This market (BIGSB_EL:BIDENX2024) will close at 18:00 UTC on 26 July 2024. ' />
+      )}
       {!address && (
         <FinanceManagerWarning error='Connect your wallet to place your order.' />
       )}

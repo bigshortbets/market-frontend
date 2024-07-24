@@ -77,7 +77,7 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
         </div>
         {financeManagerState === 'order' && <OrderManager markets={markets} />}
         {financeManagerState === 'deposit' && <Deposit markets={markets} />}
-        {financeManagerState === 'withdraw' && <Withdraw />}
+        {financeManagerState === 'withdraw' && <Withdraw markets={markets} />}
         {/* {financeManagerState === 'bridge' && <Bridge />} */}
         {financeManagerState === 'claim' && (
           <Claim
