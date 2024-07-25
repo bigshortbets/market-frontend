@@ -114,6 +114,8 @@ export const USER_OPEN_POSITIONS_QUERY = gql`
       id
       price
       createPrice
+      createPriceShort
+      createPriceLong
       quantity
       timestamp
       short
@@ -135,7 +137,7 @@ export const RECENT_MARKET_POSITIONS_QUERY = gql`
   query SubscribePositions($marketId: String!) {
     positions(
       where: { market: { id_eq: $marketId } }
-      limit: 10
+      limit: 30
       orderBy: timestamp_DESC
     ) {
       id
@@ -162,7 +164,6 @@ export const ORDER_BOOK_SHORTS_QUERY = gql`
     ) {
       quantity
       price
-      id
     }
   }
 `;
@@ -182,7 +183,6 @@ export const ORDER_BOOK_LONGS_QUERY = gql`
     ) {
       quantity
       price
-      id
     }
   }
 `;
@@ -205,6 +205,17 @@ export const LEADERBOARD_ELECTION_QUERY = gql`
     userBalances(where: { market: { ticker_startsWith: "BIGSB_EL" } }) {
       balanceChange
       user
+    }
+  }
+`;
+
+/* Query for recent positions of given market*/
+
+export const CHART_FEED_QUERY = gql`
+  query chartFeed($marketId: String!) {
+    positions(where: { market: { id_eq: $marketId } }, orderBy: timestamp_ASC) {
+      createPrice
+      timestamp
     }
   }
 `;

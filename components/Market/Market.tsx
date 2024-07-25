@@ -86,54 +86,21 @@ export const Market = ({ markets }: MarketProps) => {
       }
     }
 
-    if (
-      !isMarketFromURLProcessed &&
-      markets &&
-      markets.length > 0 &&
-      blockHeight
-    ) {
-      for (let x of markets) {
-        const { isClosed } = calculateMarketClosing(
-          blockHeight,
-          Number(x.lifetime)
-        );
-        if (!isClosed) {
-          setSelectedMarketId(x.id);
-          router.push(`?market=${x.ticker}`, undefined, { shallow: true });
-          return;
-        }
+    if (!isMarketFromURLProcessed && markets && markets.length > 0) {
+      const electionMarkets = markets.filter(
+        (market) => market.category === 'election'
+      );
+
+      if (electionMarkets.length > 0) {
+        const randomMarket =
+          electionMarkets[Math.floor(Math.random() * electionMarkets.length)];
+        setSelectedMarketId(randomMarket.id);
+        router.push(`?market=${randomMarket.ticker}`, undefined, {
+          shallow: true,
+        });
       }
     }
   }, [blockHeight, markets, router]);
-
-  const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
-  const [cookies, setCookie] = useCookies(['hideModal']);
-
-  useEffect(() => {
-    const showModal = cookies.hideModal !== 'true';
-    if (showModal) {
-      setIsModalOpened(true);
-    }
-  }, [cookies]);
-
-  const handleCloseModal = () => {
-    setIsModalOpened(false);
-  };
-
-  const handleNeverShowModal = () => {
-    const farFuture = new Date();
-    farFuture.setFullYear(farFuture.getFullYear() + 10); // Set cookie to expire in 10 years
-    setCookie('hideModal', 'true', { path: '/', expires: farFuture });
-    setIsModalOpened(false);
-  };
-
-  /*   useEffect(() => {
-    if (chain?.id != bigshortbetsChain.id) {
-      switchToBigShortBetsChain();
-    }
-  }, []); */
-
-  /* const [UIConfiguration] = useAtom(UIConfigurationAtom); */
 
   return (
     <div className='h-[100dvh] bg-[#111217] '>
@@ -202,11 +169,6 @@ export const Market = ({ markets }: MarketProps) => {
           ))}
         </div>
       </div>
-      {/* <EntryModal
-        handleCloseModal={handleCloseModal}
-        isModalOpened={isModalOpened}
-        handleNeverShowModal={handleNeverShowModal}
-      /> */}
     </div>
   );
 };

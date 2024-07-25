@@ -2688,6 +2688,11 @@ extension-port-stream@^2.0.1:
   dependencies:
     webextension-polyfill ">=0.10.0 <1.0"
 
+fancy-canvas@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/fancy-canvas/-/fancy-canvas-2.1.0.tgz#44b40e40419ad8ef8304df365e4276767e918552"
+  integrity sha512-nifxXJ95JNLFR2NgRV4/MxVP45G9909wJTEKz5fg/TZS20JJZA6hfgRVh/bC9bwl2zBtBNcYPjiBE4njQHVBwQ==
+
 fast-deep-equal@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
@@ -3307,6 +3312,18 @@ keyvaluestorage-interface@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/keyvaluestorage-interface/-/keyvaluestorage-interface-1.0.0.tgz#13ebdf71f5284ad54be94bd1ad9ed79adad515ff"
   integrity sha512-8t6Q3TclQ4uZynJY9IGr2+SsIGwK9JHcO6ootkHCGA0CrQCRy+VkouYNO2xicET6b9al7QKzpebNow+gkpCL8g==
+
+lightweight-charts-react-wrapper@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/lightweight-charts-react-wrapper/-/lightweight-charts-react-wrapper-2.1.1.tgz#78ecf9137c0845f51670ef9a21e8bef6e519ddc0"
+  integrity sha512-L+iyvHeM6+9yuSsbPRX5WiAx5m/Wg3JutstfYv3QjfSvyBE0cc5F4JPQD6k4e3OvZrvluq935/8ku3x8k5XB6Q==
+
+lightweight-charts@^4.1.6:
+  version "4.1.6"
+  resolved "https://registry.yarnpkg.com/lightweight-charts/-/lightweight-charts-4.1.6.tgz#0d7f84ae469ba62d9043b28dc5f56dc6b3b5299b"
+  integrity sha512-6NLRhYGSOorEXQireN+/Fh25lU2vzvHAcPujQZOqQGB/QGereMsoyLhuX5mz4odXune01mKhhmd8UTYIgRDGqg==
+  dependencies:
+    fancy-canvas "2.1.0"
 
 lilconfig@^2.0.5, lilconfig@^2.1.0:
   version "2.1.0"

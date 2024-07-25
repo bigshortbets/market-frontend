@@ -7,6 +7,8 @@ export interface PositionType {
   long: string;
   quantityLeft: BigInt;
   createPrice: BigInt;
+  createPriceLong: BigInt;
+  createPriceShort: BigInt;
   market: {
     id: string;
     ticker: string;

@@ -6,6 +6,7 @@ import { categorizeMarkets } from '@/utils/categorizeMarkets';
 import { MarketSelect } from '../FinanceManager/MarketSelect';
 import ReactLoading from 'react-loading';
 import { chosenMarketAtom } from '@/store/store';
+import { getPrecision } from '@/utils/getPrecision';
 
 interface MarketInterfaceTopBarProps {
   markets: EnrichedMarketType[];
@@ -54,6 +55,8 @@ export const MarketInterfaceTopBar = ({
     Number(currentBlock)
   );
 
+  const precision = getPrecision(Number(chosenMarket?.tickSize));
+
   return (
     <div className='flex border-b border-[#444650]'>
       <MarketSelect markets={markets} />
@@ -75,7 +78,7 @@ export const MarketInterfaceTopBar = ({
                 )}
               {chosenMarket?.oraclePrice != undefined &&
                 markets.length >= 1 &&
-                chosenMarket?.oraclePrice.toString()}
+                Number(chosenMarket?.oraclePrice).toFixed(precision)}
               {markets.length < 1 && '-'}
               {chosenMarket?.oraclePrice === null && '-'}
             </div>
@@ -94,7 +97,7 @@ export const MarketInterfaceTopBar = ({
                 />
               )}
               {recentTrades && recentTrades.length > 0
-                ? Number(recentTrades[0].createPrice)
+                ? Number(recentTrades[0].createPrice).toFixed(precision)
                 : '-'}
             </p>
           </div>

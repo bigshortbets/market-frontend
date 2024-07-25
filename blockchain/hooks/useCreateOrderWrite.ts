@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTransactionConfirmations, useWriteContract } from 'wagmi';
 import { marketContract } from '../constants';
 import { abi } from '../abi';
@@ -14,12 +14,14 @@ export const useCreateOrderWrite = (
   quantity: number,
   side: OrderSideEnum
 ) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const { writeContract, error, data } = useWriteContract();
 
   const notifText = `Order created! Wait for transaction confirmation.`;
 
-  const write = () =>
+  const write = useCallback(() => {
+    setIsLoading(true);
     writeContract({
       address: marketContract,
       abi: abi,
@@ -31,34 +33,39 @@ export const useCreateOrderWrite = (
         side,
       ],
     });
+  }, [selectedMarketId, price, quantity, side, writeContract]);
 
   useEffect(() => {
     if (error) {
       handleBlockchainError(error.stack!);
+      setIsLoading(false);
     }
   }, [error]);
-
-  /*   const { data: confData } = useTransactionConfirmations({
-    hash: data,
-  }); */
 
   useEffect(() => {
     if (data) {
       toast.success(notifText, {
         duration: 4000,
       });
+      setIsLoading(false);
     }
   }, [data]);
 
-  /*  useEffect(() => {
+  /* Uncomment and use if transaction confirmation logic is needed
+  const { data: confData } = useTransactionConfirmations({
+    hash: data,
+  });
+
+  useEffect(() => {
     if (confData !== undefined && confData > 0) {
       toast.success(`Transaction confirmed! Tx hash: ${data}`);
     }
-  }, [confData]); */
+  }, [confData]);
 
-  /*  useEffect(() => {
+  useEffect(() => {
     console.log(confData);
-  }, [confData]); */
+  }, [confData]);
+  */
 
-  return { write };
+  return { write, isLoading };
 };

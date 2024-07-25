@@ -29,7 +29,7 @@ export const TradingHubTab = ({ value }: TradingHubTabProps) => {
 
   return (
     <button
-      className={`rounded-lg flex items-center justify-center text-[13px] font-semibold py-2 px-4 ${
+      className={`rounded-lg flex items-center justify-center text-[12px] font-semibold py-1.5 px-3 ${
         isActive ? 'bg-[#444650]' : 'bg-[#23252E] text-tetriary'
       }`}
       onClick={() => setTradingHubState(value)}

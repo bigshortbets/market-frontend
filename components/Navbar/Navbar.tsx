@@ -1,26 +1,17 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import logo from '../../public/logo.svg';
-import { useAccount, useSignMessage, useSwitchChain } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
 import banner from '../../public/banner.svg';
 import { bigshortbetsChain } from '@/blockchain/chain';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { selectedMarketIdAtom } from '../Market/Market';
-import { useAtom } from 'jotai';
-import { mintMessage } from '@/blockchain/constants';
-import ReactLoading from 'react-loading';
-import { useMutation } from '@tanstack/react-query';
-import { MintData, bridgeApi } from '@/requests/bidgeApi/bridgeApi';
-import axios from 'axios';
-import { MintButton } from '../Market/Claim/MintButton';
-import { FaChartLine, FaChartSimple, FaTrophy, FaUser } from 'react-icons/fa6';
+import { FaChartLine, FaTrophy } from 'react-icons/fa6';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 
 export const Navbar = () => {
   const [isClient, setIsClient] = useState(false);
-  const [selectedMarketId, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
-  const { isConnected, chain, address } = useAccount();
+  const { isConnected, chain } = useAccount();
   const { switchChain } = useSwitchChain();
 
   useEffect(() => {
@@ -33,15 +24,6 @@ export const Navbar = () => {
     setIsClient(true);
   }, []);
 
-  const openTrumpOrBidenMarket = () => {
-    const trumpId = '9223372036854776644';
-    const bidenId = '9223372036854776643';
-
-    const randomNumber = Math.floor(Math.random() * 2);
-    const selectedId = randomNumber === 0 ? trumpId : bidenId;
-
-    setSelectedMarketId(selectedId);
-  };
   const router = useRouter();
 
   const changeRoute = (route: string) => {
@@ -90,9 +72,7 @@ export const Navbar = () => {
 
         <div className='flex items-center gap-4'>
           <div className='hidden md:block'>
-            <button onClick={openTrumpOrBidenMarket}>
-              <Image src={banner} alt='banner' width={400} height={60} />
-            </button>
+            <Image src={banner} alt='banner' width={400} height={60} />
           </div>
           {/* <button
             className='p-2 rounded bg-[#191B24]'

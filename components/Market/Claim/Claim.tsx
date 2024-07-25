@@ -167,7 +167,7 @@ export const Claim = ({
               participants, the address claiming the funds must hold at least{' '}
               <a
                 className='underline text-[#4ECB7D] font-semibold'
-                href='https://app.uniswap.org/#/swap?use=V2&outputCurrency=0x131157c6760f78f7ddf877c0019eba175ba4b6f6'
+                href='https://app.uniswap.org/swap?use=V2&outputCurrency=0x131157c6760f78f7ddf877c0019eba175ba4b6f6'
                 target='_blank'
               >
                 1 BigSB token
@@ -179,14 +179,16 @@ export const Claim = ({
           {hasUserMinted && availableMintData && (
             <p className='text-xs font-semibold mt-4'>
               Bonus DOLARZ Available for Minting:{' '}
-              {formatEther(availableMintData?.data?.availableMint)}
+              {Number(
+                formatEther(availableMintData?.data?.availableMint)
+              ).toFixed(2)}
             </p>
           )}
           {hasUserMinted && (
             <p className='text-xs mt-2'>
               <a
                 className='underline text-[#4ECB7D] font-semibold'
-                href='https://app.uniswap.org/#/swap?use=V2&outputCurrency=0x131157c6760f78f7ddf877c0019eba175ba4b6f6'
+                href='https://app.uniswap.org/swap?use=V2&outputCurrency=0x131157c6760f78f7ddf877c0019eba175ba4b6f6'
                 target='_blank'
               >
                 Buy BigSB

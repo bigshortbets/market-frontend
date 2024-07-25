@@ -20,6 +20,7 @@ import { bigshortbetsChain } from '@/blockchain/chain';
 import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
 import { currencySymbol } from '@/blockchain/constants';
 import { chosenMarketAtom } from '@/store/store';
+import { checkIfBidenMarket } from '@/utils/checkIfBidenMarket';
 
 export interface DepositProps {
   markets: EnrichedMarketType[];
@@ -34,6 +35,8 @@ export const Deposit = ({ markets }: DepositProps) => {
   const isBsbNetwork = chain?.id === bigshortbetsChain.id;
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
+
+  const selectedMarket = findMarketById(markets, selectedMarketId);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -56,7 +59,7 @@ export const Deposit = ({ markets }: DepositProps) => {
   };
 
   const depositDisabled =
-    Number(walletBalance?.formatted) < amount || amount <= 0 || !address;
+    Number(walletBalance?.formatted) < amount + 50 || amount <= 0 || !address;
 
   const [unsettledLosesArr] = useAtom(unsettledLossesAtom);
   const [collateralArr] = useAtom(collateralAtom);
@@ -91,6 +94,8 @@ export const Deposit = ({ markets }: DepositProps) => {
     }
   };
 
+  const isBidenMarket = checkIfBidenMarket(selectedMarket?.ticker);
+
   return (
     <div className='p-2.5 pb-4 flex flex-col gap-4'>
       <div className='flex flex-col gap-2'>
@@ -110,7 +115,6 @@ export const Deposit = ({ markets }: DepositProps) => {
               id={'orderPriceInput'}
               className='text-right outline-none  w-[85%] bg-[#23252E] '
               onChange={(e) => setAmount(Number(e.target.value))}
-              value={amount}
             />
             <span className='absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs'>
               {currencySymbol}
@@ -269,6 +273,9 @@ export const Deposit = ({ markets }: DepositProps) => {
           {address && !isBsbNetwork && 'Change network'}
         </button>
       </div>
+      {isBidenMarket && (
+        <FinanceManagerWarning error='This market (BIGSB_EL:BIDENX2024) will close at 18:00 UTC on 26 July 2024. ' />
+      )}
       {selecteMarketMargin?.liquidationStatus != 'EverythingFine' &&
         selecteMarketMargin?.liquidationStatus != ('None' as any) &&
         selecteMarketMargin &&
@@ -283,11 +290,28 @@ export const Deposit = ({ markets }: DepositProps) => {
             ).toFixed(2)} ${currencySymbol} to ${chosenMarket?.ticker} market.`}
           />
         )}
+      {address &&
+        amount + 50 > Number(walletBalance?.formatted) &&
+        Number(walletBalance?.formatted) > 0 &&
+        Number(walletBalance?.formatted) > amount && (
+          <FinanceManagerWarning
+            error={`Your wallet balance is enough to cover the deposit cost, but an additional buffer of 50 ${currencySymbol} is required to cover potential gas in the future.`}
+          />
+        )}
       {!address && (
         <FinanceManagerWarning error='Connect your wallet to interact with the market. ' />
       )}
-      {address && Number(walletBalance?.formatted) < amount && (
-        <FinanceManagerWarning error='Your given amount is greater than your wallet balance. ' />
+      {address &&
+        Number(walletBalance?.formatted) < amount &&
+        Number(walletBalance?.formatted) > 0 && (
+          <FinanceManagerWarning
+            error={`Your given amount is greater than your wallet balance.`}
+          />
+        )}
+      {address && Number(walletBalance?.formatted) === 0 && (
+        <FinanceManagerWarning
+          error={`Your wallet has no funds. Please add ${currencySymbol} to proceed with your deposit.`}
+        />
       )}
     </div>
   );
