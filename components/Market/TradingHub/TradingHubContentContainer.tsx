@@ -100,7 +100,6 @@ export const TradingHubContentContainer = ({
       )}
       {tradingHubState === 'history' && historyRes && marketSettlementsRes && (
         <TradingHubHistory
-          history={historyRes.orders}
           settlements={marketSettlementsRes.marketSettlements}
         />
       )}

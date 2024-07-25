@@ -1,6 +1,6 @@
 export interface MarketSettlementsType {
   timestamp: string;
-  amount: number;
+  amount: string;
   market: {
     id: string;
     ticker: string;
