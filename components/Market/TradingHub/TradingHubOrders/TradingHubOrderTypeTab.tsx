@@ -23,7 +23,7 @@ export const TradingHubOrderTypeTab = ({
     >
       <p className='capitalize'>
         {value === 'close' && 'Closing'} {value === 'open' && 'Opening'}
-        {value === 'completed' && 'Finalized'}
+        {value === 'finalized' && 'Finalized'}
       </p>
     </button>
   );
