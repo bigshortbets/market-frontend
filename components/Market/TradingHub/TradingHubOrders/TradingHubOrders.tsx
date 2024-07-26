@@ -153,13 +153,7 @@ export const TradingHubOrders = ({
                   ))}
                 {currentOrdersType === 'finalized' &&
                   historyOrders.map((order: HistoryOrderType, key: number) => (
-                    <>
-                      <TradingHubCompletedOrderItem order={order} key={key} />
-                      <TradingHubCompletedOrderItem
-                        order={order}
-                        key={key + 23}
-                      />
-                    </>
+                    <TradingHubCompletedOrderItem order={order} key={key} />
                   ))}
               </tbody>
             </table>
