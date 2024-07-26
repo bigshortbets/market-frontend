@@ -10,7 +10,7 @@ interface TradingHubOrdersProps {
   historyOrders: HistoryOrderType[];
 }
 
-const tabs = ['open', 'close', 'completed'];
+const tabs = ['open', 'close', 'finalized'];
 
 export type TradingHubOrderTypeTabsType = (typeof tabs)[number];
 
@@ -46,7 +46,7 @@ export const TradingHubOrders = ({
   const isTableShown =
     (currentOrdersType === 'open' && openOrders.length > 0) ||
     (currentOrdersType === 'close' && closeOrders.length > 0) ||
-    (currentOrdersType === 'completed' && historyOrders.length > 0);
+    (currentOrdersType === 'finalized' && historyOrders.length > 0);
   return (
     <div className='w-full h-full overflow-y-auto no-scrollbar'>
       <div className='px-3 mb-2 mt-1 text-sm flex gap-2'>
@@ -67,7 +67,7 @@ export const TradingHubOrders = ({
               <div className='relative overflow-x-auto'>
                 <table className='w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
                   <thead className='text-xs   dark:text-gray-400'>
-                    {currentOrdersType === 'completed' ? (
+                    {currentOrdersType === 'finalized' ? (
                       <tr>
                         <th className='font-normal py-3 pl-3'>Side</th>
                         <th className='font-normal'>Created</th>
@@ -109,7 +109,7 @@ export const TradingHubOrders = ({
                       closeOrders.map((order, key) => (
                         <TradingHubOrdersItem order={order} key={key} />
                       ))}
-                    {currentOrdersType === 'completed' &&
+                    {currentOrdersType === 'finalized' &&
                       historyOrders.map(
                         (order: HistoryOrderType, key: number) => (
                           <TradingHubCompletedOrderItem
@@ -151,7 +151,7 @@ export const TradingHubOrders = ({
                   closeOrders.map((order, key) => (
                     <TradingHubOrdersItem order={order} key={key} />
                   ))}
-                {currentOrdersType === 'completed' &&
+                {currentOrdersType === 'finalized' &&
                   historyOrders.map((order: HistoryOrderType, key: number) => (
                     <>
                       <TradingHubCompletedOrderItem order={order} key={key} />
