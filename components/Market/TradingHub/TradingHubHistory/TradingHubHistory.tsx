@@ -1,36 +1,22 @@
-import { HistoryOrderType } from '@/types/historyTypes';
 import { TradingHubHistoryItem } from './TradingHubHistoryItem';
+import { MarketSettlementsType } from '@/types/marketSettlementsTypes';
 
 interface TradingHubHistoryProps {
-  history: HistoryOrderType[];
+  settlements: MarketSettlementsType[];
 }
 
-export const TradingHubHistory = ({ history }: TradingHubHistoryProps) => {
+export const TradingHubHistory = ({ settlements }: TradingHubHistoryProps) => {
   return (
-    <div className='w-full h-full overflow-y-auto no-scrollbar max-h-[calc(100vh-290px)] md:max-h-[calc(100vh-230px)]'>
-      {history.length > 0 ? (
-        <table className='table-auto w-full '>
-          <thead className='bg-secondary-bg text-sm text-left text-[#ABACBA]'>
-            <tr>
-              <th className='font-normal py-3 pl-3'>Side</th>
-              <th className='font-normal'>Created</th>
-              <th className='font-normal'>Market</th>
-              <th className='font-normal'>Price</th>
-              <th className='font-normal'>Quantity</th>
-              <th className='font-normal'>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {history.map((order: HistoryOrderType, key: number) => (
-              <TradingHubHistoryItem order={order} key={key} />
-            ))}
-          </tbody>
-        </table>
+    <div className='w-full h-full overflow-y-auto no-scrollbar  max-h-[calc(100vh-285px)] md:max-h-[calc(100vh-230px)]'>
+      {settlements.length > 0 ? (
+        <div className='px-2.5 flex flex-col gap-3.5 mt-2'>
+          {settlements.map((settlement, key) => (
+            <TradingHubHistoryItem key={key} settlement={settlement} />
+          ))}
+        </div>
       ) : (
         <div className='flex items-center justify-center h-full'>
-          <p className='opacity-20 text-2xl mt-5'>
-            Currently no orders in the history
-          </p>
+          <p className='opacity-20 text-2xl mt-5'>Currently no settlements</p>
         </div>
       )}
     </div>

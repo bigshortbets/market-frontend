@@ -22,8 +22,8 @@ export const TradingHubOrderTypeTab = ({
       onClick={() => setType(value)}
     >
       <p className='capitalize'>
-        {value === 'close' && 'Closing orders'}{' '}
-        {value === 'open' && 'Opening orders'}
+        {value === 'close' && 'Closing'} {value === 'open' && 'Opening'}
+        {value === 'finalized' && 'Finalized'}
       </p>
     </button>
   );

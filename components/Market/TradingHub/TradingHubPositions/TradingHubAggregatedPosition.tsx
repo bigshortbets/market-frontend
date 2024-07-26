@@ -125,7 +125,7 @@ export const TradingHubAggregatedPosition = ({
                 <p
                   className={`text-[11px] font-semibold ${
                     experimentalSumLossProfit < 0
-                      ? 'text-red-500'
+                      ? 'text-[#DA8787]'
                       : 'text-[#87DAA4]'
                   }`}
                 >
@@ -234,7 +234,7 @@ export const TradingHubAggregatedPosition = ({
                 <p
                   className={`text-xs font-semibold ${
                     experimentalSumLossProfit < 0
-                      ? 'text-red-500'
+                      ? 'text-[#DA8787]'
                       : 'text-[#87DAA4]'
                   }`}
                 >
