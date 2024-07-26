@@ -1,5 +1,4 @@
 import {
-  CHART_FEED_QUERY,
   USER_HISTORY_QUERY,
   USER_MARKET_SETTLEMENTS_QUERY,
   USER_OPEN_POSITIONS_QUERY,
@@ -8,7 +7,7 @@ import {
 import { convertToSS58 } from '@/utils/convertToSS58';
 import { useQuery } from '@apollo/client';
 import { useAtom } from 'jotai';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import {} from './TradingHub';
 import { TradingHubOrders } from './TradingHubOrders/TradingHubOrders';
@@ -25,12 +24,7 @@ import {
   tradingHubPositionsCountAtom,
   tradingHubStateAtom,
 } from '@/store/store';
-import { ChatContainer } from './Chat/ChatContainer';
 import { MarketSettlementsResponse } from '@/types/marketSettlementsTypes';
-import { ChartFeedResponse } from '@/types/chartTypes';
-import { selectedMarketIdAtom } from '../Market';
-import { UTCTimestamp } from 'lightweight-charts';
-import { TradingHubChart } from './TradingHubChart/TradingHubChart';
 
 interface TradingHubContentContainerProps {
   isAggregated: boolean;
@@ -56,10 +50,13 @@ export const TradingHubContentContainer = ({
     }
   );
 
-  const { data: historyRes } = useQuery<HistoryResponse>(USER_HISTORY_QUERY, {
-    pollInterval: 1000,
-    variables: { userId: convertToSS58(address!) },
-  });
+  const { data: historyOrdersRes } = useQuery<HistoryResponse>(
+    USER_HISTORY_QUERY,
+    {
+      pollInterval: 1000,
+      variables: { userId: convertToSS58(address!) },
+    }
+  );
 
   const { data: marketSettlementsRes } = useQuery<MarketSettlementsResponse>(
     USER_MARKET_SETTLEMENTS_QUERY,
@@ -85,12 +82,12 @@ export const TradingHubContentContainer = ({
   }, [ordersRes?.orders, positionsRes?.positions]);
 
   return (
-    <div
-      className='w-full no-scrollbar'
-      onClick={() => console.log(marketSettlementsRes)}
-    >
-      {tradingHubState === 'orders' && ordersRes && (
-        <TradingHubOrders orders={ordersRes.orders} />
+    <div className='w-full no-scrollbar'>
+      {tradingHubState === 'orders' && ordersRes && historyOrdersRes && (
+        <TradingHubOrders
+          orders={ordersRes.orders}
+          historyOrders={historyOrdersRes.orders}
+        />
       )}
       {tradingHubState === 'positions' && positionsRes && (
         <TradingHubPositions
@@ -98,7 +95,7 @@ export const TradingHubContentContainer = ({
           positions={positionsRes.positions}
         />
       )}
-      {tradingHubState === 'history' && historyRes && marketSettlementsRes && (
+      {tradingHubState === 'history' && marketSettlementsRes && (
         <TradingHubHistory
           settlements={marketSettlementsRes.marketSettlements}
         />
