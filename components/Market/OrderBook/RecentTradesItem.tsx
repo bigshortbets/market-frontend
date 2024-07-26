@@ -16,10 +16,10 @@ export const RecentTradesItem = ({ position }: RecentTradesItemProps) => {
     <div className='py-1 flex items-center justify-between text-tetriary'>
       <p>{format(date, 'd MMMM HH:mm:ss')}</p>
       <div className='flex items-center'>
-        <div className='w-[50px] text-right'>
+        <div className='w-[70px] text-right'>
           <p>{Number(position.quantity)}</p>
         </div>
-        <div className='w-[50px] text-right'>
+        <div className='w-[70px] text-right'>
           <p>{Number(position.createPrice).toFixed(precision)}</p>
         </div>
       </div>

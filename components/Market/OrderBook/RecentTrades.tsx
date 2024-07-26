@@ -9,11 +9,11 @@ export const RecentTrades = () => {
       <div className='flex justify-between items-center'>
         <p className='text-[#7F828F] font-semibold'>Time</p>
         <div className='flex items-center'>
-          <div className='w-[50px] text-right'>
+          <div className='w-[70px] text-right'>
             <p className='text-[#7F828F] font-semibold'>Quantity</p>
           </div>
 
-          <div className='w-[50px] text-right'>
+          <div className='w-[70px] text-right'>
             <p className='text-[#7F828F] font-semibold'>Price</p>
           </div>
         </div>
