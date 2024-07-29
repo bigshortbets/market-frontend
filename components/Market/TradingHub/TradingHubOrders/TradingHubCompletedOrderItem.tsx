@@ -14,7 +14,7 @@ export const TradingHubCompletedOrderItem = ({
   const date = parseISO(order.timestamp);
   const marketDetails = getMarkeDetails(order.market.ticker);
   return (
-    <tr className={`text-sm odd:bg-[#23252E] text-[#7F828F] `}>
+    <tr className={`text-sm odd:bg-[#23252E] text-[#7F828F] sm:text-xs  `}>
       {/* Side */}
       <td className='pl-3 py-2'>
         <SideLabel side={order.side} />
