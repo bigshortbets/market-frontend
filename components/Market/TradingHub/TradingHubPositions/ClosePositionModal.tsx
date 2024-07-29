@@ -21,16 +21,21 @@ export const ClosePositionModal = ({
   position,
 }: ClosePositionModalProps) => {
   const details = getMarkeDetails(position.market.ticker);
-  const [price, setPrice] = useState(
-    Number(position.market.oraclePrice.toString())
+  const [price, setPrice] = useState<string>(
+    position.market.oraclePrice.toString()
   );
-  const [quantity, setQuantity] = useState(Number(position.quantityLeft));
+  const [quantity, setQuantity] = useState<string>(
+    position.quantityLeft.toString()
+  );
+
+  const numPrice = Number(price);
+  const numQuantity = Number(quantity);
 
   const { write: writeClosePosition, isSuccess } = useClosePosition(
     position.market.id,
     position.id,
-    price,
-    quantity
+    numPrice,
+    numQuantity
   );
 
   useEffect(() => {
@@ -115,7 +120,8 @@ export const ClosePositionModal = ({
                     <p className='text-sm font-semibold'>Price</p>
                     <div className='relative w-[125px] bg-[#23252E] py-0.5  rounded-lg '>
                       <NumericFormat
-                        onChange={(e) => setPrice(Number(e.target.value))}
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
                         className='rounded-lg bg-[#23252E] w-[60%] h-full close-position-input text-xs outline-none px-2'
                         placeholder='Price to close'
                         allowNegative={false}
@@ -132,7 +138,8 @@ export const ClosePositionModal = ({
                     </div>
                     <div className='relative w-[125px] bg-[#23252E] py-0.5  rounded-lg '>
                       <NumericFormat
-                        onChange={(e) => setQuantity(Number(e.target.value))}
+                        value={quantity}
+                        onChange={(e) => setQuantity(e.target.value)}
                         className='rounded-lg bg-[#23252E] w-[60%] h-full close-position-input text-xs outline-none px-2'
                         placeholder='Quantity'
                         allowNegative={false}
@@ -163,7 +170,8 @@ export const ClosePositionModal = ({
                   </div>
                   <button
                     disabled={
-                      quantity < 1 || quantity > Number(position.quantityLeft)
+                      numQuantity < 1 ||
+                      numQuantity > Number(position.quantityLeft)
                     }
                     onClick={() => writeClosePosition()}
                     className={`disabled:bg-gray-400 bg-[#D26D6C] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-2.5 mt-5 `}

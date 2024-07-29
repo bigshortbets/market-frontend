@@ -27,11 +27,12 @@ export interface DepositProps {
 }
 
 export const Deposit = ({ markets }: DepositProps) => {
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<string>('0');
+  const numAmount = Number(amount);
   const [chosenMarket] = useAtom(chosenMarketAtom);
   const { address, chain } = useAccount();
   const { data: walletBalance, refetch } = useNativeCurrencyBalance(address);
-  const { write: writeDeposit } = useDeposit(amount);
+  const { write: writeDeposit } = useDeposit(numAmount);
   const isBsbNetwork = chain?.id === bigshortbetsChain.id;
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
@@ -59,7 +60,9 @@ export const Deposit = ({ markets }: DepositProps) => {
   };
 
   const depositDisabled =
-    Number(walletBalance?.formatted) < amount + 50 || amount <= 0 || !address;
+    Number(walletBalance?.formatted) < numAmount + 50 ||
+    numAmount <= 0 ||
+    !address;
 
   const [unsettledLosesArr] = useAtom(unsettledLossesAtom);
   const [collateralArr] = useAtom(collateralAtom);
@@ -90,7 +93,7 @@ export const Deposit = ({ markets }: DepositProps) => {
 
   const handleAddNegative = (val: number) => {
     if (val < 0) {
-      setAmount(Math.abs(val));
+      setAmount(Math.abs(val).toString());
     }
   };
 
@@ -111,10 +114,11 @@ export const Deposit = ({ markets }: DepositProps) => {
           </label>
           <div className='relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-6'>
             <NumericFormat
+              value={amount}
               allowNegative={false}
               id={'orderPriceInput'}
               className='text-right outline-none  w-[85%] bg-[#23252E] '
-              onChange={(e) => setAmount(Number(e.target.value))}
+              onChange={(e) => setAmount(e.target.value)}
             />
             <span className='absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs'>
               {currencySymbol}
@@ -258,7 +262,7 @@ export const Deposit = ({ markets }: DepositProps) => {
           <div className='flex justify-between items-center font-semibold text-[13px] text-secondary '>
             <p>Amount</p>
             <p>
-              {amount.toFixed(2)} {currencySymbol}
+              {numAmount.toFixed(2)} {currencySymbol}
             </p>
           </div>
         </div>
@@ -291,9 +295,9 @@ export const Deposit = ({ markets }: DepositProps) => {
           />
         )}
       {address &&
-        amount + 50 > Number(walletBalance?.formatted) &&
+        numAmount + 50 > Number(walletBalance?.formatted) &&
         Number(walletBalance?.formatted) > 0 &&
-        Number(walletBalance?.formatted) > amount && (
+        Number(walletBalance?.formatted) > numAmount && (
           <FinanceManagerWarning
             error={`Your wallet balance is enough to cover the deposit cost, but an additional buffer of 50 ${currencySymbol} is required to cover potential gas in the future.`}
           />
@@ -302,7 +306,7 @@ export const Deposit = ({ markets }: DepositProps) => {
         <FinanceManagerWarning error='Connect your wallet to interact with the market. ' />
       )}
       {address &&
-        Number(walletBalance?.formatted) < amount &&
+        Number(walletBalance?.formatted) < numAmount &&
         Number(walletBalance?.formatted) > 0 && (
           <FinanceManagerWarning
             error={`Your given amount is greater than your wallet balance.`}
