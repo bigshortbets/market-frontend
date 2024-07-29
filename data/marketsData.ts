@@ -174,7 +174,7 @@ export const marketsData: MarketsDataProps[] = [
   {
     symbol: 'HARRI',
     name: 'Harris Election',
-    path: './market-logos/BIDEN.svg',
+    path: './market-logos/HARRIS.svg',
     category: 'election',
   },
 ];
