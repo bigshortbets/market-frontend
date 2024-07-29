@@ -17,9 +17,10 @@ export interface WithdrawProps {
 }
 
 export const Withdraw = ({ markets }: WithdrawProps) => {
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<string>('0');
+  const numAmount = Number(amount);
   const { address, chain } = useAccount();
-  const { write } = useWithdraw(amount);
+  const { write } = useWithdraw(numAmount);
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
 
@@ -46,7 +47,8 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
         Number(selecteMarketMargin!.requiredDeposit)
       : 0;
 
-  const withdrawDisabled = amount <= 0 || amount > possibleWithdraw || !address;
+  const withdrawDisabled =
+    numAmount <= 0 || numAmount > possibleWithdraw || !address;
 
   const isBidenMarket = checkIfBidenMarket(selectedMarket?.ticker);
 
@@ -65,10 +67,11 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
           </label>
           <div className='relative bg-[#23252E] border-none text-xs text-white py-3 rounded-lg px-6'>
             <NumericFormat
+              value={amount}
               allowNegative={false}
               id={'orderPriceInput'}
               className='text-right outline-none  w-[85%] bg-[#23252E]'
-              onChange={(e) => setAmount(Number(e.target.value))}
+              onChange={(e) => setAmount(e.target.value)}
             />
             <span className='absolute font-normal text-tetriary opacity-50 right-3 bottom-[12px] text-xs'>
               {currencySymbol}
@@ -108,7 +111,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
                 <p>Available for withdrawal</p>
                 <button
                   className='underline'
-                  onClick={() => setAmount(possibleWithdraw)}
+                  onClick={() => setAmount(possibleWithdraw.toString())}
                 >
                   {possibleWithdraw.toFixed(2)} {currencySymbol}
                 </button>
@@ -118,7 +121,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
             <div className='flex justify-between items-center font-semibold text-[13px] text-secondary '>
               <p>Amount</p>
               <p>
-                {amount.toFixed(2)} {currencySymbol}
+                {numAmount.toFixed(2)} {currencySymbol}
               </p>
             </div>
           </div>
@@ -139,7 +142,7 @@ export const Withdraw = ({ markets }: WithdrawProps) => {
       {!address && (
         <FinanceManagerWarning error='Connect your wallet to interact with the market. ' />
       )}
-      {address && amount > possibleWithdraw && (
+      {address && numAmount > possibleWithdraw && (
         <FinanceManagerWarning error='Your given amount is greater than possible withdrawal value.' />
       )}
     </div>
