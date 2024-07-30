@@ -10,7 +10,7 @@ interface LeverageProps {
 export const Leverage = ({ margin, setMargin, initial }: LeverageProps) => {
   return (
     <Slider
-      label='Margin'
+      label='Leverage'
       step={1}
       onChange={setMargin}
       maxValue={100}
@@ -18,7 +18,7 @@ export const Leverage = ({ margin, setMargin, initial }: LeverageProps) => {
       minValue={initial}
       value={margin}
       className='mt-1.5 px-1'
-      getValue={(val) => `${val}%`}
+      getValue={(val) => `${(100 / Number(val)).toFixed(2)}x`}
       classNames={{
         filler: 'bg-[#4ECB7D]',
         track: 'bg-[#23252E]',

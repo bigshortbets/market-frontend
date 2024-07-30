@@ -53,9 +53,19 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   const { formattedBalance } = useNativeCurrencyBalance(address);
 
   const { write: writeShortOrder, isLoading: isShortLoading } =
-    useCreateOrderWrite(Number(price), Number(quantity), OrderSideEnum.SHORT);
+    useCreateOrderWrite(
+      Number(price),
+      Number(quantity),
+      OrderSideEnum.SHORT,
+      margin
+    );
   const { write: writeLongOrder, isLoading: isLongLoading } =
-    useCreateOrderWrite(Number(price), Number(quantity), OrderSideEnum.LONG);
+    useCreateOrderWrite(
+      Number(price),
+      Number(quantity),
+      OrderSideEnum.LONG,
+      margin
+    );
 
   const orderCost = Math.max(
     500,
@@ -119,7 +129,9 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
 
   const isBidenMarket = checkIfBidenMarket(selectedMarket?.ticker);
 
-  const leverage = (100 / margin).toFixed(2);
+  const leverage = /* (orderValue / orderCost).toFixed(2) */ (
+    100 / margin
+  ).toFixed(2);
 
   return (
     <div className='px-2.5 pt-3 pb-4 flex flex-col gap-4'>
@@ -182,14 +194,12 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           <div className='flex items-center justify-between gap-2 mt-1'>
             <a
               className='text-[12px] decoration-dotted	underline cursor-help	text-tetriary'
-              data-tooltip-id='leverage-tooltip'
+              data-tooltip-id='margin-tooltip'
               data-tooltip-html={`Leverage is a ratio of your investment to your margin.</br> It's calculated as 100 divided by your margin.`}
             >
-              Leverage
+              Margin
             </a>
-            <p className='text-[12px] font-semibold text-tetriary'>
-              {leverage}x
-            </p>
+            <p className='text-[12px] font-semibold text-tetriary'>{margin}%</p>
           </div>
 
           <div className='flex items-center gap-2 mt-1 justify-between'>

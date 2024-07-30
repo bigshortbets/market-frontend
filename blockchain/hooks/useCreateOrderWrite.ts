@@ -12,7 +12,8 @@ import toast from 'react-hot-toast';
 export const useCreateOrderWrite = (
   price: number,
   quantity: number,
-  side: OrderSideEnum
+  side: OrderSideEnum,
+  margin: number
 ) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
@@ -25,12 +26,13 @@ export const useCreateOrderWrite = (
     writeContract({
       address: marketContract,
       abi: abi,
-      functionName: 'create_order',
+      functionName: 'create_order_with_margin',
       args: [
         BigInt(selectedMarketId),
         parseEther(price.toString()),
         quantity,
         side,
+        margin,
       ],
     });
   }, [selectedMarketId, price, quantity, side, writeContract]);
