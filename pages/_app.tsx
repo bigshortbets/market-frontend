@@ -5,6 +5,7 @@ import { ApolloProvider } from '@apollo/client';
 import type { AppProps } from 'next/app';
 import { WagmiProvider } from 'wagmi';
 import 'react-tooltip/dist/react-tooltip.css';
+import { NextUIProvider } from '@nextui-org/react';
 
 import {
   RainbowKitProvider,
@@ -42,19 +43,21 @@ const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ApolloProvider client={apolloClient}>
-      <QueryClientProvider client={queryClient}>
-        <WagmiProvider config={config}>
-          <RainbowKitProvider
-            theme={darkTheme({
-              accentColor: '#4ECB7D',
-              accentColorForeground: 'black',
-            })}
-          >
-            <Component {...pageProps} />
-          </RainbowKitProvider>
-        </WagmiProvider>
-      </QueryClientProvider>
-    </ApolloProvider>
+    <NextUIProvider>
+      <ApolloProvider client={apolloClient}>
+        <QueryClientProvider client={queryClient}>
+          <WagmiProvider config={config}>
+            <RainbowKitProvider
+              theme={darkTheme({
+                accentColor: '#4ECB7D',
+                accentColorForeground: 'black',
+              })}
+            >
+              <Component {...pageProps} />
+            </RainbowKitProvider>
+          </WagmiProvider>
+        </QueryClientProvider>
+      </ApolloProvider>
+    </NextUIProvider>
   );
 }
