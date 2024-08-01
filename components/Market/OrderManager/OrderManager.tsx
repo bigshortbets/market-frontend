@@ -18,6 +18,7 @@ import { Tooltip } from 'react-tooltip';
 import { currencySymbol } from '@/blockchain/constants';
 import ReactLoading from 'react-loading';
 import { checkIfBidenMarket } from '@/utils/checkIfBidenMarket';
+import { Leverage } from './Leverage';
 
 export enum OrderSideEnum {
   LONG,
@@ -31,6 +32,7 @@ interface OrderManagerProps {
 export const OrderManager = ({ markets }: OrderManagerProps) => {
   const [price, setPrice] = useState<string>('1');
   const [quantity, setQuantity] = useState<string>('1');
+  const [margin, setMargin] = useState<number>(1);
 
   const [currentBlock] = useAtom(currentBlockAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
@@ -51,20 +53,32 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   const { formattedBalance } = useNativeCurrencyBalance(address);
 
   const { write: writeShortOrder, isLoading: isShortLoading } =
-    useCreateOrderWrite(Number(price), Number(quantity), OrderSideEnum.SHORT);
+    useCreateOrderWrite(
+      Number(price),
+      Number(quantity),
+      OrderSideEnum.SHORT,
+      Number(margin)
+    );
   const { write: writeLongOrder, isLoading: isLongLoading } =
-    useCreateOrderWrite(Number(price), Number(quantity), OrderSideEnum.LONG);
+    useCreateOrderWrite(
+      Number(price),
+      Number(quantity),
+      OrderSideEnum.LONG,
+      Number(margin)
+    );
 
   const orderCost = Math.max(
     500,
-    (Number(selectedMarket?.initialMargin) / 100) *
+    (margin / 100) *
       (Number(selectedMarket?.oraclePrice) *
         Number(quantity) *
         Number(selectedMarket?.contractUnit))
   );
 
   const orderValue =
-    Number(price) * Number(quantity) * Number(selectedMarket?.contractUnit);
+    Number(selectedMarket?.oraclePrice) *
+    Number(quantity) *
+    Number(selectedMarket?.contractUnit);
 
   const isBsbNetwork = chain?.id === bigshortbetsChain.id;
 
@@ -80,6 +94,11 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   useEffect(() => {
     selectedMarket?.oraclePrice &&
       setPrice(selectedMarket?.oraclePrice.toString());
+  }, [selectedMarketId]);
+
+  useEffect(() => {
+    selectedMarket?.initialMargin &&
+      setMargin(Number(selectedMarket.initialMargin));
   }, [selectedMarketId]);
 
   useEffect(() => {
@@ -111,6 +130,10 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   const noMarkets = markets.length < 1;
 
   const isBidenMarket = checkIfBidenMarket(selectedMarket?.ticker);
+
+  const leverage = /* (orderValue / orderCost).toFixed(2) */ (
+    100 / margin
+  ).toFixed(2);
 
   return (
     <div className='px-2.5 pt-3 pb-4 flex flex-col gap-4'>
@@ -161,22 +184,26 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
           </div>
         </div>
         {/*  */}
+        {selectedMarket?.initialMargin && (
+          <Leverage
+            margin={margin}
+            setMargin={setMargin}
+            initial={Number(selectedMarket.initialMargin)}
+          />
+        )}
+        {/*  */}
         <div className='flex flex-col gap-1 px-1 mt-1'>
           <div className='flex items-center justify-between gap-2 mt-1'>
-            <a
-              className='text-[13px] decoration-dotted	underline cursor-help	'
-              data-tooltip-id='order-cost-tooltip'
-              data-tooltip-html={`Order Cost is mandatory initial deposit,</br> set at ${Number(
-                selectedMarket?.initialMargin
-              )}% of the contract value being traded,</br> but not lower than 500 ${currencySymbol}.`}
+            <p
+              className='text-[12px]	text-tetriary'
+              /*    data-tooltip-id='margin-tooltip'
+              data-tooltip-html={`Leverage is a ratio of your investment to your margin.</br> It's calculated as 100 divided by your margin.`} */
             >
-              Order Cost
-            </a>
-            <p className='text-[13px] font-semibold'>
-              {!noMarkets ? currencyFormatter.format(orderCost) : '-'}{' '}
-              {currencySymbol}
+              Margin
             </p>
+            <p className='text-[12px] font-semibold text-tetriary'>{margin}%</p>
           </div>
+
           <div className='flex items-center gap-2 mt-1 justify-between'>
             <a
               className='text-[12px] text-tetriary decoration-dotted	underline cursor-help	'
@@ -189,6 +216,21 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
               {!noMarkets && selectedMarket?.oraclePrice != null
                 ? currencyFormatter.format(orderValue)
                 : '-'}{' '}
+              {currencySymbol}
+            </p>
+          </div>
+          <div className='flex items-center justify-between gap-2 mt-1'>
+            <a
+              className='text-[13px] decoration-dotted	underline cursor-help	'
+              data-tooltip-id='order-cost-tooltip'
+              data-tooltip-html={`Order Cost is mandatory initial deposit,</br> set at ${Number(
+                selectedMarket?.initialMargin
+              )}% of the contract value being traded,</br> but not lower than 500 ${currencySymbol}.`}
+            >
+              Order Cost
+            </a>
+            <p className='text-[13px] font-semibold'>
+              {!noMarkets ? currencyFormatter.format(orderCost) : '-'}{' '}
               {currencySymbol}
             </p>
           </div>
@@ -280,6 +322,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       )}
       <Tooltip id='order-cost-tooltip' style={{ fontSize: '12px' }} />
       <Tooltip id='order-value-tooltip' style={{ fontSize: '12px' }} />
+      {/*       <Tooltip id='margin-tooltip' style={{ fontSize: '12px' }} /> */}
     </div>
   );
 };

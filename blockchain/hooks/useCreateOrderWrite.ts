@@ -12,7 +12,8 @@ import toast from 'react-hot-toast';
 export const useCreateOrderWrite = (
   price: number,
   quantity: number,
-  side: OrderSideEnum
+  side: OrderSideEnum,
+  margin: number
 ) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
@@ -31,12 +32,15 @@ export const useCreateOrderWrite = (
         parseEther(price.toString()),
         quantity,
         side,
+        margin,
       ],
     });
-  }, [selectedMarketId, price, quantity, side, writeContract]);
+  }, [selectedMarketId, price, quantity, side, margin, writeContract]);
 
   useEffect(() => {
     if (error) {
+      console.log(error);
+      console.log(margin);
       handleBlockchainError(error.stack!);
       setIsLoading(false);
     }
