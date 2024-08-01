@@ -46,10 +46,18 @@ export const TradingHub = () => {
 
   useEffect(() => {
     if (chartRes?.positions) {
-      const formattedData = chartRes.positions.map((item) => ({
-        time: (new Date(item.timestamp).getTime() / 1000) as UTCTimestamp,
-        value: Number(item.createPrice),
-      }));
+      const uniquePositionsMap = new Map();
+      chartRes.positions.forEach((item) => {
+        const time = new Date(item.timestamp).getTime() / 1000;
+        if (!uniquePositionsMap.has(time)) {
+          uniquePositionsMap.set(time, {
+            time: time as UTCTimestamp,
+            value: Number(item.createPrice),
+          });
+        }
+      });
+      const formattedData = Array.from(uniquePositionsMap.values());
+
       setChartData(formattedData);
     }
   }, [chartRes]);
