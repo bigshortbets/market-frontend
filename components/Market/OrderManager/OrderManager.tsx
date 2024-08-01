@@ -57,14 +57,14 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       Number(price),
       Number(quantity),
       OrderSideEnum.SHORT,
-      margin
+      Number(margin)
     );
   const { write: writeLongOrder, isLoading: isLongLoading } =
     useCreateOrderWrite(
       Number(price),
       Number(quantity),
       OrderSideEnum.LONG,
-      margin
+      Number(margin)
     );
 
   const orderCost = Math.max(
@@ -76,7 +76,9 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
   );
 
   const orderValue =
-    Number(price) * Number(quantity) * Number(selectedMarket?.contractUnit);
+    Number(selectedMarket?.oraclePrice) *
+    Number(quantity) *
+    Number(selectedMarket?.contractUnit);
 
   const isBsbNetwork = chain?.id === bigshortbetsChain.id;
 
@@ -320,7 +322,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       )}
       <Tooltip id='order-cost-tooltip' style={{ fontSize: '12px' }} />
       <Tooltip id='order-value-tooltip' style={{ fontSize: '12px' }} />
-      <Tooltip id='leverage-tooltip' style={{ fontSize: '12px' }} />
+      <Tooltip id='margin-tooltip' style={{ fontSize: '12px' }} />
     </div>
   );
 };

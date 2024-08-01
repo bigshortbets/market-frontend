@@ -77,6 +77,11 @@ export const abi = [
         name: 'contract_unit',
         type: 'uint32',
       },
+      {
+        internalType: 'uint8',
+        name: 'contract_unit_decimals',
+        type: 'uint8',
+      },
     ],
     name: 'create_market',
     outputs: [],
@@ -105,8 +110,46 @@ export const abi = [
         name: 'order_side',
         type: 'uint8',
       },
+      {
+        internalType: 'uint8',
+        name: 'margin',
+        type: 'uint8',
+      },
     ],
     name: 'create_order',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint64',
+        name: 'market',
+        type: 'uint64',
+      },
+      {
+        internalType: 'uint256',
+        name: 'price',
+        type: 'uint256',
+      },
+      {
+        internalType: 'uint32',
+        name: 'quantity',
+        type: 'uint32',
+      },
+      {
+        internalType: 'enum Market.OrderSide',
+        name: 'order_side',
+        type: 'uint8',
+      },
+      {
+        internalType: 'uint8',
+        name: 'margin',
+        type: 'uint8',
+      },
+    ],
+    name: 'create_order_with_margin',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

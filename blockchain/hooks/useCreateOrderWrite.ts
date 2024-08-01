@@ -26,7 +26,7 @@ export const useCreateOrderWrite = (
     writeContract({
       address: marketContract,
       abi: abi,
-      functionName: 'create_order_with_margin',
+      functionName: 'create_order',
       args: [
         BigInt(selectedMarketId),
         parseEther(price.toString()),
@@ -35,10 +35,12 @@ export const useCreateOrderWrite = (
         margin,
       ],
     });
-  }, [selectedMarketId, price, quantity, side, writeContract]);
+  }, [selectedMarketId, price, quantity, side, margin, writeContract]);
 
   useEffect(() => {
     if (error) {
+      console.log(error);
+      console.log(margin);
       handleBlockchainError(error.stack!);
       setIsLoading(false);
     }
