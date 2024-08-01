@@ -194,13 +194,13 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
         {/*  */}
         <div className='flex flex-col gap-1 px-1 mt-1'>
           <div className='flex items-center justify-between gap-2 mt-1'>
-            <a
-              className='text-[12px] decoration-dotted	underline cursor-help	text-tetriary'
-              data-tooltip-id='margin-tooltip'
-              data-tooltip-html={`Leverage is a ratio of your investment to your margin.</br> It's calculated as 100 divided by your margin.`}
+            <p
+              className='text-[12px]	text-tetriary'
+              /*    data-tooltip-id='margin-tooltip'
+              data-tooltip-html={`Leverage is a ratio of your investment to your margin.</br> It's calculated as 100 divided by your margin.`} */
             >
               Margin
-            </a>
+            </p>
             <p className='text-[12px] font-semibold text-tetriary'>{margin}%</p>
           </div>
 
@@ -322,7 +322,7 @@ export const OrderManager = ({ markets }: OrderManagerProps) => {
       )}
       <Tooltip id='order-cost-tooltip' style={{ fontSize: '12px' }} />
       <Tooltip id='order-value-tooltip' style={{ fontSize: '12px' }} />
-      <Tooltip id='margin-tooltip' style={{ fontSize: '12px' }} />
+      {/*       <Tooltip id='margin-tooltip' style={{ fontSize: '12px' }} /> */}
     </div>
   );
 };
