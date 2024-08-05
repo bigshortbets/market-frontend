@@ -7,9 +7,9 @@ import { AggregatedPositionsCheckbox } from './TradingHubPositions/AggregatedPos
 import { tradingHubStateAtom } from '@/store/store';
 import { TradingHubFooter } from './TradingHubFooter';
 import { selectedMarketIdAtom } from '../Market';
-import { ChartFeedResponse } from '@/types/chartTypes';
+import { CandleFeed1HResponse, ChartFeedResponse } from '@/types/chartTypes';
 import { useQuery } from '@apollo/client';
-import { CHART_FEED_QUERY } from '@/requests/queries';
+import { CHART_FEED_QUERY, ORACLE_CHART_1H_QUERY } from '@/requests/queries';
 import { UTCTimestamp } from 'lightweight-charts';
 import { ChatContainer } from './Chat/ChatContainer';
 import { TradingHubChart } from './TradingHubChart/TradingHubChart';
@@ -39,6 +39,14 @@ export const TradingHub = () => {
     pollInterval: 5000,
     variables: { marketId: selectedMarketId },
   });
+
+  const { data: candleRes } = useQuery<CandleFeed1HResponse>(
+    ORACLE_CHART_1H_QUERY,
+    {
+      pollInterval: 5000,
+      variables: { marketId: selectedMarketId },
+    }
+  );
 
   const [chartData, setChartData] = useState<
     { time: UTCTimestamp; value: number }[]
@@ -85,7 +93,9 @@ export const TradingHub = () => {
         {address && <TradingHubContentContainer isAggregated={isAggregated} />}
         {tradingHubState === 'chart' && (
           <div className='w-full no-scrollbar'>
-            <TradingHubChart data={chartData} />
+            {candleRes && (
+              <TradingHubChart data={chartData} oracleRes={candleRes} />
+            )}
           </div>
         )}
       </div>

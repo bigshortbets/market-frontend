@@ -6,17 +6,20 @@ import React, { useEffect, useRef, useState } from 'react';
 import { selectedMarketIdAtom } from '../Market/Market';
 import { UTCTimestamp } from 'lightweight-charts';
 import {
+  CandlestickSeries,
   Chart as ChartComponent,
   LineSeries,
 } from 'lightweight-charts-react-wrapper';
 import { chosenMarketAtom } from '@/store/store';
 import Image from 'next/image';
+import { ConvertedOracleFeed } from '../Market/TradingHub/TradingHubChart/TradingHubChart';
 
 interface ChartProps {
   data: { time: UTCTimestamp; value: number }[];
+  oracleData: ConvertedOracleFeed[];
 }
 
-export const Chart = ({ data }: ChartProps) => {
+export const Chart = ({ data, oracleData }: ChartProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [chosenMarket] = useAtom(chosenMarketAtom);
@@ -69,9 +72,11 @@ export const Chart = ({ data }: ChartProps) => {
           }}
           layout={{ background: { color: '#191B24' }, textColor: 'white' }}
         >
-          {data.length > 0 && (
+          {/*   {data.length > 0 && (
             <LineSeries data={data} reactive color={'#4ECB7D'} />
-          )}
+           
+          )} */}
+          <CandlestickSeries data={oracleData} />
         </ChartComponent>
       )}
     </div>
