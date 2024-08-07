@@ -63,6 +63,12 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
           <p className='text-xs'>- Market price</p>
         </div> */}
         <div className='flex items-center gap-4'>
+          {chartVariant === 'oracle' && (
+            <div className='flex items-center gap-1'>
+              <ChartIntervalTab value='1H' />
+              <ChartIntervalTab value='15M' />
+            </div>
+          )}
           <div className='flex items-center gap-1'>
             <ChartVariantTab
               value='oracle'
@@ -75,12 +81,6 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
               setChosenChartVariant={setChartVariant}
             />
           </div>
-          {chartVariant === 'oracle' && (
-            <div className='flex items-center gap-1'>
-              <ChartIntervalTab value='1H' />
-              <ChartIntervalTab value='15M' />
-            </div>
-          )}
         </div>
       </div>
 
