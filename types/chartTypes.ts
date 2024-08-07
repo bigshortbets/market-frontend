@@ -15,6 +15,10 @@ export interface CandleFeed {
   timestamp: string;
 }
 
-export interface CandleFeed1HResponse {
+export interface OracleFeed1HResponse {
   oracleChartFeed1Hs: CandleFeed[];
+}
+
+export interface OracleFeed15MinResponse {
+  oracleChartFeed15Mins: CandleFeed[];
 }

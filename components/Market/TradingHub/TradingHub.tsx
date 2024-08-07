@@ -4,12 +4,20 @@ import { useAccount } from 'wagmi';
 import { TradingHubTab } from './TradingHubTab';
 import { TradingHubContentContainer } from './TradingHubContentContainer';
 import { AggregatedPositionsCheckbox } from './TradingHubPositions/AggregatedPositionsCheckbox';
-import { tradingHubStateAtom } from '@/store/store';
+import { chartIntervalAtom, tradingHubStateAtom } from '@/store/store';
 import { TradingHubFooter } from './TradingHubFooter';
 import { selectedMarketIdAtom } from '../Market';
-import { CandleFeed1HResponse, ChartFeedResponse } from '@/types/chartTypes';
+import {
+  OracleFeed1HResponse,
+  ChartFeedResponse,
+  OracleFeed15MinResponse,
+} from '@/types/chartTypes';
 import { useQuery } from '@apollo/client';
-import { CHART_FEED_QUERY, ORACLE_CHART_1H_QUERY } from '@/requests/queries';
+import {
+  CHART_FEED_QUERY,
+  ORACLE_CHART_15MIN_QUERY,
+  ORACLE_CHART_1H_QUERY,
+} from '@/requests/queries';
 import { UTCTimestamp } from 'lightweight-charts';
 import { ChatContainer } from './Chat/ChatContainer';
 import { TradingHubChart } from './TradingHubChart/TradingHubChart';
@@ -22,6 +30,7 @@ export const TradingHub = () => {
 
   const [tradingHubState] = useAtom(tradingHubStateAtom);
   const [isAggregated, setIsAggregated] = useState<boolean>(true);
+  const [chartInterval] = useAtom(chartIntervalAtom);
 
   const toggleIsAggregated = () => {
     setIsAggregated(!isAggregated);
@@ -31,19 +40,25 @@ export const TradingHub = () => {
 
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
 
-  const {
-    data: chartRes,
-    error,
-    loading,
-  } = useQuery<ChartFeedResponse>(CHART_FEED_QUERY, {
+  const { data: chartRes } = useQuery<ChartFeedResponse>(CHART_FEED_QUERY, {
     pollInterval: 5000,
     variables: { marketId: selectedMarketId },
   });
 
-  const { data: candleRes } = useQuery<CandleFeed1HResponse>(
+  const { data: oracleRes1H } = useQuery<OracleFeed1HResponse>(
     ORACLE_CHART_1H_QUERY,
     {
-      pollInterval: 5000,
+      pollInterval: 10000,
+      /*  skip: chartInterval != '1H', */
+      variables: { marketId: selectedMarketId },
+    }
+  );
+
+  const { data: oracleRes15Min } = useQuery<OracleFeed15MinResponse>(
+    ORACLE_CHART_15MIN_QUERY,
+    {
+      pollInterval: 10000,
+      /* skip: chartInterval != '15M', */
       variables: { marketId: selectedMarketId },
     }
   );
@@ -70,6 +85,15 @@ export const TradingHub = () => {
     }
   }, [chartRes]);
 
+  const oracleData =
+    chartInterval === '15M'
+      ? oracleRes15Min?.oracleChartFeed15Mins
+      : oracleRes1H?.oracleChartFeed1Hs;
+
+  useEffect(() => {
+    console.log(oracleData);
+  }, [oracleData]);
+
   /*  */
 
   return (
@@ -93,8 +117,8 @@ export const TradingHub = () => {
         {address && <TradingHubContentContainer isAggregated={isAggregated} />}
         {tradingHubState === 'chart' && (
           <div className='w-full no-scrollbar'>
-            {candleRes && (
-              <TradingHubChart data={chartData} oracleRes={candleRes} />
+            {oracleData && (
+              <TradingHubChart data={chartData} oracleData={oracleData} />
             )}
           </div>
         )}

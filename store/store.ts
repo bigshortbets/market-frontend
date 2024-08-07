@@ -21,3 +21,7 @@ export const tradingHubOrdersCountAtom = atom<number>(0);
 export const chosenInterlocutorAtom = atom<string>(
   '0x26C494d6526Df0c43c01480Ee07a870d4Eb0B647'
 );
+
+/* CHART INTERVAL */
+
+export const chartIntervalAtom = atom<'15M' | '1H'>('1H');
