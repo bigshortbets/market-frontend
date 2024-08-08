@@ -219,37 +219,3 @@ export const CHART_FEED_QUERY = gql`
     }
   }
 `;
-
-/* ORACLE 1H FEED */
-
-export const ORACLE_CHART_1H_QUERY = gql`
-  query oracleChartFeed1Hs($marketId: String!) {
-    oracleChartFeed1Hs(
-      where: { market: { id_eq: $marketId } }
-      orderBy: timestamp_ASC
-    ) {
-      timestamp
-      openPrice
-      closePrice
-      lowPrice
-      highPrice
-    }
-  }
-`;
-
-/* ORACLE 15MIN FEED */
-
-export const ORACLE_CHART_15MIN_QUERY = gql`
-  query oracleChartFeed15Mins($marketId: String!) {
-    oracleChartFeed15Mins(
-      where: { market: { id_eq: $marketId } }
-      orderBy: timestamp_ASC
-    ) {
-      timestamp
-      openPrice
-      closePrice
-      lowPrice
-      highPrice
-    }
-  }
-`;
