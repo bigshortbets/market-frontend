@@ -6,6 +6,7 @@ import { FaTrophy } from 'react-icons/fa';
 import { useAccount } from 'wagmi';
 import { FaCopy } from 'react-icons/fa';
 import toast from 'react-hot-toast';
+import { formatNumberLeaderboard } from '@/utils/formatNumberLeaderboard';
 
 interface LeaderboardItemProps {
   position: number;
@@ -90,41 +91,47 @@ export const LeaderboardItem = ({
         >
           <span className='lg:hidden mr-1'>Prize: {}</span>
           {position === 1 &&
-            `10,000 BIGSB (${
-              bigsbPrice && Number(10_000 * bigsbPrice).toFixed(2)
-            }$)`}
+            `10,000 BigSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(10_000 * bigsbPrice))
+            })`}
           {position === 2 &&
-            `8,000 BIGSB (${
-              bigsbPrice && Number(8_000 * bigsbPrice).toFixed(2)
-            }$)`}
+            `8,000 BigSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(8_000 * bigsbPrice))
+            })`}
           {position === 3 &&
-            `6,000 BIGSB (${
-              bigsbPrice && Number(6_000 * bigsbPrice).toFixed(2)
-            }$)`}
+            `6,000 BigSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(6_000 * bigsbPrice))
+            })`}
           {position === 4 &&
-            `4,000 BIGSB (${
-              bigsbPrice && Number(4_000 * bigsbPrice).toFixed(2)
-            }$)`}
+            `4,000 BigSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(4_000 * bigsbPrice))
+            })`}
           {position === 5 &&
-            `2,000 BIGSB (${
-              bigsbPrice && Number(2_000 * bigsbPrice).toFixed(2)
-            }$)`}
+            `2,000 BigSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(2_000 * bigsbPrice))
+            })`}
           {position > 5 &&
             position <= 10 &&
-            `700 BIGSB (${bigsbPrice && Number(700 * bigsbPrice).toFixed(2)}$)`}
+            `700 BigSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(700 * bigsbPrice))
+            })`}
           {position >= 11 &&
             position <= 15 &&
-            `500 BIGSB (${bigsbPrice && Number(500 * bigsbPrice).toFixed(2)}$)`}
+            `500 BigSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(500 * bigsbPrice))
+            })`}
           {position >= 16 &&
             position <= 50 &&
-            `400 BIGSB (${bigsbPrice && Number(400 * bigsbPrice).toFixed(2)}$)`}
+            `400 BigSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(400 * bigsbPrice))
+            })`}
           {position > 50 && `-`}
         </div>
       </div>
       <div className='text-right lg:items-center flex lg:block flex-col  lg:text-[12px] text-[11px]'>
         <div className='lg:hidden text-tetriary'>Score:</div>
         <div>
-          {Number(score).toFixed(2)} ${currencySymbol}
+          {formatNumberLeaderboard(Number(score))} {currencySymbol}
         </div>
       </div>
     </div>

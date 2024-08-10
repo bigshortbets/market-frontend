@@ -4,6 +4,7 @@ import {
   LeaderboardType,
 } from '@/types/leaderboardTypes';
 import { convertToSS58 } from '@/utils/convertToSS58';
+import { formatNumberLeaderboard } from '@/utils/formatNumberLeaderboard';
 import { truncateAddress } from '@/utils/truncateAddress';
 import React from 'react';
 import { FaTrophy } from 'react-icons/fa6';
@@ -52,34 +53,40 @@ export const LeaderboardElectionUserItem = ({
         <div className=' items-center  text-[10px] lg:w-[150px] flex text-black'>
           <span className='lg:hidden mr-1'>Prize:</span>
           {position === 1 &&
-            `10,000 BIGSB (${
-              bigsbPrice && Number(10_000 * bigsbPrice).toFixed(2)
-            }$)`}
+            `10,000 BIGSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(10_000 * bigsbPrice))
+            })`}
           {position === 2 &&
-            `8,000 BIGSB (${
-              bigsbPrice && Number(8_000 * bigsbPrice).toFixed(2)
-            }$)`}
+            `8,000 BIGSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(8_000 * bigsbPrice))
+            })`}
           {position === 3 &&
-            `6,000 BIGSB (${
-              bigsbPrice && Number(6_000 * bigsbPrice).toFixed(2)
-            }$)`}
+            `6,000 BIGSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(6_000 * bigsbPrice))
+            })`}
           {position === 4 &&
-            `4,000 BIGSB (${
-              bigsbPrice && Number(4_000 * bigsbPrice).toFixed(2)
-            }$)`}
+            `4,000 BIGSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(4_000 * bigsbPrice))
+            })`}
           {position === 5 &&
-            `2,000 BIGSB (${
-              bigsbPrice && Number(2_000 * bigsbPrice).toFixed(2)
-            }$)`}
+            `2,000 BIGSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(2_000 * bigsbPrice))
+            })`}
           {position > 5 &&
             position <= 10 &&
-            `700 BIGSB (${bigsbPrice && Number(700 * bigsbPrice).toFixed(2)}$)`}
+            `700 BIGSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(700 * bigsbPrice))
+            })`}
           {position >= 11 &&
             position <= 15 &&
-            `500 BIGSB (${bigsbPrice && Number(500 * bigsbPrice).toFixed(2)}$)`}
+            `500 BIGSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(500 * bigsbPrice))
+            })`}
           {position >= 16 &&
             position <= 50 &&
-            `400 BIGSB (${bigsbPrice && Number(400 * bigsbPrice).toFixed(2)}$)`}
+            `400 BIGSB ($${
+              bigsbPrice && formatNumberLeaderboard(Number(400 * bigsbPrice))
+            })`}
           {position > 50 && `-`}
           {position === 0 && `-`}
         </div>
@@ -88,9 +95,9 @@ export const LeaderboardElectionUserItem = ({
         <div className='lg:hidden text-black'>Score:</div>
         <div>
           {userData.data
-            ? `${Number(userData.data.balanceChange).toFixed(
-                2
-              )} $${currencySymbol}`
+            ? `${formatNumberLeaderboard(
+                Number(userData.data.balanceChange)
+              )} ${currencySymbol}`
             : '-'}
         </div>
       </div>
