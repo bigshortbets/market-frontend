@@ -53,38 +53,38 @@ export const LeaderboardElectionUserItem = ({
         <div className=' items-center  text-[10px] lg:w-[150px] flex text-black'>
           <span className='lg:hidden mr-1'>Prize:</span>
           {position === 1 &&
-            `10,000 BIGSB ($${
+            `10,000 BigSB ($${
               bigsbPrice && formatNumberLeaderboard(Number(10_000 * bigsbPrice))
             })`}
           {position === 2 &&
-            `8,000 BIGSB ($${
+            `8,000 BigSB ($${
               bigsbPrice && formatNumberLeaderboard(Number(8_000 * bigsbPrice))
             })`}
           {position === 3 &&
-            `6,000 BIGSB ($${
+            `6,000 BigSB ($${
               bigsbPrice && formatNumberLeaderboard(Number(6_000 * bigsbPrice))
             })`}
           {position === 4 &&
-            `4,000 BIGSB ($${
+            `4,000 BigSB ($${
               bigsbPrice && formatNumberLeaderboard(Number(4_000 * bigsbPrice))
             })`}
           {position === 5 &&
-            `2,000 BIGSB ($${
+            `2,000 BigSB ($${
               bigsbPrice && formatNumberLeaderboard(Number(2_000 * bigsbPrice))
             })`}
           {position > 5 &&
             position <= 10 &&
-            `700 BIGSB ($${
+            `700 BigSB ($${
               bigsbPrice && formatNumberLeaderboard(Number(700 * bigsbPrice))
             })`}
           {position >= 11 &&
             position <= 15 &&
-            `500 BIGSB ($${
+            `500 BigSB ($${
               bigsbPrice && formatNumberLeaderboard(Number(500 * bigsbPrice))
             })`}
           {position >= 16 &&
             position <= 50 &&
-            `400 BIGSB ($${
+            `400 BigSB ($${
               bigsbPrice && formatNumberLeaderboard(Number(400 * bigsbPrice))
             })`}
           {position > 50 && `-`}
