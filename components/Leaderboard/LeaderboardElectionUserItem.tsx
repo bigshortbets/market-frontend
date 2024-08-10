@@ -92,7 +92,7 @@ export const LeaderboardElectionUserItem = ({
         </div>
       </div>
       <div className='text-right lg:items-center flex lg:block flex-col  lg:text-[12px] text-[11px]'>
-        <div className='lg:hidden text-black'>Score:</div>
+        <div className='lg:hidden text-black'>PnL:</div>
         <div>
           {userData.data
             ? `${formatNumberLeaderboard(

@@ -129,7 +129,7 @@ export const LeaderboardItem = ({
         </div>
       </div>
       <div className='text-right lg:items-center flex lg:block flex-col  lg:text-[12px] text-[11px]'>
-        <div className='lg:hidden text-tetriary'>Score:</div>
+        <div className='lg:hidden text-tetriary'>PnL:</div>
         <div>
           {formatNumberLeaderboard(Number(score))} {currencySymbol}
         </div>
