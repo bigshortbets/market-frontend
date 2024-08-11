@@ -23,6 +23,7 @@ import { truncateAddress } from '@/utils/truncateAddress';
 import { LeaderboardUserItem } from './LeaderboardUserItem';
 import { LeaderboardElectionUserItem } from './LeaderboardElectionUserItem';
 import { convertToSS58 } from '@/utils/convertToSS58';
+import { formatNumberLeaderboard } from '@/utils/formatNumberLeaderboard';
 
 export const Leaderboard = () => {
   const { address } = useAccount();
@@ -34,11 +35,17 @@ export const Leaderboard = () => {
     setIsModalOpened(false);
   };
 
-  const { data: leaderboardRes } =
-    gqlQuery<LeaderboardResponse>(LEADERBOARD_QUERY);
+  const { data: leaderboardRes } = gqlQuery<LeaderboardResponse>(
+    LEADERBOARD_QUERY,
+    {
+      pollInterval: 15000,
+    }
+  );
 
   const { data: electionLeaderboardRes } =
-    gqlQuery<ElectionLeaderboardResponse>(LEADERBOARD_ELECTION_QUERY);
+    gqlQuery<ElectionLeaderboardResponse>(LEADERBOARD_ELECTION_QUERY, {
+      pollInterval: 15000,
+    });
 
   const [currentRanking, setCurrentRanking] = useState<string>('general');
 
@@ -149,10 +156,10 @@ export const Leaderboard = () => {
                       Prize Pool Value:
                     </p>
                     <p className='text-xs font-semibold'>
-                      100 000 $BigSB ={' '}
-                      {Number(
-                        100_000 * bigsbPriceData?.bigshortbets.usd
-                      ).toFixed(2)}
+                      100,000 $BigSB ={' '}
+                      {formatNumberLeaderboard(
+                        Number(100_000 * bigsbPriceData?.bigshortbets.usd)
+                      )}
                       $
                     </p>
                   </div>
@@ -162,11 +169,10 @@ export const Leaderboard = () => {
                     Prize Pool Value:
                   </p>
                   <p className='text-xs font-semibold'>
-                    100 000 $BigSB ={' '}
-                    {Number(100_000 * bigsbPriceData?.bigshortbets.usd).toFixed(
-                      2
+                    100,000 $BigSB = $
+                    {formatNumberLeaderboard(
+                      Number(100_000 * bigsbPriceData?.bigshortbets.usd)
                     )}
-                    $
                   </p>
                 </div>
               </div>
@@ -221,7 +227,7 @@ export const Leaderboard = () => {
                   </div>
                 </div>
                 <div className='w-[100px] text-right items-center text-[13px] font-semibold'>
-                  Score
+                  PnL
                 </div>
               </div>
 
