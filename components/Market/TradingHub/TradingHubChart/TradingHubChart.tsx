@@ -19,15 +19,13 @@ export interface ConvertedOracleFeed {
 
 export const TradingHubChart = ({ data, oracleData }: TradingHubChartProps) => {
   const oracleDataConverted: ConvertedOracleFeed[] = oracleData.map(
-    ({ openPrice, highPrice, closePrice, timestamp, lowPrice }) => {
-      const converted = Number(timestamp) / 1000;
-
+    ({ open, high, close, time, low }) => {
       return {
-        open: Number(openPrice),
-        high: Number(highPrice),
-        close: Number(closePrice),
-        low: Number(lowPrice),
-        time: converted as UTCTimestamp,
+        open: Number(open),
+        high: Number(high),
+        close: Number(close),
+        low: Number(low),
+        time: Number(time) as UTCTimestamp,
       };
     }
   );

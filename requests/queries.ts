@@ -226,13 +226,13 @@ export const ORACLE_CHART_1H_QUERY = gql`
   query oracleChartFeed1Hs($marketId: String!) {
     oracleChartFeed1Hs(
       where: { market: { id_eq: $marketId } }
-      orderBy: timestamp_ASC
+      orderBy: time_ASC
     ) {
-      timestamp
-      openPrice
-      closePrice
-      lowPrice
-      highPrice
+      time
+      open
+      close
+      low
+      high
     }
   }
 `;
@@ -243,13 +243,13 @@ export const ORACLE_CHART_15MIN_QUERY = gql`
   query oracleChartFeed15Mins($marketId: String!) {
     oracleChartFeed15Mins(
       where: { market: { id_eq: $marketId } }
-      orderBy: timestamp_ASC
+      orderBy: time_ASC
     ) {
-      timestamp
-      openPrice
-      closePrice
-      lowPrice
-      highPrice
+      time
+      open
+      close
+      low
+      high
     }
   }
 `;

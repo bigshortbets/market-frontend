@@ -8,11 +8,11 @@ export interface ChartFeedResponse {
 }
 
 export interface CandleFeed {
-  lowPrice: string;
-  highPrice: string;
-  openPrice: string;
-  closePrice: string;
-  timestamp: string;
+  low: string;
+  high: string;
+  open: string;
+  close: string;
+  time: string;
 }
 
 export interface OracleFeed1HResponse {

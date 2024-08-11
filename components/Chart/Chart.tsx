@@ -8,10 +8,11 @@ import {
 } from 'lightweight-charts-react-wrapper';
 import { chosenMarketAtom } from '@/store/store';
 import Image from 'next/image';
-import { ConvertedOracleFeed } from '../Market/TradingHub/TradingHubChart/TradingHubChart';
 import { marketsData } from '@/data/marketsData';
 import { ChartIntervalTab } from './ChartIntervalTab';
 import { ChartVariantTab } from './ChartVariantTab';
+import { CandleFeed } from '@/types/chartTypes';
+import { ConvertedOracleFeed } from '../Market/TradingHub/TradingHubChart/TradingHubChart';
 
 interface ChartProps {
   data: { time: UTCTimestamp; value: number }[];
