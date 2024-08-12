@@ -1,6 +1,9 @@
 import { OrderBookResponse } from '@/types/orderTypes';
 import { OrderBookItem } from './OrderBookItem';
 import { currencySymbol } from '@/blockchain/constants';
+import { useAtom } from 'jotai';
+import { chosenMarketAtom } from '@/store/store';
+import Image from 'next/image';
 
 export enum OrderSide {
   LONG = 'LONG',
@@ -13,8 +16,21 @@ interface OrderBooksProps {
 }
 
 export const OrderBook = ({ shortsRes, longsRes }: OrderBooksProps) => {
+  const [chosenMarket] = useAtom(chosenMarketAtom);
   return (
-    <div className='flex flex-col pt-[14px]  text-xs h-full'>
+    <div className='flex flex-col  text-xs h-full'>
+      <div className='pt-[14px] pl-4 mb-2 text-[#7F828F] text-[11px] flex items-center gap-2'>
+        {chosenMarket?.path && (
+          <Image
+            src={chosenMarket.path}
+            width={16}
+            height={16}
+            alt='Market logo'
+            className='rounded-full'
+          />
+        )}
+        <p>{chosenMarket?.name}</p>
+      </div>
       <div className='flex justify-between items-center px-4'>
         <div className='flex items-center gap-1.5'>
           <p className='text-[#7F828F] font-semibold'>Price</p>

@@ -1,11 +1,26 @@
 import { useAtom } from 'jotai';
 import { recentTradesAtom } from '../Market';
 import { RecentTradesItem } from './RecentTradesItem';
+import Image from 'next/image';
+import { chosenMarketAtom } from '@/store/store';
 
 export const RecentTrades = () => {
   const [recentTrades] = useAtom(recentTradesAtom);
+  const [chosenMarket] = useAtom(chosenMarketAtom);
   return (
-    <div className='flex flex-col pt-[14px] px-4 text-xs'>
+    <div className='flex flex-col px-4 text-xs'>
+      <div className='pt-[14px] mb-2 text-[#7F828F] text-[11px] flex items-center gap-2'>
+        {chosenMarket?.path && (
+          <Image
+            src={chosenMarket.path}
+            width={16}
+            height={16}
+            alt='Market logo'
+            className='rounded-full'
+          />
+        )}
+        <p>{chosenMarket?.name}</p>
+      </div>
       <div className='flex justify-between items-center'>
         <p className='text-[#7F828F] font-semibold'>Time</p>
         <div className='flex items-center'>
