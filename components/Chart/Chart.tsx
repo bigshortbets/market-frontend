@@ -10,9 +10,9 @@ import { chosenMarketAtom } from '@/store/store';
 import Image from 'next/image';
 import { marketsData } from '@/data/marketsData';
 import { ChartIntervalTab } from './ChartIntervalTab';
-import { ChartVariantTab } from './ChartVariantTab';
 import { CandleFeed } from '@/types/chartTypes';
 import { ConvertedOracleFeed } from '../Market/TradingHub/TradingHubChart/TradingHubChart';
+import { MarketPriceCheckbox } from '../Market/TradingHub/TradingHubChart/MarketPriceCheckbox';
 
 interface ChartProps {
   data: { time: UTCTimestamp; value: number }[];
@@ -23,9 +23,7 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [chosenMarket] = useAtom(chosenMarketAtom);
-  const [chartVariant, setChartVariant] = useState<'oracle' | 'market'>(
-    'oracle'
-  );
+  const [isMarketPrice, setIsMarketPrice] = useState<boolean>(false);
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
@@ -43,6 +41,10 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
       window.removeEventListener('resize', updateDimensions);
     };
   }, []);
+
+  const toggleMarketPrice = () => {
+    setIsMarketPrice(!isMarketPrice);
+  };
   return (
     <div ref={containerRef} className='w-full h-[85%]'>
       <div className='flex justify-between flex-col md:flex-row md:items-center gap-2 md:gap-0 mt-2 mb-6 md:mr-3'>
@@ -64,24 +66,14 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
           <p className='text-xs'>- Market price</p>
         </div> */}
         <div className='flex items-center gap-4'>
-          {chartVariant === 'oracle' && (
-            <div className='flex items-center gap-1'>
-              <ChartIntervalTab value='1H' />
-              <ChartIntervalTab value='15M' />
-            </div>
-          )}
           <div className='flex items-center gap-1'>
-            <ChartVariantTab
-              value='oracle'
-              chosenChartVariant={chartVariant}
-              setChosenChartVariant={setChartVariant}
-            />
-            <ChartVariantTab
-              value='market'
-              chosenChartVariant={chartVariant}
-              setChosenChartVariant={setChartVariant}
-            />
+            <ChartIntervalTab value='1H' />
+            <ChartIntervalTab value='15M' />
           </div>
+          <MarketPriceCheckbox
+            isMarketPrice={isMarketPrice}
+            setIsMarketPrice={toggleMarketPrice}
+          />
         </div>
       </div>
 
@@ -115,10 +107,10 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
           }}
           layout={{ background: { color: '#191B24' }, textColor: 'white' }}
         >
-          {data.length > 0 && chartVariant === 'market' && (
+          {data.length > 0 && isMarketPrice && (
             <LineSeries data={data} reactive color={'#4ECB7D'} />
           )}
-          {marketsData.length > 0 && chartVariant === 'oracle' && (
+          {marketsData.length > 0 && (
             <CandlestickSeries data={oracleData} reactive />
           )}
         </ChartComponent>
