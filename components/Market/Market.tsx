@@ -106,9 +106,10 @@ export const Market = ({ markets }: MarketProps) => {
     <div className='h-[100dvh] bg-[#111217] '>
       <div className='h-full flex flex-col relative max-w-[2000px] mx-auto'>
         <p className='absolute bottom-1.5 text-[9px] left-6 text-[#555866]'>
-          $DOLARZ is virtual sandbox and have no real settlement value as "fake
-          money". They are an internal part of the software and as such cannot
-          be part of billing.
+          DOLARZ is a virtual asset used exclusively within our platform for
+          trading in a simulated environment. It holds no real-world monetary
+          value and cannot be used for any real financial transactions or
+          billing.
         </p>
         <p className='absolute bottom-1.5 text-[9px] right-6 text-[#555866]'>
           Created on Substrate from Parity Technologies
