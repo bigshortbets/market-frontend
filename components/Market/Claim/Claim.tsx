@@ -180,6 +180,7 @@ export const Claim = ({
             <a
               href='https://docs.bigsb.network/overview/trading-competition-faq'
               target='_blank'
+              rel='noopener noreferrer'
               className='text-[#4ECB7D] underline'
             >
               Competition Quickstart
