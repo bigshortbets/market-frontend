@@ -178,7 +178,7 @@ export const Claim = ({
           <p className='text-xs mt-2'>
             Learn more in the{' '}
             <a
-              href='https://docs.bigsb.network/overview/trading-competition-faq'
+              href='https://docs.bigsb.network'
               target='_blank'
               rel='noopener noreferrer'
               className='text-[#4ECB7D] underline'
