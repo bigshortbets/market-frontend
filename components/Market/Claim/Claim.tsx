@@ -175,6 +175,17 @@ export const Claim = ({
               .
             </p>
           )}
+          <p className='text-xs mt-2'>
+            Learn more in the{' '}
+            <a
+              href='https://docs.bigsb.network/overview/trading-competition-faq'
+              target='_blank'
+              rel='noopener noreferrer'
+              className='text-[#4ECB7D] underline'
+            >
+              Competition Quickstart
+            </a>
+          </p>
 
           {hasUserMinted && availableMintData && (
             <p className='text-xs font-semibold mt-4'>
