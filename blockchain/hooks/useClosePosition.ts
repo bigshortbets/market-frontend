@@ -15,7 +15,7 @@ export const useClosePosition = (
 ) => {
   const { writeContract, error, data, isSuccess } = useWriteContract();
 
-  const notifText = `Position has been closed! Wait for transaction confirmation.`;
+  const notifText = `Closing Order is being placed. A wallet notification will appear when the process is complete.`;
 
   const write = () =>
     writeContract({
