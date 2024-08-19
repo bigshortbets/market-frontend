@@ -27,6 +27,8 @@ export const TradingHubCompletedOrderItem = ({
       {/* Market */}
       <td
         className='underline cursor-pointer'
+        role='button'
+        aria-label={`Select market ${marketDetails?.name}`}
         onClick={() => setSelectedMarketId(order.market.id)}
       >
         {marketDetails?.name}

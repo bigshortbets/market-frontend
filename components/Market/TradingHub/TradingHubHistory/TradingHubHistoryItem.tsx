@@ -49,6 +49,8 @@ export const TradingHubHistoryItem = ({
         <div className='text-xs text-tetriary'>
           <p
             className='mb-1.5 underline cursor-pointer hidden md:block'
+            role='button'
+            aria-label={`Select market ${marketDetails?.name}`}
             onClick={() => setSelectedMarketId(settlement.market.id)}
           >
             {marketDetails?.name}

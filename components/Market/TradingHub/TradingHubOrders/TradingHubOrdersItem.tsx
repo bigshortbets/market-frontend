@@ -49,6 +49,8 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
       <td>{format(date, 'd MMMM yyyy HH:mm:ss')}</td>
       {/* Market */}
       <td
+        role='button'
+        aria-label={`Select market ${marketDetails?.name}`}
         className='underline cursor-pointer'
         onClick={() => setSelectedMarketId(order.market.id)}
       >
