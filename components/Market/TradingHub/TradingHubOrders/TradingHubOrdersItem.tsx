@@ -6,6 +6,8 @@ import { getMarkeDetails } from '@/utils/getMarketDetails';
 import { useAccount } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { fetchOrderCollateral } from '@/utils/fetchOrderCollateral';
+import { selectedMarketIdAtom } from '../../Market';
+import { useAtom } from 'jotai';
 
 interface TradingHubOrdersItemProps {
   order: OrderType;
@@ -18,6 +20,8 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
 
   const { address } = useAccount();
   const [state, setState] = useState<number>();
+  const [_, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
+
   /*   useEffect(() => {
     const fetchCollateral = async () => {
       if (order && address) {
@@ -44,7 +48,14 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
       {/* Created */}
       <td>{format(date, 'd MMMM yyyy HH:mm:ss')}</td>
       {/* Market */}
-      <td>{marketDetails?.name}</td>
+      <td
+        role='button'
+        aria-label={`Select market ${marketDetails?.name}`}
+        className='underline cursor-pointer'
+        onClick={() => setSelectedMarketId(order.market.id)}
+      >
+        {marketDetails?.name}
+      </td>
       {/* Price */}
       <td>{Number(order.price)}</td>
       {/* Quantity */}

@@ -6,6 +6,8 @@ import { MarketSettlementsType } from '@/types/marketSettlementsTypes';
 import { TiArrowSortedDown, TiArrowSortedUp } from 'react-icons/ti';
 import { currencySymbol } from '@/blockchain/constants';
 import Image from 'next/image';
+import { selectedMarketIdAtom } from '../../Market';
+import { useAtom } from 'jotai';
 
 interface TradingHubHistoryItem {
   settlement: MarketSettlementsType;
@@ -15,6 +17,7 @@ export const TradingHubHistoryItem = ({
   settlement,
 }: TradingHubHistoryItem) => {
   const marketDetails = getMarkeDetails(settlement.market.ticker);
+  const [_, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
   return (
     <div className='w-full rounded-lg py-4 lg:py-2  lg:h-[56px] md:flex-row bg-[#23252E] flex flex-col  px-4 md:justify-between '>
       <div className='flex h-full gap-3.5'>
@@ -44,7 +47,15 @@ export const TradingHubHistoryItem = ({
           </p>
         </div>
         <div className='text-xs text-tetriary'>
-          <p className='mb-1.5'>{marketDetails?.name}</p>
+          <p
+            className='mb-1.5 underline cursor-pointer hidden md:block'
+            role='button'
+            aria-label={`Select market ${marketDetails?.name}`}
+            onClick={() => setSelectedMarketId(settlement.market.id)}
+          >
+            {marketDetails?.name}
+          </p>
+          <p className='mb-1.5  md:hidden'>{marketDetails?.name}</p>
           <div className='flex items-center gap-1'>
             {/* {marketDetails && (
               <Image

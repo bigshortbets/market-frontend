@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { SideLabel } from '../SideLabel';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { getOpponentMarginData } from '@/utils/getOpponentMarginData';
-import { opponentsMarginsAtom } from '../../Market';
+import { opponentsMarginsAtom, selectedMarketIdAtom } from '../../Market';
 import { useAtom } from 'jotai';
 import { LiquidationStatusTab } from '../../LiquidationStatusTab';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
@@ -57,7 +57,8 @@ export const TradingHubPositionsItem = ({
   };
   const marketDetails = getMarkeDetails(position.market.ticker);
 
-  const [_, setTradingHubState] = useAtom(tradingHubStateAtom);
+  /*  const [_, setTradingHubState] = useAtom(tradingHubStateAtom); */
+  const [_, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
 
   return (
     <tr
@@ -68,7 +69,12 @@ export const TradingHubPositionsItem = ({
         <SideLabel side={position.side} />
       </td>
       {isNotAggregated && (
-        <td className='text-[10px] sm:text-xs px-6 sm:px-0'>
+        <td
+          className='text-[10px] sm:text-xs px-6 sm:px-0 underline cursor-pointer'
+          onClick={() => setSelectedMarketId(position.market.id)}
+          role='button'
+          aria-label={`Select market ${marketDetails?.name}`}
+        >
           {marketDetails?.name}
         </td>
       )}
