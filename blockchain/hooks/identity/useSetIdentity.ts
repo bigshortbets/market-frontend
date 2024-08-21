@@ -12,7 +12,8 @@ import { stringToHex } from 'viem';
 import { useWriteContract } from 'wagmi';
 
 export const useSetIdentity = (nickname: string) => {
-  const { writeContract, error, data, isSuccess } = useWriteContract();
+  const { writeContract, error, data, isSuccess, isPending } =
+    useWriteContract();
 
   const notifText = `Nickname has been set successfuly. Wait for wallet confirmation.`;
 
@@ -72,5 +73,5 @@ export const useSetIdentity = (nickname: string) => {
     }
   }, [isSuccess]);
 
-  return { write };
+  return { write, isPending };
 };
