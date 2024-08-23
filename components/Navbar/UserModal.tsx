@@ -1,7 +1,11 @@
 import { useSetIdentity } from '@/blockchain/hooks/identity/useSetIdentity';
+import { useDisplayName } from '@/hooks/useDisplayName';
 import { convertToSS58 } from '@/utils/convertToSS58';
+import { fetchDisplayName } from '@/utils/fetchIdentityInfo';
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
+import { FaCopy } from 'react-icons/fa';
 
 import { IoClose } from 'react-icons/io5';
 import ReactLoading from 'react-loading';
@@ -19,6 +23,32 @@ export const UserModal = ({
   const { address } = useAccount();
   const [nameInput, setNameInput] = useState<string>('');
   const { write: writeName, isPending } = useSetIdentity(nameInput);
+  const { displayName, refresh } = useDisplayName(address);
+
+  const handleCopy = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    const val = event.currentTarget.getAttribute('data-value');
+    if (!val) return;
+
+    try {
+      await navigator.clipboard.writeText(val);
+      toast.success('Address copied to clipboard', {
+        duration: 1111,
+      });
+    } catch (err) {
+      toast.error('Something went wrong', {
+        duration: 1111,
+      });
+    }
+  };
+
+  const handleChangeName = async () => {
+    try {
+      await writeName();
+      refresh(); // Refresh the display name after a successful change
+    } catch (error) {
+      console.error('Failed to update display name.', error);
+    }
+  };
 
   return (
     <>
@@ -53,7 +83,7 @@ export const UserModal = ({
                       as='h3'
                       className='text-lg font-medium leading-6 text-white mb-1'
                     >
-                      User Profile
+                      Your Profile
                     </Dialog.Title>
 
                     <button className='text-xl' onClick={handleCloseModal}>
@@ -61,18 +91,42 @@ export const UserModal = ({
                     </button>
                   </div>
                   <div className='my-3'>
-                    <p className='text-sm mb-1'>H160 Address</p>
+                    <div className='flex items-center gap-1'>
+                      <p className='text-sm mb-1'>H160 Address</p>
+                      <button
+                        className='text-xs text-[#434552]'
+                        onClick={handleCopy}
+                        aria-label='Copy address'
+                        data-value={address as string}
+                      >
+                        <FaCopy />
+                      </button>
+                    </div>
                     <p className='text-xs text-tetriary'>{address}</p>
                   </div>
                   <div className='my-3'>
-                    <p className='text-sm mb-1'>SS58 Address</p>
+                    <div className='flex items-center gap-1'>
+                      <p className='text-sm mb-1'>SS58 Address</p>
+                      <button
+                        className='text-xs text-[#434552]'
+                        onClick={handleCopy}
+                        aria-label='Copy address'
+                        data-value={address && convertToSS58(address as string)}
+                      >
+                        <FaCopy />
+                      </button>
+                    </div>
                     <p className='text-xs text-tetriary break-words'>
                       {address ? convertToSS58(address as string) : '-'}
                     </p>
                   </div>
                   <div className='my-3'>
-                    <p className='text-sm mb-1'>Your Display name</p>
-                    <p className='text-xs text-tetriary break-words'>-</p>
+                    <p className='text-sm mb-1' onClick={refresh}>
+                      Your Display name
+                    </p>
+                    <p className='text-xs text-tetriary break-words'>
+                      {displayName ? displayName : '-'}
+                    </p>
                   </div>
                   <div>
                     <label
@@ -89,7 +143,7 @@ export const UserModal = ({
                     />
                   </div>
                   <button
-                    onClick={writeName}
+                    onClick={handleChangeName}
                     className={` flex items-center justify-center disabled:bg-gray-400 bg-[#4ECB7D] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-2.5 mt-3 `}
                   >
                     {isPending ? (
@@ -100,7 +154,7 @@ export const UserModal = ({
                         color='black'
                       />
                     ) : (
-                      'Change Display Name'
+                      'Change Username'
                     )}
                   </button>
                 </Dialog.Panel>
