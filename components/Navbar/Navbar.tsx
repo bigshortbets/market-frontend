@@ -8,7 +8,6 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { FaChartLine, FaTrophy } from 'react-icons/fa6';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { useSetIdentity } from '@/blockchain/hooks/identity/useSetIdentity';
 import { FaUser } from 'react-icons/fa';
 import { UserModal } from './UserModal';
 
@@ -119,7 +118,6 @@ export const Navbar = () => {
           )}
         </div>
       </div>
-
       <UserModal
         isModalOpened={userModalOpened}
         handleCloseModal={() => setUserModalOpened(false)}

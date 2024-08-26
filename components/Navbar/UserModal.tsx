@@ -10,6 +10,7 @@ import { FaCopy } from 'react-icons/fa';
 import { IoClose } from 'react-icons/io5';
 import ReactLoading from 'react-loading';
 import { useAccount } from 'wagmi';
+import { IoMdRefresh } from 'react-icons/io';
 
 interface UserModalProps {
   handleCloseModal: () => void;
@@ -41,14 +42,7 @@ export const UserModal = ({
     }
   };
 
-  const handleChangeName = async () => {
-    try {
-      await writeName();
-      refresh(); // Refresh the display name after a successful change
-    } catch (error) {
-      console.error('Failed to update display name.', error);
-    }
-  };
+  const buttonDisabled = nameInput.length < 3 || nameInput.length > 18;
 
   return (
     <>
@@ -121,9 +115,12 @@ export const UserModal = ({
                     </p>
                   </div>
                   <div className='my-3'>
-                    <p className='text-sm mb-1' onClick={refresh}>
-                      Your Display name
-                    </p>
+                    <div className='flex items-center gap-1 mb-1'>
+                      <p className='text-sm '>Your Username</p>
+                      <button className=' text-tetriary' onClick={refresh}>
+                        <IoMdRefresh />
+                      </button>
+                    </div>
                     <p className='text-xs text-tetriary break-words'>
                       {displayName ? displayName : '-'}
                     </p>
@@ -133,7 +130,7 @@ export const UserModal = ({
                       htmlFor='displayname'
                       className='text-tetriary text-xs '
                     >
-                      Set Display name
+                      Set Username
                     </label>
                     <input
                       onChange={(e) => setNameInput(e.target.value)}
@@ -143,7 +140,8 @@ export const UserModal = ({
                     />
                   </div>
                   <button
-                    onClick={handleChangeName}
+                    disabled={buttonDisabled}
+                    onClick={writeName}
                     className={` flex items-center justify-center disabled:bg-gray-400 bg-[#4ECB7D] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-2.5 mt-3 `}
                   >
                     {isPending ? (
