@@ -22,7 +22,7 @@ export async function fetchDisplayName(
 
     const data = identityInfoCodec.toHuman() as DisplayNameResponse;
 
-    if (data && data[0]?.info?.display?.Raw) {
+    if (data?.[0]?.info?.display?.Raw) {
       return data[0].info.display.Raw;
     }
 

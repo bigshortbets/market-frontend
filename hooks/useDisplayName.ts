@@ -14,7 +14,10 @@ export function useDisplayName(address?: string): UseDisplayNameResult {
   const [error, setError] = useState<Error | null>(null);
 
   const fetchData = useCallback(async () => {
-    if (!address) return;
+    if (!address) {
+      setDisplayName(null);
+      return;
+    }
 
     setIsLoading(true);
     setError(null);
