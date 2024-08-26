@@ -1,4 +1,5 @@
 import { currencySymbol } from '@/blockchain/constants';
+import { useDisplayName } from '@/hooks/useDisplayName';
 import {
   ElectionLeaderboardType,
   LeaderboardType,
@@ -21,8 +22,18 @@ export const LeaderboardElectionUserItem = ({
   address,
   bigsbPrice,
 }: LeaderboardElectionUserItem) => {
-  const { address: h160address } = useAccount();
   const position = userData.index + 1;
+  const { displayName } = useDisplayName(convertToSS58(address));
+
+  const usernameDisplay = `${displayName} (${truncateAddress(
+    convertToSS58(address)
+  )})`;
+
+  const noUsernameDisplay = `${truncateAddress(address as string)} (${
+    address && truncateAddress(convertToSS58(address))
+  }) ${displayName}`;
+
+  const user = displayName ? usernameDisplay : noUsernameDisplay;
   return (
     <div className='w-full rounded-lg py-4 lg:py-2  lg:h-[48px] mb-6 lg:mb-4 flex items-center px-4 justify-between bg-[#4ECB7D] text-black font-semibold'>
       <div className='lg:flex'>
@@ -31,23 +42,18 @@ export const LeaderboardElectionUserItem = ({
           <div className='lg:w-[100px] items-center  text-xs lg:text-[13px] mr-2 lg:mr-0 '>
             {userData.data ? `${position} (You)` : '-'}
           </div>
-          <div className='  text-[13px] flex items-center gap-2 w-[170px]'>
+          <div className='  text-[13px] flex items-center gap-2 md:w-[250px] w-auto'>
             {position === 1 && <FaTrophy className='text-[#9ca150]' />}
             {position === 2 && <FaTrophy className='text-[#c1c2b4]' />}
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}
-            <p className='hidden lg:block'>{`${truncateAddress(
-              h160address as string
-            )} (${address && truncateAddress(convertToSS58(address))})`}</p>
+            <p className='hidden lg:block'>
+              {displayName ? usernameDisplay : noUsernameDisplay}
+            </p>
           </div>
         </div>
         <div className='lg:hidden mb-1'>
           <div className='flex items-center'>
-            <p className='lg:hidden text-xs mr-1'>
-              Address:{' '}
-              {`${truncateAddress(h160address as string)} (${
-                address && truncateAddress(convertToSS58(address))
-              })`}
-            </p>
+            <p className='lg:hidden text-xs mr-1'>{user}</p>
           </div>
         </div>
         <div className=' items-center  text-[10px] lg:w-[150px] flex text-black'>

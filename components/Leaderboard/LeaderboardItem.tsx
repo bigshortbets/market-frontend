@@ -7,6 +7,7 @@ import { useAccount } from 'wagmi';
 import { FaCopy } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 import { formatNumberLeaderboard } from '@/utils/formatNumberLeaderboard';
+import { useDisplayName } from '@/hooks/useDisplayName';
 
 interface LeaderboardItemProps {
   position: number;
@@ -40,6 +41,10 @@ export const LeaderboardItem = ({
     }
   };
 
+  const { displayName, refresh } = useDisplayName(address);
+
+  const usernameDisplay = `${displayName} (${truncateAddress(address)})`;
+
   return (
     <div
       className={`w-full rounded-lg py-4 lg:py-2  lg:h-[48px] bg-[#23252E] flex items-center px-4 justify-between  ${
@@ -54,12 +59,12 @@ export const LeaderboardItem = ({
           <div className='lg:w-[100px] items-center  text-xs lg:text-[13px] mr-2 lg:mr-0 '>
             {position}
           </div>
-          <div className='  text-[13px] flex items-center gap-2 w-[170px]'>
+          <div className='  text-[13px] flex items-center gap-2 md:w-[250px] w-auto'>
             {position === 1 && <FaTrophy className='text-[#9ca150]' />}
             {position === 2 && <FaTrophy className='text-[#c1c2b4]' />}
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}
             <div className='hidden lg:flex items-center gap-1.5'>
-              <p>{truncateAddress(address)}</p>
+              <p>{displayName ? usernameDisplay : truncateAddress(address)}</p>
               <button
                 className='text-xs text-[#434552]'
                 onClick={handleCopy}
@@ -73,7 +78,9 @@ export const LeaderboardItem = ({
         <div className='lg:hidden mb-1'>
           <div className='flex items-center'>
             <div className='lg:hidden text-xs mr-1 flex items-center gap-1.5'>
-              <p>Address: {truncateAddress(address)}</p>
+              <p>
+                User: {displayName ? usernameDisplay : truncateAddress(address)}
+              </p>
               <button
                 className='text-xs text-[#434552]'
                 onClick={handleCopy}
@@ -129,7 +136,11 @@ export const LeaderboardItem = ({
         </div>
       </div>
       <div className='text-right lg:items-center flex lg:block flex-col  lg:text-[12px] text-[11px]'>
-        <div className='lg:hidden text-tetriary'>PnL:</div>
+        <div
+          className={`lg:hidden  ${isUser ? 'text-black' : 'text-tetriary'}`}
+        >
+          PnL:
+        </div>
         <div>
           {formatNumberLeaderboard(Number(score))} {currencySymbol}
         </div>

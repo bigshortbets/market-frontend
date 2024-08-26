@@ -17,7 +17,7 @@ export async function fetchDisplayName(
     const api = await getApiInstance();
 
     const identityInfoCodec = (await api.query.identity.identityOf(
-      convertToSS58(address)
+      address
     )) as Option<Tuple>;
 
     const data = identityInfoCodec.toHuman() as DisplayNameResponse;
