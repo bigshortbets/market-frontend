@@ -33,6 +33,10 @@ export const bridgeDepoContract = '0xAcAC2a546722a0d470f17b4b5eA2F77DA90770a9';
 
 export const mainnetUSDC = '0xB7A00fF77B59eb5DA1de62741e84a4b8a88598CE';
 
+/* IDENTITY */
+
+/* export const identityContract = '' */
+
 export const sepo = /*#__PURE__*/ defineChain({
   id: 11_155_111,
   network: 'sepolia',

@@ -90,17 +90,12 @@ export const TradingHub = () => {
       ? oracleRes15Min?.oracleChartFeed15Mins
       : oracleRes1H?.oracleChartFeed1Hs;
 
-  useEffect(() => {
-    console.log(oracleData);
-  }, [oracleData]);
+  useEffect(() => {}, [oracleData]);
 
   /*  */
 
   return (
-    <div
-      className='h-[calc(100vh-166px)] lg:flex-1 lg:h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]'
-      onClick={() => console.log(oracleData)}
-    >
+    <div className='h-[calc(100vh-166px)] lg:flex-1 lg:h-full border-[#444650] border rounded-[10px] flex flex-col bg-[#191B24]'>
       <div className='flex-grow'>
         <div className='flex items-center justify-between px-2.5 pt-3 pb-2.5'>
           <div className='flex gap-1'>

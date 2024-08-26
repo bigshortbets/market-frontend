@@ -108,7 +108,13 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
           layout={{ background: { color: '#191B24' }, textColor: 'white' }}
         >
           {data.length > 0 && isMarketPrice && (
-            <LineSeries data={data} reactive color={'#4ECB7D'} />
+            <LineSeries
+              data={data}
+              reactive
+              color={'#b4d9bd'}
+              lineVisible={true}
+              pointMarkersVisible={true}
+            />
           )}
           {marketsData.length > 0 && (
             <CandlestickSeries data={oracleData} reactive />

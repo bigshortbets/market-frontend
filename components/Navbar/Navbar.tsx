@@ -8,6 +8,8 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { FaChartLine, FaTrophy } from 'react-icons/fa6';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { FaUser } from 'react-icons/fa';
+import { UserModal } from './UserModal';
 
 export const Navbar = () => {
   const [isClient, setIsClient] = useState(false);
@@ -31,6 +33,8 @@ export const Navbar = () => {
       router.push(route);
     }
   };
+
+  const [userModalOpened, setUserModalOpened] = useState<boolean>(false);
 
   return (
     <nav className='bg-[#111217] w-full h-[64px]'>
@@ -74,6 +78,17 @@ export const Navbar = () => {
           <div className='hidden md:block'>
             <Image src={banner} alt='banner' width={400} height={60} />
           </div>
+          {isConnected && (
+            <button
+              className='p-2 rounded bg-[#191B24]'
+              onClick={() => setUserModalOpened(true)}
+            >
+              <FaUser
+                className={`text-sm hover:text-[#4ECB7D] cursor-pointer  transition`}
+              />
+            </button>
+          )}
+
           {/* <button
             className='p-2 rounded bg-[#191B24]'
             onClick={() => changeRoute('/')}
@@ -103,6 +118,10 @@ export const Navbar = () => {
           )}
         </div>
       </div>
+      <UserModal
+        isModalOpened={userModalOpened}
+        handleCloseModal={() => setUserModalOpened(false)}
+      />
     </nav>
   );
 };
