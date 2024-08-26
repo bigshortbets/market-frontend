@@ -1,4 +1,5 @@
 import { currencySymbol } from '@/blockchain/constants';
+import { useDisplayName } from '@/hooks/useDisplayName';
 import { LeaderboardType } from '@/types/leaderboardTypes';
 import { convertToSS58 } from '@/utils/convertToSS58';
 import { formatNumberLeaderboard } from '@/utils/formatNumberLeaderboard';
@@ -19,8 +20,16 @@ export const LeaderboardUserItem = ({
   bigsbPrice,
 }: LeaderboardUserItem) => {
   const position = userData.index + 1;
+  const { displayName, refresh } = useDisplayName(convertToSS58(address));
 
-  const { address: h160address } = useAccount();
+  const usernameDisplay = `${displayName} (${truncateAddress(
+    convertToSS58(address)
+  )})`;
+
+  const noUsernameDisplay = `${truncateAddress(address as string)} (${
+    address && truncateAddress(convertToSS58(address))
+  }) ${displayName}`;
+
   return (
     <div className='w-full rounded-lg py-4 lg:py-2  lg:h-[48px] mb-6 lg:mb-4 bg-[#4ECB7D] flex items-center px-4 justify-between text-black font-semibold'>
       <div className='lg:flex'>
@@ -29,25 +38,20 @@ export const LeaderboardUserItem = ({
           <div className='lg:w-[100px] items-center  text-xs lg:text-[13px] mr-2 lg:mr-0 '>
             {userData.data ? `${position} (You)` : '-'}
           </div>
-          <div className='  text-[13px] flex items-center gap-2 w-[170px]'>
+          <div className='  text-[13px] flex items-center gap-2 md:w-[250px] w-auto'>
             {position === 1 && <FaTrophy className='text-[#9ca150]' />}
             {position === 2 && <FaTrophy className='text-[#c1c2b4]' />}
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}
             <p className='hidden lg:block'>
               {' '}
-              {`${truncateAddress(h160address as string)} (${
-                address && truncateAddress(convertToSS58(address))
-              })`}
+              {displayName ? usernameDisplay : noUsernameDisplay}
             </p>
           </div>
         </div>
         <div className='lg:hidden mb-1'>
           <div className='flex items-center'>
             <p className='lg:hidden text-xs mr-1'>
-              Address:{' '}
-              {`${truncateAddress(h160address as string)} (${
-                address && truncateAddress(convertToSS58(address))
-              })`}
+              User: {displayName ? usernameDisplay : noUsernameDisplay}
             </p>
           </div>
         </div>

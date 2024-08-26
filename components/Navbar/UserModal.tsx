@@ -24,7 +24,9 @@ export const UserModal = ({
   const { address } = useAccount();
   const [nameInput, setNameInput] = useState<string>('');
   const { write: writeName, isPending } = useSetIdentity(nameInput);
-  const { displayName, refresh } = useDisplayName(address);
+  const { displayName, refresh } = useDisplayName(
+    address && convertToSS58(address as string)
+  );
 
   const handleCopy = async (event: React.MouseEvent<HTMLButtonElement>) => {
     const val = event.currentTarget.getAttribute('data-value');

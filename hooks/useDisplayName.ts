@@ -15,7 +15,6 @@ export function useDisplayName(address?: string): UseDisplayNameResult {
 
   const fetchData = useCallback(async () => {
     if (!address) {
-      setDisplayName(null);
       return;
     }
 

@@ -24,12 +24,15 @@ import { LeaderboardUserItem } from './LeaderboardUserItem';
 import { LeaderboardElectionUserItem } from './LeaderboardElectionUserItem';
 import { convertToSS58 } from '@/utils/convertToSS58';
 import { formatNumberLeaderboard } from '@/utils/formatNumberLeaderboard';
+import ReactLoading from 'react-loading';
 
 export const Leaderboard = () => {
   const { address } = useAccount();
   const [isModalOpened, setIsModalOpened] = useState<boolean>(false);
   const router = useRouter();
   const { query } = router;
+
+  const [loading, setLoading] = useState(true); // State for loading
 
   const handleCloseModal = () => {
     setIsModalOpened(false);
@@ -95,6 +98,7 @@ export const Leaderboard = () => {
   }, [query.mode]);
 
   const handleRankingChange = (ranking: string) => {
+    setLoading(true); // Start loading when changing ranking
     setCurrentRanking(ranking);
     const params = new URLSearchParams(window.location.search);
     params.set('mode', ranking);
@@ -103,10 +107,25 @@ export const Leaderboard = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     const params = new URLSearchParams(window.location.search);
     params.set('mode', currentRanking);
     const newUrl = `${window.location.pathname}?${params.toString()}`;
     router.push(newUrl, undefined, { shallow: true });
+
+    const timer = setTimeout(() => {
+      setLoading(false); // End loading after 3 seconds
+    }, 1500);
+
+    return () => clearTimeout(timer); // Cleanup timer
+  }, [currentRanking]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false); // Initial loading end after 3 seconds
+    }, 1500);
+
+    return () => clearTimeout(timer); // Cleanup timer
   }, []);
 
   const aggregatedBalances = (
@@ -200,16 +219,6 @@ export const Leaderboard = () => {
                       Election Markets Ranking
                     </button>
                   </div>
-                  {/* <div className='h-[35px] mt-4 lg:mt-0 w-[200px] flex bg-[#23252E] rounded-lg'>
-                    <input
-                      type='text'
-                      className=' text-white  px-3 text-xs  rounded-lg h-full w-[85%] bg-[#23252E]  outline-none'
-                      placeholder='Search address'
-                    />
-                    <div className='flex-grow text-[#444650] flex items-center'>
-                      <FaSearch />
-                    </div>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -219,8 +228,8 @@ export const Leaderboard = () => {
                   <div className='w-[100px] items-center text-[13px] font-semibold'>
                     Position
                   </div>
-                  <div className='w-[170px] items-center text-[13px] font-semibold'>
-                    Address
+                  <div className='w-[250px] items-center text-[13px] font-semibold'>
+                    User
                   </div>
                   <div className='w-[150px] items-center text-[13px] font-semibold'>
                     Prize
@@ -231,50 +240,64 @@ export const Leaderboard = () => {
                 </div>
               </div>
 
-              {currentRanking === 'general' && (
-                <>
-                  {' '}
-                  {address && userData && (
-                    <LeaderboardUserItem
-                      address={address}
-                      userData={userData}
-                      bigsbPrice={bigsbPriceData?.bigshortbets.usd}
-                    />
-                  )}
-                  {leaderboardRes &&
-                    leaderboardRes.generalLeaderboards.map((item, key) => (
-                      <LeaderboardItem
-                        position={key + 1}
-                        key={key}
-                        address={item.id}
-                        score={item.balanceChange}
+              <div
+                className={`justify-center items-center  mt-6 w-full h-full ${
+                  loading ? 'flex' : 'hidden'
+                }`}
+              >
+                <ReactLoading
+                  type='spin'
+                  width={36}
+                  height={36}
+                  color='#444650'
+                  className='mt-0.5'
+                />
+              </div>
+
+              <div className={`${loading ? 'hidden' : 'block'}`}>
+                {currentRanking === 'general' && (
+                  <>
+                    {address && userData && (
+                      <LeaderboardUserItem
+                        address={address}
+                        userData={userData}
                         bigsbPrice={bigsbPriceData?.bigshortbets.usd}
                       />
-                    ))}
-                </>
-              )}
-              {currentRanking === 'usa' && (
-                <>
-                  {' '}
-                  {address && userDataElection && (
-                    <LeaderboardElectionUserItem
-                      address={address}
-                      userData={userDataElection}
-                      bigsbPrice={bigsbPriceData?.bigshortbets.usd}
-                    />
-                  )}
-                  {result &&
-                    result.map((item, key) => (
-                      <LeaderboardItem
-                        position={key + 1}
-                        key={key}
-                        address={item.user}
-                        score={item.balanceChange}
+                    )}
+                    {leaderboardRes &&
+                      leaderboardRes.generalLeaderboards.map((item, key) => (
+                        <LeaderboardItem
+                          position={key + 1}
+                          key={key}
+                          address={item.id}
+                          score={item.balanceChange}
+                          bigsbPrice={bigsbPriceData?.bigshortbets.usd}
+                        />
+                      ))}
+                  </>
+                )}
+                {currentRanking === 'usa' && (
+                  <>
+                    {address && userDataElection && (
+                      <LeaderboardElectionUserItem
+                        address={address}
+                        userData={userDataElection}
                         bigsbPrice={bigsbPriceData?.bigshortbets.usd}
                       />
-                    ))}
-                </>
-              )}
+                    )}
+                    {result &&
+                      result.map((item, key) => (
+                        <LeaderboardItem
+                          position={key + 1}
+                          key={key}
+                          address={item.user}
+                          score={item.balanceChange}
+                          bigsbPrice={bigsbPriceData?.bigshortbets.usd}
+                        />
+                      ))}
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
