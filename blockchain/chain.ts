@@ -19,10 +19,10 @@ export const bigshortbetsChain = {
       webSocket: ['wss://test-market.bigsb.network'],
     },
   },
-  /* blockExplorers: {
+  blockExplorers: {
     etherscan: { name: 'SnowTrace', url: 'https://snowtrace.io' },
     default: { name: 'SnowTrace', url: 'https://snowtrace.io' },
-  }, */
+  },
   contracts: {
     market: {
       address: '0x0000000000000000000000000000000000000859',
