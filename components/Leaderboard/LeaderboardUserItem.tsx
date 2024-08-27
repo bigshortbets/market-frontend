@@ -28,7 +28,7 @@ export const LeaderboardUserItem = ({
 
   const noUsernameDisplay = `${truncateAddress(address as string)} (${
     address && truncateAddress(convertToSS58(address))
-  }) ${displayName}`;
+  })`;
 
   return (
     <div className='w-full rounded-lg py-4 lg:py-2  lg:h-[48px] mb-6 lg:mb-4 bg-[#4ECB7D] flex items-center px-4 justify-between text-black font-semibold'>

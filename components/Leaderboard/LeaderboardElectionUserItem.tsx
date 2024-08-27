@@ -31,7 +31,7 @@ export const LeaderboardElectionUserItem = ({
 
   const noUsernameDisplay = `${truncateAddress(address as string)} (${
     address && truncateAddress(convertToSS58(address))
-  }) ${displayName}`;
+  })`;
 
   const user = displayName ? usernameDisplay : noUsernameDisplay;
   return (
