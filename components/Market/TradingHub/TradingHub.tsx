@@ -22,7 +22,7 @@ import { UTCTimestamp } from 'lightweight-charts';
 import { ChatContainer } from './Chat/ChatContainer';
 import { TradingHubChart } from './TradingHubChart/TradingHubChart';
 
-const tabs = ['chart', 'positions', 'orders', 'history'] as const;
+const tabs = ['chart', 'positions', 'orders', 'history', 'chat'] as const;
 export type TradingHubStateType = (typeof tabs)[number];
 
 export const TradingHub = () => {

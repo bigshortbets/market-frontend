@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { IoSend } from 'react-icons/io5';
 import { ChatMessage, ChatMessageProps } from './ChatMessage';
-import { useAccount } from 'wagmi';
+import { useAccount, useWalletClient } from 'wagmi';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { FaSearch } from 'react-icons/fa';
 import { exampleMessages } from './mockedData';
 import { useAtom } from 'jotai';
 import { chosenInterlocutorAtom } from '@/store/store';
+import { chatSendMessage } from '@/utils/chat/chatSendMessage';
 
 export const ChatContainer = () => {
   const [messages, setMessages] = useState<ChatMessageProps[]>(exampleMessages);
@@ -28,6 +29,17 @@ export const ChatContainer = () => {
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleSendMessage();
+    }
+  };
+
+  const walletClient = useWalletClient();
+
+  const go = async () => {
+    try {
+      const info = await chatSendMessage(walletClient.data);
+      console.log(info);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -119,10 +131,7 @@ export const ChatContainer = () => {
                 placeholder='Your message here'
                 className='w-[85%] outline-none bg-[#23252E] h-full rounded-[100px] pl-3 text-xs text-tetriary'
               />
-              <button
-                className='pr-3 text-tetriary'
-                onClick={handleSendMessage}
-              >
+              <button className='pr-3 text-tetriary' onClick={go}>
                 <IoSend />
               </button>
             </div>
