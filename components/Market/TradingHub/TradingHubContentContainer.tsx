@@ -104,7 +104,7 @@ export const TradingHubContentContainer = ({
       {/* {tradingHubState === 'chart' && chartData && (
         <TradingHubChart data={chartData} />
       )} */}
-      {tradingHubState === 'chat' && <ChatContainer />}
+      {/* {tradingHubState === 'chat' && <ChatContainer />} */}
     </div>
   );
 };
