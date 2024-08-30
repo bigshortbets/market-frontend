@@ -2,6 +2,7 @@ import { currencySymbol } from '@/blockchain/constants';
 import { useDisplayName } from '@/hooks/useDisplayName';
 import { LeaderboardType } from '@/types/leaderboardTypes';
 import { convertToSS58 } from '@/utils/convertToSS58';
+import { decodeWord } from '@/utils/decodeLeaderboardWord';
 import { formatNumberLeaderboard } from '@/utils/formatNumberLeaderboard';
 import { truncateAddress } from '@/utils/truncateAddress';
 import React from 'react';
@@ -22,9 +23,7 @@ export const LeaderboardUserItem = ({
   const position = userData.index + 1;
   const { displayName, refresh } = useDisplayName(convertToSS58(address));
 
-  const usernameDisplay = `${displayName} (${truncateAddress(
-    convertToSS58(address)
-  )})`;
+  const usernameDisplay = displayName ? decodeWord(displayName) : '-';
 
   const noUsernameDisplay = `${truncateAddress(address as string)} (${
     address && truncateAddress(convertToSS58(address))
@@ -38,20 +37,27 @@ export const LeaderboardUserItem = ({
           <div className='lg:w-[100px] items-center  text-xs lg:text-[13px] mr-2 lg:mr-0 '>
             {userData.data ? `${position} (You)` : '-'}
           </div>
-          <div className='  text-[13px] flex items-center gap-2 md:w-[250px] w-auto'>
+          <div className='  text-[13px] flex items-center gap-2 md:w-[150px] w-auto'>
             {position === 1 && <FaTrophy className='text-[#9ca150]' />}
             {position === 2 && <FaTrophy className='text-[#c1c2b4]' />}
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}
-            <p className='hidden lg:block'>
-              {' '}
-              {displayName ? usernameDisplay : noUsernameDisplay}
+            <p className='hidden lg:block'> {noUsernameDisplay}</p>
+          </div>
+          <div className='lg:w-[150px] items-center  text-xs lg:text-[13px] mr-2 lg:mr-0 hidden lg:block'>
+            {usernameDisplay}
+          </div>
+        </div>
+        <div className='lg:hidden mb-1'>
+          <div className='flex items-center'>
+            <p className='lg:hidden text-xs mr-1'>
+              Address: {noUsernameDisplay}
             </p>
           </div>
         </div>
         <div className='lg:hidden mb-1'>
           <div className='flex items-center'>
             <p className='lg:hidden text-xs mr-1'>
-              User: {displayName ? usernameDisplay : noUsernameDisplay}
+              Username: {usernameDisplay}
             </p>
           </div>
         </div>

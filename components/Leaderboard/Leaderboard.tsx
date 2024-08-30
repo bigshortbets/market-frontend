@@ -228,8 +228,11 @@ export const Leaderboard = () => {
                   <div className='w-[100px] items-center text-[13px] font-semibold'>
                     Position
                   </div>
-                  <div className='w-[250px] items-center text-[13px] font-semibold'>
-                    User
+                  <div className='w-[150px] items-center text-[13px] font-semibold'>
+                    Address
+                  </div>
+                  <div className='w-[150px] items-center text-[13px] font-semibold'>
+                    Username
                   </div>
                   <div className='w-[150px] items-center text-[13px] font-semibold'>
                     Prize
@@ -254,7 +257,9 @@ export const Leaderboard = () => {
                 />
               </div>
 
-              <div className={`${loading ? 'hidden' : 'block'}`}>
+              <div
+                className={`${loading ? 'hidden' : 'flex flex-col gap-1.5'} `}
+              >
                 {currentRanking === 'general' && (
                   <>
                     {address && userData && (
@@ -264,6 +269,7 @@ export const Leaderboard = () => {
                         bigsbPrice={bigsbPriceData?.bigshortbets.usd}
                       />
                     )}
+
                     {leaderboardRes &&
                       leaderboardRes.generalLeaderboards.map((item, key) => (
                         <LeaderboardItem

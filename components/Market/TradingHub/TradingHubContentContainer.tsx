@@ -25,6 +25,7 @@ import {
   tradingHubStateAtom,
 } from '@/store/store';
 import { MarketSettlementsResponse } from '@/types/marketSettlementsTypes';
+import { ChatContainer } from './Chat/ChatContainer';
 
 interface TradingHubContentContainerProps {
   isAggregated: boolean;
@@ -103,7 +104,7 @@ export const TradingHubContentContainer = ({
       {/* {tradingHubState === 'chart' && chartData && (
         <TradingHubChart data={chartData} />
       )} */}
-      {/*  {tradingHubState === 'chat' && <ChatContainer />} */}
+      {tradingHubState === 'chat' && <ChatContainer />}
     </div>
   );
 };

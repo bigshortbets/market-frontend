@@ -11,6 +11,7 @@ import { IoClose } from 'react-icons/io5';
 import ReactLoading from 'react-loading';
 import { useAccount } from 'wagmi';
 import { IoMdRefresh } from 'react-icons/io';
+import { decodeWord } from '@/utils/decodeLeaderboardWord';
 
 interface UserModalProps {
   handleCloseModal: () => void;
@@ -124,7 +125,7 @@ export const UserModal = ({
                       </button>
                     </div>
                     <p className='text-xs text-tetriary break-words'>
-                      {displayName ? displayName : '-'}
+                      {displayName ? decodeWord(displayName) : '-'}
                     </p>
                   </div>
                   <div>
