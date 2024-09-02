@@ -13,6 +13,7 @@ import { ChartIntervalTab } from './ChartIntervalTab';
 import { CandleFeed } from '@/types/chartTypes';
 import { ConvertedOracleFeed } from '../Market/TradingHub/TradingHubChart/TradingHubChart';
 import { MarketPriceCheckbox } from '../Market/TradingHub/TradingHubChart/MarketPriceCheckbox';
+import { useEthersSigner } from '@/blockchain/ethers';
 
 interface ChartProps {
   data: { time: UTCTimestamp; value: number }[];
@@ -45,6 +46,7 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
   const toggleMarketPrice = () => {
     setIsMarketPrice(!isMarketPrice);
   };
+
   return (
     <div ref={containerRef} className='w-full h-[85%]'>
       <div className='flex justify-between flex-col md:flex-row md:items-center gap-2 md:gap-0 mt-2 mb-6 md:mr-3'>

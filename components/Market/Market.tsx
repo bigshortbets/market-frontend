@@ -27,6 +27,7 @@ import { useRouter } from 'next/router';
 import { EnrichedMarketType } from '@/types/marketTypes';
 import { EntryModal } from './EntryModal';
 import { useCookies } from 'react-cookie';
+import { chatUserAtom } from '@/store/store';
 
 interface MarketProps {
   markets: EnrichedMarketType[];
@@ -63,6 +64,7 @@ export const Market = ({ markets }: MarketProps) => {
   const [mobileView, setMobileView] = useAtom(mobileViewAtom);
   const [blockHeight] = useAtom(currentBlockAtom);
   const { address, chain } = useAccount();
+  const [chatUser, setChatUser] = useAtom(chatUserAtom);
 
   useUserMargin(markets, address!, selectedMarketId);
   const { loading: recentTradesLoading, error: recentTradesError } =
@@ -101,6 +103,12 @@ export const Market = ({ markets }: MarketProps) => {
       }
     }
   }, [blockHeight, markets, router]);
+
+  useEffect(() => {
+    if (!address) {
+      setChatUser(undefined);
+    }
+  }, [address]);
 
   return (
     <div className='h-[100dvh] bg-[#111217] '>
