@@ -23,7 +23,7 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [chosenMarket] = useAtom(chosenMarketAtom);
-  const [isMarketPrice, setIsMarketPrice] = useState<boolean>(false);
+  const [isOraclePrice, setIsOraclePrice] = useState<boolean>(false);
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
@@ -43,7 +43,7 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
   }, []);
 
   const toggleMarketPrice = () => {
-    setIsMarketPrice(!isMarketPrice);
+    setIsOraclePrice(!isOraclePrice);
   };
   return (
     <div ref={containerRef} className='w-full h-[85%]'>
@@ -65,15 +65,23 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
           <div className='w-[11px] h-[11px] rounded-full bg-[#4ECB7D]'></div>
           <p className='text-xs'>- Market price</p>
         </div> */}
+
         <div className='flex items-center gap-4'>
-          <div className='flex items-center gap-1'>
-            <ChartIntervalTab value='1H' />
-            <ChartIntervalTab value='15M' />
+          <div className='flex items-center gap-1.5'>
+            <p className='text-xs font-medium text-tetriary'>Market Price - </p>
+            <div className='rounded-full w-2.5 h-2.5 bg-[#b4d9bd]'></div>
           </div>
+
           <MarketPriceCheckbox
-            isMarketPrice={isMarketPrice}
+            isMarketPrice={isOraclePrice}
             setIsMarketPrice={toggleMarketPrice}
           />
+          {isOraclePrice && (
+            <div className='flex items-center gap-1'>
+              <ChartIntervalTab value='1H' />
+              <ChartIntervalTab value='15M' />
+            </div>
+          )}
         </div>
       </div>
 
@@ -107,7 +115,7 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
           }}
           layout={{ background: { color: '#191B24' }, textColor: 'white' }}
         >
-          {data.length > 0 && isMarketPrice && (
+          {data.length > 0 && (
             <LineSeries
               data={data}
               reactive
@@ -116,7 +124,7 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
               pointMarkersVisible={true}
             />
           )}
-          {marketsData.length > 0 && (
+          {marketsData.length > 0 && isOraclePrice && (
             <CandlestickSeries data={oracleData} reactive />
           )}
         </ChartComponent>
