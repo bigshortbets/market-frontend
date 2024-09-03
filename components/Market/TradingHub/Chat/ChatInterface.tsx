@@ -10,17 +10,20 @@ import { IoSend } from 'react-icons/io5';
 import { fetchChatRequests } from '@/utils/chat/fetchChatRequests';
 import { chatSendMessage } from '@/utils/chat/chatSendMessage';
 import { ChatManager } from './ChatManager';
+import { PushAPI } from '@pushprotocol/restapi';
 
-export const ChatInterface = () => {
+interface ChatInterfaceProps {
+  chatUser: PushAPI;
+}
+
+export const ChatInterface = ({ chatUser }: ChatInterfaceProps) => {
   const [messages, setMessages] = useState<ChatMessageProps[]>(exampleMessages);
   const [inputVal, setInputVal] = useState<string>('');
   const [chosenInterlocutor, setChosenInterlocutor] = useAtom(
     chosenInterlocutorAtom
   );
-  const [requests, setRequests] = useState<any>();
-  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const [chatUser, setChatUser] = useAtom(chatUserAtom);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const handleSendMessage = () => {
     if (inputVal.trim() !== '') {
@@ -37,33 +40,18 @@ export const ChatInterface = () => {
     }
   };
 
-  useEffect(() => {
-    const getRequests = async () => {
-      try {
-        const fetchedRequests = await fetchChatRequests(chatUser!);
-        if (fetchedRequests) {
-          setRequests(fetchedRequests);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    getRequests();
-  }, []);
-
   const sendMessage = async () => {
-    const to = '0x3C6cAf27B5B55C70C232B27132d9eef628712A6f';
+    const to = '0xF5616697dBDEE95BEb29412d84a68a98b4b24642';
     const res = await chatUser!.chat.send(to, {
       type: 'Text',
-      content: 'HALO',
+      content: 'witam',
     });
     console.log(res);
   };
 
   return (
-    <div className='flex pt-4 h-full' onClick={() => console.log(requests)}>
-      <ChatManager />
+    <div className='flex pt-4 h-full'>
+      <ChatManager chatUser={chatUser} />
       <div className='flex-grow h-full border-t border-[#444650] flex flex-col  justify-between'>
         <div className='flex flex-col justify-between h-full'>
           <div className='h-[56px] border-b border-[#444650] flex items-center justify-between px-3'>

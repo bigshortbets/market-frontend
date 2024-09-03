@@ -44,7 +44,7 @@ export const ChatContainer = () => {
       /*   style={{ height: 'calc(100vh - 229px)' }} */
     >
       {chatUser ? (
-        <ChatInterface />
+        <ChatInterface chatUser={chatUser} />
       ) : (
         <button onClick={initialize}>Initialize</button>
       )}
