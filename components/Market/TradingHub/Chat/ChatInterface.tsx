@@ -1,5 +1,5 @@
 import { useEthersSigner } from '@/blockchain/ethers';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ChatMessage, ChatMessageProps } from './ChatMessage';
 import { exampleMessages } from './mockedData';
 import { useAtom } from 'jotai';
@@ -7,6 +7,9 @@ import { chatUserAtom, chosenInterlocutorAtom } from '@/store/store';
 import { FaSearch } from 'react-icons/fa';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { IoSend } from 'react-icons/io5';
+import { fetchChatRequests } from '@/utils/chat/fetchChatRequests';
+import { chatSendMessage } from '@/utils/chat/chatSendMessage';
+import { ChatManager } from './ChatManager';
 
 export const ChatInterface = () => {
   const [messages, setMessages] = useState<ChatMessageProps[]>(exampleMessages);
@@ -14,6 +17,7 @@ export const ChatInterface = () => {
   const [chosenInterlocutor, setChosenInterlocutor] = useAtom(
     chosenInterlocutorAtom
   );
+  const [requests, setRequests] = useState<any>();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const [chatUser, setChatUser] = useAtom(chatUserAtom);
@@ -33,53 +37,33 @@ export const ChatInterface = () => {
     }
   };
 
-  const signer = useEthersSigner();
+  useEffect(() => {
+    const getRequests = async () => {
+      try {
+        const fetchedRequests = await fetchChatRequests(chatUser!);
+        if (fetchedRequests) {
+          setRequests(fetchedRequests);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getRequests();
+  }, []);
+
+  const sendMessage = async () => {
+    const to = '0x3C6cAf27B5B55C70C232B27132d9eef628712A6f';
+    const res = await chatUser!.chat.send(to, {
+      type: 'Text',
+      content: 'HALO',
+    });
+    console.log(res);
+  };
 
   return (
-    <div className='flex pt-4 h-full'>
-      <div className='w-[200px]  h-full border-r border-[#444650] border-t'>
-        <div className='w-full px-2 my-4'>
-          {/* <div className='mb-4'>
-        <p className='font-semibold text-tetriary'>
-          <span className='font-bold text-[#87DAA4]'>P2P</span> Chat
-        </p>
-      </div> */}
-          <div className='w-full bg-[#23252E] h-[32px] rounded-[100px] flex justify-between items-center mb-3'>
-            <input
-              placeholder='Search'
-              type='text'
-              className='w-[85%] outline-none bg-[#23252E] h-full rounded-[100px] pl-3 text-xs text-tetriary'
-            />
-            <div className='pr-3 text-tetriary text-sm'>
-              <FaSearch />
-            </div>
-          </div>
-        </div>
-        <div className='mb-3'>
-          <p className='text-[10px] text-tetriary px-2'>All messages</p>
-        </div>
-        <div className='w-full border-b border-[#444650] text-tetriary flex justify-between p-2 items-center cursor-pointer'>
-          <div className='flex flex-col '>
-            <p className='text-[12px]'>312...dds</p>
-            <p className='text-[10px]'>messageee</p>
-          </div>
-          <p className='text-[10px]'>1 sec ago</p>
-        </div>
-        <div className='w-full border-b border-[#444650] text-tetriary flex justify-between p-2 items-center cursor-pointer'>
-          <div className='flex flex-col '>
-            <p className='text-[12px]'>ddd...dds</p>
-            <p className='text-[10px]'>hej</p>
-          </div>
-          <p className='text-[10px]'>2 mins ago</p>
-        </div>
-        <div className='w-full border-b border-[#444650] text-tetriary flex justify-between p-2 items-center cursor-pointer'>
-          <div className='flex flex-col '>
-            <p className='text-[12px]'>aaa...dds</p>
-            <p className='text-[10px]'>test</p>
-          </div>
-          <p className='text-[10px]'>1 hour ago</p>
-        </div>
-      </div>
+    <div className='flex pt-4 h-full' onClick={() => console.log(requests)}>
+      <ChatManager />
       <div className='flex-grow h-full border-t border-[#444650] flex flex-col  justify-between'>
         <div className='flex flex-col justify-between h-full'>
           <div className='h-[56px] border-b border-[#444650] flex items-center justify-between px-3'>
@@ -119,7 +103,7 @@ export const ChatInterface = () => {
                 placeholder='Your message here'
                 className='w-[85%] outline-none bg-[#23252E] h-full rounded-[100px] pl-3 text-xs text-tetriary'
               />
-              <button className='pr-3 text-tetriary'>
+              <button className='pr-3 text-tetriary' onClick={sendMessage}>
                 <IoSend />
               </button>
             </div>

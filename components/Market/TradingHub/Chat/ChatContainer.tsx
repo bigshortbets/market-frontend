@@ -11,14 +11,30 @@ import { chatSendMessage } from '@/utils/chat/chatSendMessage';
 import { useEthersSigner } from '@/blockchain/ethers';
 import { initializeChatUser } from '@/utils/chat/initializeChatUser';
 import { ChatInterface } from './ChatInterface';
+import { initializeChatStream } from '@/utils/chat/initializeChatStream';
+import { CONSTANTS } from '@pushprotocol/restapi';
 
 export const ChatContainer = () => {
   const [chatUser, setChatUser] = useAtom(chatUserAtom);
+  const [data, setData] = useState<any>(undefined);
+  const [stream, setStream] = useState<any>(undefined);
   const signer = useEthersSigner();
+
   const initialize = async () => {
     const user = await initializeChatUser(signer);
     if (user) {
       setChatUser(user);
+      const stream = await initializeChatStream(user);
+      if (stream) {
+        setStream(stream);
+        stream.on(CONSTANTS.STREAM.CHAT, (data) => {
+          setData((prevData: any) => [...prevData, data]);
+        });
+
+        stream.on(CONSTANTS.STREAM.CHAT_OPS, (data) => {
+          setData((prevData: any) => [...prevData, data]);
+        });
+      }
     }
   };
 
