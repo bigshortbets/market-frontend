@@ -9,9 +9,13 @@ import { ChatChatPanel } from './ChatChatPanel';
 
 interface ChatManagerProps {
   chatUser: PushAPI;
+  handleSetChosenDID: (did: string) => void;
 }
 
-export const ChatManager = ({ chatUser }: ChatManagerProps) => {
+export const ChatManager = ({
+  chatUser,
+  handleSetChosenDID,
+}: ChatManagerProps) => {
   const [chatManagerState, setChatManagerState] = useState<
     'requests' | 'chats'
   >('chats');
@@ -26,30 +30,36 @@ export const ChatManager = ({ chatUser }: ChatManagerProps) => {
     }
   };
 
+  const getRequests = async () => {
+    try {
+      const fetchedRequests = await fetchChatRequests(chatUser);
+      if (fetchedRequests) {
+        setRequests(fetchedRequests);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getChats = async () => {
+    try {
+      const fetchedChats = await fetchChatChats(chatUser);
+      if (fetchedChats) {
+        setChats(fetchedChats);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   useEffect(() => {
-    const getRequests = async () => {
-      try {
-        const fetchedRequests = await fetchChatRequests(chatUser);
-        if (fetchedRequests) {
-          setRequests(fetchedRequests);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    const getChats = async () => {
-      try {
-        const fetchedChats = await fetchChatChats(chatUser);
-        if (fetchedChats) {
-          setChats(fetchedChats);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
     getRequests();
     getChats();
   }, []);
+
+  useEffect(() => {
+    getRequests();
+    getChats();
+  }, [chatManagerState]);
 
   return (
     <div
@@ -72,14 +82,21 @@ export const ChatManager = ({ chatUser }: ChatManagerProps) => {
         <div>
           {requests &&
             requests.length > 0 &&
-            requests.map((request) => <ChatRequestPanel request={request} />)}
+            requests.map((request) => (
+              <ChatRequestPanel request={request} chatUser={chatUser} />
+            ))}
         </div>
       )}
       {chatManagerState === 'chats' && (
         <div>
           {chats &&
             chats.length > 0 &&
-            chats.map((chat) => <ChatChatPanel chat={chat} />)}
+            chats.map((chat) => (
+              <ChatChatPanel
+                chat={chat}
+                handleSetChosenDID={handleSetChosenDID}
+              />
+            ))}
         </div>
       )}
     </div>

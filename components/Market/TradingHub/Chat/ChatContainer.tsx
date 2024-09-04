@@ -43,7 +43,7 @@ export const ChatContainer = () => {
       className='w-full  h-[calc(100vh-320px)] md:h-[calc(100vh-230px)]'
       /*   style={{ height: 'calc(100vh - 229px)' }} */
     >
-      {chatUser ? (
+      {chatUser && (chatUser as any).readMode === false ? (
         <ChatInterface chatUser={chatUser} />
       ) : (
         <button onClick={initialize}>Initialize</button>
