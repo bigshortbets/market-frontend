@@ -6,21 +6,27 @@ import { IFeeds, PushAPI } from '@pushprotocol/restapi';
 import { ChatRequestPanel } from './ChatRequestPanel';
 import { fetchChatChats } from '@/utils/chat/fetchChatChats';
 import { ChatChatPanel } from './ChatChatPanel';
+import { useAtom } from 'jotai';
 
 interface ChatManagerProps {
   chatUser: PushAPI;
   handleSetChosenDID: (did: string) => void;
+  chats: undefined | IFeeds[];
+  getChats: () => Promise<void>;
+  streamData: any;
 }
 
 export const ChatManager = ({
+  chats,
   chatUser,
   handleSetChosenDID,
+  getChats,
+  streamData,
 }: ChatManagerProps) => {
   const [chatManagerState, setChatManagerState] = useState<
     'requests' | 'chats'
   >('chats');
   const [requests, setRequests] = useState<undefined | IFeeds[]>(undefined);
-  const [chats, setChats] = useState<undefined | IFeeds[]>(undefined);
 
   const toggleState = () => {
     if (chatManagerState === 'chats') {
@@ -40,16 +46,6 @@ export const ChatManager = ({
       console.log(err);
     }
   };
-  const getChats = async () => {
-    try {
-      const fetchedChats = await fetchChatChats(chatUser);
-      if (fetchedChats) {
-        setChats(fetchedChats);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   useEffect(() => {
     getRequests();
@@ -59,13 +55,10 @@ export const ChatManager = ({
   useEffect(() => {
     getRequests();
     getChats();
-  }, [chatManagerState]);
+  }, [/* chatManagerState */ streamData]);
 
   return (
-    <div
-      className='w-[350px]  h-full border-r border-[#444650] border-t'
-      onClick={() => console.log(chats)}
-    >
+    <div className='w-[350px]  h-full border-r border-[#444650] border-t'>
       <div className='flex gap-2 mx-2 my-3'>
         <ChatManagerTab
           isActive={chatManagerState === 'chats'}

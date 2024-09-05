@@ -1,38 +1,42 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { IoSend } from 'react-icons/io5';
-import { ChatMessage, ChatMessageProps } from './ChatMessage';
-import { useAccount, useWalletClient } from 'wagmi';
-import { truncateAddress } from '@/utils/truncateAddress';
-import { FaSearch } from 'react-icons/fa';
-import { exampleMessages } from './mockedData';
+import { useEffect, useState } from 'react';
 import { useAtom } from 'jotai';
-import { chatUserAtom, chosenInterlocutorAtom } from '@/store/store';
-import { chatSendMessage } from '@/utils/chat/chatSendMessage';
+import { chatStream, chatUserAtom } from '@/store/store';
 import { useEthersSigner } from '@/blockchain/ethers';
 import { initializeChatUser } from '@/utils/chat/initializeChatUser';
 import { ChatInterface } from './ChatInterface';
 import { initializeChatStream } from '@/utils/chat/initializeChatStream';
 import { CONSTANTS } from '@pushprotocol/restapi';
+import ReactLoading from 'react-loading';
 
 export const ChatContainer = () => {
   const [chatUser, setChatUser] = useAtom(chatUserAtom);
-  const [data, setData] = useState<any>(undefined);
-  const [stream, setStream] = useState<any>(undefined);
+  const [streamData, setStreamData] = useState<any>(undefined);
+  const [stream, setStream] = useAtom(chatStream);
+
+  const [userInitializationLoading, setUserInitializationLoading] =
+    useState<boolean>(false);
   const signer = useEthersSigner();
 
   const initialize = async () => {
+    setUserInitializationLoading(true);
     const user = await initializeChatUser(signer);
+
     if (user) {
+      setUserInitializationLoading(false);
       setChatUser(user);
       const stream = await initializeChatStream(user);
+
       if (stream) {
         setStream(stream);
-        stream.on(CONSTANTS.STREAM.CHAT, (data) => {
-          setData((prevData: any) => [...prevData, data]);
+
+        stream.connect();
+
+        stream.on(CONSTANTS.STREAM.CHAT, (message) => {
+          setStreamData(message);
         });
 
         stream.on(CONSTANTS.STREAM.CHAT_OPS, (data) => {
-          setData((prevData: any) => [...prevData, data]);
+          setStreamData(data);
         });
       }
     }
@@ -44,9 +48,25 @@ export const ChatContainer = () => {
       /*   style={{ height: 'calc(100vh - 229px)' }} */
     >
       {chatUser && (chatUser as any).readMode === false ? (
-        <ChatInterface chatUser={chatUser} />
+        <ChatInterface chatUser={chatUser} streamData={streamData} />
       ) : (
-        <button onClick={initialize}>Initialize</button>
+        <div className='flex h-full items-center justify-center'>
+          <button
+            onClick={initialize}
+            className='bg-bigsbgreen w-[160px] h-[40px] flex items-center justify-center text-black rounded-md text-sm font-semibold'
+          >
+            {userInitializationLoading ? (
+              <ReactLoading
+                type='spin'
+                height={20}
+                width={20}
+                color='#444650'
+              />
+            ) : (
+              'Initialize Chat'
+            )}
+          </button>
+        </div>
       )}
     </div>
   );

@@ -9,43 +9,24 @@ import { IoSend } from 'react-icons/io5';
 import { getAddressFromDid } from '@/utils/chat/getAddressFromDid';
 import { useAnimate } from 'framer-motion';
 import { fetchChatHistory } from '@/utils/chat/fetchChatHistory';
+import ReactLoading from 'react-loading';
+import toast from 'react-hot-toast';
+import { ChatHistory } from '@/types/chatTypes';
 
 interface ChatBoxProps {
   chatUser: PushAPI;
   chosenDID: undefined | string;
+  getChats: () => Promise<void>;
 }
 
-export const ChatBox = ({ chatUser, chosenDID }: ChatBoxProps) => {
-  const [messages, setMessages] = useState<ChatMessageProps[]>(exampleMessages);
+export const ChatBox = ({ chatUser, chosenDID, getChats }: ChatBoxProps) => {
   const [inputVal, setInputVal] = useState<string>('');
-  const [history, setHistory] = useState<any>(undefined);
+  const [history, setHistory] = useState<ChatHistory[] | undefined>(undefined);
+  const [sendMessageLoading, setSendMessageLoading] = useState<boolean>(false);
+  const [initialChatHistoryLoading, setInitialChatHistoryLoading] =
+    useState<boolean>(false);
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  /*  const handleSendMessage = () => {
-    if (inputVal.trim() !== '') {
-      const message: ChatMessageProps = { author: 'user', value: inputVal };
-      const newArr = [...messages, message];
-      setMessages(newArr);
-      setInputVal('');
-    }
-  }; */
-
-  const sendMessage = async () => {
-    const to = getAddressFromDid(chosenDID!);
-    setInputVal('');
-    const res = await chatUser.chat.send(to, {
-      type: 'Text',
-      content: inputVal,
-    });
-    getHistory();
-  };
-
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      sendMessage();
-    }
-  };
+  /* const messagesEndRef = useRef<HTMLDivElement>(null); */
 
   const getHistory = async () => {
     if (chosenDID) {
@@ -56,62 +37,115 @@ export const ChatBox = ({ chatUser, chosenDID }: ChatBoxProps) => {
         }
       } catch (err) {
         console.log(err);
+      } finally {
+        setInitialChatHistoryLoading(false);
       }
     }
   };
 
   useEffect(() => {
-    getHistory();
+    if (chosenDID) {
+      setInitialChatHistoryLoading(true);
+      getHistory();
+    }
   }, [chosenDID]);
 
+  const sendMessage = async () => {
+    setSendMessageLoading(true);
+    try {
+      const to = getAddressFromDid(chosenDID!);
+
+      const res = await chatUser.chat.send(to, {
+        type: 'Text',
+        content: inputVal,
+      });
+      setInputVal('');
+    } catch (error) {
+      console.error('Error while sending a message:', error);
+      toast.error('Error while sending a message.', {
+        duration: 1111,
+      });
+    } finally {
+      setSendMessageLoading(false);
+      getHistory();
+      getChats();
+    }
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      sendMessage();
+    }
+  };
+
   return (
-    <div
-      className='flex-grow h-full border-t border-[#444650] flex flex-col  justify-between'
-      onClick={() => console.log(history)}
-    >
+    <div className='flex-grow h-full border-t border-[#444650] flex flex-col  justify-between'>
       <div className='flex flex-col justify-between h-full'>
         <div className='h-[56px] border-b border-[#444650] flex items-center justify-between px-3'>
           <div className='flex items-center gap-1.5'>
-            <div className='h-4 w-4 rounded-full bg-white'></div>
+            {/*   <div className='h-4 w-4 rounded-full bg-white'></div> */}
             {chosenDID && (
               <p className='text-tetriary text-sm'>
                 {truncateAddress(getAddressFromDid(chosenDID))}
               </p>
             )}
           </div>
-          <div>
+          {/*  <div>
             <p className='text-[10px] text-tetriary'>
               PnL with Opponent:{' '}
               <span className='font-bold text-[#87DAA4]'>+400.50 $DOLLARS</span>
             </p>
-          </div>
+          </div> */}
         </div>
         <div className='flex-1 overflow-auto pb-[16px] no-scrollbar'>
-          <div className=' flex flex-col-reverse p-3 first:mt-2'>
-            {history &&
-              history.length > 0 &&
-              history.map((message: any) => (
-                <ChatMessage
-                  from={message.fromDID}
-                  to={message.toDID}
-                  message={message.messageContent}
-                />
-              ))}
-          </div>
+          {initialChatHistoryLoading ? (
+            <div className='flex justify-center pt-4'>
+              <ReactLoading
+                type='spin'
+                height={32}
+                width={32}
+                color='#444650'
+              />
+            </div>
+          ) : (
+            <div className=' flex flex-col-reverse p-3 first:mt-2'>
+              {history &&
+                history.length > 0 &&
+                history.map((message) => (
+                  <ChatMessage
+                    from={message.fromDID}
+                    to={message.toDID}
+                    message={message.messageContent}
+                  />
+                ))}
+            </div>
+          )}
         </div>
         <div className='w-full px-3'>
           <div className='w-full bg-[#23252E] h-[42px] rounded-[100px] flex justify-between items-center mb-3'>
             <input
+              /* disabled={!chosenDID} */
               onChange={(e) => setInputVal(e.target.value)}
               type='text'
               value={inputVal}
               onKeyPress={handleKeyPress}
-              placeholder='Your message here'
+              /*  placeholder={placeholder} */
               className='w-[85%] outline-none bg-[#23252E] h-full rounded-[100px] pl-3 text-xs text-tetriary'
             />
-            <button className='pr-3 text-tetriary' onClick={sendMessage}>
-              <IoSend />
-            </button>
+            <div className='pr-3 flex items-center'>
+              {sendMessageLoading ? (
+                <ReactLoading
+                  type='spin'
+                  height={20}
+                  width={20}
+                  color='#444650'
+                />
+              ) : (
+                <button className='text-tetriary' onClick={sendMessage}>
+                  <IoSend />
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

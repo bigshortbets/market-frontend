@@ -18,7 +18,7 @@ export const ChatRequestPanel = ({ request, chatUser }: ChatRequestProps) => {
   return (
     <div
       className='w-full border-b border-[#444650] text-tetriary flex justify-between p-2 items-center'
-      onClick={() => console.log(request)}
+      /* onClick={() => console.log(request)} */
     >
       <div className='flex flex-col '>
         <p className='text-[12px]'>{truncateAddress(did[1])}</p>

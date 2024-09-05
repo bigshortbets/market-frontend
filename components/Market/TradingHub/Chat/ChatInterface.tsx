@@ -10,15 +10,29 @@ import { IoSend } from 'react-icons/io5';
 import { fetchChatRequests } from '@/utils/chat/fetchChatRequests';
 import { chatSendMessage } from '@/utils/chat/chatSendMessage';
 import { ChatManager } from './ChatManager';
-import { PushAPI } from '@pushprotocol/restapi';
+import { IFeeds, PushAPI } from '@pushprotocol/restapi';
 import { ChatBox } from './ChatBox';
+import { fetchChatChats } from '@/utils/chat/fetchChatChats';
 
 interface ChatInterfaceProps {
   chatUser: PushAPI;
+  streamData: any;
 }
 
-export const ChatInterface = ({ chatUser }: ChatInterfaceProps) => {
+export const ChatInterface = ({ chatUser, streamData }: ChatInterfaceProps) => {
   const [chosenDID, setChosenDID] = useState<undefined | string>(undefined);
+  const [chats, setChats] = useState<undefined | IFeeds[]>(undefined);
+
+  const getChats = async () => {
+    try {
+      const fetchedChats = await fetchChatChats(chatUser);
+      if (fetchedChats) {
+        setChats(fetchedChats);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleSetChosenDID = (did: string) => {
     setChosenDID(did);
@@ -26,10 +40,13 @@ export const ChatInterface = ({ chatUser }: ChatInterfaceProps) => {
   return (
     <div className='flex pt-4 h-full'>
       <ChatManager
+        streamData={streamData}
+        chats={chats}
+        getChats={getChats}
         chatUser={chatUser}
         handleSetChosenDID={handleSetChosenDID}
       />
-      <ChatBox chatUser={chatUser} chosenDID={chosenDID} />
+      <ChatBox chatUser={chatUser} chosenDID={chosenDID} getChats={getChats} />
     </div>
   );
 };

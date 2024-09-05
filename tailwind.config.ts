@@ -20,6 +20,7 @@ const config: Config = {
         'secondary-bg': '#191B24',
         secondary: '#EBEDFD',
         tetriary: '#BABDCE',
+        bigsbgreen: '#4ECB7D',
       },
     },
   },
