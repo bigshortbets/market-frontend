@@ -17,9 +17,15 @@ interface ChatBoxProps {
   chatUser: PushAPI;
   chosenDID: undefined | string;
   getChats: () => Promise<void>;
+  streamData: any;
 }
 
-export const ChatBox = ({ chatUser, chosenDID, getChats }: ChatBoxProps) => {
+export const ChatBox = ({
+  chatUser,
+  chosenDID,
+  getChats,
+  streamData,
+}: ChatBoxProps) => {
   const [inputVal, setInputVal] = useState<string>('');
   const [history, setHistory] = useState<ChatHistory[] | undefined>(undefined);
   const [sendMessageLoading, setSendMessageLoading] = useState<boolean>(false);
@@ -78,6 +84,25 @@ export const ChatBox = ({ chatUser, chosenDID, getChats }: ChatBoxProps) => {
     }
   };
 
+  const scrollableDivRef = useRef<HTMLDivElement | null>(null);
+
+  // Function to scroll to the bottom
+  const scrollToBottom = () => {
+    if (scrollableDivRef.current) {
+      scrollableDivRef.current.scrollTop =
+        scrollableDivRef.current.scrollHeight;
+    }
+  };
+
+  // Scroll to bottom when history changes or on first load
+  useEffect(() => {
+    scrollToBottom();
+  }, [initialChatHistoryLoading]);
+
+  useEffect(() => {
+    getHistory();
+  }, [/* chatManagerState */ streamData]);
+
   return (
     <div className='flex-grow h-full border-t border-[#444650] flex flex-col  justify-between'>
       <div className='flex flex-col justify-between h-full'>
@@ -90,14 +115,11 @@ export const ChatBox = ({ chatUser, chosenDID, getChats }: ChatBoxProps) => {
               </p>
             )}
           </div>
-          {/*  <div>
-            <p className='text-[10px] text-tetriary'>
-              PnL with Opponent:{' '}
-              <span className='font-bold text-[#87DAA4]'>+400.50 $DOLLARS</span>
-            </p>
-          </div> */}
         </div>
-        <div className='flex-1 overflow-auto pb-[16px] no-scrollbar'>
+        <div
+          className='flex-1 overflow-auto  custom-scroll'
+          ref={scrollableDivRef}
+        >
           {initialChatHistoryLoading ? (
             <div className='flex justify-center pt-4'>
               <ReactLoading

@@ -7,6 +7,8 @@ import { ChatRequestPanel } from './ChatRequestPanel';
 import { fetchChatChats } from '@/utils/chat/fetchChatChats';
 import { ChatChatPanel } from './ChatChatPanel';
 import { useAtom } from 'jotai';
+import ReactLoading from 'react-loading';
+import { IoSend } from 'react-icons/io5';
 
 interface ChatManagerProps {
   chatUser: PushAPI;
@@ -27,6 +29,7 @@ export const ChatManager = ({
     'requests' | 'chats'
   >('chats');
   const [requests, setRequests] = useState<undefined | IFeeds[]>(undefined);
+  const [addUserInputValue, setAddUserInputValue] = useState<string>();
 
   const toggleState = () => {
     if (chatManagerState === 'chats') {
@@ -70,6 +73,24 @@ export const ChatManager = ({
           value='requests'
           toggleState={toggleState}
         />
+      </div>
+      <div className='w-full px-2'>
+        <div className='w-full bg-[#23252E] h-[32px] rounded-[100px] flex justify-between items-center mb-3'>
+          <input
+            /* disabled={!chosenDID} */
+            /* onChange={(e) => setInputVal(e.target.value)}
+              type='text'
+              value={inputVal}
+              onKeyPress={handleKeyPress} */
+            /*  placeholder={placeholder} */
+            className='w-[85%] outline-none bg-[#23252E] h-full rounded-[100px] pl-3 text-xs text-tetriary'
+          />
+          <div className='pr-3 flex items-center'>
+            <button className='text-tetriary' /* onClick={sendMessage} */>
+              <IoSend />
+            </button>
+          </div>
+        </div>
       </div>
       {chatManagerState === 'requests' && (
         <div>

@@ -36,6 +36,7 @@ export const ChatInterface = ({ chatUser, streamData }: ChatInterfaceProps) => {
 
   const handleSetChosenDID = (did: string) => {
     setChosenDID(did);
+    console.log(did);
   };
   return (
     <div className='flex pt-4 h-full'>
@@ -46,7 +47,12 @@ export const ChatInterface = ({ chatUser, streamData }: ChatInterfaceProps) => {
         chatUser={chatUser}
         handleSetChosenDID={handleSetChosenDID}
       />
-      <ChatBox chatUser={chatUser} chosenDID={chosenDID} getChats={getChats} />
+      <ChatBox
+        chatUser={chatUser}
+        chosenDID={chosenDID}
+        getChats={getChats}
+        streamData={streamData}
+      />
     </div>
   );
 };
