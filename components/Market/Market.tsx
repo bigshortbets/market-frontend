@@ -27,6 +27,7 @@ import { useRouter } from 'next/router';
 import { EnrichedMarketType } from '@/types/marketTypes';
 import { EntryModal } from './EntryModal';
 import { useCookies } from 'react-cookie';
+import { addressMatcherApi } from '@/requests/bidgeApi/addressMatcherApi';
 
 interface MarketProps {
   markets: EnrichedMarketType[];
@@ -101,6 +102,21 @@ export const Market = ({ markets }: MarketProps) => {
       }
     }
   }, [blockHeight, markets, router]);
+
+  useEffect(() => {
+    const matchAddress = async () => {
+      if (!address) return;
+      try {
+        const response = await addressMatcherApi.matchAddress({
+          userAddress: address,
+        });
+      } catch (error) {
+        console.error('Error matching address call:', error);
+      }
+    };
+
+    matchAddress();
+  }, [address]);
 
   return (
     <div className='h-[100dvh] bg-[#111217] '>
