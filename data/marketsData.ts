@@ -81,6 +81,12 @@ export const marketsData: MarketsDataProps[] = [
     path: './market-logos/AAPH.svg',
     category: 'stocks',
   },
+  {
+    symbol: 'BIGSB',
+    name: 'BigShortBets',
+    path: './logo.svg',
+    category: 'crypto',
+  },
 
   /* MICRO */
 
@@ -151,7 +157,7 @@ export const marketsData: MarketsDataProps[] = [
     category: 'indices',
   },
 
-  /* ELECTIOn */
+  /* ELECTION */
 
   {
     symbol: 'TRUMP',

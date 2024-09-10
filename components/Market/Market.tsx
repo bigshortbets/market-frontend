@@ -28,6 +28,7 @@ import { EnrichedMarketType } from '@/types/marketTypes';
 import { EntryModal } from './EntryModal';
 import { useCookies } from 'react-cookie';
 import { chatStream, chatUserAtom } from '@/store/store';
+import { addressMatcherApi } from '@/requests/bidgeApi/addressMatcherApi';
 
 interface MarketProps {
   markets: EnrichedMarketType[];
@@ -113,6 +114,18 @@ export const Market = ({ markets }: MarketProps) => {
       }
       setChatUser(undefined);
     }
+    const matchAddress = async () => {
+      if (!address) return;
+      try {
+        const response = await addressMatcherApi.matchAddress({
+          userAddress: address,
+        });
+      } catch (error) {
+        console.error('Error matching address call:', error);
+      }
+    };
+
+    matchAddress();
   }, [address]);
 
   return (
