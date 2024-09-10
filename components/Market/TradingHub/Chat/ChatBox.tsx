@@ -12,6 +12,9 @@ import { fetchChatHistory } from '@/utils/chat/fetchChatHistory';
 import ReactLoading from 'react-loading';
 import toast from 'react-hot-toast';
 import { ChatHistory } from '@/types/chatTypes';
+import { useDisplayName } from '@/hooks/useDisplayName';
+import { convertToSS58 } from '@/utils/convertToSS58';
+import { decodeWord } from '@/utils/decodeLeaderboardWord';
 
 interface ChatBoxProps {
   chatUser: PushAPI;
@@ -33,6 +36,10 @@ export const ChatBox = ({
     useState<boolean>(false);
 
   /* const messagesEndRef = useRef<HTMLDivElement>(null); */
+
+  const to = chosenDID && getAddressFromDid(chosenDID);
+
+  const { displayName } = useDisplayName(to ? convertToSS58(to) : undefined);
 
   const getHistory = async () => {
     if (chosenDID) {
@@ -58,9 +65,8 @@ export const ChatBox = ({
 
   const sendMessage = async () => {
     setSendMessageLoading(true);
+    const to = getAddressFromDid(chosenDID!);
     try {
-      const to = getAddressFromDid(chosenDID!);
-
       const res = await chatUser.chat.send(to, {
         type: 'Text',
         content: inputVal,
@@ -104,20 +110,26 @@ export const ChatBox = ({
   }, [/* chatManagerState */ streamData]);
 
   return (
-    <div className='flex-grow h-full border-t border-[#444650] flex flex-col  justify-between'>
+    <div
+      className='flex-grow h-full border-t border-[#444650] flex flex-col  justify-between'
+      onClick={() => console.log(history)}
+    >
       <div className='flex flex-col justify-between h-full'>
         <div className='h-[56px] border-b border-[#444650] flex items-center justify-between px-3'>
           <div className='flex items-center gap-1.5'>
             {/*   <div className='h-4 w-4 rounded-full bg-white'></div> */}
             {chosenDID && (
               <p className='text-tetriary text-sm'>
-                {truncateAddress(getAddressFromDid(chosenDID))}
+                {displayName
+                  ? `${decodeWord(displayName)} (${truncateAddress(to!)})`
+                  : truncateAddress(to!)}
               </p>
             )}
+            {}
           </div>
         </div>
         <div
-          className='flex-1 overflow-auto  custom-scroll'
+          className='flex-1 custom-scroll overflow-auto'
           ref={scrollableDivRef}
         >
           {initialChatHistoryLoading ? (

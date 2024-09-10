@@ -9,6 +9,7 @@ import { ChatChatPanel } from './ChatChatPanel';
 import { useAtom } from 'jotai';
 import ReactLoading from 'react-loading';
 import { IoSend } from 'react-icons/io5';
+import { IoMdAdd } from 'react-icons/io';
 
 interface ChatManagerProps {
   chatUser: PushAPI;
@@ -16,6 +17,8 @@ interface ChatManagerProps {
   chats: undefined | IFeeds[];
   getChats: () => Promise<void>;
   streamData: any;
+  initialChatsLoading: boolean;
+  chosenDID: undefined | string;
 }
 
 export const ChatManager = ({
@@ -24,12 +27,14 @@ export const ChatManager = ({
   handleSetChosenDID,
   getChats,
   streamData,
+  initialChatsLoading,
+  chosenDID,
 }: ChatManagerProps) => {
   const [chatManagerState, setChatManagerState] = useState<
     'requests' | 'chats'
   >('chats');
   const [requests, setRequests] = useState<undefined | IFeeds[]>(undefined);
-  const [addUserInputValue, setAddUserInputValue] = useState<string>();
+  const [addUserInputValue, setAddUserInputValue] = useState<string>('');
 
   const toggleState = () => {
     if (chatManagerState === 'chats') {
@@ -75,19 +80,19 @@ export const ChatManager = ({
         />
       </div>
       <div className='w-full px-2'>
-        <div className='w-full bg-[#23252E] h-[32px] rounded-[100px] flex justify-between items-center mb-3'>
+        <div className='w-full bg-[#23252E] h-[32px] rounded-md flex justify-between items-center mb-5'>
           <input
-            /* disabled={!chosenDID} */
-            /* onChange={(e) => setInputVal(e.target.value)}
-              type='text'
-              value={inputVal}
-              onKeyPress={handleKeyPress} */
-            /*  placeholder={placeholder} */
+            onChange={(e) => setAddUserInputValue(e.target.value)}
+            type='text'
+            value={addUserInputValue}
             className='w-[85%] outline-none bg-[#23252E] h-full rounded-[100px] pl-3 text-xs text-tetriary'
           />
           <div className='pr-3 flex items-center'>
-            <button className='text-tetriary' /* onClick={sendMessage} */>
-              <IoSend />
+            <button
+              className='text-tetriary'
+              onClick={() => handleSetChosenDID(`eip155:${addUserInputValue}`)}
+            >
+              <IoMdAdd />
             </button>
           </div>
         </div>
@@ -103,40 +108,35 @@ export const ChatManager = ({
       )}
       {chatManagerState === 'chats' && (
         <div>
-          {chats &&
-            chats.length > 0 &&
-            chats.map((chat) => (
-              <ChatChatPanel
-                chat={chat}
-                handleSetChosenDID={handleSetChosenDID}
-              />
-            ))}
+          {chatManagerState === 'chats' && (
+            <div>
+              {initialChatsLoading ? (
+                <div className='flex justify-center'>
+                  <ReactLoading
+                    type='spin'
+                    height={32}
+                    width={32}
+                    color='#444650'
+                  />
+                </div>
+              ) : chats && chats.length > 0 ? (
+                chats.map((chat) => (
+                  <ChatChatPanel
+                    key={chat.chatId}
+                    chat={chat}
+                    handleSetChosenDID={handleSetChosenDID}
+                    chosenDID={chosenDID}
+                  />
+                ))
+              ) : (
+                <p className='text-tetriary text-xs text-center'>
+                  You don't have any conversations
+                </p>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
   );
 };
-
-{
-  /*  <div className='w-full border-b border-[#444650] text-tetriary flex justify-between p-2 items-center cursor-pointer'>
-        <div className='flex flex-col '>
-          <p className='text-[12px]'>312...dds</p>
-          <p className='text-[10px]'>messageee</p>
-        </div>
-        <p className='text-[10px]'>1 sec ago</p>
-      </div>
-      <div className='w-full border-b border-[#444650] text-tetriary flex justify-between p-2 items-center cursor-pointer'>
-        <div className='flex flex-col '>
-          <p className='text-[12px]'>ddd...dds</p>
-          <p className='text-[10px]'>hej</p>
-        </div>
-        <p className='text-[10px]'>2 mins ago</p>
-      </div>
-      <div className='w-full border-b border-[#444650] text-tetriary flex justify-between p-2 items-center cursor-pointer'>
-        <div className='flex flex-col '>
-          <p className='text-[12px]'>aaa...dds</p>
-          <p className='text-[10px]'>test</p>
-        </div>
-        <p className='text-[10px]'>1 hour ago</p>
-      </div> */
-}

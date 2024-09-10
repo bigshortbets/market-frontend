@@ -13,6 +13,7 @@ import { ChatManager } from './ChatManager';
 import { IFeeds, PushAPI } from '@pushprotocol/restapi';
 import { ChatBox } from './ChatBox';
 import { fetchChatChats } from '@/utils/chat/fetchChatChats';
+import { getAddressFromDid } from '@/utils/chat/getAddressFromDid';
 
 interface ChatInterfaceProps {
   chatUser: PushAPI;
@@ -22,6 +23,7 @@ interface ChatInterfaceProps {
 export const ChatInterface = ({ chatUser, streamData }: ChatInterfaceProps) => {
   const [chosenDID, setChosenDID] = useState<undefined | string>(undefined);
   const [chats, setChats] = useState<undefined | IFeeds[]>(undefined);
+  const [initialChatsLoading, setInitialChatsLoading] = useState(true);
 
   const getChats = async () => {
     try {
@@ -31,12 +33,13 @@ export const ChatInterface = ({ chatUser, streamData }: ChatInterfaceProps) => {
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setInitialChatsLoading(false);
     }
   };
 
   const handleSetChosenDID = (did: string) => {
     setChosenDID(did);
-    console.log(did);
   };
   return (
     <div className='flex pt-4 h-full'>
@@ -46,6 +49,8 @@ export const ChatInterface = ({ chatUser, streamData }: ChatInterfaceProps) => {
         getChats={getChats}
         chatUser={chatUser}
         handleSetChosenDID={handleSetChosenDID}
+        chosenDID={chosenDID}
+        initialChatsLoading={initialChatsLoading}
       />
       <ChatBox
         chatUser={chatUser}
