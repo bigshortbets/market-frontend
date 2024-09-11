@@ -12,8 +12,8 @@ import { marketsData } from '@/data/marketsData';
 import { ChartIntervalTab } from './ChartIntervalTab';
 import { CandleFeed } from '@/types/chartTypes';
 import { ConvertedOracleFeed } from '../Market/TradingHub/TradingHubChart/TradingHubChart';
-import { MarketPriceCheckbox } from '../Market/TradingHub/TradingHubChart/MarketPriceCheckbox';
-import { useEthersSigner } from '@/blockchain/ethers';
+
+import { ToggleChartDisplay } from '../Market/TradingHub/TradingHubChart/ToggleChartDisplay';
 
 interface ChartProps {
   data: { time: UTCTimestamp; value: number }[];
@@ -25,6 +25,7 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [chosenMarket] = useAtom(chosenMarketAtom);
   const [isOraclePrice, setIsOraclePrice] = useState<boolean>(false);
+  const [isMarketPrice, setIsMarketPrice] = useState<boolean>(true);
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
@@ -43,10 +44,13 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
     };
   }, []);
 
-  const toggleMarketPrice = () => {
+  const toggleOraclePrice = () => {
     setIsOraclePrice(!isOraclePrice);
   };
 
+  const toggleMarketPrice = () => {
+    setIsMarketPrice(!isMarketPrice);
+  };
   return (
     <div ref={containerRef} className='w-full h-[85%]'>
       <div className='flex justify-between flex-col md:flex-row md:items-center gap-2 md:gap-0 mt-2 mb-6 md:mr-3'>
@@ -70,13 +74,17 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
 
         <div className='flex items-center gap-4'>
           <div className='flex items-center gap-1.5'>
-            <p className='text-xs font-medium text-tetriary'>Market Price - </p>
-            <div className='rounded-full w-2.5 h-2.5 bg-[#b4d9bd]'></div>
+            <ToggleChartDisplay
+              name={`Market Price`}
+              isVal={isMarketPrice}
+              setVal={toggleMarketPrice}
+            />
           </div>
 
-          <MarketPriceCheckbox
-            isMarketPrice={isOraclePrice}
-            setIsMarketPrice={toggleMarketPrice}
+          <ToggleChartDisplay
+            name={`Oracle Price`}
+            isVal={isOraclePrice}
+            setVal={toggleOraclePrice}
           />
           {isOraclePrice && (
             <div className='flex items-center gap-1'>
@@ -117,7 +125,7 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
           }}
           layout={{ background: { color: '#191B24' }, textColor: 'white' }}
         >
-          {data.length > 0 && (
+          {data.length > 0 && isMarketPrice && (
             <LineSeries
               data={data}
               reactive
