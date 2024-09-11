@@ -85,7 +85,7 @@ export const ChatBox = ({
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && inputVal.trim().length > 0) {
       sendMessage();
     }
   };
@@ -110,10 +110,7 @@ export const ChatBox = ({
   }, [/* chatManagerState */ streamData]);
 
   return (
-    <div
-      className='flex-grow h-full border-t border-[#444650] flex flex-col  justify-between'
-      onClick={() => console.log(history)}
-    >
+    <div className='flex-grow h-full border-t border-[#444650] flex flex-col  justify-between'>
       <div className='flex flex-col justify-between h-full'>
         <div className='h-[56px] border-b border-[#444650] flex items-center justify-between px-3'>
           <div className='flex items-center gap-1.5'>
@@ -152,6 +149,11 @@ export const ChatBox = ({
                     message={message.messageContent}
                   />
                 ))}
+              {history && history.length < 1 && (
+                <p className='text-tetriary text-center'>
+                  Write something to send request to the user!
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -175,7 +177,11 @@ export const ChatBox = ({
                   color='#444650'
                 />
               ) : (
-                <button className='text-tetriary' onClick={sendMessage}>
+                <button
+                  className='text-tetriary disabled:text-[#444650]'
+                  onClick={sendMessage}
+                  disabled={inputVal.trim().length < 1}
+                >
                   <IoSend />
                 </button>
               )}

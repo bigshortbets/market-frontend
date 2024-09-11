@@ -65,6 +65,19 @@ export const ChatManager = ({
     getChats();
   }, [/* chatManagerState */ streamData]);
 
+  const isValidEthereumAddress = (address: string): boolean => {
+    const regex = /^0x[a-fA-F0-9]{40}$/;
+    return regex.test(address);
+  };
+
+  const disabled = (address: string): boolean =>
+    !isValidEthereumAddress(address);
+
+  const handleAddUser = () => {
+    handleSetChosenDID(`eip155:${addUserInputValue}`);
+    setAddUserInputValue('');
+  };
+
   return (
     <div className='w-[350px]  h-full border-r border-[#444650] border-t'>
       <div className='flex gap-2 mx-2 my-3'>
@@ -79,24 +92,40 @@ export const ChatManager = ({
           toggleState={toggleState}
         />
       </div>
-      <div className='w-full px-2'>
-        <div className='w-full bg-[#23252E] h-[32px] rounded-md flex justify-between items-center mb-5'>
-          <input
-            onChange={(e) => setAddUserInputValue(e.target.value)}
-            type='text'
-            value={addUserInputValue}
-            className='w-[85%] outline-none bg-[#23252E] h-full rounded-[100px] pl-3 text-xs text-tetriary'
-          />
-          <div className='pr-3 flex items-center'>
-            <button
-              className='text-tetriary'
-              onClick={() => handleSetChosenDID(`eip155:${addUserInputValue}`)}
-            >
-              <IoMdAdd />
-            </button>
-          </div>
+      {chatManagerState === 'chats' && (
+        <div className='w-full px-2'>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <label htmlFor='addUserInput' className='text-xs text-tetriary'>
+              Provide valid EVM address to add user
+            </label>
+
+            <div className='w-full bg-[#23252E] h-[32px] rounded-md flex justify-between items-center mb-5 mt-1'>
+              <input
+                id='addUserInput'
+                onChange={(e) => setAddUserInputValue(e.target.value)}
+                type='text'
+                value={addUserInputValue}
+                className='w-[85%] outline-none bg-[#23252E] h-full rounded-[100px] pl-3 text-[10px] text-tetriary'
+              />
+
+              <div className='pr-3 flex items-center'>
+                <button
+                  disabled={disabled(addUserInputValue)}
+                  className='text-bigsbgreen disabled:text-[#444650]'
+                  onClick={handleAddUser}
+                >
+                  <IoMdAdd />
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
-      </div>
+      )}
+
       {chatManagerState === 'requests' && (
         <div>
           {requests &&
