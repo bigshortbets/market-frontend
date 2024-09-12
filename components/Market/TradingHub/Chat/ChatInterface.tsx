@@ -1,7 +1,6 @@
 import { useEthersSigner } from '@/blockchain/ethers';
 import React, { useEffect, useRef, useState } from 'react';
 import { ChatMessage, ChatMessageProps } from './ChatMessage';
-import { exampleMessages } from './mockedData';
 import { useAtom } from 'jotai';
 import { chatUserAtom, chosenInterlocutorAtom } from '@/store/store';
 import { FaSearch } from 'react-icons/fa';

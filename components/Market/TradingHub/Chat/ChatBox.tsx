@@ -3,7 +3,6 @@ import { truncateAddress } from '@/utils/truncateAddress';
 import { useAtom } from 'jotai';
 import React, { useEffect, useRef, useState } from 'react';
 import { ChatMessage, ChatMessageProps } from './ChatMessage';
-import { exampleMessages } from './mockedData';
 import { PushAPI } from '@pushprotocol/restapi';
 import { IoSend } from 'react-icons/io5';
 import { getAddressFromDid } from '@/utils/chat/getAddressFromDid';
