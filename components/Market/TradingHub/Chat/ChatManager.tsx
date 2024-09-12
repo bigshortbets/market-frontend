@@ -36,6 +36,8 @@ export const ChatManager = ({
   >('chats');
   const [requests, setRequests] = useState<undefined | IFeeds[]>(undefined);
   const [addUserInputValue, setAddUserInputValue] = useState<string>('');
+  const [chatsNumber, setChatsNumber] = useState<number>(0);
+  const [requestsNumber, setRequestsNumber] = useState<number>(0);
   const router = useRouter();
 
   const toggleState = () => {
@@ -67,6 +69,13 @@ export const ChatManager = ({
     getChats();
   }, [/* chatManagerState */ streamData]);
 
+  useEffect(() => {
+    chats?.length ? setChatsNumber(Number(chats?.length)) : setChatsNumber(0);
+    requests?.length
+      ? setRequestsNumber(Number(requests?.length))
+      : setRequestsNumber(0);
+  }, [chats, requests]);
+
   const isValidEthereumAddress = (address: string): boolean => {
     const regex = /^0x[a-fA-F0-9]{40}$/;
     return regex.test(address);
@@ -94,11 +103,13 @@ export const ChatManager = ({
           isActive={chatManagerState === 'chats'}
           value='chats'
           toggleState={toggleState}
+          numberValue={chatsNumber}
         />
         <ChatManagerTab
           isActive={chatManagerState === 'requests'}
           value='requests'
           toggleState={toggleState}
+          numberValue={requestsNumber}
         />
       </div>
       {chatManagerState === 'chats' && (
