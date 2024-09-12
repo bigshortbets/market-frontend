@@ -76,7 +76,7 @@ export const Market = ({ markets }: MarketProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    const marketParam = router.query.market;
+    const { market: marketParam, chat } = router.query; // Destructure market and chat
     let isMarketFromURLProcessed = false;
 
     if (marketParam && markets && markets.length > 0) {
@@ -99,9 +99,20 @@ export const Market = ({ markets }: MarketProps) => {
         const randomMarket =
           electionMarkets[Math.floor(Math.random() * electionMarkets.length)];
         setSelectedMarketId(randomMarket.id);
-        router.push(`?market=${randomMarket.ticker}`, undefined, {
-          shallow: true,
-        });
+
+        const queryParams = {
+          market: randomMarket.ticker,
+          ...(chat && { chat }),
+        };
+
+        router.push(
+          {
+            pathname: '/',
+            query: queryParams,
+          },
+          undefined,
+          { shallow: true }
+        );
       }
     }
   }, [blockHeight, markets, router]);

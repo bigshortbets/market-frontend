@@ -20,4 +20,10 @@ export const addressMatcherApi = {
       }
     );
   },
+  geth160Address: async ({ queryKey }: any) => {
+    const [, address] = queryKey;
+    return axios.get(
+      `https://auth-address-service.vercel.app/user/ss58/${address}`
+    );
+  },
 };

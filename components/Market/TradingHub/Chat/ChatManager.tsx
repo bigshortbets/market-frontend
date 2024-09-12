@@ -10,6 +10,7 @@ import { useAtom } from 'jotai';
 import ReactLoading from 'react-loading';
 import { IoSend } from 'react-icons/io5';
 import { IoMdAdd } from 'react-icons/io';
+import { useRouter } from 'next/router';
 
 interface ChatManagerProps {
   chatUser: PushAPI;
@@ -35,6 +36,7 @@ export const ChatManager = ({
   >('chats');
   const [requests, setRequests] = useState<undefined | IFeeds[]>(undefined);
   const [addUserInputValue, setAddUserInputValue] = useState<string>('');
+  const router = useRouter();
 
   const toggleState = () => {
     if (chatManagerState === 'chats') {
@@ -76,6 +78,10 @@ export const ChatManager = ({
   const handleAddUser = () => {
     handleSetChosenDID(`eip155:${addUserInputValue}`);
     setAddUserInputValue('');
+    const { chat: _, ...query } = router.query;
+    router.push({ pathname: router.pathname, query }, undefined, {
+      shallow: true,
+    });
   };
 
   return (

@@ -9,6 +9,11 @@ import toast from 'react-hot-toast';
 import { formatNumberLeaderboard } from '@/utils/formatNumberLeaderboard';
 import { useDisplayName } from '@/hooks/useDisplayName';
 import { decodeWord } from '@/utils/decodeLeaderboardWord';
+import { useQuery } from '@tanstack/react-query';
+import { addressMatcherApi } from '@/requests/bidgeApi/addressMatcherApi';
+import { IoChatbubble } from 'react-icons/io5';
+import { useRouter } from 'next/router';
+import { FaMessage } from 'react-icons/fa6';
 
 interface LeaderboardItemProps {
   position: number;
@@ -23,10 +28,10 @@ export const LeaderboardItem = ({
   score,
   bigsbPrice,
 }: LeaderboardItemProps) => {
-  const { address: h160address } = useAccount();
+  const { address: myh160Address } = useAccount();
 
-  const isUser = h160address
-    ? convertToSS58(h160address as string) === address
+  const isUser = myh160Address
+    ? convertToSS58(myh160Address as string) === address
     : false;
 
   const handleCopy = async () => {
@@ -42,9 +47,20 @@ export const LeaderboardItem = ({
     }
   };
 
+  const router = useRouter();
+
   const { displayName, refresh } = useDisplayName(address);
 
   const usernameDisplay = displayName ? decodeWord(displayName) : '-';
+
+  const { data: h160address } = useQuery({
+    queryKey: ['h160', address],
+    queryFn: addressMatcherApi.geth160Address,
+  });
+
+  const openChat = () => {
+    router.push(`/?chat=${h160address!.data.ethAddress}`);
+  };
 
   return (
     <div
@@ -66,6 +82,7 @@ export const LeaderboardItem = ({
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}
             <div className='hidden lg:flex items-center gap-1.5'>
               <p>{truncateAddress(address)}</p>
+
               <button
                 className='text-xs text-[#434552]'
                 onClick={handleCopy}
@@ -73,6 +90,17 @@ export const LeaderboardItem = ({
               >
                 <FaCopy />
               </button>
+              {h160address &&
+                h160address.data.ethAddress &&
+                !isUser &&
+                myh160Address && (
+                  <button
+                    className='text-tetriary text-[13px] hover:text-[#9b9da8]'
+                    onClick={openChat}
+                  >
+                    <FaMessage />
+                  </button>
+                )}
             </div>
           </div>
           <div className='lg:w-[150px] items-center  text-xs lg:text-[13px] mr-2 lg:mr-0 hidden lg:block'>
@@ -82,7 +110,7 @@ export const LeaderboardItem = ({
         <div className='lg:hidden mb-1'>
           <div className='flex items-center'>
             <div className='lg:hidden text-xs mr-1 flex items-center gap-1.5'>
-              <p>Address: {truncateAddress(address)}</p>
+              <p>Address: {truncateAddress(address)}</p>{' '}
               <button
                 className='text-xs text-[#434552]'
                 onClick={handleCopy}

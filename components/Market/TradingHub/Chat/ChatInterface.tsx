@@ -14,6 +14,7 @@ import { IFeeds, PushAPI } from '@pushprotocol/restapi';
 import { ChatBox } from './ChatBox';
 import { fetchChatChats } from '@/utils/chat/fetchChatChats';
 import { getAddressFromDid } from '@/utils/chat/getAddressFromDid';
+import { useRouter } from 'next/router';
 
 interface ChatInterfaceProps {
   chatUser: PushAPI;
@@ -24,6 +25,7 @@ export const ChatInterface = ({ chatUser, streamData }: ChatInterfaceProps) => {
   const [chosenDID, setChosenDID] = useState<undefined | string>(undefined);
   const [chats, setChats] = useState<undefined | IFeeds[]>(undefined);
   const [initialChatsLoading, setInitialChatsLoading] = useState(true);
+  const router = useRouter();
 
   const getChats = async () => {
     try {
@@ -41,6 +43,13 @@ export const ChatInterface = ({ chatUser, streamData }: ChatInterfaceProps) => {
   const handleSetChosenDID = (did: string) => {
     setChosenDID(did);
   };
+
+  useEffect(() => {
+    const { chat } = router.query;
+    if (typeof chat === 'string') {
+      setChosenDID(`eip155:${chat}`);
+    }
+  }, [router.query]);
   return (
     <div className='flex pt-4 h-full'>
       <ChatManager
