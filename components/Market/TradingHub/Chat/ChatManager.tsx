@@ -85,7 +85,10 @@ export const ChatManager = ({
   };
 
   return (
-    <div className='w-[350px]  h-full border-r border-[#444650] border-t'>
+    <div className='w-[350px]  h-full border-r border-[#444650] border-t overflow-auto no-scroll'>
+      <p className='mx-2 my-3 font-semibold'>
+        Chat <span className='text-bigsbgreen'>P2P</span>
+      </p>
       <div className='flex gap-2 mx-2 my-3'>
         <ChatManagerTab
           isActive={chatManagerState === 'chats'}
