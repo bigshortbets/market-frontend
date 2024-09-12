@@ -1,35 +1,40 @@
+import { getAddressFromDid } from '@/utils/chat/getAddressFromDid';
 import React from 'react';
+import { useAccount } from 'wagmi';
 
 export interface ChatMessageProps {
-  author: MessageAuthorType;
-  value: string;
+  from: string;
+  to: string;
+  message: string;
 }
 
-export type MessageAuthorType = 'user' | 'interlocutor';
+export const ChatMessage = ({ from, to, message }: ChatMessageProps) => {
+  const fromAddress = getAddressFromDid(from);
+  const toAddress = getAddressFromDid(to);
 
-export const ChatMessage = ({ author, value }: ChatMessageProps) => {
+  const { address } = useAccount();
+
+  const isUserAuthor = address!.toLowerCase() === fromAddress.toLowerCase();
   return (
     <div
-      className={`flex w-full ${author === 'user' && 'justify-end'} ${
-        author === 'interlocutor' && 'justify-start'
+      className={`flex w-full ${
+        isUserAuthor ? 'justify-end' : 'justify-start'
       }`}
     >
       <div
-        className={`max-w-[50%] break-normal px-[16px] py-[8px] 
-        mb-[16px]  ${
-          author === 'user' &&
-          'rounded-bl-2xl rounded-tl-2xl rounded-tr-2xl bg-[#87DAA4]'
-        } ${
-          author === 'interlocutor' &&
-          'rounded-br-2xl rounded-tr-2xl rounded-tl-2xl bg-[#23252E]'
+        className={`max-w-[30%] break-normal px-[16px] py-[8px] 
+        mb-[16px]  rounded-tl-2xl rounded-tr-2xl ${
+          isUserAuthor
+            ? 'bg-[#87DAA4] rounded-bl-2xl'
+            : 'bg-[#23252E] rounded-br-2xl'
         }`}
       >
         <p
           className={`break-words text-xs ${
-            author === 'user' ? 'text-black' : 'text-tetriary'
+            isUserAuthor ? 'text-black' : 'text-tetriary'
           }`}
         >
-          {value}
+          {message}
         </p>
       </div>
     </div>

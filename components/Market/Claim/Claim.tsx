@@ -105,7 +105,9 @@ export const Claim = ({
   }, [mintStatus]);
 
   useEffect(() => {
-    refetchIsMinted();
+    if (address) {
+      refetchIsMinted();
+    }
   }, []);
 
   const handleMint = () => {

@@ -1,5 +1,7 @@
 import { TradingHubStateType } from '@/components/Market/TradingHub/TradingHub';
 import { EnrichedMarketType } from '@/types/marketTypes';
+import { IFeeds, PushAPI } from '@pushprotocol/restapi';
+import { PushStream } from '@pushprotocol/restapi/src/lib/pushstream/PushStream';
 import { atom } from 'jotai';
 
 /* MARKETS ATOM */
@@ -25,3 +27,9 @@ export const chosenInterlocutorAtom = atom<string>(
 /* CHART INTERVAL */
 
 export const chartIntervalAtom = atom<'15M' | '1H'>('1H');
+
+/* CHAT INITIALIZED USER */
+
+export const chatUserAtom = atom<PushAPI | undefined>(undefined);
+
+export const chatStream = atom<PushStream | undefined>(undefined);

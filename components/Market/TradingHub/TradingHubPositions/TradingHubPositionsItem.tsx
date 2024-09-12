@@ -14,6 +14,11 @@ import { currencySymbol } from '@/blockchain/constants';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
 import { FaMessage } from 'react-icons/fa6';
 import { tradingHubStateAtom } from '@/store/store';
+import { useDisplayName } from '@/hooks/useDisplayName';
+import { IoChatbubble } from 'react-icons/io5';
+import { useQuery } from '@tanstack/react-query';
+import { addressMatcherApi } from '@/requests/bidgeApi/addressMatcherApi';
+import { useRouter } from 'next/router';
 
 interface TradingHubPositionsItemProps {
   position: PositionWithSide;
@@ -43,6 +48,7 @@ export const TradingHubPositionsItem = ({
   );
 
   const [opponentsMargin] = useAtom(opponentsMarginsAtom);
+  const router = useRouter();
 
   const marginData = getOpponentMarginData(
     opponentsMargin,
@@ -57,8 +63,27 @@ export const TradingHubPositionsItem = ({
   };
   const marketDetails = getMarkeDetails(position.market.ticker);
 
-  /*  const [_, setTradingHubState] = useAtom(tradingHubStateAtom); */
+  const [tradingHubState, setTradingHubState] = useAtom(tradingHubStateAtom);
   const [_, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
+
+  const { displayName } = useDisplayName(opponent);
+
+  const { data: h160address } = useQuery({
+    queryKey: ['h160', opponent],
+    queryFn: addressMatcherApi.geth160Address,
+  });
+
+  const openChat = () => {
+    router.push(
+      {
+        pathname: router.pathname, // Keep the current path
+        query: { ...router.query, chat: h160address!.data.ethAddress }, // Add the 'chat' param
+      },
+      undefined,
+      { shallow: true } // Don't reload the page
+    );
+    setTradingHubState('chat');
+  };
 
   return (
     <tr
@@ -101,19 +126,19 @@ export const TradingHubPositionsItem = ({
       </td>
       <td className='align-middle px-6 sm:px-0 '>
         <div className='flex items-center space-x-2'>
-          <p className='text-[10px] sm:text-xs'>{truncateAddress(opponent)}</p>
+          <p className='text-[10px] sm:text-xs'>
+            {displayName ? displayName : truncateAddress(opponent)}
+          </p>
           <LiquidationStatusTab
             status={marginData?.liquidationStatus! as LiquidationStatusType}
             small
           />
 
-          {/* CHAT LOGIC */}
-
-          {/*  <button onClick={() => setTradingHubState('chat')}>
-            <FaMessage className='text-sm' />
-          </button> */}
-
-          {/*  */}
+          {h160address && h160address.data.ethAddress && (
+            <button onClick={openChat} className='hidden lg:block'>
+              <FaMessage className='text-sm' />
+            </button>
+          )}
         </div>
       </td>
       <td className=' text-right pr-3 hidden sm:table-cell'>

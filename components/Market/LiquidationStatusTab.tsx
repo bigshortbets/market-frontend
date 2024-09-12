@@ -29,7 +29,7 @@ export const LiquidationStatusTab = ({
   return (
     <>
       {small ? (
-        <div className={`${backgroundColor} h-4 w-4 rounded`}></div>
+        <div className={`${backgroundColor} h-3 w-3 rounded`}></div>
       ) : (
         <div
           className={`rounded flex items-center justify-center px-1 font-semibold text-[#191B24] text-xs py-[1px] ${backgroundColor}`}

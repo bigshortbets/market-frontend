@@ -21,16 +21,25 @@ import {
 import { UTCTimestamp } from 'lightweight-charts';
 import { ChatContainer } from './Chat/ChatContainer';
 import { TradingHubChart } from './TradingHubChart/TradingHubChart';
+import { useRouter } from 'next/router';
 
-const tabs = ['chart', 'positions', 'orders', 'history'] as const;
+const tabs = ['chart', 'positions', 'orders', 'history', 'chat'] as const;
 export type TradingHubStateType = (typeof tabs)[number];
 
 export const TradingHub = () => {
   const { address } = useAccount();
 
-  const [tradingHubState] = useAtom(tradingHubStateAtom);
+  const [tradingHubState, setTradingHubState] = useAtom(tradingHubStateAtom);
   const [isAggregated, setIsAggregated] = useState<boolean>(true);
   const [chartInterval] = useAtom(chartIntervalAtom);
+  const router = useRouter();
+
+  useEffect(() => {
+    const { chat } = router.query;
+    if (chat) {
+      setTradingHubState('chat');
+    }
+  }, [router.query, setTradingHubState]);
 
   const toggleIsAggregated = () => {
     setIsAggregated(!isAggregated);
