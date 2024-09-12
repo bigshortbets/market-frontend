@@ -135,7 +135,7 @@ export const TradingHubPositionsItem = ({
           />
 
           {h160address && h160address.data.ethAddress && (
-            <button onClick={openChat}>
+            <button onClick={openChat} className='hidden lg:block'>
               <FaMessage className='text-sm' />
             </button>
           )}

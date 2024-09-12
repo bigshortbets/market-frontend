@@ -29,9 +29,9 @@ export const TradingHubTab = ({ value }: TradingHubTabProps) => {
 
   return (
     <button
-      className={`rounded-lg flex items-center justify-center text-[12px] font-semibold py-1.5 px-3 ${
+      className={`rounded-lg items-center justify-center text-[12px] font-semibold py-1.5 px-3 ${
         isActive ? 'bg-[#444650]' : 'bg-[#23252E] text-tetriary'
-      }`}
+      } ${value === 'chat' ? 'hidden lg:flex' : 'flex'}`}
       onClick={() => setTradingHubState(value)}
     >
       <p className='capitalize'>

@@ -47,6 +47,12 @@ export const ChatContainer = () => {
       className='w-full  h-[calc(100vh-320px)] md:h-[calc(100vh-230px)]'
       /*   style={{ height: 'calc(100vh - 229px)' }} */
     >
+      <div className='h-full flex justify-center items-center p-4 lg:hidden'>
+        <p className='text-tetriary text-sm'>
+          Chat doesn't have mobile devices support yet. Please use desktop
+          device.
+        </p>
+      </div>
       {chatUser && (chatUser as any).readMode === false ? (
         <ChatInterface chatUser={chatUser} streamData={streamData} />
       ) : (
