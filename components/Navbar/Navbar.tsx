@@ -51,26 +51,20 @@ export const Navbar = () => {
             </div>
           </Link>
           <div className='flex items-center gap-2'>
-            <button
-              className='p-2 rounded bg-[#191B24]'
-              onClick={() => changeRoute('/')}
-            >
+            <Link className='p-2 rounded bg-[#191B24]' href='/'>
               <FaChartLine
                 className={`text-sm hover:text-[#4ECB7D] cursor-pointer  transition ${
                   router.pathname === '/' && 'text-[#4ECB7D]'
                 }`}
               />
-            </button>
-            <button
-              className='p-2 rounded bg-[#191B24]'
-              onClick={() => changeRoute('/leaderboard')}
-            >
+            </Link>
+            <Link className='p-2 rounded bg-[#191B24]' href='/leaderboard'>
               <FaTrophy
                 className={`text-sm hover:text-[#4ECB7D] cursor-pointer  transition ${
                   router.pathname === '/leaderboard' && 'text-[#4ECB7D]'
                 }`}
               />
-            </button>
+            </Link>
           </div>
         </div>
 
