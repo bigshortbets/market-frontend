@@ -84,7 +84,11 @@ export const ChatBox = ({
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter' && inputVal.trim().length > 0) {
+    if (
+      event.key === 'Enter' &&
+      inputVal.trim().length > 0 &&
+      !sendMessageLoading
+    ) {
       sendMessage();
     }
   };
