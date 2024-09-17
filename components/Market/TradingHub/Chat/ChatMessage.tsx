@@ -22,7 +22,7 @@ export const ChatMessage = ({ from, to, message }: ChatMessageProps) => {
       }`}
     >
       <div
-        className={`max-w-[30%] break-normal px-[16px] py-[8px] 
+        className={`max-w-[210px] break-normal px-[16px] py-[8px] 
         mb-[16px]  rounded-tl-2xl rounded-tr-2xl ${
           isUserAuthor
             ? 'bg-[#87DAA4] rounded-bl-2xl'

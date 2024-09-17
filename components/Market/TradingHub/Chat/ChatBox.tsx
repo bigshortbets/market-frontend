@@ -109,7 +109,7 @@ export const ChatBox = ({
   }, [/* chatManagerState */ streamData]);
 
   return (
-    <div className='flex-grow h-full border-t border-[#444650] flex flex-col  justify-between'>
+    <div className='flex-1 h-full border-t border-[#444650] flex flex-col  justify-between w-full'>
       <div className='flex flex-col justify-between h-full'>
         <div className='h-[56px] border-b border-[#444650] flex items-center justify-between px-3'>
           <div className='flex items-center gap-1.5'>

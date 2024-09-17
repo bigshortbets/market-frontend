@@ -47,6 +47,19 @@ export const ChatChatPanel = ({
       shallow: true,
     });
   };
+
+  function truncateString(input: string, maxLength: number = 30): string {
+    return input.length > maxLength
+      ? input.slice(0, maxLength - 3) + '...'
+      : input;
+  }
+
+  // Example usage
+  const result = truncateString(
+    'This is a very long string that needs to be truncated.'
+  );
+  console.log(result); // Outputs: "This is a very long string t..."
+
   return (
     <div
       className={`w-full border-b border-[#444650]   flex justify-between px-2 py-4 items-center cursor-pointer ${
@@ -56,9 +69,9 @@ export const ChatChatPanel = ({
     >
       <div className='flex flex-col gap-1'>
         <p className='text-[14px]'>{hisDisplay}</p>
-        <p className='text-[12px]'>{`${amISender ? 'You:' : ''} ${
-          chat.msg.messageContent
-        }`}</p>
+        <p className='text-[12px]'>{`${
+          amISender ? 'You:' : ''
+        } ${truncateString(chat.msg.messageContent)}`}</p>
       </div>
       <p className='text-[11px]'>{when} ago</p>
     </div>
