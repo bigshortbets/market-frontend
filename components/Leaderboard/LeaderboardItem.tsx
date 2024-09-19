@@ -14,6 +14,8 @@ import { addressMatcherApi } from '@/requests/bidgeApi/addressMatcherApi';
 import { IoChatbubble } from 'react-icons/io5';
 import { useRouter } from 'next/router';
 import { FaMessage } from 'react-icons/fa6';
+import { FaUser } from 'react-icons/fa';
+import Link from 'next/link';
 
 interface LeaderboardItemProps {
   position: number;
@@ -24,19 +26,19 @@ interface LeaderboardItemProps {
 
 export const LeaderboardItem = ({
   position,
-  address,
+  address: ss58address,
   score,
   bigsbPrice,
 }: LeaderboardItemProps) => {
   const { address: myh160Address } = useAccount();
 
   const isUser = myh160Address
-    ? convertToSS58(myh160Address as string) === address
+    ? convertToSS58(myh160Address as string) === ss58address
     : false;
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(address);
+      await navigator.clipboard.writeText(ss58address);
       toast.success('Address copied to clipboard', {
         duration: 1111,
       });
@@ -49,18 +51,18 @@ export const LeaderboardItem = ({
 
   const router = useRouter();
 
-  const { displayName, refresh } = useDisplayName(address);
+  const { displayName, refresh } = useDisplayName(ss58address);
 
   const usernameDisplay = displayName ? decodeWord(displayName) : '-';
 
-  const { data: h160address } = useQuery({
-    queryKey: ['h160', address],
+  /*  const { data: h160address } = useQuery({
+    queryKey: ['h160', ss58address],
     queryFn: addressMatcherApi.geth160Address,
   });
-
-  const openChat = () => {
+ */
+  /*  const openChat = () => {
     router.push(`/?chat=${h160address!.data.ethAddress}`);
-  };
+  }; */
 
   return (
     <div
@@ -81,7 +83,12 @@ export const LeaderboardItem = ({
             {position === 2 && <FaTrophy className='text-[#c1c2b4]' />}
             {position === 3 && <FaTrophy className='text-[#8a6644]' />}
             <div className='hidden lg:flex items-center gap-1.5'>
-              <p>{truncateAddress(address)}</p>
+              <Link
+                href={`/profile/${ss58address}`}
+                className='hover:underline'
+              >
+                {truncateAddress(ss58address)}
+              </Link>
 
               <button
                 className='text-xs text-[#434552]'
@@ -90,7 +97,7 @@ export const LeaderboardItem = ({
               >
                 <FaCopy />
               </button>
-              {h160address &&
+              {/* {h160address &&
                 h160address.data.ethAddress &&
                 !isUser &&
                 myh160Address && (
@@ -100,17 +107,22 @@ export const LeaderboardItem = ({
                   >
                     <FaMessage />
                   </button>
-                )}
+                )} */}
+              {/*  <Link href={`/profile/${ss58address}`}>
+                <FaUser />
+              </Link> */}
             </div>
           </div>
           <div className='lg:w-[150px] items-center  text-xs lg:text-[13px] mr-2 lg:mr-0 hidden lg:block'>
-            {usernameDisplay}
+            <Link href={`/profile/${ss58address}`} className='hover:underline'>
+              {usernameDisplay}
+            </Link>
           </div>
         </div>
         <div className='lg:hidden mb-1'>
           <div className='flex items-center'>
             <div className='lg:hidden text-xs mr-1 flex items-center gap-1.5'>
-              <p>Address: {truncateAddress(address)}</p>{' '}
+              <p>Address: {truncateAddress(ss58address)}</p>{' '}
               <button
                 className='text-xs text-[#434552]'
                 onClick={handleCopy}
