@@ -26,6 +26,7 @@ import {
 } from '@/store/store';
 import { MarketSettlementsResponse } from '@/types/marketSettlementsTypes';
 import { ChatContainer } from './Chat/ChatContainer';
+import { useUserPositions } from '@/hooks/useUserPositions';
 
 interface TradingHubContentContainerProps {
   isAggregated: boolean;
@@ -42,14 +43,7 @@ export const TradingHubContentContainer = ({
     variables: { userId: convertToSS58(address!) },
   });
 
-  const { data: positionsRes } = useQuery<PositionsResponse>(
-    USER_OPEN_POSITIONS_QUERY,
-
-    {
-      pollInterval: 1000,
-      variables: { userId: convertToSS58(address!) },
-    }
-  );
+  const { positions, aggregatedPositions } = useUserPositions(address);
 
   const { data: historyOrdersRes } = useQuery<HistoryResponse>(
     USER_HISTORY_QUERY,
@@ -67,20 +61,20 @@ export const TradingHubContentContainer = ({
     }
   );
 
-  useUnsettledLosses(positionsRes?.positions, address!);
-  useCollateral(positionsRes?.positions, address!);
+  useUnsettledLosses(positions, address!);
+  useCollateral(positions, address!);
 
   const [tradingHubState] = useAtom(tradingHubStateAtom);
-  useOpponentsMargin(positionsRes?.positions!, address!);
+  useOpponentsMargin(positions, address!);
 
   useEffect(() => {
     if (ordersRes?.orders) {
       setOrdersCount(ordersRes.orders.length);
     }
-    if (positionsRes?.positions) {
-      setPositionsCount(positionsRes.positions.length);
+    if (positions) {
+      setPositionsCount(positions.length);
     }
-  }, [ordersRes?.orders, positionsRes?.positions]);
+  }, [ordersRes?.orders, positions]);
 
   return (
     <div className='w-full no-scrollbar'>
@@ -90,10 +84,11 @@ export const TradingHubContentContainer = ({
           historyOrders={historyOrdersRes.orders}
         />
       )}
-      {tradingHubState === 'positions' && positionsRes && (
+      {tradingHubState === 'positions' && positions && (
         <TradingHubPositions
           isAggregated={isAggregated}
-          positions={positionsRes.positions}
+          positions={positions}
+          aggregatedPositions={aggregatedPositions}
         />
       )}
       {tradingHubState === 'history' && marketSettlementsRes && (

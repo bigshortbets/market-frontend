@@ -6,26 +6,14 @@ import { getMarkeDetails } from '@/utils/getMarketDetails';
 interface TradingHubPositionsProps {
   positions: PositionType[];
   isAggregated: boolean;
+  aggregatedPositions: Record<string, PositionType[]>;
 }
 
 export const TradingHubPositions = ({
   positions,
   isAggregated,
+  aggregatedPositions,
 }: TradingHubPositionsProps) => {
-  const aggregatePositionsByMarketTicker = () => {
-    const aggregatedPositions: Record<string, PositionType[]> = {};
-    positions.forEach((position) => {
-      if (aggregatedPositions[position.market.ticker]) {
-        aggregatedPositions[position.market.ticker].push(position);
-      } else {
-        aggregatedPositions[position.market.ticker] = [position];
-      }
-    });
-    return aggregatedPositions;
-  };
-
-  const positionsByMarketTicker = aggregatePositionsByMarketTicker();
-
   /* Sorting alphabetically  */
 
   const sortPositionsByMarketName = (
@@ -45,7 +33,7 @@ export const TradingHubPositions = ({
     return sortedPositionsByMarketTicker;
   };
 
-  const sortedPositions = sortPositionsByMarketName(positionsByMarketTicker);
+  const sortedPositions = sortPositionsByMarketName(aggregatedPositions);
 
   /*  */
 

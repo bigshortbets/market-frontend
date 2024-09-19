@@ -10,6 +10,7 @@ import { currencySymbol } from '@/blockchain/constants';
 import ReactLoading from 'react-loading';
 import { marketsAtom } from '@/store/store';
 import { Tooltip } from 'react-tooltip';
+import { useUserPositions } from '@/hooks/useUserPositions';
 
 export const MarketInterfaceLowerBar = () => {
   const { address } = useAccount();
@@ -17,6 +18,8 @@ export const MarketInterfaceLowerBar = () => {
   const [userMargins] = useAtom(userMarginsAtom);
   const [selectedMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [markets] = useAtom(marketsAtom);
+
+  const { positions, sumPnL } = useUserPositions(address);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -56,14 +59,14 @@ export const MarketInterfaceLowerBar = () => {
         />
       </div>
       <div className=' hidden sm:flex items-center justify-between '>
-        <div className='flex items-center gap-10'>
+        <div className='flex items-center gap-4'>
           <div className=' text-xs '>
             <a
               data-tooltip-id='wallet-balance-tooltip'
               data-tooltip-html={`Source of funds reseved for Initial Margin when Open Order is created. `}
             >
               <p className='text-tetriary font-semibold cursor-default'>
-                Wallet Balance
+                Available Balance
               </p>
             </a>
             <p className='text-white'>
@@ -74,9 +77,10 @@ export const MarketInterfaceLowerBar = () => {
                 : '-'}
             </p>
           </div>
-          <div className='sm:border-l sm:border-[#444650]  sm:h-[32px] text-xs pl-2'>
-            <p className='text-tetriary font-semibold'>Total Margin</p>
-            <p>
+          <div className='sm:border-l sm:border-[#444650]  sm:h-[32px]'></div>
+          <div className='text-xs'>
+            <p className='text-tetriary font-semibold '>Total Margin</p>
+            <p className='text-xs'>
               {address
                 ? `${currencyFormatter.format(
                     userMargins.totalMarginValue
