@@ -19,6 +19,7 @@ import { IoChatbubble } from 'react-icons/io5';
 import { useQuery } from '@tanstack/react-query';
 import { addressMatcherApi } from '@/requests/bidgeApi/addressMatcherApi';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 interface TradingHubPositionsItemProps {
   position: PositionWithSide;
@@ -126,19 +127,22 @@ export const TradingHubPositionsItem = ({
       </td>
       <td className='align-middle px-6 sm:px-0 '>
         <div className='flex items-center space-x-2'>
-          <p className='text-[10px] sm:text-xs'>
+          <Link
+            href={`/profile/${opponent}`}
+            className='text-[10px] sm:text-xs hover:underline'
+          >
             {displayName ? displayName : truncateAddress(opponent)}
-          </p>
+          </Link>
           <LiquidationStatusTab
             status={marginData?.liquidationStatus! as LiquidationStatusType}
             small
           />
 
-          {h160address && h160address.data.ethAddress && (
+          {/* {h160address && h160address.data.ethAddress && (
             <button onClick={openChat} className='hidden lg:block'>
               <FaMessage className='text-sm' />
             </button>
-          )}
+          )} */}
         </div>
       </td>
       <td className=' text-right pr-3 hidden sm:table-cell'>
