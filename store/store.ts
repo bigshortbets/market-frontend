@@ -1,5 +1,6 @@
 import { TradingHubStateType } from '@/components/Market/TradingHub/TradingHub';
 import { EnrichedMarketType } from '@/types/marketTypes';
+import { OrderType } from '@/types/orderTypes';
 import { PositionsResponse, PositionType } from '@/types/positionTypes';
 import { IFeeds, PushAPI } from '@pushprotocol/restapi';
 import { PushStream } from '@pushprotocol/restapi/src/lib/pushstream/PushStream';
@@ -38,3 +39,5 @@ export const chatStream = atom<PushStream | undefined>(undefined);
 /* USER DATA */
 
 export const userPositionsAtom = atom<PositionType[] | undefined>(undefined);
+
+export const userOrdersAtom = atom<OrderType[] | undefined>(undefined);
