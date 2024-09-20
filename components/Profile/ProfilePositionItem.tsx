@@ -18,6 +18,7 @@ import { useRouter } from 'next/router';
 import { opponentsMarginsAtom } from '../Market/Market';
 import { SideLabel } from '../Market/TradingHub/SideLabel';
 import { LiquidationStatusTab } from '../Market/LiquidationStatusTab';
+import Link from 'next/link';
 
 interface ProfilePositionItemProps {
   position: PositionWithSide;
@@ -119,9 +120,12 @@ export const ProfilePositionItem = ({
       </td>
       <td className='align-middle px-6 sm:px-0 '>
         <div className='flex items-center space-x-2'>
-          <p className='text-[10px] sm:text-xs'>
+          <Link
+            href={`/profile/${opponent}`}
+            className='text-[10px] sm:text-xs hover:underline'
+          >
             {displayName ? displayName : truncateAddress(opponent)}
-          </p>
+          </Link>
           <LiquidationStatusTab
             status={marginData?.liquidationStatus! as LiquidationStatusType}
             small

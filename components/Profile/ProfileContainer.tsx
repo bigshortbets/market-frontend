@@ -142,7 +142,7 @@ export const ProfileContainer = () => {
               profileState={profileState}
               setProfileState={handleSetProfileState}
             />
-            <ProfileTab
+            {/*   <ProfileTab
               value='orders'
               profileState={profileState}
               setProfileState={handleSetProfileState}
@@ -151,7 +151,7 @@ export const ProfileContainer = () => {
               value='settlements'
               profileState={profileState}
               setProfileState={handleSetProfileState}
-            />
+            /> */}
           </div>
           <div className='w-full h-full    overflow-y-auto no-scrollbar mt-4'>
             <div className='flex flex-col gap-4'>

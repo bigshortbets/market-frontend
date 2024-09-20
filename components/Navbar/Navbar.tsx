@@ -34,7 +34,7 @@ export const Navbar = () => {
     <nav className='bg-[#111217] w-full h-[64px]'>
       <div className='flex justify-between h-full px-7 items-center'>
         <div className='flex gap-6 items-center'>
-          <Link className='flex gap-2 cursor-pointer' href='/profile/asdasdasd'>
+          <Link className='flex gap-2 cursor-pointer' href='/'>
             <Image src={logo} alt='BigShortBet$ Logo' width={50} priority />
             <div className='md:flex flex-col hidden'>
               <p className='text-md hidden md:block'>bigshortbet$</p>
