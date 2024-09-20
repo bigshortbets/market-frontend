@@ -153,7 +153,7 @@ export const ProfileContainer = () => {
               setProfileState={handleSetProfileState}
             /> */}
           </div>
-          <div className='w-full h-full    overflow-y-auto no-scrollbar mt-4'>
+          <div className='w-full   overflow-y-auto no-scrollbar mt-4'>
             <div className='flex flex-col gap-4'>
               {Object.entries(positionsByMarketTicker).map(
                 ([ticker, positions]) => (
