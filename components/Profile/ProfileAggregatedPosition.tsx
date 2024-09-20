@@ -110,8 +110,7 @@ export const ProfileAggregatedPosition = ({
                       : 'text-[#87DAA4]'
                   }`}
                 >
-                  {experimentalSumLossProfit &&
-                    experimentalSumLossProfit.toFixed(2)}{' '}
+                  {experimentalSumLossProfit?.toFixed(2)}{' '}
                   <span className='text-xs'>{currencySymbol}</span>
                 </p>
               </div>

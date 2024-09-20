@@ -81,8 +81,7 @@ export const ProfilePositionItem = ({
 
   return (
     <tr
-      className={`text-sm even:bg-[#23252E] text-[#7F828F]  overflow-x-scroll
-  }`}
+      className={`text-sm even:bg-[#23252E] text-[#7F828F]  overflow-x-scroll`}
     >
       <td className='px-6 sm:pr-0 sm:pl-3 py-3'>
         <SideLabel side={position.side} />

@@ -38,40 +38,40 @@ export const ProfileContainer = () => {
     setProfileState(val);
   };
 
-  const { data: ordersRes } = useApolloQuery<OrdersResponse>(
+  /*   const { data: ordersRes } = useApolloQuery<OrdersResponse>(
     USER_ORDERS_QUERY,
     {
       pollInterval: 10000,
-      variables: { userId: router.query.address as string },
+      variables: { userId: ss58Address },
       skip: !isValidAddress,
     }
   );
-
+ */
   const { data: positionsRes } = useApolloQuery<PositionsResponse>(
     USER_OPEN_POSITIONS_QUERY,
 
     {
       pollInterval: 10000,
-      variables: { userId: router.query.address as string },
+      variables: { userId: ss58Address },
       skip: !isValidAddress,
     }
   );
 
-  const { data: historyOrdersRes } = useApolloQuery<HistoryResponse>(
+  /* const { data: historyOrdersRes } = useApolloQuery<HistoryResponse>(
     USER_HISTORY_QUERY,
     {
       pollInterval: 10000,
-      variables: { userId: router.query.address as string },
+      variables: { userId: ss58Address },
       skip: !isValidAddress,
     }
-  );
+  ); */
 
-  const { data: marketSettlementsRes } =
+  /* const { data: marketSettlementsRes } =
     useApolloQuery<MarketSettlementsResponse>(USER_MARKET_SETTLEMENTS_QUERY, {
       pollInterval: 10000,
       variables: { userId: router.query.address as string },
       skip: !isValidAddress,
-    });
+    }); */
 
   const aggregatePositionsByMarketTicker = () => {
     const aggregatedPositions: Record<string, PositionType[]> = {};
@@ -92,8 +92,7 @@ export const ProfileContainer = () => {
     queryFn: addressMatcherApi.geth160Address,
   });
 
-  const { displayName, refresh } = useDisplayName(ss58Address);
-  const usernameDisplay = displayName ? decodeWord(displayName) : '-';
+  const { displayName } = useDisplayName(ss58Address);
 
   return (
     <div
