@@ -156,7 +156,7 @@ export const Leaderboard = () => {
       />
       <div className='h-[100dvh] max-w-[2000px]  lg:mx-auto mx-4 flex flex-col pb-4 items-center relative z-10'>
         <Navbar />
-        <div className='lg:max-w-[1420px] flex-grow border-[#444650] border-2 rounded-[10px] w-full mt-4 bg-[#191B24] overflow-auto no-scrollbar'>
+        <div className='lg:max-w-[1420px] max-h-[calc(100dvh-100px)] flex-grow border-[#444650] border-2 rounded-[10px] w-full mt-4 bg-[#191B24] overflow-auto no-scrollbar'>
           <div className='pt-6 lg:px-6 px-4'>
             <div className='mb-8 lg:flex lg:items-center lg:justify-between'>
               <div className='lg:flex lg:items-center lg:gap-5'>

@@ -14,6 +14,7 @@ import { ChatHistory } from '@/types/chatTypes';
 import { useDisplayName } from '@/hooks/useDisplayName';
 import { convertToSS58 } from '@/utils/convertToSS58';
 import { decodeWord } from '@/utils/decodeLeaderboardWord';
+import Link from 'next/link';
 
 interface ChatBoxProps {
   chatUser: PushAPI;
@@ -119,11 +120,14 @@ export const ChatBox = ({
           <div className='flex items-center gap-1.5'>
             {/*   <div className='h-4 w-4 rounded-full bg-white'></div> */}
             {chosenDID && (
-              <p className='text-tetriary text-sm'>
+              <Link
+                href={`profile/${convertToSS58(to!)}`}
+                className='text-tetriary text-sm hover:underline'
+              >
                 {displayName
                   ? `${decodeWord(displayName)} (${truncateAddress(to!)})`
                   : truncateAddress(to!)}
-              </p>
+              </Link>
             )}
             {}
           </div>
