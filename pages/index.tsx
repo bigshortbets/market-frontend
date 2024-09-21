@@ -33,7 +33,7 @@ export default function Home() {
   const isLoading = minimumLoadingTime || markets === undefined;
 
   return (
-    <main className={`${inter.className} text-white`}>
+    <main className={` text-white`}>
       <Head>
         <title>
           BigShortBet$ P2P Market - Trade on Unique & Event-Based Markets

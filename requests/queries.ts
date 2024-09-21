@@ -253,3 +253,11 @@ export const ORACLE_CHART_15MIN_QUERY = gql`
     }
   }
 `;
+
+export const OPEN_ORDER_MARGIN = gql`
+  query openOrderMargin($orderId: String!, $address: String!) {
+    getMargin(marketId: $orderId, walletAddress: $address) {
+      Margin
+    }
+  }
+`;

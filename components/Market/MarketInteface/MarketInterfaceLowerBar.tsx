@@ -9,8 +9,13 @@ import { currencyFormatter } from '@/utils/currencyFormatter';
 import { currencySymbol } from '@/blockchain/constants';
 import ReactLoading from 'react-loading';
 import { marketsAtom } from '@/store/store';
-import { Tooltip } from 'react-tooltip';
+
 import { useUserPositions } from '@/hooks/useUserPositions';
+import { useQuery } from '@apollo/client';
+import { OPEN_ORDER_MARGIN } from '@/requests/queries';
+import { useUserOrders } from '@/hooks/useUserOrders';
+import { convertToSS58 } from '@/utils/convertToSS58';
+import { MarketInterfaceLowerBarDataItem } from './MarketInterfaceLowerBarDataItem';
 
 export const MarketInterfaceLowerBar = () => {
   const { address } = useAccount();
@@ -19,7 +24,8 @@ export const MarketInterfaceLowerBar = () => {
   const [selectedMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [markets] = useAtom(marketsAtom);
 
-  const { positions, sumPnL } = useUserPositions(address);
+  const { sumPnL } = useUserPositions(address);
+  const { openOrdersTotalMargin } = useUserOrders(address);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -28,19 +34,30 @@ export const MarketInterfaceLowerBar = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const totalBalance =
+    (sumPnL ?? 0) + // Jeśli sumPnL jest undefined, użyj 0
+    (openOrdersTotalMargin ?? 0) + // Jeśli openOrdersTotalMargin jest undefined, użyj 0
+    (Number(Number(data?.formatted).toFixed(2)) ?? 0) + // Jeśli data?.formatted jest undefined, użyj 0
+    (Number(userMargins.totalMarginValue.toFixed(2)) ?? 0);
+
+  const totalBalanceDisplay = `${currencyFormatter.format(
+    totalBalance
+  )} ${currencySymbol}`;
+
+  const totalMarginDisplay = `${currencyFormatter.format(
+    userMargins.totalMarginValue
+  )} ${currencySymbol}`;
+
   return (
     <div className='h-[58px] border-t border-[#444650] px-5 py-3'>
-      <div className='sm:hidden flex items-center justify-between h-full'>
-        <div className=' text-[11px] '>
-          <p className='text-tetriary font-semibold'>Wallet Balance</p>
-          <p className='text-white'>
-            {address
-              ? `${currencyFormatter.format(
-                  Number(data?.formatted)
-                )} ${currencySymbol}`
-              : '-'}
-          </p>
-        </div>
+      {/* <div className='sm:hidden flex items-center justify-between h-full'>
+        <MarketInterfaceLowerBarDataItem
+          label='Total balance'
+          value={portfolioValue}
+          tooltipHtml='LOL'
+          tooltipId='total-balance-tooltip'
+        />
         <div className=' text-[11px]  '>
           <p className='text-tetriary font-semibold'>Total Margin</p>
           <p className='text-white'>
@@ -57,37 +74,30 @@ export const MarketInterfaceLowerBar = () => {
             selectedMarketMargin?.liquidationStatus as LiquidationStatusType
           }
         />
-      </div>
-      <div className=' hidden sm:flex items-center justify-between '>
+      </div> */}
+      <div className=' flex items-center justify-between '>
         <div className='flex items-center gap-4'>
-          <div className=' text-xs '>
-            <a
-              data-tooltip-id='wallet-balance-tooltip'
-              data-tooltip-html={`Source of funds reseved for Initial Margin when Open Order is created. `}
-            >
-              <p className='text-tetriary font-semibold cursor-default'>
-                Available Balance
-              </p>
-            </a>
-            <p className='text-white'>
-              {address
-                ? `${currencyFormatter.format(
-                    Number(data?.formatted)
-                  )} ${currencySymbol}`
-                : '-'}
-            </p>
-          </div>
-          <div className='sm:border-l sm:border-[#444650]  sm:h-[32px]'></div>
-          <div className='text-xs'>
-            <p className='text-tetriary font-semibold '>Total Margin</p>
-            <p className='text-xs'>
-              {address
-                ? `${currencyFormatter.format(
-                    userMargins.totalMarginValue
-                  )} ${currencySymbol}`
-                : '-'}
-            </p>
-          </div>
+          <MarketInterfaceLowerBarDataItem
+            label='Total Balance'
+            value={totalBalanceDisplay}
+            tooltipHtml='LOL'
+            tooltipId='total-balance-tooltip'
+          />
+          {/*    <div className='sm:border-l sm:border-[#444650]  sm:h-[32px]'></div> */}
+
+          <MarketInterfaceLowerBarDataItem
+            label='Available Balance'
+            value={totalMarginDisplay}
+            tooltipHtml='LOL'
+            tooltipId='total-margin-tooltip'
+          />
+
+          <MarketInterfaceLowerBarDataItem
+            label='Total Margin'
+            value={totalMarginDisplay}
+            tooltipHtml='LOL'
+            tooltipId='total-margin-tooltip'
+          />
         </div>
         <div className='flex items-center gap-4'>
           <div className='text-xs'>
@@ -132,8 +142,9 @@ Margin Added to the Current Market `}
           />
         </div>
       </div>
-      <Tooltip id='wallet-balance-tooltip' style={{ fontSize: '12px' }} />
+      {/*   <Tooltip id='wallet-balance-tooltip' style={{ fontSize: '12px' }} />
       <Tooltip id='market-margin-tooltip' style={{ fontSize: '12px' }} />
+      <Tooltip id='total-balance-tooltip' style={{ fontSize: '12px' }} /> */}
     </div>
   );
 };

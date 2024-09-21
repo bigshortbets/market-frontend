@@ -1,13 +1,25 @@
-import { useQuery } from '@apollo/client';
+import { useQuery, gql } from '@apollo/client';
 import { useAtom } from 'jotai';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { userOrdersAtom } from '@/store/store';
 import { USER_ORDERS_QUERY } from '@/requests/queries';
 import { convertToSS58 } from '@/utils/convertToSS58';
 import { OrdersResponse, OrderType } from '@/types/orderTypes';
+import { apolloClient } from '@/requests/graphql';
+
+export const OPEN_ORDER_MARGIN = gql`
+  query openOrderMargin($orderId: String!, $address: String!) {
+    getMargin(marketId: $orderId, walletAddress: $address) {
+      Margin
+    }
+  }
+`;
 
 export const useUserOrders = (address: `0x${string}` | undefined) => {
   const [orders, setOrders] = useAtom(userOrdersAtom);
+  const [openOrdersTotalMargin, setOpenOrdersTotalMargin] = useState<
+    number | undefined
+  >(undefined);
 
   const {
     data: ordersRes,
@@ -51,6 +63,35 @@ export const useUserOrders = (address: `0x${string}` | undefined) => {
     return { open: [], close: [] };
   }, [orders]);
 
+  useEffect(() => {
+    const fetchMargins = async () => {
+      if (openOrders.length > 0 && address) {
+        try {
+          const marginPromises = openOrders.map((order) =>
+            apolloClient.query({
+              query: OPEN_ORDER_MARGIN,
+              variables: { orderId: order.id, address: convertToSS58(address) },
+            })
+          );
+
+          const results = await Promise.all(marginPromises);
+          const total = results.reduce(
+            (sum, res) => sum + (Number(res.data?.getMargin?.Margin) || 0),
+            0
+          );
+          setOpenOrdersTotalMargin(total);
+        } catch (e) {
+          console.error('Error fetching margins:', e);
+          setOpenOrdersTotalMargin(undefined);
+        }
+      } else {
+        setOpenOrdersTotalMargin(undefined);
+      }
+    };
+
+    fetchMargins();
+  }, [openOrders, address]);
+
   return {
     loading,
     error,
@@ -58,5 +99,6 @@ export const useUserOrders = (address: `0x${string}` | undefined) => {
     orders,
     openOrders,
     closeOrders,
+    openOrdersTotalMargin,
   };
 };
