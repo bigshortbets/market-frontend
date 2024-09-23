@@ -49,8 +49,16 @@ export const MarketInterfaceLowerBar = () => {
     userMargins.totalMarginValue
   )} ${currencySymbol}`;
 
+  const availableBalanceDisplay = `${currencyFormatter.format(
+    Number(data?.formatted)
+  )} ${currencySymbol}`;
+
+  const currentMarketMargin = `${currencyFormatter.format(
+    Number(selectedMarketMargin?.margin)
+  )} ${currencySymbol}`;
+
   return (
-    <div className='h-[58px] border-t border-[#444650] px-5 py-3'>
+    <div className='sm:h-[58px] border-t border-[#444650] px-5 py-3 overflow-x-auto'>
       {/* <div className='sm:hidden flex items-center justify-between h-full'>
         <MarketInterfaceLowerBarDataItem
           label='Total balance'
@@ -75,32 +83,44 @@ export const MarketInterfaceLowerBar = () => {
           }
         />
       </div> */}
-      <div className=' flex items-center justify-between '>
-        <div className='flex items-center gap-4'>
+      <div className='flex items-center justify-between'>
+        <div className='flex items-center sm:gap-4 gap-2'>
           <MarketInterfaceLowerBarDataItem
             label='Total Balance'
             value={totalBalanceDisplay}
-            tooltipHtml='LOL'
-            tooltipId='total-balance-tooltip'
+            tooltipHtml={
+              <div className='text-xs'>
+                <p className='mb-1'>
+                  <b>Total Balance</b> is the sum of: Available Balance, Total
+                  Margin, Unrealised PnL, Open Orders Margin
+                </p>
+                <p className='text-xs text-tetriary'>
+                  {totalBalance} = (
+                  {Number(Number(data?.formatted).toFixed(2)) ?? 0}) + (
+                  {Number(userMargins.totalMarginValue.toFixed(2)) ?? 0}) + (
+                  {sumPnL ?? 0}) + {openOrdersTotalMargin ?? 0}
+                </p>
+              </div>
+            }
           />
-          {/*    <div className='sm:border-l sm:border-[#444650]  sm:h-[32px]'></div> */}
-
           <MarketInterfaceLowerBarDataItem
             label='Available Balance'
-            value={totalMarginDisplay}
-            tooltipHtml='LOL'
-            tooltipId='total-margin-tooltip'
+            value={availableBalanceDisplay}
+            tooltipHtml={
+              <p className='text-xs'>
+                <b>Available Balance</b>: the free funds equal to your wallet
+                balance (e.g., in MetaMask).
+              </p>
+            }
           />
-
-          <MarketInterfaceLowerBarDataItem
+        </div>
+        <div className='flex items-center gap-2 sm:gap-4'>
+          {/* <MarketInterfaceLowerBarDataItem
             label='Total Margin'
             value={totalMarginDisplay}
             tooltipHtml='LOL'
-            tooltipId='total-margin-tooltip'
-          />
-        </div>
-        <div className='flex items-center gap-4'>
-          <div className='text-xs'>
+          /> */}
+          {/*    <div className='text-xs'>
             <div className='flex items-center gap-1'>
               {' '}
               <a
@@ -134,17 +154,27 @@ Margin Added to the Current Market `}
                   />
                 )}{' '}
             </div>
-          </div>
+          </div> */}
+          <MarketInterfaceLowerBarDataItem
+            label='Market Margin'
+            value={currentMarketMargin}
+            tooltipHtml={
+              <p className='text-xs'>
+                <b>Market Margin</b> is the sum of: Initial Margins of Open
+                Positions in the Current Market and Margin Added to the Current
+                Market
+              </p>
+            }
+            marketRefresh
+          />
           <LiquidationStatusTab
+            small
             status={
               selectedMarketMargin?.liquidationStatus as LiquidationStatusType
             }
           />
         </div>
       </div>
-      {/*   <Tooltip id='wallet-balance-tooltip' style={{ fontSize: '12px' }} />
-      <Tooltip id='market-margin-tooltip' style={{ fontSize: '12px' }} />
-      <Tooltip id='total-balance-tooltip' style={{ fontSize: '12px' }} /> */}
     </div>
   );
 };
