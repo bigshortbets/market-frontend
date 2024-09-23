@@ -26,6 +26,8 @@ import {
 } from '@/store/store';
 import { MarketSettlementsResponse } from '@/types/marketSettlementsTypes';
 import { ChatContainer } from './Chat/ChatContainer';
+import { useUserPositions } from '@/hooks/useUserPositions';
+import { useUserOrders } from '@/hooks/useUserOrders';
 
 interface TradingHubContentContainerProps {
   isAggregated: boolean;
@@ -37,19 +39,9 @@ export const TradingHubContentContainer = ({
   const { address } = useAccount();
   const [, setOrdersCount] = useAtom(tradingHubOrdersCountAtom);
   const [, setPositionsCount] = useAtom(tradingHubPositionsCountAtom);
-  const { data: ordersRes } = useQuery<OrdersResponse>(USER_ORDERS_QUERY, {
-    pollInterval: 1000,
-    variables: { userId: convertToSS58(address!) },
-  });
 
-  const { data: positionsRes } = useQuery<PositionsResponse>(
-    USER_OPEN_POSITIONS_QUERY,
-
-    {
-      pollInterval: 1000,
-      variables: { userId: convertToSS58(address!) },
-    }
-  );
+  const { positions, aggregatedPositions } = useUserPositions(address);
+  const { orders, closeOrders, openOrders } = useUserOrders(address);
 
   const { data: historyOrdersRes } = useQuery<HistoryResponse>(
     USER_HISTORY_QUERY,
@@ -67,33 +59,35 @@ export const TradingHubContentContainer = ({
     }
   );
 
-  useUnsettledLosses(positionsRes?.positions, address!);
-  useCollateral(positionsRes?.positions, address!);
+  useUnsettledLosses(positions, address!);
+  useCollateral(positions, address!);
 
   const [tradingHubState] = useAtom(tradingHubStateAtom);
-  useOpponentsMargin(positionsRes?.positions!, address!);
+  useOpponentsMargin(positions, address!);
 
   useEffect(() => {
-    if (ordersRes?.orders) {
-      setOrdersCount(ordersRes.orders.length);
+    if (orders) {
+      setOrdersCount(orders.length);
     }
-    if (positionsRes?.positions) {
-      setPositionsCount(positionsRes.positions.length);
+    if (positions) {
+      setPositionsCount(positions.length);
     }
-  }, [ordersRes?.orders, positionsRes?.positions]);
+  }, [orders, positions]);
 
   return (
     <div className='w-full no-scrollbar'>
-      {tradingHubState === 'orders' && ordersRes && historyOrdersRes && (
+      {tradingHubState === 'orders' && orders && historyOrdersRes && (
         <TradingHubOrders
-          orders={ordersRes.orders}
+          closeOrders={closeOrders}
+          openOrders={openOrders}
           historyOrders={historyOrdersRes.orders}
         />
       )}
-      {tradingHubState === 'positions' && positionsRes && (
+      {tradingHubState === 'positions' && positions && (
         <TradingHubPositions
           isAggregated={isAggregated}
-          positions={positionsRes.positions}
+          positions={positions}
+          aggregatedPositions={aggregatedPositions}
         />
       )}
       {tradingHubState === 'history' && marketSettlementsRes && (

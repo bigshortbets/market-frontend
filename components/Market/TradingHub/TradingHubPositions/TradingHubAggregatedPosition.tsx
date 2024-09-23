@@ -33,11 +33,6 @@ export const TradingHubAggregatedPosition = ({
   const [, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
   const router = useRouter();
 
-  const positionsWithSide = extendPositionsWithSide(
-    positions,
-    convertedAddress
-  );
-
   const toggleExtended = () => {
     setIsExtended((prevState) => !prevState);
   };
@@ -49,6 +44,11 @@ export const TradingHubAggregatedPosition = ({
   };
 
   const marketDetails = getMarkeDetails(ticker);
+
+  const positionsWithSide = extendPositionsWithSide(
+    positions,
+    convertedAddress
+  );
 
   const experimentalSumLossProfit: number =
     oraclePrice &&

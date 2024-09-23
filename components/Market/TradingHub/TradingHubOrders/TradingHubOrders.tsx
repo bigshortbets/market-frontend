@@ -6,7 +6,8 @@ import { HistoryOrderType } from '@/types/historyTypes';
 import { TradingHubCompletedOrderItem } from './TradingHubCompletedOrderItem';
 
 interface TradingHubOrdersProps {
-  orders: OrderType[];
+  closeOrders: OrderType[];
+  openOrders: OrderType[];
   historyOrders: HistoryOrderType[];
 }
 
@@ -15,7 +16,8 @@ const tabs = ['open', 'close', 'finalized'];
 export type TradingHubOrderTypeTabsType = (typeof tabs)[number];
 
 export const TradingHubOrders = ({
-  orders,
+  openOrders,
+  closeOrders,
   historyOrders,
 }: TradingHubOrdersProps) => {
   const [currentOrdersType, setCurrentOrdersType] =
@@ -24,24 +26,6 @@ export const TradingHubOrders = ({
   const changeCurrentOrdersType = (val: TradingHubOrderTypeTabsType) => {
     setCurrentOrdersType(val);
   };
-
-  const splitOrdersByType = (
-    orders: OrderType[]
-  ): { open: OrderType[]; close: OrderType[] } => {
-    return orders.reduce(
-      (acc, order) => {
-        if (order.type.type === 'OpeningOrder') {
-          acc.open.push(order);
-        } else if (order.type.type === 'ClosingOrder') {
-          acc.close.push(order);
-        }
-        return acc;
-      },
-      { open: [], close: [] } as { open: OrderType[]; close: OrderType[] }
-    );
-  };
-
-  const { open: openOrders, close: closeOrders } = splitOrdersByType(orders);
 
   const isTableShown =
     (currentOrdersType === 'open' && openOrders.length > 0) ||
