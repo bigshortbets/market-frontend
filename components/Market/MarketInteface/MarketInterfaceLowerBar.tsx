@@ -58,7 +58,7 @@ export const MarketInterfaceLowerBar = () => {
   )} ${currencySymbol}`;
 
   return (
-    <div className='sm:h-[58px] border-t border-[#444650] px-5 py-3 overflow-x-auto'>
+    <div className='sm:h-[58px] border-t border-[#444650] px-5 py-3 overflow-x-auto sm:overflow-hidden'>
       {/* <div className='sm:hidden flex items-center justify-between h-full'>
         <MarketInterfaceLowerBarDataItem
           label='Total balance'
