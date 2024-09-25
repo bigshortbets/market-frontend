@@ -13,6 +13,8 @@ import { formatEther, parseEther } from 'viem';
 import toast from 'react-hot-toast';
 import { AxiosResponse } from 'axios';
 import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
+import { useAtom } from 'jotai';
+import { initialLoadingAtom } from '@/store/store';
 
 interface ClaimProps {
   hasUserMinted: boolean;
@@ -116,6 +118,8 @@ export const Claim = ({
     /* console.log(formatEther(availableMintData?.data?.availableMint)); */
   };
 
+  const [initialLoading] = useAtom(initialLoadingAtom);
+
   const buttonText = hasUserMinted
     ? `Claim Bonus ${currencySymbol}`
     : `Claim Free 10K ${currencySymbol}`;
@@ -124,102 +128,117 @@ export const Claim = ({
     !availableMintData || Number(availableMintData?.data?.availableMint) <= 0;
   return (
     <div className='p-2.5 pb-4 flex flex-col gap-4'>
-      <div className='flex flex-col gap-2'>
-        {hasUserMinted && (
-          <p className='text-sm font-semibold'>Claim Bonus {currencySymbol}</p>
-        )}
-        {!hasUserMinted && (
-          <div>
-            <p className='text-sm font-semibold text-secondary mb-2'>
-              {/* Claim Free {currencySymbol} */} Welcome to the{' '}
-              <span className='text-[#4ECB7D]'>
-                BigShortBet$ Trading Competition!
-              </span>
-            </p>
-            <p className='text-xs mb-1'>1.Connect your wallet.</p>
-            <p className='text-xs mb-1'>2.Claim free funds.</p>
-            <p className='text-xs mb-2'>3.Trade and win real prizes!</p>
-          </div>
-        )}
-        <div className='mb-2'>
-          <p className='text-xs mb-2'>
-            {hasUserMinted ? (
-              <span>
-                Receive 5x the amount of BigSB held in your address, up to a
-                maximum of{' '}
-                <span className='font-semibold text-[#4ECB7D]'>
-                  50,000 DOLARZ
-                </span>
-                .
-              </span>
-            ) : (
-              <span>
-                Claim{' '}
-                <span className='text-[#4ECB7D] font-semibold'>
-                  10,000 DOLARZ for free
-                </span>{' '}
-                to trade and compete for real prizes. This claim is available
-                once per address.
-              </span>
+      {!initialLoading ? (
+        <>
+          <div className='flex flex-col gap-2'>
+            {hasUserMinted && (
+              <p className='text-sm font-semibold'>
+                Claim Bonus {currencySymbol}
+              </p>
             )}
-          </p>
-          {!hasUserMinted && (
-            <p className='text-xs'>
-              To ensure fair play and a positive experience for all
-              participants, the address claiming the funds must hold at least{' '}
-              <a
-                className='underline text-[#4ECB7D] font-semibold'
-                href='https://app.uniswap.org/swap?use=V2&outputCurrency=0x131157c6760f78f7ddf877c0019eba175ba4b6f6'
-                target='_blank'
-              >
-                1 BigSB token
-              </a>
-              .
-            </p>
-          )}
-          <p className='text-xs mt-2'>
-            Learn more in the{' '}
-            <a
-              href='https://docs.bigsb.network'
-              target='_blank'
-              rel='noopener noreferrer'
-              className='text-[#4ECB7D] underline'
-            >
-              Competition Quickstart
-            </a>
-          </p>
+            {!hasUserMinted && (
+              <div>
+                <p className='text-sm font-semibold text-secondary mb-2'>
+                  {/* Claim Free {currencySymbol} */} Welcome to the{' '}
+                  <span className='text-[#4ECB7D]'>
+                    BigShortBet$ Trading Competition!
+                  </span>
+                </p>
+                <p className='text-xs mb-1'>1.Connect your wallet.</p>
+                <p className='text-xs mb-1'>2.Claim free funds.</p>
+                <p className='text-xs mb-2'>3.Trade and win real prizes!</p>
+              </div>
+            )}
+            <div className='mb-2'>
+              <p className='text-xs mb-2'>
+                {hasUserMinted ? (
+                  <span>
+                    Receive 5x the amount of BigSB held in your address, up to a
+                    maximum of{' '}
+                    <span className='font-semibold text-[#4ECB7D]'>
+                      50,000 DOLARZ
+                    </span>
+                    .
+                  </span>
+                ) : (
+                  <span>
+                    Claim{' '}
+                    <span className='text-[#4ECB7D] font-semibold'>
+                      10,000 DOLARZ for free
+                    </span>{' '}
+                    to trade and compete for real prizes. This claim is
+                    available once per address.
+                  </span>
+                )}
+              </p>
+              {!hasUserMinted && (
+                <p className='text-xs'>
+                  To ensure fair play and a positive experience for all
+                  participants, the address claiming the funds must hold at
+                  least{' '}
+                  <a
+                    className='underline text-[#4ECB7D] font-semibold'
+                    href='https://app.uniswap.org/swap?use=V2&outputCurrency=0x131157c6760f78f7ddf877c0019eba175ba4b6f6'
+                    target='_blank'
+                  >
+                    1 BigSB token
+                  </a>
+                  .
+                </p>
+              )}
+              <p className='text-xs mt-2'>
+                Learn more in the{' '}
+                <a
+                  href='https://docs.bigsb.network'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='text-[#4ECB7D] underline'
+                >
+                  Competition Quickstart
+                </a>
+              </p>
 
-          {hasUserMinted && availableMintData && (
-            <p className='text-xs font-semibold mt-4'>
-              Bonus DOLARZ Available for Minting:{' '}
-              {Number(
-                formatEther(availableMintData?.data?.availableMint)
-              ).toFixed(2)}
-            </p>
+              {hasUserMinted && availableMintData && (
+                <p className='text-xs font-semibold mt-4'>
+                  Bonus DOLARZ Available for Minting:{' '}
+                  {Number(
+                    formatEther(availableMintData?.data?.availableMint)
+                  ).toFixed(2)}
+                </p>
+              )}
+              {hasUserMinted && (
+                <p className='text-xs mt-2'>
+                  <a
+                    className='underline text-[#4ECB7D] font-semibold'
+                    href='https://app.uniswap.org/swap?use=V2&outputCurrency=0x131157c6760f78f7ddf877c0019eba175ba4b6f6'
+                    target='_blank'
+                  >
+                    Buy BigSB
+                  </a>{' '}
+                  to increase the amount of bonus DOLARZ available for minting.
+                </p>
+              )}
+            </div>
+            <MintButton
+              disabled={buttonDisabled}
+              handleAction={handleMint}
+              buttonText={buttonText}
+              mintLoading={mintLoading}
+              hasMinted={hasUserMinted}
+            />
+          </div>
+          {!address && (
+            <FinanceManagerWarning error='Connect your wallet to claim funds.' />
           )}
-          {hasUserMinted && (
-            <p className='text-xs mt-2'>
-              <a
-                className='underline text-[#4ECB7D] font-semibold'
-                href='https://app.uniswap.org/swap?use=V2&outputCurrency=0x131157c6760f78f7ddf877c0019eba175ba4b6f6'
-                target='_blank'
-              >
-                Buy BigSB
-              </a>{' '}
-              to increase the amount of bonus DOLARZ available for minting.
-            </p>
-          )}
+        </>
+      ) : (
+        <div className='flex flex-col gap-2'>
+          <div className='bg-bigsbgrey h-[18px] w-[50%] animate-pulse rounded'></div>
+          <div className='bg-bigsbgrey h-[16px] w-[80%] animate-pulse rounded'></div>
+          <div className='bg-bigsbgrey h-[60px] w-[80%] animate-pulse rounded mb-6'></div>
+          <div className='bg-bigsbgrey h-[16px] w-[80%] animate-pulse rounded'></div>
+          <div className='bg-bigsbgrey h-[43.5px] w-[100%] animate-pulse rounded'></div>
         </div>
-        <MintButton
-          disabled={buttonDisabled}
-          handleAction={handleMint}
-          buttonText={buttonText}
-          mintLoading={mintLoading}
-          hasMinted={hasUserMinted}
-        />
-      </div>
-      {!address && (
-        <FinanceManagerWarning error='Connect your wallet to claim funds.' />
       )}
     </div>
   );

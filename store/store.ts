@@ -6,6 +6,10 @@ import { IFeeds, PushAPI } from '@pushprotocol/restapi';
 import { PushStream } from '@pushprotocol/restapi/src/lib/pushstream/PushStream';
 import { atom } from 'jotai';
 
+/* INITIAL LOADING ATOM */
+
+export const initialLoadingAtom = atom<boolean>(true);
+
 /* MARKETS ATOM */
 
 export const marketsAtom = atom<EnrichedMarketType[]>([]);

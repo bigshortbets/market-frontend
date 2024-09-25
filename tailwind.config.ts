@@ -21,6 +21,7 @@ const config: Config = {
         secondary: '#EBEDFD',
         tetriary: '#BABDCE',
         bigsbgreen: '#4ECB7D',
+        bigsbgrey: '#444650',
       },
     },
   },

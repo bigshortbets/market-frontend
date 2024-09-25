@@ -27,7 +27,7 @@ export const OrderBookItem = ({ empty, side, data }: OrderBookItem) => {
       }`}
     >
       {!empty && data && (
-        <div className='w-full justify-between h-full flex px-4 text-xs'>
+        <div className='w-full justify-between h-full flex px-4 text-xs items-center'>
           <div className='text-right min-w-[60px]'>
             {Number(data.price).toFixed(precision)}
           </div>

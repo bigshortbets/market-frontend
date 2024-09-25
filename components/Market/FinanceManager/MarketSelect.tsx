@@ -12,7 +12,7 @@ import { MarketSelectItem } from '../MarketInteface/MarketSelectItem';
 import { MarketDataCategories } from '@/data/marketsData';
 import { MarketSelectCategoryTab } from './MarketSelectCategoryTab';
 import { getUniqueCategories } from '@/utils/getUniqueCategories';
-import { chosenMarketAtom } from '@/store/store';
+import { chosenMarketAtom, initialLoadingAtom } from '@/store/store';
 
 interface MarketSelectProps {
   markets: EnrichedMarketType[];
@@ -24,6 +24,7 @@ export const MarketSelect = ({ markets }: MarketSelectProps) => {
   >('election');
   const [currentBlock] = useAtom(currentBlockAtom);
   const [chosenMarket] = useAtom(chosenMarketAtom);
+  const [initialLoading] = useAtom(initialLoadingAtom);
   const selectRef = useRef<HTMLDivElement>(null);
 
   const {
@@ -96,14 +97,15 @@ export const MarketSelect = ({ markets }: MarketSelectProps) => {
       }`}
       ref={selectRef}
     >
-      <div
-        className={`pr-6 pl-4 py-2 flex w-full justify-between items-center h-full ${
+      <button
+        className={`pr-6 pl-4 py-2 flex w-full justify-between items-center h-full text-left ${
           !noMarkets && 'cursor-pointer'
         }`}
         onClick={handleToggleSelectOpen}
+        disabled={initialLoading}
       >
         <div className='flex items-center gap-4'>
-          {chosenMarket?.path && (
+          {chosenMarket?.path && !initialLoading ? (
             <Image
               src={chosenMarket.path}
               width={28}
@@ -111,15 +113,24 @@ export const MarketSelect = ({ markets }: MarketSelectProps) => {
               alt='Market logo'
               className='rounded-full'
             />
+          ) : (
+            <div className=' w-[28px] h-[28px] rounded-full animate-pulse bg-bigsbgrey'></div>
           )}
           <div>
-            <p className='text-[13px] font-semibold'>
-              {chosenMarket?.name ? chosenMarket.name : chosenMarket?.ticker}
-            </p>
+            {initialLoading ? (
+              <div className='w-[150px] h-[16.5px] bg-bigsbgrey animate-pulse rounded mb-1'></div>
+            ) : (
+              <p className='text-[13px] font-semibold'>
+                {chosenMarket?.name ? chosenMarket.name : chosenMarket?.ticker}
+              </p>
+            )}
+            {initialLoading ? (
+              <div className='w-[100px] h-[14px] bg-bigsbgrey animate-pulse rounded'></div>
+            ) : (
+              <p className='text-[10px] font-normal'>{chosenMarket?.ticker}</p>
+            )}
 
-            <p className='text-[10px] font-normal'>{chosenMarket?.ticker}</p>
-
-            {noMarkets && (
+            {noMarkets && !initialLoading && (
               <p className='text-xs'>Currently no markets available</p>
             )}
           </div>
@@ -131,7 +142,7 @@ export const MarketSelect = ({ markets }: MarketSelectProps) => {
             <MdOutlineKeyboardArrowDown />
           )}
         </div>
-      </div>
+      </button>
       {isSelectOpen && (
         <div className='absolute w-full bg-[#23252E] z-40'>
           <div className='p-2 border-b border-[#444650]'>

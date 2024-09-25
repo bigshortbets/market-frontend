@@ -9,7 +9,7 @@ import { calculateMarketClosing } from '@/utils/calculateMarketClosing';
 import { GET_ALL_MARKETS_QUERY } from './queries';
 
 export const useMarkets = () => {
-  const [, setMarkets] = useAtom(marketsAtom);
+  const [markets, setMarkets] = useAtom(marketsAtom);
   const [blockHeight] = useAtom(currentBlockAtom);
 
   const { data } = useQuery<MarketsQueryResponse>(GET_ALL_MARKETS_QUERY, {
@@ -40,4 +40,6 @@ export const useMarkets = () => {
       setMarkets(extendedMarkets);
     }
   }, [data, setMarkets]);
+
+  return { markets };
 };
