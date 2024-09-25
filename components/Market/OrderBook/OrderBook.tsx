@@ -2,7 +2,7 @@ import { OrderBookResponse } from '@/types/orderTypes';
 import { OrderBookItem } from './OrderBookItem';
 import { currencySymbol } from '@/blockchain/constants';
 import { useAtom } from 'jotai';
-import { chosenMarketAtom } from '@/store/store';
+import { chosenMarketAtom, initialLoadingAtom } from '@/store/store';
 import Image from 'next/image';
 
 export enum OrderSide {
@@ -17,10 +17,11 @@ interface OrderBooksProps {
 
 export const OrderBook = ({ shortsRes, longsRes }: OrderBooksProps) => {
   const [chosenMarket] = useAtom(chosenMarketAtom);
+  const [initialLoading] = useAtom(initialLoadingAtom);
   return (
     <div className='flex flex-col  text-xs h-full'>
       <div className='pt-[14px] pl-4 mb-2 text-[#7F828F] text-[11px] flex items-center gap-2'>
-        {chosenMarket?.path && (
+        {chosenMarket?.path && !initialLoading && (
           <Image
             src={chosenMarket.path}
             width={16}
@@ -29,8 +30,16 @@ export const OrderBook = ({ shortsRes, longsRes }: OrderBooksProps) => {
             className='rounded-full'
           />
         )}
-        <p>{chosenMarket?.name}</p>
+        {initialLoading && (
+          <div className='w-4 h-4 rounded-full bg-bigsbgrey animate-pulse'></div>
+        )}
+        {!initialLoading ? (
+          <p>{chosenMarket?.name}</p>
+        ) : (
+          <div className='h-[12px] w-[140px] bg-bigsbgrey animate-pulse rounded'></div>
+        )}
       </div>
+
       <div className='flex justify-between items-center px-4'>
         <div className='flex items-center gap-1.5'>
           <p className='text-[#7F828F] font-semibold'>Price</p>
@@ -48,6 +57,7 @@ export const OrderBook = ({ shortsRes, longsRes }: OrderBooksProps) => {
       <div className='flex-grow flex flex-col justify-center'>
         <div className='flex-col-reverse flex flex-1 gap-[1px]'>
           {shortsRes &&
+            !initialLoading &&
             shortsRes.aggregatedOrdersByPrices.map((data, key) => (
               <OrderBookItem
                 side={OrderSide.SHORT}
@@ -60,6 +70,7 @@ export const OrderBook = ({ shortsRes, longsRes }: OrderBooksProps) => {
         <hr className='border-top-[1px] border-[#444650]' />
         <div className='flex-1 flex flex-col gap-[1px]'>
           {longsRes &&
+            !initialLoading &&
             longsRes.aggregatedOrdersByPrices.map((data, key) => (
               <OrderBookItem
                 side={OrderSide.LONG}

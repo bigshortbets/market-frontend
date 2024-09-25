@@ -7,6 +7,7 @@ import { MarketSelect } from '../FinanceManager/MarketSelect';
 import ReactLoading from 'react-loading';
 import { chosenMarketAtom } from '@/store/store';
 import { getPrecision } from '@/utils/getPrecision';
+import { PriceDataItem } from './PriceDataItem';
 
 interface MarketInterfaceTopBarProps {
   markets: EnrichedMarketType[];
@@ -62,45 +63,25 @@ export const MarketInterfaceTopBar = ({
       <MarketSelect markets={markets} />
 
       <div className='lg:w-[320px]  h-[55px] '>
-        <div className='pr-6 pl-12 py-2 h-full flex items-center gap-6'>
-          <div>
-            <p className='text-xs text-tetriary font-semibold'>Oracle Price</p>
-            <div className='text-xs font-normal'>
-              {chosenMarket?.oraclePrice === undefined &&
-                markets.length >= 1 && (
-                  <ReactLoading
-                    type='spin'
-                    width={14}
-                    height={14}
-                    color='#444650'
-                    className='mt-0.5'
-                  />
-                )}
-              {chosenMarket?.oraclePrice != undefined &&
-                markets.length >= 1 &&
-                Number(chosenMarket?.oraclePrice).toFixed(precision)}
-              {markets.length < 1 && '-'}
-              {chosenMarket?.oraclePrice === null && '-'}
-            </div>
-          </div>
-
-          <div className='border-l border-[#444650] text-xs pl-2'>
-            <p className='text-tetriary font-semibold'>Market Price</p>
-            <p>
-              {recentTrades === undefined && (
-                <ReactLoading
-                  type='spin'
-                  width={14}
-                  height={14}
-                  color='#444650'
-                  className='mt-0.5'
-                />
-              )}
-              {recentTrades && recentTrades.length > 0
+        <div className='px-6 py-2 h-full flex items-center gap-6'>
+          <PriceDataItem
+            label={'Oracle Price'}
+            value={
+              chosenMarket?.oraclePrice
+                ? Number(chosenMarket?.oraclePrice)
+                    .toFixed(precision)
+                    .toString()
+                : '-'
+            }
+          />
+          <PriceDataItem
+            label={'Market Price'}
+            value={
+              recentTrades.length > 0
                 ? Number(recentTrades[0].createPrice).toFixed(precision)
-                : '-'}
-            </p>
-          </div>
+                : '-'
+            }
+          />
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@ import {
   Chart as ChartComponent,
   LineSeries,
 } from 'lightweight-charts-react-wrapper';
-import { chosenMarketAtom } from '@/store/store';
+import { chosenMarketAtom, initialLoadingAtom } from '@/store/store';
 import Image from 'next/image';
 import { marketsData } from '@/data/marketsData';
 import { ChartIntervalTab } from './ChartIntervalTab';
@@ -51,12 +51,14 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
   const toggleMarketPrice = () => {
     setIsMarketPrice(!isMarketPrice);
   };
+
+  const [initialLoading] = useAtom(initialLoadingAtom);
   return (
     <div ref={containerRef} className='w-full h-[85%]'>
       <div className='flex justify-between flex-col md:flex-row md:items-center gap-2 md:gap-0 mt-2 mb-6 md:mr-3'>
         <div className='flex items-center gap-2 '>
           {' '}
-          {chosenMarket?.path && (
+          {chosenMarket?.path && !initialLoading && (
             <Image
               src={chosenMarket.path}
               width={20}
@@ -65,7 +67,14 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
               className='rounded-full'
             />
           )}
-          <p className=' text-sm font-semibold'>{chosenMarket?.name} Chart</p>
+          {initialLoading && (
+            <div className='w-5 h-5 rounded-full bg-bigsbgrey animate-pulse'></div>
+          )}
+          {!initialLoading ? (
+            <p className=' text-sm font-semibold'>{chosenMarket?.name} Chart</p>
+          ) : (
+            <div className='h-[14px] w-[170px] rounded animate-pulse bg-bigsbgrey'></div>
+          )}
         </div>
         {/* <div className='flex items-center gap-1.5 ml-1 md:ml-0'>
           <div className='w-[11px] h-[11px] rounded-full bg-[#4ECB7D]'></div>
