@@ -118,14 +118,14 @@ export const MarketSelect = ({ markets }: MarketSelectProps) => {
           )}
           <div>
             {initialLoading ? (
-              <div className='w-[150px] h-[15px] bg-bigsbgrey animate-pulse rounded mb-1'></div>
+              <div className='w-[150px] h-[16.5px] bg-bigsbgrey animate-pulse rounded mb-1'></div>
             ) : (
               <p className='text-[13px] font-semibold'>
                 {chosenMarket?.name ? chosenMarket.name : chosenMarket?.ticker}
               </p>
             )}
             {initialLoading ? (
-              <div className='w-[100px] h-[13px] bg-bigsbgrey animate-pulse rounded'></div>
+              <div className='w-[100px] h-[14px] bg-bigsbgrey animate-pulse rounded'></div>
             ) : (
               <p className='text-[10px] font-normal'>{chosenMarket?.ticker}</p>
             )}

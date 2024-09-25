@@ -26,7 +26,7 @@ export const MarketInterfaceLowerBarDataItem = ({
 
     const timer = setTimeout(() => {
       setInitialLoading(false);
-    }, 1000);
+    }, 1750);
 
     return () => clearTimeout(timer);
   };

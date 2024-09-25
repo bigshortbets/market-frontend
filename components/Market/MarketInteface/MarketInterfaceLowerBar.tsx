@@ -8,7 +8,7 @@ import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { currencyFormatter } from '@/utils/currencyFormatter';
 import { currencySymbol } from '@/blockchain/constants';
 import ReactLoading from 'react-loading';
-import { marketsAtom } from '@/store/store';
+import { initialLoadingAtom, marketsAtom } from '@/store/store';
 
 import { useUserPositions } from '@/hooks/useUserPositions';
 import { useQuery } from '@apollo/client';
@@ -34,6 +34,8 @@ export const MarketInterfaceLowerBar = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const [initialLoading] = useAtom(initialLoadingAtom);
 
   const totalBalance =
     (sumPnL ?? 0) + // Jeśli sumPnL jest undefined, użyj 0
@@ -167,12 +169,16 @@ Margin Added to the Current Market `}
             }
             marketRefresh
           />
-          <LiquidationStatusTab
-            small
-            status={
-              selectedMarketMargin?.liquidationStatus as LiquidationStatusType
-            }
-          />
+          {address && initialLoading ? (
+            <div className='rounded h-3 w-3 animate-pulse bg-bigsbgrey'></div>
+          ) : (
+            <LiquidationStatusTab
+              small
+              status={
+                selectedMarketMargin?.liquidationStatus as LiquidationStatusType
+              }
+            />
+          )}
         </div>
       </div>
     </div>
