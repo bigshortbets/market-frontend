@@ -5,6 +5,7 @@ import React from 'react';
 import { SideLabel } from '../SideLabel';
 import { useAtom } from 'jotai';
 import { selectedMarketIdAtom } from '../../Market';
+import { TbWorld } from 'react-icons/tb';
 
 interface TradingHubCompletedOrderItemProps {
   order: HistoryOrderType;
@@ -39,6 +40,15 @@ export const TradingHubCompletedOrderItem = ({
       <td>{Number(order.initialQuantity)}</td>
       {/* Close */}
       <td className='font-semibold'>{order.status}</td>
+      <td>
+        <a
+          href={`https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftest-market.bigsb.network#/explorer/query/${order.blockHeight}`}
+          target='_blank'
+          className='text-medium text-tetriary'
+        >
+          <TbWorld />
+        </a>
+      </td>
     </tr>
   );
 };

@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { fetchOrderCollateral } from '@/utils/fetchOrderCollateral';
 import { selectedMarketIdAtom } from '../../Market';
 import { useAtom } from 'jotai';
+import { TbWorld } from 'react-icons/tb';
 
 interface TradingHubOrdersItemProps {
   order: OrderType;
@@ -62,13 +63,22 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
       <td>{Number(order.quantity)}</td>
       {/*  <td>{order.type === 'CLOSING' ? 'Closing order' : 'Opening order'}</td> */}
       {/* Close */}
-      <td className=' text-right pr-3 '>
-        <button
-          className={`font-bold text-xs text-[#D26D6C] transition ease-in-out hover:text-[#C53F3A] duration-300`}
-          onClick={() => writeCancelOrder()}
-        >
-          CANCEL
-        </button>
+      <td className=' text-right pr-3'>
+        <div className='flex items-center justify-end space-x-4'>
+          <a
+            href={`https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Ftest-market.bigsb.network#/explorer/query/${order.blockHeight}`}
+            target='_blank'
+            className='text-medium text-tetriary'
+          >
+            <TbWorld />
+          </a>
+          <button
+            className={`font-bold text-xs text-[#D26D6C] transition ease-in-out hover:text-[#C53F3A] duration-300`}
+            onClick={() => writeCancelOrder()}
+          >
+            CANCEL
+          </button>
+        </div>
       </td>
     </tr>
   );
