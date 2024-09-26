@@ -24,7 +24,7 @@ export const MarketInterfaceLowerBar = () => {
   const [selectedMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [markets] = useAtom(marketsAtom);
 
-  const { sumPnL } = useUserPositions(address);
+  const { unsettledPnL } = useUserPositions(address);
   const { openOrdersTotalMargin } = useUserOrders(address);
 
   useEffect(() => {
@@ -38,7 +38,7 @@ export const MarketInterfaceLowerBar = () => {
   const [initialLoading] = useAtom(initialLoadingAtom);
 
   const totalBalance =
-    (sumPnL ?? 0) + // Jeśli sumPnL jest undefined, użyj 0
+    (unsettledPnL ?? 0) + // Jeśli sumPnL jest undefined, użyj 0
     (openOrdersTotalMargin ?? 0) + // Jeśli openOrdersTotalMargin jest undefined, użyj 0
     (Number(Number(data?.formatted).toFixed(2)) ?? 0) + // Jeśli data?.formatted jest undefined, użyj 0
     (Number(userMargins.totalMarginValue.toFixed(2)) ?? 0);
@@ -94,13 +94,13 @@ export const MarketInterfaceLowerBar = () => {
               <div className='text-xs'>
                 <p className='mb-1'>
                   <b>Total Balance</b> is the sum of: Available Balance, Total
-                  Margin, Unrealised PnL, Open Orders Margin
+                  Margin, Unsettled PnL, Open Orders Margin
                 </p>
                 <p className='text-xs text-tetriary'>
                   {totalBalance} = (
                   {Number(Number(data?.formatted).toFixed(2)) ?? 0}) + (
                   {Number(userMargins.totalMarginValue.toFixed(2)) ?? 0}) + (
-                  {sumPnL ?? 0}) + {openOrdersTotalMargin ?? 0}
+                  {unsettledPnL ?? 0}) + {openOrdersTotalMargin ?? 0}
                 </p>
               </div>
             }
