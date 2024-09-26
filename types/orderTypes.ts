@@ -10,6 +10,7 @@ export interface OrderType {
   side: 'LONG' | 'SHORT';
   quantity: BigInt;
   type: OrderTypeUnion;
+  blockHeight: string;
 }
 
 enum OrderTypeEnum {

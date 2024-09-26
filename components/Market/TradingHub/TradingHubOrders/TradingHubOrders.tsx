@@ -77,14 +77,13 @@ export const TradingHubOrders = ({
                         <th scope='col' className='px-6 py-3'>
                           Quantity
                         </th>
-                        {/* <th scope='col' className='px-6 py-3'>
-                        Type
-                      </th> */}
+
                         <th scope='col' className='px-6 py-3'></th>
                       </tr>
                     )}
                   </thead>
                   <tbody>
+                    {/* We should make Completed and Not completed as one component */}
                     {currentOrdersType === 'open' &&
                       openOrders.map((order, key) => (
                         <TradingHubOrdersItem order={order} key={key} />
@@ -116,17 +115,12 @@ export const TradingHubOrders = ({
                   <th className='font-normal'>Market</th>
                   <th className='font-normal'>Price</th>
                   <th className='font-normal'>Quantity</th>
-                  {/* <th className='font-normal'>Type</th> */}
 
                   <th className='pr-3'></th>
-                  {/* <th className="font-normal">Created</th>
-                  <th className="font-normal">Market</th>
-                  <th className="font-normal">Price</th>
-                
-                  <th className="pr-3"></th> */}
                 </tr>
               </thead>
               <tbody>
+                {/* We should make Completed and Not completed as one component */}
                 {currentOrdersType === 'open' &&
                   openOrders.map((order, key) => (
                     <TradingHubOrdersItem order={order} key={key} />

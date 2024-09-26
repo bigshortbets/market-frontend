@@ -1,6 +1,7 @@
 import { EnrichedMarketType } from './marketTypes';
 
 export interface HistoryOrderType {
+  blockHeight: string;
   timestamp: string;
   id: string;
   market: {
