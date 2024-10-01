@@ -1,99 +1,67 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Navbar } from '../Navbar/Navbar';
 import { useRouter } from 'next/router';
-import {
-  USER_HISTORY_QUERY,
-  USER_MARKET_SETTLEMENTS_QUERY,
-  USER_OPEN_POSITIONS_QUERY,
-  USER_ORDERS_QUERY,
-} from '@/requests/queries';
-import { apolloClient } from '@/requests/graphql';
-import { GetServerSidePropsContext } from 'next';
 import { truncateAddress } from '@/utils/truncateAddress';
-import { useQuery as useApolloQuery } from '@apollo/client';
 import { useQuery as useTanstackQuery } from '@tanstack/react-query';
-import { OrdersResponse } from '@/types/orderTypes';
-import { PositionType, PositionsResponse } from '@/types/positionTypes';
-import { HistoryResponse } from '@/types/historyTypes';
-import { MarketSettlementsResponse } from '@/types/marketSettlementsTypes';
 import { isAddress } from '@polkadot/util-crypto';
 import { ProfileTab } from './ProfileTab';
 import { ProfileAggregatedPosition } from './ProfileAggregatedPosition';
 import { addressMatcherApi } from '@/requests/bidgeApi/addressMatcherApi';
 import { useDisplayName } from '@/hooks/useDisplayName';
-import { decodeWord } from '@/utils/decodeLeaderboardWord';
 import Link from 'next/link';
+import { useUserPositions } from '@/hooks/useUserPositions';
+import { currencySymbol } from '@/blockchain/constants';
+import { useNativeCurrencyBalance } from '@/blockchain/hooks/useNativeCurrencyBalance';
+import { useAccount } from 'wagmi';
+import { convertToSS58 } from '@/utils/convertToSS58';
+import { decodeWord } from '@/utils/decodeLeaderboardWord';
+import { IoMdSettings } from 'react-icons/io';
+import { ProfileSettingsModal } from './ProfileSettingsModal';
 
 export type ProfileStateType = 'positions' | 'orders' | 'settlements';
 
 export const ProfileContainer = () => {
   const router = useRouter();
+  const { address: loggedAddress } = useAccount();
   const ss58Address = router.query.address as string;
   const isValidAddress = isAddress(ss58Address);
-  /*  const isLoggedAddress =  */
+  const isLoggedUser =
+    loggedAddress && convertToSS58(loggedAddress) === ss58Address;
 
   const [profileState, setProfileState] =
     useState<ProfileStateType>('positions');
+  const [isModalOpened, setIsModalOpened] = useState(false);
 
   const handleSetProfileState = (val: ProfileStateType) => {
     setProfileState(val);
   };
 
-  /*   const { data: ordersRes } = useApolloQuery<OrdersResponse>(
-    USER_ORDERS_QUERY,
-    {
-      pollInterval: 10000,
-      variables: { userId: ss58Address },
-      skip: !isValidAddress,
-    }
-  );
- */
-  const { data: positionsRes } = useApolloQuery<PositionsResponse>(
-    USER_OPEN_POSITIONS_QUERY,
-
-    {
-      pollInterval: 10000,
-      variables: { userId: ss58Address },
-      skip: !isValidAddress,
-    }
-  );
-
-  /* const { data: historyOrdersRes } = useApolloQuery<HistoryResponse>(
-    USER_HISTORY_QUERY,
-    {
-      pollInterval: 10000,
-      variables: { userId: ss58Address },
-      skip: !isValidAddress,
-    }
-  ); */
-
-  /* const { data: marketSettlementsRes } =
-    useApolloQuery<MarketSettlementsResponse>(USER_MARKET_SETTLEMENTS_QUERY, {
-      pollInterval: 10000,
-      variables: { userId: router.query.address as string },
-      skip: !isValidAddress,
-    }); */
-
-  const aggregatePositionsByMarketTicker = () => {
-    const aggregatedPositions: Record<string, PositionType[]> = {};
-    positionsRes?.positions.forEach((position) => {
-      if (aggregatedPositions[position.market.ticker]) {
-        aggregatedPositions[position.market.ticker].push(position);
-      } else {
-        aggregatedPositions[position.market.ticker] = [position];
-      }
-    });
-    return aggregatedPositions;
-  };
-
-  const positionsByMarketTicker = aggregatePositionsByMarketTicker();
+  const { aggregatedPositions, sumPnL } = useUserPositions(ss58Address);
 
   const { data: h160address } = useTanstackQuery({
     queryKey: ['h160', ss58Address],
     queryFn: addressMatcherApi.geth160Address,
   });
 
-  const { displayName } = useDisplayName(ss58Address);
+  const { data: balanceData, refetch } = useNativeCurrencyBalance(
+    h160address?.data?.ethAddress
+  );
+
+  const userBalance = Number(Number(balanceData?.formatted).toFixed(2));
+
+  const { displayName: nickname } = useDisplayName(ss58Address);
+
+  const displayName = isLoggedUser
+    ? nickname
+      ? `${decodeWord(nickname)} (You)`
+      : truncateAddress(ss58Address)
+    : nickname
+    ? `${decodeWord(nickname)}`
+    : ss58Address && truncateAddress(ss58Address);
+
+  const handleCloseModal = () => {
+    setIsModalOpened(false);
+  };
 
   return (
     <div className='bg-[#111217] relative min-h-screen'>
@@ -108,32 +76,69 @@ export const ProfileContainer = () => {
           {isValidAddress ? (
             <>
               <div className='mb-2 lg:flex lg:items-center lg:justify-between'>
-                <div className='lg:flex lg:items-center lg:gap-5'>
+                <div>
                   <h2 className='text-white text-lg font-semibold mb-4 lg:mb-0'>
                     {displayName
-                      ? displayName
+                      ? decodeWord(displayName)
                       : router.query.address &&
                         truncateAddress(router.query.address as string)}{' '}
                     Profile
                   </h2>
                 </div>
-                <Link
-                  href={`/?chat=${h160address?.data.ethAddress}`}
-                  className='bg-bigsbgreen w-[160px] h-[32px] flex items-center justify-center text-black rounded-md text-sm font-semibold'
-                >
-                  Open Chat
-                </Link>
+                {!isLoggedUser ? (
+                  <Link
+                    href={`/?chat=${h160address?.data.ethAddress}`}
+                    className='bg-bigsbgreen w-[160px] h-[32px] flex items-center justify-center text-black rounded-md text-sm font-semibold mb-4 lg:mb-0'
+                  >
+                    Open Chat
+                  </Link>
+                ) : (
+                  <button
+                    className='bg-bigsbgreen w-[160px] h-[32px] flex items-center justify-center text-black rounded-md text-sm font-semibold mb-4 lg:mb-0'
+                    onClick={() => setIsModalOpened(true)}
+                  >
+                    Settings
+                  </button>
+                )}
               </div>
-              <div className='mb-4'>
-                <p className='text-xs text-tetriary mb-1'>
-                  SS58 Address:{' '}
-                  {router.query.address &&
-                    truncateAddress(router.query.address as string)}
-                </p>
-                <p className='text-xs text-tetriary '>
-                  H160 Address:{' '}
-                  {h160address && truncateAddress(h160address.data.ethAddress)}
-                </p>
+              <div className='mb-4 flex gap-4'>
+                <div>
+                  <p className='text-xs text-tetriary mb-1'>
+                    SS58 Address:{' '}
+                    <span className='text-white'>
+                      {router.query.address &&
+                        truncateAddress(router.query.address as string)}
+                    </span>
+                  </p>
+                  <p className='text-xs text-tetriary '>
+                    H160 Address:{' '}
+                    <span className='text-white'>
+                      {' '}
+                      {h160address &&
+                        truncateAddress(h160address.data.ethAddress)}
+                    </span>
+                  </p>
+                </div>
+
+                <div>
+                  <p className='text-xs text-tetriary mb-1'>
+                    Unrealised PnL:{' '}
+                    <span
+                      className={`text-xs font-semibold ${
+                        sumPnL < 0 ? 'text-[#DA8787]' : 'text-[#87DAA4]'
+                      }`}
+                    >
+                      {sumPnL.toFixed(2)} {currencySymbol}
+                    </span>
+                  </p>
+                  <p className='text-xs text-tetriary '>
+                    Wallet Balance:{' '}
+                    <span className='text-white'>
+                      {' '}
+                      {`${userBalance ?? '-'} ${currencySymbol}`}
+                    </span>
+                  </p>
+                </div>
               </div>
               <div className='flex gap-1.5'>
                 <ProfileTab
@@ -154,7 +159,7 @@ export const ProfileContainer = () => {
               </div>
               <div className='w-full   overflow-y-auto no-scrollbar mt-4'>
                 <div className='flex flex-col gap-4'>
-                  {Object.entries(positionsByMarketTicker).map(
+                  {Object.entries(aggregatedPositions).map(
                     ([ticker, positions]) => (
                       <ProfileAggregatedPosition
                         address={router.query.address as string}
@@ -182,6 +187,11 @@ export const ProfileContainer = () => {
           )}
         </div>
       </div>
+
+      <ProfileSettingsModal
+        isModalOpened={isModalOpened}
+        handleCloseModal={handleCloseModal}
+      />
     </div>
   );
 };

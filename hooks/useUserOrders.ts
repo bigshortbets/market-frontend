@@ -15,7 +15,7 @@ export const OPEN_ORDER_MARGIN = gql`
   }
 `;
 
-export const useUserOrders = (address: `0x${string}` | undefined) => {
+export const useUserOrders = (ss58address: string | undefined) => {
   const [orders, setOrders] = useAtom(userOrdersAtom);
   const [openOrdersTotalMargin, setOpenOrdersTotalMargin] = useState<
     number | undefined
@@ -27,18 +27,18 @@ export const useUserOrders = (address: `0x${string}` | undefined) => {
     error,
     refetch,
   } = useQuery<OrdersResponse>(USER_ORDERS_QUERY, {
-    pollInterval: address ? 5000 : 0,
-    skip: !address,
-    variables: { userId: address ? convertToSS58(address) : '' },
+    pollInterval: ss58address ? 5000 : 0,
+    skip: !ss58address,
+    variables: { userId: ss58address ? ss58address : '' },
   });
 
   useEffect(() => {
     if (ordersRes && ordersRes.orders) {
       setOrders(ordersRes.orders);
-    } else if (!address) {
+    } else if (!ss58address) {
       setOrders(undefined);
     }
-  }, [ordersRes, setOrders, address]);
+  }, [ordersRes, setOrders, ss58address]);
 
   const splitOrdersByType = (
     orders: OrderType[] = []
@@ -65,12 +65,12 @@ export const useUserOrders = (address: `0x${string}` | undefined) => {
 
   useEffect(() => {
     const fetchMargins = async () => {
-      if (openOrders.length > 0 && address) {
+      if (openOrders.length > 0 && ss58address) {
         try {
           const marginPromises = openOrders.map((order) =>
             apolloClient.query({
               query: OPEN_ORDER_MARGIN,
-              variables: { orderId: order.id, address: convertToSS58(address) },
+              variables: { orderId: order.id, address: ss58address },
             })
           );
 
@@ -90,7 +90,7 @@ export const useUserOrders = (address: `0x${string}` | undefined) => {
     };
 
     fetchMargins();
-  }, [openOrders, address]);
+  }, [openOrders, ss58address]);
 
   return {
     loading,

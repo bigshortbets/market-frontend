@@ -24,8 +24,10 @@ export const MarketInterfaceLowerBar = () => {
   const [selectedMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [markets] = useAtom(marketsAtom);
 
-  const { unsettledPnL } = useUserPositions(address);
-  const { openOrdersTotalMargin } = useUserOrders(address);
+  const ss58Address = address && convertToSS58(address);
+
+  const { unsettledPnL } = useUserPositions(ss58Address);
+  const { openOrdersTotalMargin } = useUserOrders(ss58Address);
 
   useEffect(() => {
     const interval = setInterval(() => {
