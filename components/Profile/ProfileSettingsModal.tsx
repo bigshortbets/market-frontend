@@ -29,22 +29,6 @@ export const ProfileSettingsModal = ({
     address && convertToSS58(address as string)
   );
 
-  const handleCopy = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    const val = event.currentTarget.getAttribute('data-value');
-    if (!val) return;
-
-    try {
-      await navigator.clipboard.writeText(val);
-      toast.success('Address copied to clipboard', {
-        duration: 1111,
-      });
-    } catch (err) {
-      toast.error('Something went wrong', {
-        duration: 1111,
-      });
-    }
-  };
-
   const buttonDisabled = nameInput.length < 3 || nameInput.length > 18;
 
   return (

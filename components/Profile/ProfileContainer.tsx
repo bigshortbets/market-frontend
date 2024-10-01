@@ -44,7 +44,7 @@ export const ProfileContainer = () => {
   });
 
   const { data: balanceData, refetch } = useNativeCurrencyBalance(
-    h160address && h160address.data.ethAddress
+    h160address?.data?.ethAddress
   );
 
   const userBalance = Number(Number(balanceData?.formatted).toFixed(2));
@@ -135,7 +135,7 @@ export const ProfileContainer = () => {
                     Wallet Balance:{' '}
                     <span className='text-white'>
                       {' '}
-                      {userBalance && `${userBalance} ${currencySymbol}`}
+                      {`${userBalance ?? '-'} ${currencySymbol}`}
                     </span>
                   </p>
                 </div>

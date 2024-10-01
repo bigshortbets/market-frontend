@@ -74,8 +74,7 @@ export const Navbar = () => {
             >
               <FaUser
                 className={`text-sm hover:text-[#4ECB7D] cursor-pointer  transition ${
-                  router.asPath ===
-                    `/profile/5DTwZmpc9BJZ2c7DbqBGBTxpYwW3oustdZsDfE6A3REAhU1G` &&
+                  router.asPath === `/profile/${convertToSS58(address)}` &&
                   'text-[#4ECB7D]'
                 }`}
               />
