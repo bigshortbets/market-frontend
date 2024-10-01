@@ -8,10 +8,9 @@ import {
 } from '@/types/positionTypes';
 import { userPositionsAtom } from '@/store/store';
 import { USER_OPEN_POSITIONS_QUERY } from '@/requests/queries';
-import { convertToSS58 } from '@/utils/convertToSS58';
 import { extendPositionsWithSide } from '@/utils/extendPositionsWithSide';
 
-export const useUserPositions = (address: `0x${string}` | undefined) => {
+export const useUserPositions = (ss58address: string | undefined) => {
   const [positions, setPositions] = useAtom(userPositionsAtom);
 
   const {
@@ -20,18 +19,18 @@ export const useUserPositions = (address: `0x${string}` | undefined) => {
     error,
     refetch,
   } = useQuery<PositionsResponse>(USER_OPEN_POSITIONS_QUERY, {
-    pollInterval: address ? 5000 : 0,
-    skip: !address,
-    variables: { userId: address ? convertToSS58(address) : '' },
+    pollInterval: ss58address ? 5000 : 0,
+    skip: !ss58address,
+    variables: { userId: ss58address ? ss58address : '' },
   });
 
   useEffect(() => {
     if (positionsRes && positionsRes.positions) {
       setPositions(positionsRes.positions);
-    } else if (!address) {
+    } else if (!ss58address) {
       setPositions(undefined);
     }
-  }, [positionsRes, setPositions, address]);
+  }, [positionsRes, setPositions, ss58address]);
 
   const aggregatePositionsByMarketTicker = (positions: PositionType[] = []) => {
     const aggregatedPositions: Record<string, PositionType[]> = {};
@@ -54,10 +53,10 @@ export const useUserPositions = (address: `0x${string}` | undefined) => {
   }, [positions]);
 
   const sumPnL = useMemo(() => {
-    if (positions && address) {
+    if (positions && ss58address) {
       const positionsWithSide: PositionWithSide[] = extendPositionsWithSide(
         positions,
-        convertToSS58(address)
+        ss58address
       );
       const totalPnL = positionsWithSide.reduce((acc, position) => {
         const oraclePrice = position.market.oraclePrice;
@@ -74,13 +73,13 @@ export const useUserPositions = (address: `0x${string}` | undefined) => {
       return Number(totalPnL.toFixed(2));
     }
     return 0;
-  }, [positions, address]);
+  }, [positions, ss58address]);
 
   const unsettledPnL = useMemo(() => {
-    if (positions && address) {
+    if (positions && ss58address) {
       const positionsWithSide: PositionWithSide[] = extendPositionsWithSide(
         positions,
-        convertToSS58(address)
+        ss58address
       );
       const totalPnL = positionsWithSide.reduce((acc, position) => {
         const oraclePrice = position.market.oraclePrice;
@@ -97,7 +96,7 @@ export const useUserPositions = (address: `0x${string}` | undefined) => {
       return Number(totalPnL.toFixed(2));
     }
     return 0;
-  }, [positions, address]);
+  }, [positions, ss58address]);
 
   return {
     loading,

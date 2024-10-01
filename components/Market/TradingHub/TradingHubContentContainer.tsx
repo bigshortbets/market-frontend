@@ -40,8 +40,12 @@ export const TradingHubContentContainer = ({
   const [, setOrdersCount] = useAtom(tradingHubOrdersCountAtom);
   const [, setPositionsCount] = useAtom(tradingHubPositionsCountAtom);
 
-  const { positions, aggregatedPositions } = useUserPositions(address);
-  const { orders, closeOrders, openOrders } = useUserOrders(address);
+  const { positions, aggregatedPositions } = useUserPositions(
+    address && convertToSS58(address)
+  );
+  const { orders, closeOrders, openOrders } = useUserOrders(
+    address && convertToSS58(address)
+  );
 
   const { data: historyOrdersRes } = useQuery<HistoryResponse>(
     USER_HISTORY_QUERY,
