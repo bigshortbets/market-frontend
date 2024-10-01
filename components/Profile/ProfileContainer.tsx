@@ -30,6 +30,7 @@ export const ProfileContainer = () => {
   const router = useRouter();
   const ss58Address = router.query.address as string;
   const isValidAddress = isAddress(ss58Address);
+  /*  const isLoggedAddress =  */
 
   const [profileState, setProfileState] =
     useState<ProfileStateType>('positions');
@@ -95,10 +96,7 @@ export const ProfileContainer = () => {
   const { displayName } = useDisplayName(ss58Address);
 
   return (
-    <div
-      className='bg-[#111217] relative min-h-screen'
-      onClick={() => console.log(isValidAddress)}
-    >
+    <div className='bg-[#111217] relative min-h-screen'>
       <img
         src='/chartbg.svg'
         alt=''
@@ -107,41 +105,43 @@ export const ProfileContainer = () => {
       <div className='h-[100dvh] max-w-[2000px]  lg:mx-auto mx-4 flex flex-col pb-4 items-center relative z-10'>
         <Navbar />
         <div className='lg:max-w-[800px] max-h-[calc(100dvh-100px)] pt-6 lg:px-6 px-4 flex-grow border-[#444650] border-2 rounded-[10px] w-full mt-4 bg-[#191B24] overflow-auto no-scrollbar'>
-          <div className='mb-2 lg:flex lg:items-center lg:justify-between'>
-            <div className='lg:flex lg:items-center lg:gap-5'>
-              <h2 className='text-white text-lg font-semibold mb-4 lg:mb-0'>
-                {displayName
-                  ? displayName
-                  : router.query.address &&
-                    truncateAddress(router.query.address as string)}{' '}
-                Profile
-              </h2>
-            </div>
-            <Link
-              href={`/?chat=${h160address?.data.ethAddress}`}
-              className='bg-bigsbgreen w-[160px] h-[32px] flex items-center justify-center text-black rounded-md text-sm font-semibold'
-            >
-              Open Chat
-            </Link>
-          </div>
-          <div className='mb-4'>
-            <p className='text-xs text-tetriary mb-1'>
-              SS58 Address:{' '}
-              {router.query.address &&
-                truncateAddress(router.query.address as string)}
-            </p>
-            <p className='text-xs text-tetriary '>
-              H160 Address:{' '}
-              {h160address && truncateAddress(h160address.data.ethAddress)}
-            </p>
-          </div>
-          <div className='flex gap-1.5'>
-            <ProfileTab
-              value='positions'
-              profileState={profileState}
-              setProfileState={handleSetProfileState}
-            />
-            {/*   <ProfileTab
+          {isValidAddress ? (
+            <>
+              <div className='mb-2 lg:flex lg:items-center lg:justify-between'>
+                <div className='lg:flex lg:items-center lg:gap-5'>
+                  <h2 className='text-white text-lg font-semibold mb-4 lg:mb-0'>
+                    {displayName
+                      ? displayName
+                      : router.query.address &&
+                        truncateAddress(router.query.address as string)}{' '}
+                    Profile
+                  </h2>
+                </div>
+                <Link
+                  href={`/?chat=${h160address?.data.ethAddress}`}
+                  className='bg-bigsbgreen w-[160px] h-[32px] flex items-center justify-center text-black rounded-md text-sm font-semibold'
+                >
+                  Open Chat
+                </Link>
+              </div>
+              <div className='mb-4'>
+                <p className='text-xs text-tetriary mb-1'>
+                  SS58 Address:{' '}
+                  {router.query.address &&
+                    truncateAddress(router.query.address as string)}
+                </p>
+                <p className='text-xs text-tetriary '>
+                  H160 Address:{' '}
+                  {h160address && truncateAddress(h160address.data.ethAddress)}
+                </p>
+              </div>
+              <div className='flex gap-1.5'>
+                <ProfileTab
+                  value='positions'
+                  profileState={profileState}
+                  setProfileState={handleSetProfileState}
+                />
+                {/*   <ProfileTab
               value='orders'
               profileState={profileState}
               setProfileState={handleSetProfileState}
@@ -151,21 +151,35 @@ export const ProfileContainer = () => {
               profileState={profileState}
               setProfileState={handleSetProfileState}
             /> */}
-          </div>
-          <div className='w-full   overflow-y-auto no-scrollbar mt-4'>
-            <div className='flex flex-col gap-4'>
-              {Object.entries(positionsByMarketTicker).map(
-                ([ticker, positions]) => (
-                  <ProfileAggregatedPosition
-                    address={router.query.address as string}
-                    key={ticker}
-                    ticker={ticker}
-                    positions={positions}
-                  />
-                )
-              )}
+              </div>
+              <div className='w-full   overflow-y-auto no-scrollbar mt-4'>
+                <div className='flex flex-col gap-4'>
+                  {Object.entries(positionsByMarketTicker).map(
+                    ([ticker, positions]) => (
+                      <ProfileAggregatedPosition
+                        address={router.query.address as string}
+                        key={ticker}
+                        ticker={ticker}
+                        positions={positions}
+                      />
+                    )
+                  )}
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className='flex flex-col items-center justify-center h-full gap-4'>
+              <h1 className='text-tetriary font-semibold text-3xl'>
+                Address you've provided is not valid
+              </h1>
+              <Link
+                href='/'
+                className='bg-bigsbgreen rounded text-black px-6 py-2 font-semibold'
+              >
+                Back to app
+              </Link>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
