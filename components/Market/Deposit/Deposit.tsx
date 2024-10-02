@@ -20,7 +20,7 @@ import { bigshortbetsChain } from '@/blockchain/chain';
 import { FinanceManagerWarning } from '../FinanceManager/FinanceManagerWarning';
 import { currencySymbol } from '@/blockchain/constants';
 import { chosenMarketAtom } from '@/store/store';
-import { checkIfBidenMarket } from '@/utils/checkIfBidenMarket';
+import ReactLoading from 'react-loading';
 
 export interface DepositProps {
   markets: EnrichedMarketType[];
@@ -32,7 +32,11 @@ export const Deposit = ({ markets }: DepositProps) => {
   const [chosenMarket] = useAtom(chosenMarketAtom);
   const { address, chain } = useAccount();
   const { data: walletBalance, refetch } = useNativeCurrencyBalance(address);
-  const { write: writeDeposit } = useDeposit(numAmount);
+  const {
+    write: writeDeposit,
+    status: depositStatus,
+    isLoading,
+  } = useDeposit(numAmount);
   const isBsbNetwork = chain?.id === bigshortbetsChain.id;
   const [selecteMarketMargin] = useAtom(selectedMarketMarginAtom);
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
@@ -48,16 +52,18 @@ export const Deposit = ({ markets }: DepositProps) => {
   }, []);
 
   const handleDeposit = () => {
-    if (!address) {
-      open();
-      return;
-    }
     if (address && !isBsbNetwork) {
       switchToBigShortBetsChain();
       return;
     }
     writeDeposit();
   };
+
+  useEffect(() => {
+    if (depositStatus === 'success') {
+      setAmount('0');
+    }
+  }, [depositStatus]);
 
   const depositDisabled =
     Number(walletBalance?.formatted) < numAmount + 50 ||
@@ -96,8 +102,6 @@ export const Deposit = ({ markets }: DepositProps) => {
       setAmount(Math.abs(val).toString());
     }
   };
-
-  const isBidenMarket = checkIfBidenMarket(selectedMarket?.ticker);
 
   return (
     <div className='p-2.5 pb-4 flex flex-col gap-4'>
@@ -270,16 +274,19 @@ export const Deposit = ({ markets }: DepositProps) => {
         <button
           disabled={depositDisabled}
           onClick={handleDeposit}
-          className={`disabled:bg-gray-400 bg-[#4ECB7D] w-full rounded-lg text-[#01083A] text-[13px] font-semibold py-3`}
+          className={`disabled:bg-gray-400 bg-[#4ECB7D] flex items-center justify-center w-full rounded-lg text-[#01083A] text-[13px] font-semibold h-[42px]`}
         >
           {!address && 'Deposit'}
-          {address && isBsbNetwork && 'Deposit'}
+          {address &&
+            isBsbNetwork &&
+            (isLoading ? (
+              <ReactLoading type='spin' height={22} width={22} color='black' />
+            ) : (
+              'Deposit'
+            ))}
           {address && !isBsbNetwork && 'Change network'}
         </button>
       </div>
-      {isBidenMarket && (
-        <FinanceManagerWarning error='This market (BIGSB_EL:BIDENX2024) will close at 18:00 UTC on 26 July 2024. ' />
-      )}
       {selecteMarketMargin?.liquidationStatus != 'EverythingFine' &&
         selecteMarketMargin?.liquidationStatus != ('None' as any) &&
         selecteMarketMargin &&

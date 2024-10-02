@@ -1,3 +1,4 @@
+import { useState, useEffect, useCallback } from 'react';
 import { useWriteContract } from 'wagmi';
 import { marketContract } from '../constants';
 import { abi } from '../abi';
@@ -5,17 +6,18 @@ import { useAtom } from 'jotai';
 import { selectedMarketIdAtom } from '@/components/Market/Market';
 import { parseEther } from 'viem';
 import { bigshortbetsChain } from '../chain';
-import { useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { handleBlockchainError } from '@/utils/handleBlockchainError';
 
 export const useWithdraw = (amount: number) => {
-  const { writeContract, error, data, isSuccess } = useWriteContract();
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedMarketId] = useAtom(selectedMarketIdAtom);
+  const { writeContract, error, data, status } = useWriteContract();
+
   const notifText = `Withdraw has been performed! Wait for transaction confirmation.`;
 
-  const [selectedMarketId] = useAtom(selectedMarketIdAtom);
-
-  const write = () =>
+  const write = useCallback(() => {
+    setIsLoading(true);
     writeContract({
       address: marketContract as `0x${string}`,
       abi: abi,
@@ -23,19 +25,23 @@ export const useWithdraw = (amount: number) => {
       args: [BigInt(selectedMarketId), parseEther(amount.toString())],
       chainId: bigshortbetsChain.id,
     });
+  }, [selectedMarketId, amount, writeContract]);
 
   useEffect(() => {
     if (error) {
       handleBlockchainError(error.stack!);
+      setIsLoading(false);
     }
   }, [error]);
+
   useEffect(() => {
-    if (isSuccess) {
+    if (data) {
       toast.success(notifText, {
         duration: 4000,
       });
+      setIsLoading(false);
     }
-  }, [isSuccess]);
+  }, [data]);
 
-  return { data, isSuccess, write };
+  return { write, isLoading, status };
 };
