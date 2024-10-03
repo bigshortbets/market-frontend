@@ -13,7 +13,7 @@ export const useDeposit = (amount: number) => {
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const { writeContract, error, data, status } = useWriteContract();
 
-  const notifText = `Deposit has been done! Wait for transaction confirmation.`;
+  const notifText = `Deposit initiated. A wallet notification will confirm once the process is complete.`;
 
   const write = useCallback(() => {
     setIsLoading(true);

@@ -14,7 +14,7 @@ export const useWithdraw = (amount: number) => {
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const { writeContract, error, data, status } = useWriteContract();
 
-  const notifText = `Withdraw has been performed! Wait for transaction confirmation.`;
+  const notifText = `Withdrawal initiated. A wallet notification will confirm once the process is complete.`;
 
   const write = useCallback(() => {
     setIsLoading(true);

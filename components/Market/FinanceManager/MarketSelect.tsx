@@ -79,12 +79,11 @@ export const MarketSelect = ({ markets }: MarketSelectProps) => {
 
   const sortMarketsAlphabeticly = (markets: EnrichedMarketType[]) => {
     return markets.sort((a, b) => {
-      if (!a.name) return 1; // a nie ma name, umieść go na końcu
-      if (!b.name) return -1; // b nie ma name, umieść go na końcu
-      return a.name.localeCompare(b.name); // oba mają name, porównaj alfabetycznie
+      if (!a.name) return 1;
+      if (!b.name) return -1;
+      return a.name.localeCompare(b.name);
     });
   };
-  //FinaSorted / filtered
 
   const sortedActiveMarkets = sortMarketsAlphabeticly(unsortedActiveMarkets);
   const sortedClosedMarkets = sortMarketsAlphabeticly(unsortedClosedMarkets);

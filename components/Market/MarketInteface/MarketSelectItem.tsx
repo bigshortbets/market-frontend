@@ -28,7 +28,7 @@ export const MarketSelectItem = ({
   const handleAction = () => {
     setSelectedMarketId(market.id);
     handleCloseSelect();
-    router.push(`?market=${market.ticker}`);
+    router.push(`?market=${market.ticker}-${market.id}`);
   };
   return (
     <div

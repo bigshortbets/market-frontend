@@ -9,7 +9,7 @@ import { bigshortbetsChain } from '../chain';
 export const useCancelOrder = (marketId: string, orderId: string) => {
   const { writeContract, error, data, isSuccess } = useWriteContract();
 
-  const notifText = `Order has been canceled! Wait for transaction confirmation.`;
+  const notifText = `Order is being cancelled. A wallet notification will confirm once the process is complete.`;
 
   const write = () =>
     writeContract({
