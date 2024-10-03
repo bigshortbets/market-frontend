@@ -9,7 +9,7 @@ import { handleBlockchainError } from '@/utils/handleBlockchainError';
 export const useMarkToMarket = (marketId: string, positionId: string) => {
   const { writeContract, error, data, isSuccess } = useWriteContract();
 
-  const notifText = `Mark to market action performed! Wait for transaction confirmation.`;
+  const notifText = `Mark-to-market initiated. A wallet notification will confirm once the process is complete.`;
 
   const write = () =>
     writeContract({

@@ -19,7 +19,7 @@ export const useCreateOrderWrite = (
   const [selectedMarketId] = useAtom(selectedMarketIdAtom);
   const { writeContract, error, data } = useWriteContract();
 
-  const notifText = `Order created! Wait for transaction confirmation.`;
+  const notifText = `Order is being placed. A wallet notification will confirm once the process is complete.`;
 
   const write = useCallback(() => {
     setIsLoading(true);

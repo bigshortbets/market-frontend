@@ -76,12 +76,14 @@ export const Market = ({ markets }: MarketProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    const { market: marketParam, chat } = router.query; // Destructure market and chat
+    const { market: marketParam, chat: chatParam } = router.query;
     let isMarketFromURLProcessed = false;
 
     if (marketParam && markets && markets.length > 0) {
+      const [ticker, id] = (marketParam as string).split('-');
+
       const matchedMarket = markets.find(
-        (market) => market.ticker === marketParam
+        (market) => market.id === id && market.ticker === ticker
       );
 
       if (matchedMarket) {
@@ -90,6 +92,7 @@ export const Market = ({ markets }: MarketProps) => {
       }
     }
 
+    // Przełącz tylko na rynek elekcyjny, jeśli nie znaleziono pasującego rynku i marketParam jest pusty
     if (!isMarketFromURLProcessed && markets && markets.length > 0) {
       const electionMarkets = markets.filter(
         (market) => market.category === 'election'
@@ -100,19 +103,17 @@ export const Market = ({ markets }: MarketProps) => {
           electionMarkets[Math.floor(Math.random() * electionMarkets.length)];
         setSelectedMarketId(randomMarket.id);
 
+        const marketString = `${randomMarket.ticker}-${randomMarket.id}`;
+
         const queryParams = {
-          market: randomMarket.ticker,
-          ...(chat && { chat }),
+          market: marketString,
+          chat: chatParam || '',
         };
 
-        router.push(
-          {
-            pathname: '/',
-            query: queryParams,
-          },
-          undefined,
-          { shallow: true }
-        );
+        const fullPath = `/?market=${queryParams.market}${
+          queryParams.chat ? `&chat=${queryParams.chat}` : ''
+        }`;
+        router.replace(fullPath, undefined, { shallow: true });
       }
     }
   }, [blockHeight, markets, router]);
