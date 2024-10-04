@@ -8,6 +8,7 @@ import { currencySymbol } from '@/blockchain/constants';
 import Image from 'next/image';
 import { selectedMarketIdAtom } from '../../Market';
 import { useAtom } from 'jotai';
+import { useRouter } from 'next/router';
 
 interface TradingHubHistoryItem {
   settlement: MarketSettlementsType;
@@ -18,6 +19,16 @@ export const TradingHubHistoryItem = ({
 }: TradingHubHistoryItem) => {
   const marketDetails = getMarkeDetails(settlement.market.ticker);
   const [_, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
+  const router = useRouter();
+  const changeMarket = () => {
+    setSelectedMarketId(settlement.market.id);
+
+    router.replace(
+      `?market=${settlement.market.ticker}-${settlement.market.id}`,
+      undefined,
+      { shallow: true }
+    );
+  };
   return (
     <div className='w-full rounded-lg py-4 lg:py-2  lg:h-[56px] md:flex-row bg-[#23252E] flex flex-col  px-4 md:justify-between '>
       <div className='flex h-full gap-3.5'>
@@ -51,7 +62,7 @@ export const TradingHubHistoryItem = ({
             className='mb-1.5 underline cursor-pointer hidden md:block'
             role='button'
             aria-label={`Select market ${marketDetails?.name}`}
-            onClick={() => setSelectedMarketId(settlement.market.id)}
+            onClick={changeMarket}
           >
             {marketDetails?.name}
           </p>

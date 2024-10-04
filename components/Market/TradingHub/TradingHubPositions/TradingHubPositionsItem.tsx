@@ -30,6 +30,7 @@ export const TradingHubPositionsItem = ({
   position,
   isNotAggregated,
 }: TradingHubPositionsItemProps) => {
+  const router = useRouter();
   const oraclePrice = position.market.oraclePrice;
   const opponent = position.side === 'LONG' ? position.short : position.long;
   const calculatedProfitOrLoss =
@@ -49,7 +50,6 @@ export const TradingHubPositionsItem = ({
   );
 
   const [opponentsMargin] = useAtom(opponentsMarginsAtom);
-  const router = useRouter();
 
   const marginData = getOpponentMarginData(
     opponentsMargin,
@@ -86,6 +86,15 @@ export const TradingHubPositionsItem = ({
     setTradingHubState('chat');
   };
 
+  const changeMarket = () => {
+    setSelectedMarketId(position.market.id);
+    router.replace(
+      `?market=${position.market.ticker}-${position.market.id}`,
+      undefined,
+      { shallow: true }
+    );
+  };
+
   return (
     <tr
       className={`text-sm even:bg-[#23252E] text-[#7F828F]  overflow-x-scroll
@@ -97,7 +106,7 @@ export const TradingHubPositionsItem = ({
       {isNotAggregated && (
         <td
           className='text-[10px] sm:text-xs px-6 sm:px-0 underline cursor-pointer'
-          onClick={() => setSelectedMarketId(position.market.id)}
+          onClick={changeMarket}
           role='button'
           aria-label={`Select market ${marketDetails?.name}`}
         >

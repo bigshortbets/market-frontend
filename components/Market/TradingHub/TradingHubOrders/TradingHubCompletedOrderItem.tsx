@@ -6,6 +6,7 @@ import { SideLabel } from '../SideLabel';
 import { useAtom } from 'jotai';
 import { selectedMarketIdAtom } from '../../Market';
 import { TbWorld } from 'react-icons/tb';
+import { useRouter } from 'next/router';
 
 interface TradingHubCompletedOrderItemProps {
   order: HistoryOrderType;
@@ -17,6 +18,17 @@ export const TradingHubCompletedOrderItem = ({
   const date = parseISO(order.timestamp);
   const marketDetails = getMarkeDetails(order.market.ticker);
   const [_, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
+  const router = useRouter();
+
+  const changeMarket = () => {
+    setSelectedMarketId(order.market.id);
+
+    router.replace(
+      `?market=${order.market.ticker}-${order.market.id}`,
+      undefined,
+      { shallow: true }
+    );
+  };
   return (
     <tr className={`text-sm odd:bg-[#23252E] text-[#7F828F] sm:text-xs  `}>
       {/* Side */}
@@ -30,7 +42,7 @@ export const TradingHubCompletedOrderItem = ({
         className='underline cursor-pointer'
         role='button'
         aria-label={`Select market ${marketDetails?.name}`}
-        onClick={() => setSelectedMarketId(order.market.id)}
+        onClick={changeMarket}
       >
         {marketDetails?.name}
       </td>

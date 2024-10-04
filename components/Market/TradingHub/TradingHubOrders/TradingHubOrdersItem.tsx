@@ -9,6 +9,7 @@ import { fetchOrderCollateral } from '@/utils/fetchOrderCollateral';
 import { selectedMarketIdAtom } from '../../Market';
 import { useAtom } from 'jotai';
 import { TbWorld } from 'react-icons/tb';
+import { useRouter } from 'next/router';
 
 interface TradingHubOrdersItemProps {
   order: OrderType;
@@ -22,6 +23,7 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
   const { address } = useAccount();
   const [state, setState] = useState<number>();
   const [_, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
+  const router = useRouter();
 
   /*   useEffect(() => {
     const fetchCollateral = async () => {
@@ -37,6 +39,15 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
 
     fetchCollateral();
   }, [order]); */
+
+  const changeMarket = () => {
+    setSelectedMarketId(order.market.id);
+    router.replace(
+      `?market=${order.market.ticker}-${order.market.id}`,
+      undefined,
+      { shallow: true }
+    );
+  };
   return (
     <tr
       className={`text-sm odd:bg-[#23252E] text-[#7F828F]  overflow-x-scroll sm:text-xs 
@@ -53,7 +64,7 @@ export const TradingHubOrdersItem = ({ order }: TradingHubOrdersItemProps) => {
         role='button'
         aria-label={`Select market ${marketDetails?.name}`}
         className='underline cursor-pointer'
-        onClick={() => setSelectedMarketId(order.market.id)}
+        onClick={changeMarket}
       >
         {marketDetails?.name}
       </td>
