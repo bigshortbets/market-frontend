@@ -39,7 +39,9 @@ export const TradingHubAggregatedPosition = ({
 
   const handleOpenChart = () => {
     setSelectedMarketId(marketId);
-    router.push(`?market=${ticker}`);
+    router.replace(`?market=${ticker}-${marketId}`, undefined, {
+      shallow: true,
+    });
     setTradingHubState('chart');
   };
 
@@ -69,7 +71,9 @@ export const TradingHubAggregatedPosition = ({
   const handleClick = () => {
     if (!isExtended) {
       setSelectedMarketId(marketId);
-      router.push(`?market=${ticker}`);
+      router.replace(`?market=${ticker}-${marketId}`, undefined, {
+        shallow: true,
+      });
     }
     toggleExtended();
   };
