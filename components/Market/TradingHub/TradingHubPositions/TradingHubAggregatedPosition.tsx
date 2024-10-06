@@ -32,7 +32,6 @@ export const TradingHubAggregatedPosition = ({
   const oraclePrice = positions[0].market.oraclePrice;
   const [, setSelectedMarketId] = useAtom(selectedMarketIdAtom);
   const router = useRouter();
-
   const toggleExtended = () => {
     setIsExtended((prevState) => !prevState);
   };

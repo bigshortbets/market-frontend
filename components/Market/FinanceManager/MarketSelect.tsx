@@ -13,6 +13,7 @@ import { MarketDataCategories } from '@/data/marketsData';
 import { MarketSelectCategoryTab } from './MarketSelectCategoryTab';
 import { getUniqueCategories } from '@/utils/getUniqueCategories';
 import { chosenMarketAtom, initialLoadingAtom } from '@/store/store';
+import { IoMdLock } from 'react-icons/io';
 
 interface MarketSelectProps {
   markets: EnrichedMarketType[];
@@ -98,8 +99,8 @@ export const MarketSelect = ({ markets }: MarketSelectProps) => {
     >
       <button
         className={`pr-6 pl-4 py-2 flex w-full justify-between items-center h-full text-left ${
-          !noMarkets && 'cursor-pointer'
-        }`}
+          chosenMarket?.isClosed && 'opacity-50'
+        }    ${!noMarkets && 'cursor-pointer'}`}
         onClick={handleToggleSelectOpen}
         disabled={initialLoading}
       >
@@ -119,9 +120,18 @@ export const MarketSelect = ({ markets }: MarketSelectProps) => {
             {initialLoading ? (
               <div className='w-[150px] h-[16.5px] bg-bigsbgrey animate-pulse rounded mb-1'></div>
             ) : (
-              <p className='text-[13px] font-semibold'>
-                {chosenMarket?.name ? chosenMarket.name : chosenMarket?.ticker}
-              </p>
+              <div className='flex items-center gap-1'>
+                <p className='text-[13px] font-semibold'>
+                  {chosenMarket?.name
+                    ? chosenMarket.name
+                    : chosenMarket?.ticker}
+                </p>
+                {chosenMarket?.isClosed && (
+                  <div className='text-[12px] text-tetriary'>
+                    <IoMdLock />
+                  </div>
+                )}
+              </div>
             )}
             {initialLoading ? (
               <div className='w-[100px] h-[14px] bg-bigsbgrey animate-pulse rounded'></div>
