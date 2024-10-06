@@ -38,7 +38,9 @@ export const TradingHubAggregatedPosition = ({
 
   const handleOpenChart = () => {
     setSelectedMarketId(marketId);
-    router.push(`?market=${ticker}`);
+    router.replace(`?market=${ticker}-${marketId}`, undefined, {
+      shallow: true,
+    });
     setTradingHubState('chart');
   };
 
@@ -68,7 +70,9 @@ export const TradingHubAggregatedPosition = ({
   const handleClick = () => {
     if (!isExtended) {
       setSelectedMarketId(marketId);
-      router.push(`?market=${ticker}`);
+      router.replace(`?market=${ticker}-${marketId}`, undefined, {
+        shallow: true,
+      });
     }
     toggleExtended();
   };
@@ -120,7 +124,7 @@ export const TradingHubAggregatedPosition = ({
             </div>
             <div className='flex items-center gap-2'>
               <div className='flex flex-col text-right'>
-                <p className='text-[10px] text-tetriary'>Sum gain / loss</p>
+                <p className='text-[10px] text-tetriary'>Sum Gain / Loss</p>
                 <p
                   className={`text-[11px] font-semibold ${
                     experimentalSumLossProfit < 0
@@ -217,9 +221,10 @@ export const TradingHubAggregatedPosition = ({
 
             <div className='flex gap-6'>
               {userMargins.details[marketId] && (
-                <div className='flex items-start  gap-1.5 w-[150px]'>
-                  <p className='text-xs text-tetriary'>Status</p>
+                <div className='flex items-center gap-2'>
+                  <p className='text-xs text-tetriary'>Market Status:</p>
                   <LiquidationStatusTab
+                    small
                     status={
                       userMargins.details[marketId]
                         .liquidationStatus as LiquidationStatusType
@@ -229,7 +234,7 @@ export const TradingHubAggregatedPosition = ({
               )}
               {/* Sum profit / loss */}
               <div className='flex flex-col text-right min-w-[100px]'>
-                <p className='text-xs text-tetriary'>Sum gain / loss</p>
+                <p className='text-xs text-tetriary'>Sum Gain / Loss</p>
                 <p
                   className={`text-xs font-semibold ${
                     experimentalSumLossProfit < 0
@@ -253,10 +258,10 @@ export const TradingHubAggregatedPosition = ({
                   <th className='font-normal pb-2 py-2 pl-3 '>Side</th>
                   <th className='font-normal'>Quantity</th>
 
-                  <th className='font-normal'>Entry price</th>
-                  <th className='font-normal'>Settlement price</th>
-                  <th className='font-normal'>Profit / loss</th>
-                  <th className='font-normal'>Opponent & status</th>
+                  <th className='font-normal'>Entry Price</th>
+                  <th className='font-normal'>Settlement Price</th>
+                  <th className='font-normal'>Profit / Loss</th>
+                  <th className='font-normal'>Opponent & Status</th>
 
                   <th className='pr-3'></th>
                   {/* <th className="font-normal">Created</th>

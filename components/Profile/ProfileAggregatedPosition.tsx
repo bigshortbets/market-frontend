@@ -102,7 +102,7 @@ export const ProfileAggregatedPosition = ({
             </div>
             <div className='flex items-center gap-2'>
               <div className='flex flex-col text-right'>
-                <p className='text-[10px] text-tetriary'>Sum gain / loss</p>
+                <p className='text-[10px] text-tetriary'>Sum Gain / Loss</p>
                 <p
                   className={`text-[11px] font-semibold ${
                     experimentalSumLossProfit < 0
@@ -208,7 +208,7 @@ export const ProfileAggregatedPosition = ({
               )} */}
               {/* Sum profit / loss */}
               <div className='flex flex-col text-right min-w-[100px]'>
-                <p className='text-xs text-tetriary'>Sum gain / loss</p>
+                <p className='text-xs text-tetriary'>Sum Gain / Loss</p>
                 <p
                   className={`text-xs font-semibold ${
                     experimentalSumLossProfit < 0
@@ -232,10 +232,10 @@ export const ProfileAggregatedPosition = ({
                   <th className='font-normal pb-2 py-2 pl-3 '>Side</th>
                   <th className='font-normal'>Quantity</th>
 
-                  <th className='font-normal'>Entry price</th>
-                  <th className='font-normal'>Settlement price</th>
-                  <th className='font-normal'>Profit / loss</th>
-                  <th className='font-normal'>Opponent & status</th>
+                  <th className='font-normal'>Entry Price</th>
+                  <th className='font-normal'>Settlement Price</th>
+                  <th className='font-normal'>Profit / Loss</th>
+                  <th className='font-normal'>Opponent & Status</th>
 
                   {/* <th className="font-normal">Created</th>
                 <th className="font-normal">Market</th>

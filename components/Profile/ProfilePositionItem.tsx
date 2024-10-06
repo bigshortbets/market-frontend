@@ -89,7 +89,6 @@ export const ProfilePositionItem = ({
       {isNotAggregated && (
         <td
           className='text-[10px] sm:text-xs px-6 sm:px-0 underline cursor-pointer'
-          /*  onClick={() => setSelectedMarketId(position.market.id)} */
           role='button'
           aria-label={`Select market ${marketDetails?.name}`}
         >
