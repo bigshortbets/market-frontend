@@ -4,6 +4,7 @@ import { extendPositionsWithSide } from '@/utils/extendPositionsWithSide';
 import React from 'react';
 import { useAccount } from 'wagmi';
 import { TradingHubPositionsItem } from './TradingHubPositionsItem';
+import { BigSBTooltip } from '@/components/BigSBTooltip';
 
 interface TradingHubNonAggregatedPositionsProps {
   positions: PositionType[];
@@ -37,7 +38,17 @@ export const TradingHubNonAggregatedPositions = ({
                     Entry price
                   </th>
                   <th scope='col' className='px-6 py-3'>
-                    Settlement price
+                    <BigSBTooltip
+                      content={
+                        <div className='text-xs'>
+                          Price of the most recent settlement for this position
+                        </div>
+                      }
+                    >
+                      <p className='decoration-dotted underline cursor-help'>
+                        Settlement Price
+                      </p>
+                    </BigSBTooltip>
                   </th>
                   <th scope='col' className='px-6 py-3'>
                     Profit/loss
@@ -70,7 +81,20 @@ export const TradingHubNonAggregatedPositions = ({
               <th className='font-normal'>Quantity</th>
 
               <th className='font-normal'>Entry price</th>
-              <th className='font-normal'>Settlement price</th>
+              <th className='font-normal'>
+                {' '}
+                <BigSBTooltip
+                  content={
+                    <div className='text-xs'>
+                      Price of the most recent settlement for this position
+                    </div>
+                  }
+                >
+                  <p className='decoration-dotted underline cursor-help'>
+                    Settlement Price
+                  </p>
+                </BigSBTooltip>
+              </th>
               <th className='font-normal'>Profit / loss</th>
               <th className='font-normal'>Opponent & status</th>
 

@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { ProfilePositionItem } from './ProfilePositionItem';
 import { findMarketById } from '@/utils/findMarketById';
 import { IoMdLock } from 'react-icons/io';
+import { BigSBTooltip } from '../BigSBTooltip';
 
 interface ProfileAggregatedPositionProps {
   positions: PositionType[];
@@ -141,7 +142,18 @@ export const ProfileAggregatedPosition = ({
                         Entry price
                       </th>
                       <th scope='col' className='px-6 py-3'>
-                        Settlement price
+                        <BigSBTooltip
+                          content={
+                            <div className='text-xs'>
+                              Price of the most recent settlement for this
+                              position
+                            </div>
+                          }
+                        >
+                          <p className='decoration-dotted underline cursor-help'>
+                            Settlement Price
+                          </p>
+                        </BigSBTooltip>
                       </th>
                       <th scope='col' className='px-6 py-3'>
                         Profit/loss
@@ -243,7 +255,20 @@ export const ProfileAggregatedPosition = ({
                   <th className='font-normal'>Quantity</th>
 
                   <th className='font-normal'>Entry Price</th>
-                  <th className='font-normal'>Settlement Price</th>
+                  <th className='font-normal'>
+                    {' '}
+                    <BigSBTooltip
+                      content={
+                        <div className='text-xs'>
+                          Price of the most recent settlement for this position
+                        </div>
+                      }
+                    >
+                      <p className='decoration-dotted underline cursor-help'>
+                        Settlement Price
+                      </p>
+                    </BigSBTooltip>
+                  </th>
                   <th className='font-normal'>Profit / Loss</th>
                   <th className='font-normal'>Opponent & Status</th>
 
