@@ -13,13 +13,15 @@ import { ClosePositionModal } from './ClosePositionModal';
 import { currencySymbol } from '@/blockchain/constants';
 import { getMarkeDetails } from '@/utils/getMarketDetails';
 import { FaMessage } from 'react-icons/fa6';
-import { tradingHubStateAtom } from '@/store/store';
+import { marketsAtom, tradingHubStateAtom } from '@/store/store';
 import { useDisplayName } from '@/hooks/useDisplayName';
 import { IoChatbubble } from 'react-icons/io5';
 import { useQuery } from '@tanstack/react-query';
 import { addressMatcherApi } from '@/requests/bidgeApi/addressMatcherApi';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { findMarketById } from '@/utils/findMarketById';
+import { IoMdLock } from 'react-icons/io';
 
 interface TradingHubPositionsItemProps {
   position: PositionWithSide;
@@ -94,6 +96,8 @@ export const TradingHubPositionsItem = ({
       { shallow: true }
     );
   };
+  const [markets] = useAtom(marketsAtom);
+  const market = findMarketById(markets, position.market.id);
 
   return (
     <tr
@@ -110,7 +114,10 @@ export const TradingHubPositionsItem = ({
           role='button'
           aria-label={`Select market ${marketDetails?.name}`}
         >
-          {marketDetails?.name}
+          <div className='flex items-center space-x-1'>
+            <p>{marketDetails?.name}</p>
+            {market?.isClosed && <IoMdLock />}
+          </div>
         </td>
       )}
       <td className='text-[10px] sm:text-xs px-6 sm:px-0'>

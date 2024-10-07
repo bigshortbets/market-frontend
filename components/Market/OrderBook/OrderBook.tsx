@@ -4,6 +4,7 @@ import { currencySymbol } from '@/blockchain/constants';
 import { useAtom } from 'jotai';
 import { chosenMarketAtom, initialLoadingAtom } from '@/store/store';
 import Image from 'next/image';
+import { IoMdLock } from 'react-icons/io';
 
 export enum OrderSide {
   LONG = 'LONG',
@@ -34,7 +35,14 @@ export const OrderBook = ({ shortsRes, longsRes }: OrderBooksProps) => {
           <div className='w-4 h-4 rounded-full bg-bigsbgrey animate-pulse'></div>
         )}
         {!initialLoading ? (
-          <p>{chosenMarket?.name}</p>
+          <div className='flex items-center gap-1'>
+            <p>{chosenMarket?.name}</p>
+            {chosenMarket?.isClosed && (
+              <div className='text-[11px] text-tetriary'>
+                <IoMdLock />
+              </div>
+            )}
+          </div>
         ) : (
           <div className='h-[12px] w-[140px] bg-bigsbgrey animate-pulse rounded'></div>
         )}

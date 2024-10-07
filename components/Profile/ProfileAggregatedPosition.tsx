@@ -9,9 +9,11 @@ import { useAtom } from 'jotai';
 import { LiquidationStatusType } from '@/blockchain/hooks/useUserMargin';
 import { currencySymbol } from '@/blockchain/constants';
 import { FaChartBar } from 'react-icons/fa';
-import { tradingHubStateAtom } from '@/store/store';
+import { marketsAtom, tradingHubStateAtom } from '@/store/store';
 import { useRouter } from 'next/router';
 import { ProfilePositionItem } from './ProfilePositionItem';
+import { findMarketById } from '@/utils/findMarketById';
+import { IoMdLock } from 'react-icons/io';
 
 interface ProfileAggregatedPositionProps {
   positions: PositionType[];
@@ -26,7 +28,9 @@ export const ProfileAggregatedPosition = ({
 }: ProfileAggregatedPositionProps) => {
   const [isExtended, setIsExtended] = useState(false);
   const marketId = positions[0].market.id;
+  const [markets] = useAtom(marketsAtom);
   const oraclePrice = positions[0].market.oraclePrice;
+  const market = findMarketById(markets, marketId);
 
   const positionsWithSide = extendPositionsWithSide(positions, address);
 
@@ -62,7 +66,9 @@ export const ProfileAggregatedPosition = ({
     <>
       <div className='sm:hidden'>
         <div
-          className=' p-3 bg-[#23252E] cursor-pointer w-full  rounded-md overflow-x-auto no-scroll'
+          className={`p-3 bg-[#23252E] ${
+            market?.isClosed && 'opacity-50'
+          } cursor-pointer w-full  rounded-md overflow-x-auto no-scroll`}
           onClick={handleClick}
         >
           <div className='flex items-center justify-between'>
@@ -81,6 +87,7 @@ export const ProfileAggregatedPosition = ({
                   <p className='text-[#EBEDFD] text-xs'>
                     {marketDetails?.name}
                   </p>
+                  {market?.isClosed && <IoMdLock className='text-xs' />}
 
                   {/*  <button
                     className='text-tetriary text-[16px] hover:text-gray-400'
@@ -163,7 +170,9 @@ export const ProfileAggregatedPosition = ({
 
       <div className='w-full  flex-col  relative h-full hidden sm:flex'>
         <div
-          className='w-full px-3 bg-[#23252E] py-3  cursor-pointer h-full rounded-md'
+          className={`w-full px-3 bg-[#23252E] py-3 ${
+            market?.isClosed && 'opacity-60'
+          }  cursor-pointer h-full rounded-md`}
           onClick={handleClick}
         >
           <div className='flex justify-between items-center h-full'>
@@ -182,6 +191,7 @@ export const ProfileAggregatedPosition = ({
                       className='rounded-full'
                     />
                   )}
+                  {market?.isClosed && <IoMdLock className='text-xs' />}
 
                   {/* <button
                     className='text-tetriary text-[16px] hover:text-gray-400'
