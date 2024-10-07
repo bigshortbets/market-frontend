@@ -3,6 +3,7 @@ import { recentTradesAtom } from '../Market';
 import { RecentTradesItem } from './RecentTradesItem';
 import Image from 'next/image';
 import { chosenMarketAtom } from '@/store/store';
+import { IoMdLock } from 'react-icons/io';
 
 export const RecentTrades = () => {
   const [recentTrades] = useAtom(recentTradesAtom);
@@ -19,7 +20,14 @@ export const RecentTrades = () => {
             className='rounded-full'
           />
         )}
-        <p>{chosenMarket?.name}</p>
+        <div className='flex items-center gap-1'>
+          <p>{chosenMarket?.name}</p>
+          {chosenMarket?.isClosed && (
+            <div className='text-[11px] text-tetriary'>
+              <IoMdLock />
+            </div>
+          )}
+        </div>
       </div>
       <div className='flex justify-between items-center'>
         <p className='text-[#7F828F] font-semibold'>Time</p>

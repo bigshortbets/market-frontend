@@ -19,7 +19,6 @@ export const TradingHubNonAggregatedPositions = ({
     convertedAddress
   );
 
-  const oraclePrice = positions[0].market.oraclePrice;
   return (
     <>
       <div className='w-full border-t-[1px] border-[#2d2d2f] md:hidden'>
