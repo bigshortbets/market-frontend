@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react';
 import { OrderSide } from './OrderBook';
-import { OrderBookOrder } from '@/types/orderTypes';
-import { fetchOrderCollateral } from '@/utils/fetchOrderCollateral';
+import { OrderBookOrder, OrderType } from '@/types/orderTypes';
 import { useAccount } from 'wagmi';
 import { useAtom } from 'jotai';
 import { chosenMarketAtom } from '@/store/store';
 import { getPrecision } from '@/utils/getPrecision';
+import { useUserOrders } from '@/hooks/useUserOrders';
+import { convertToSS58 } from '@/utils/convertToSS58';
+import { FaUser } from 'react-icons/fa';
 
 interface OrderBookItem {
   empty: boolean;
@@ -15,8 +16,32 @@ interface OrderBookItem {
 
 export const OrderBookItem = ({ empty, side, data }: OrderBookItem) => {
   const [chosenMarket] = useAtom(chosenMarketAtom);
+  const { address } = useAccount();
 
   const precision = getPrecision(Number(chosenMarket?.tickSize));
+
+  const compareOrderPrices = (
+    openOrders: OrderType[],
+    orderBookPrice: number,
+    precision: number
+  ): boolean => {
+    return openOrders.some((order) => {
+      const orderPrice = Number(order.price);
+      return (
+        orderPrice.toFixed(precision) === orderBookPrice.toFixed(precision)
+      );
+    });
+  };
+
+  const { openOrders } = useUserOrders(
+    address && convertToSS58(address as string)
+  );
+
+  const isPriceInOpenOrders = compareOrderPrices(
+    openOrders,
+    Number(data?.price),
+    precision
+  );
 
   return (
     <div
@@ -28,8 +53,9 @@ export const OrderBookItem = ({ empty, side, data }: OrderBookItem) => {
     >
       {!empty && data && (
         <div className='w-full justify-between h-full flex px-4 text-xs items-center'>
-          <div className='text-right min-w-[60px]'>
+          <div className='text-right min-w-[60px] flex items-center gap-2'>
             {Number(data.price).toFixed(precision)}
+            {isPriceInOpenOrders && <FaUser />}
           </div>
           <div>{data.quantity}</div>
         </div>
