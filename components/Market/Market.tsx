@@ -99,7 +99,6 @@ export const Market = ({ markets }: MarketProps) => {
         );
         return !isClosed && market.category === 'election';
       });
-      console.log(openElectionMarkets);
 
       if (openElectionMarkets.length > 0) {
         const randomMarket =
