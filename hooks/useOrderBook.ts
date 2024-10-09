@@ -29,7 +29,7 @@ export const useOrderBook = (selectedMarketId: string | undefined) => {
     pollInterval: selectedMarketId ? 3000 : 0,
     skip: !selectedMarketId,
     variables: {
-      marketId: selectedMarketId ?? '',
+      marketId: selectedMarketId,
       limit: 5,
       side: OrderSide.LONG,
     },
@@ -44,7 +44,7 @@ export const useOrderBook = (selectedMarketId: string | undefined) => {
     pollInterval: selectedMarketId ? 3000 : 0,
     skip: !selectedMarketId,
     variables: {
-      marketId: selectedMarketId ?? '',
+      marketId: selectedMarketId,
       limit: 5,
       side: OrderSide.SHORT,
     },
@@ -59,21 +59,15 @@ export const useOrderBook = (selectedMarketId: string | undefined) => {
     [shortsRes]
   );
 
-  const combinedOrders: OrderBookOrder[] = useMemo(() => {
-    return [...longs, ...shorts];
-  }, [longs, shorts]);
-
   const unifiedLoading = longsLoading || shortsLoading || changeMarketLoading;
   const unifiedError = longsError || shortsError;
-  const unifiedRefetch = () => {
-    refetchLongs();
-    refetchShorts();
+  const unifiedRefetch = async () => {
+    await Promise.all([refetchLongs(), refetchShorts()]);
   };
 
   return {
     longs,
     shorts,
-    combinedOrders,
     loading: unifiedLoading,
     error: unifiedError,
     refetch: unifiedRefetch,

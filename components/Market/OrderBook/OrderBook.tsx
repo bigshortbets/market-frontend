@@ -73,8 +73,7 @@ export const OrderBook = ({ shorts, longs, loading }: OrderBooksProps) => {
         ) : (
           <>
             <div className='flex-col-reverse flex flex-1 gap-[1px]'>
-              {shorts &&
-                !initialLoading &&
+              {!initialLoading &&
                 shorts.map((data, key) => (
                   <OrderBookItem
                     side={OrderSide.SHORT}
@@ -86,8 +85,7 @@ export const OrderBook = ({ shorts, longs, loading }: OrderBooksProps) => {
             </div>
             <hr className='border-top-[1px] border-[#444650]' />
             <div className='flex-1 flex flex-col gap-[1px]'>
-              {longs &&
-                !initialLoading &&
+              {!initialLoading &&
                 longs.map((data, key) => (
                   <OrderBookItem
                     side={OrderSide.LONG}
