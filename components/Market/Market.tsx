@@ -91,16 +91,20 @@ export const Market = ({ markets }: MarketProps) => {
         isMarketFromURLProcessed = true;
       }
     }
-
-    // Przełącz tylko na rynek elekcyjny, jeśli nie znaleziono pasującego rynku i marketParam jest pusty
     if (!isMarketFromURLProcessed && markets && markets.length > 0) {
-      const electionMarkets = markets.filter(
-        (market) => market.category === 'election'
-      );
+      const openElectionMarkets = markets.filter((market) => {
+        const { isClosed } = calculateMarketClosing(
+          Number(blockHeight),
+          Number(market.lifetime)
+        );
+        return !isClosed && market.category === 'election';
+      });
 
-      if (electionMarkets.length > 0) {
+      if (openElectionMarkets.length > 0) {
         const randomMarket =
-          electionMarkets[Math.floor(Math.random() * electionMarkets.length)];
+          openElectionMarkets[
+            Math.floor(Math.random() * openElectionMarkets.length)
+          ];
         setSelectedMarketId(randomMarket.id);
 
         const marketString = `${randomMarket.ticker}-${randomMarket.id}`;
