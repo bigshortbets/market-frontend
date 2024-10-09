@@ -1,10 +1,11 @@
-import { OrderBookResponse } from '@/types/orderTypes';
+import { OrderBookOrder, OrderBookResponse } from '@/types/orderTypes';
 import { OrderBookItem } from './OrderBookItem';
 import { currencySymbol } from '@/blockchain/constants';
 import { useAtom } from 'jotai';
 import { chosenMarketAtom, initialLoadingAtom } from '@/store/store';
 import Image from 'next/image';
 import { IoMdLock } from 'react-icons/io';
+import ReactLoading from 'react-loading';
 
 export enum OrderSide {
   LONG = 'LONG',
@@ -12,11 +13,12 @@ export enum OrderSide {
 }
 
 interface OrderBooksProps {
-  shortsRes: OrderBookResponse | undefined;
-  longsRes: OrderBookResponse | undefined;
+  shorts: OrderBookOrder[];
+  longs: OrderBookOrder[];
+  loading: boolean;
 }
 
-export const OrderBook = ({ shortsRes, longsRes }: OrderBooksProps) => {
+export const OrderBook = ({ shorts, longs, loading }: OrderBooksProps) => {
   const [chosenMarket] = useAtom(chosenMarketAtom);
   const [initialLoading] = useAtom(initialLoadingAtom);
   return (
@@ -63,65 +65,39 @@ export const OrderBook = ({ shortsRes, longsRes }: OrderBooksProps) => {
         </div>
       </div>
       <div className='flex-grow flex flex-col justify-center'>
-        <div className='flex-col-reverse flex flex-1 gap-[1px]'>
-          {shortsRes &&
-            !initialLoading &&
-            shortsRes.aggregatedOrdersByPrices.map((data, key) => (
-              <OrderBookItem
-                side={OrderSide.SHORT}
-                empty={false}
-                data={data}
-                key={key}
-              />
-            ))}
-        </div>
-        <hr className='border-top-[1px] border-[#444650]' />
-        <div className='flex-1 flex flex-col gap-[1px]'>
-          {longsRes &&
-            !initialLoading &&
-            longsRes.aggregatedOrdersByPrices.map((data, key) => (
-              <OrderBookItem
-                side={OrderSide.LONG}
-                empty={false}
-                data={data}
-                key={key}
-              />
-            ))}
-        </div>
+        {loading ? (
+          <div className='flex justify-center'>
+            {' '}
+            <ReactLoading type='spin' width={36} height={36} color='#444650' />
+          </div>
+        ) : (
+          <>
+            <div className='flex-col-reverse flex flex-1 gap-[1px]'>
+              {!initialLoading &&
+                shorts.map((data, key) => (
+                  <OrderBookItem
+                    side={OrderSide.SHORT}
+                    empty={false}
+                    data={data}
+                    key={key}
+                  />
+                ))}
+            </div>
+            <hr className='border-top-[1px] border-[#444650]' />
+            <div className='flex-1 flex flex-col gap-[1px]'>
+              {!initialLoading &&
+                longs.map((data, key) => (
+                  <OrderBookItem
+                    side={OrderSide.LONG}
+                    empty={false}
+                    data={data}
+                    key={key}
+                  />
+                ))}
+            </div>
+          </>
+        )}
       </div>
-      {/*   <div className="py-2 flex pl-2 text-xs">
-        <p className="flex-1">Price</p>
-        <p className="flex-1">Quantity</p>
-      </div>
-      <div className="flex-1 flex-col-reverse flex">
-        {shortsRes &&
-          shortsRes.aggregatedOrdersByPrices.map((data, key) => (
-            <OrderBookItem
-              side={OrderSide.SHORT}
-              empty={false}
-              data={data}
-              key={key}
-            />
-          ))}
-        {shortPlaceholders.map((_, key) => (
-          <OrderBookItem side={OrderSide.SHORT} empty key={key} />
-        ))}
-      </div>
-      <hr className="opacity-[8%] " />
-      <div className="flex-1 flex flex-col">
-        {longsRes &&
-          longsRes.aggregatedOrdersByPrices.map((data, key) => (
-            <OrderBookItem
-              side={OrderSide.LONG}
-              empty={false}
-              data={data}
-              key={key}
-            />
-          ))}
-        {longsPlaceholders.map((_, key) => (
-          <OrderBookItem side={OrderSide.LONG} empty key={key} />
-        ))}
-      </div> */}
     </div>
   );
 };
