@@ -120,7 +120,7 @@ export const ChatManager = ({
             }}
           >
             <label htmlFor='addUserInput' className='text-xs text-tetriary'>
-              Provide valid EVM address to add user
+              Provide a valid EVM address to add a user
             </label>
 
             <div className='w-full bg-[#23252E] h-[32px] rounded-md flex justify-between items-center mb-5 mt-1'>
@@ -179,7 +179,7 @@ export const ChatManager = ({
                 ))
               ) : (
                 <p className='text-tetriary text-xs text-center'>
-                  You don't have any conversations
+                  You have no conversations
                 </p>
               )}
             </div>
