@@ -18,6 +18,7 @@ import { findMarketById } from '@/utils/findMarketById';
 import { IoMdLock } from 'react-icons/io';
 import { Tooltip } from '@nextui-org/react';
 import { BigSBTooltip } from '@/components/BigSBTooltip';
+import { getPrecision } from '@/utils/getPrecision';
 
 interface TradingHubAggregatedPositionProps {
   positions: PositionType[];
@@ -40,6 +41,7 @@ export const TradingHubAggregatedPosition = ({
   const toggleExtended = () => {
     setIsExtended((prevState) => !prevState);
   };
+  const precision = getPrecision(Number(positions[0].market.tickSize));
 
   const market = findMarketById(markets, marketId);
 
@@ -121,13 +123,23 @@ export const TradingHubAggregatedPosition = ({
                   </button>
                 </div>
                 <p className='text-[#ABACBA] text-[10px] mb-1'>{ticker}</p>
-                <div className='flex gap-2 items-center'>
-                  {' '}
-                  <p className='text-[#EBEDFD] text-xs'>Status</p>
-                  <LiquidationStatusTab
-                    small
-                    status={userMargins.details?.[marketId]?.liquidationStatus}
-                  />
+                <div className='flex items-center gap-2'>
+                  <div className='flex gap-2 items-center'>
+                    {' '}
+                    <p className='text-[#EBEDFD] text-xs'>Status</p>
+                    <LiquidationStatusTab
+                      small
+                      status={
+                        userMargins.details?.[marketId]?.liquidationStatus
+                      }
+                    />
+                  </div>
+                  <div className='flex items-center gap-2'>
+                    <p className='text-xs text-tetriary'>O. Price:</p>
+                    <p className='text-xs  font-semibold text-white'>
+                      {oraclePrice && Number(oraclePrice).toFixed(precision)}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -243,19 +255,27 @@ export const TradingHubAggregatedPosition = ({
               </div>
             </div>
 
-            <div className='flex gap-6'>
-              {userMargins.details[marketId] && (
+            <div className='flex gap-6 items-center'>
+              <div className='flex flex-col gap-2'>
                 <div className='flex items-center gap-2'>
-                  <p className='text-xs text-tetriary'>Market Status:</p>
-                  <LiquidationStatusTab
-                    small
-                    status={
-                      userMargins.details[marketId]
-                        .liquidationStatus as LiquidationStatusType
-                    }
-                  />
+                  <p className='text-xs text-tetriary'>Oracle Price:</p>
+                  <p className='text-xs  font-semibold text-white'>
+                    {oraclePrice && Number(oraclePrice).toFixed(precision)}
+                  </p>
                 </div>
-              )}
+                {userMargins.details[marketId] && (
+                  <div className='flex items-center gap-2'>
+                    <p className='text-xs text-tetriary'>Market Status:</p>
+                    <LiquidationStatusTab
+                      small
+                      status={
+                        userMargins.details[marketId]
+                          .liquidationStatus as LiquidationStatusType
+                      }
+                    />
+                  </div>
+                )}
+              </div>
               {/* Sum profit / loss */}
               <div className='flex flex-col text-right min-w-[100px]'>
                 <p className='text-xs text-tetriary'>Sum Gain / Loss</p>

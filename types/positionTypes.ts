@@ -14,6 +14,7 @@ export interface PositionType {
     ticker: string;
     contractUnit: BigInt;
     oraclePrice: BigInt;
+    tickSize: BigInt;
   };
 }
 

@@ -15,6 +15,7 @@ import { ProfilePositionItem } from './ProfilePositionItem';
 import { findMarketById } from '@/utils/findMarketById';
 import { IoMdLock } from 'react-icons/io';
 import { BigSBTooltip } from '../BigSBTooltip';
+import { getPrecision } from '@/utils/getPrecision';
 
 interface ProfileAggregatedPositionProps {
   positions: PositionType[];
@@ -32,6 +33,7 @@ export const ProfileAggregatedPosition = ({
   const [markets] = useAtom(marketsAtom);
   const oraclePrice = positions[0].market.oraclePrice;
   const market = findMarketById(markets, marketId);
+  const precision = getPrecision(Number(positions[0].market.tickSize));
 
   const positionsWithSide = extendPositionsWithSide(positions, address);
 
@@ -89,23 +91,14 @@ export const ProfileAggregatedPosition = ({
                     {marketDetails?.name}
                   </p>
                   {market?.isClosed && <IoMdLock className='text-xs' />}
-
-                  {/*  <button
-                    className='text-tetriary text-[16px] hover:text-gray-400'
-                    onClick={handleOpenChart}
-                  >
-                    <FaChartBar />
-                  </button> */}
                 </div>
                 <p className='text-[#ABACBA] text-[10px] mb-1'>{ticker}</p>
-                {/* <div className='flex gap-2 items-center'>
-                  {' '}
-                  <p className='text-[#EBEDFD] text-xs'>Status</p>
-                  <LiquidationStatusTab
-                    small
-                    status={userMargins.details?.[marketId]?.liquidationStatus}
-                  />
-                </div> */}
+                <div className='flex items-center gap-2'>
+                  <p className='text-xs text-tetriary'>O. Price:</p>
+                  <p className='text-xs  font-semibold text-white'>
+                    {oraclePrice && Number(oraclePrice).toFixed(precision)}
+                  </p>
+                </div>
               </div>
             </div>
             <div className='flex items-center gap-2'>
@@ -204,30 +197,20 @@ export const ProfileAggregatedPosition = ({
                     />
                   )}
                   {market?.isClosed && <IoMdLock className='text-xs' />}
-
-                  {/* <button
-                    className='text-tetriary text-[16px] hover:text-gray-400'
-                    onClick={handleOpenChart}
-                  >
-                    <FaChartBar />
-                  </button> */}
                 </div>
                 <p className='text-[#ABACBA] text-xs'>{ticker}</p>
               </div>
             </div>
 
-            <div className='flex gap-6'>
-              {/* {userMargins.details[marketId] && (
-                <div className='flex items-start  gap-1.5 w-[150px]'>
-                  <p className='text-xs text-tetriary'>Status</p>
-                  <LiquidationStatusTab
-                    status={
-                      userMargins.details[marketId]
-                        .liquidationStatus as LiquidationStatusType
-                    }
-                  />
+            <div className='flex gap-6 items-center'>
+              <div className='flex flex-col gap-2'>
+                <div className='flex items-center gap-2'>
+                  <p className='text-xs text-tetriary'>Oracle Price:</p>
+                  <p className='text-xs  font-semibold text-white'>
+                    {oraclePrice && Number(oraclePrice).toFixed(precision)}
+                  </p>
                 </div>
-              )} */}
+              </div>
               {/* Sum profit / loss */}
               <div className='flex flex-col text-right min-w-[100px]'>
                 <p className='text-xs text-tetriary'>Sum Gain / Loss</p>
@@ -253,7 +236,6 @@ export const ProfileAggregatedPosition = ({
                 <tr className='text-xs'>
                   <th className='font-normal pb-2 py-2 pl-3 '>Side</th>
                   <th className='font-normal'>Quantity</th>
-
                   <th className='font-normal'>Entry Price</th>
                   <th className='font-normal'>
                     {' '}
@@ -271,12 +253,6 @@ export const ProfileAggregatedPosition = ({
                   </th>
                   <th className='font-normal'>Profit / Loss</th>
                   <th className='font-normal'>Opponent & Status</th>
-
-                  {/* <th className="font-normal">Created</th>
-                <th className="font-normal">Market</th>
-                <th className="font-normal">Price</th>
-              
-                <th className="pr-3"></th> */}
                 </tr>
               </thead>
               <tbody>

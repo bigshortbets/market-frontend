@@ -126,6 +126,7 @@ export const USER_OPEN_POSITIONS_QUERY = gql`
         ticker
         contractUnit
         oraclePrice
+        tickSize
       }
     }
   }
