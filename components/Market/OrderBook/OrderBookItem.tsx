@@ -23,11 +23,14 @@ export const OrderBookItem = ({ empty, side, data }: OrderBookItem) => {
   const compareOrderPrices = (
     openOrders: OrderType[],
     orderBookPrice: number,
-    precision: number
+    precision: number,
+    chosenMarketId: string
   ): boolean => {
     return openOrders.some((order) => {
       const orderPrice = Number(order.price);
+      const orderMarketId = order.market.id;
       return (
+        orderMarketId === chosenMarketId &&
         orderPrice.toFixed(precision) === orderBookPrice.toFixed(precision)
       );
     });
@@ -40,7 +43,8 @@ export const OrderBookItem = ({ empty, side, data }: OrderBookItem) => {
   const isPriceInOpenOrders = compareOrderPrices(
     openOrders,
     Number(data?.price),
-    precision
+    precision,
+    chosenMarket!.id
   );
 
   return (

@@ -15,7 +15,7 @@ export const useOrderBook = (selectedMarketId: string | undefined) => {
       setChangeMarketLoading(true);
       const timer = setTimeout(() => {
         setChangeMarketLoading(false);
-      }, 1500);
+      }, 1000);
       return () => clearTimeout(timer);
     }
   }, [selectedMarketId]);
