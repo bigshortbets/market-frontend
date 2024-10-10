@@ -57,9 +57,7 @@ export const TradingHubPositions = ({
         </>
       ) : (
         <div className='flex items-center justify-center '>
-          <p className='opacity-20 text-2xl mt-5'>
-            Currently no open positions
-          </p>
+          <p className='opacity-20 text-2xl mt-5'>No open positions</p>
         </div>
       )}
     </div>

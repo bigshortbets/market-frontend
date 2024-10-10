@@ -16,7 +16,7 @@ export const TradingHubHistory = ({ settlements }: TradingHubHistoryProps) => {
         </div>
       ) : (
         <div className='flex items-center justify-center h-full'>
-          <p className='opacity-20 text-2xl mt-5'>Currently no settlements</p>
+          <p className='opacity-20 text-2xl mt-5'>No settlement records</p>
         </div>
       )}
     </div>

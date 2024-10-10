@@ -31,6 +31,18 @@ export const TradingHubOrders = ({
     (currentOrdersType === 'open' && openOrders.length > 0) ||
     (currentOrdersType === 'close' && closeOrders.length > 0) ||
     (currentOrdersType === 'finalized' && historyOrders.length > 0);
+
+  const getOrderTypeMessage = () => {
+    switch (currentOrdersType) {
+      case 'open':
+        return 'opening';
+      case 'close':
+        return 'closing';
+      default:
+        return currentOrdersType;
+    }
+  };
+
   return (
     <div className='w-full h-full overflow-y-auto no-scrollbar'>
       <div className='px-3 mb-2 mt-1 text-sm flex gap-2'>
@@ -140,7 +152,7 @@ export const TradingHubOrders = ({
       ) : (
         <div className='flex items-center justify-center h-full'>
           <p className='opacity-20 text-2xl mt-5'>
-            You don't have any {currentOrdersType} orders
+            No {getOrderTypeMessage()} orders
           </p>
         </div>
       )}
