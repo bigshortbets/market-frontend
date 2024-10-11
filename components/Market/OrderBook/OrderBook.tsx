@@ -6,6 +6,7 @@ import { chosenMarketAtom, initialLoadingAtom } from '@/store/store';
 import Image from 'next/image';
 import { IoMdLock } from 'react-icons/io';
 import ReactLoading from 'react-loading';
+import { useEffect, useRef, useState } from 'react';
 
 export enum OrderSide {
   LONG = 'LONG',
@@ -21,8 +22,56 @@ interface OrderBooksProps {
 export const OrderBook = ({ shorts, longs, loading }: OrderBooksProps) => {
   const [chosenMarket] = useAtom(chosenMarketAtom);
   const [initialLoading] = useAtom(initialLoadingAtom);
+  const orderBookRef = useRef<HTMLDivElement>(null);
+  const [prevMarketId, setPrevMarketId] = useState<string | null>(null);
+
+  const fillEmptyOrders = (
+    orders: OrderBookOrder[],
+    side: OrderSide,
+    maxCount: number
+  ) => {
+    const emptyOrders = Array(maxCount - orders.length).fill(null);
+    return [
+      ...orders.map((data) => ({ empty: false, side, data })),
+      ...emptyOrders.map(() => ({ empty: true, side, data: undefined })),
+    ];
+  };
+
+  const maxOrderCount = Math.max(shorts.length, longs.length, 20); // Ensure at least 20 rows
+  const filledShorts = fillEmptyOrders(shorts, OrderSide.SHORT, maxOrderCount);
+  const filledLongs = fillEmptyOrders(longs, OrderSide.LONG, maxOrderCount);
+
+  useEffect(() => {
+    if (orderBookRef.current && !loading && !initialLoading) {
+      const scrollToCenter = () => {
+        const scrollHeight = orderBookRef.current!.scrollHeight + 75;
+        orderBookRef.current!.scrollTop =
+          scrollHeight / 2 - orderBookRef.current!.clientHeight / 2;
+      };
+
+      if (chosenMarket?.id !== prevMarketId) {
+        // Market has changed, scroll to center
+        scrollToCenter();
+        setPrevMarketId(chosenMarket?.id || null);
+      } else {
+        // Market hasn't changed, maintain relative scroll position
+        const currentScrollTop = orderBookRef.current.scrollTop;
+        const oldScrollHeight = orderBookRef.current.scrollHeight + 75;
+
+        setTimeout(() => {
+          if (orderBookRef.current) {
+            const newScrollHeight = orderBookRef.current.scrollHeight + 75;
+            const newScrollTop =
+              currentScrollTop + (newScrollHeight - oldScrollHeight) / 2;
+            orderBookRef.current.scrollTop = newScrollTop;
+          }
+        }, 0);
+      }
+    }
+  }, [shorts, longs, loading, initialLoading, chosenMarket]);
+
   return (
-    <div className='flex flex-col  text-xs h-full'>
+    <div className='flex flex-col text-xs h-full'>
       <div className='pt-[14px] pl-4 mb-2 text-[#7F828F] text-[11px] flex items-center gap-2'>
         {chosenMarket?.path && !initialLoading && (
           <Image
@@ -64,21 +113,24 @@ export const OrderBook = ({ shorts, longs, loading }: OrderBooksProps) => {
           </div>
         </div>
       </div>
-      <div className='flex-grow flex flex-col justify-center'>
+      <div className='flex flex-col mt-6 flex-grow overflow-hidden'>
         {loading ? (
           <div className='flex justify-center'>
             {' '}
             <ReactLoading type='spin' width={36} height={36} color='#444650' />
           </div>
         ) : (
-          <>
+          <div
+            ref={orderBookRef}
+            className='flex flex-col overflow-y-auto min-h-[400px] max-h-full'
+          >
             <div className='flex-col-reverse flex flex-1 gap-[1px]'>
               {!initialLoading &&
-                shorts.map((data, key) => (
+                filledShorts.map((item, key) => (
                   <OrderBookItem
-                    side={OrderSide.SHORT}
-                    empty={false}
-                    data={data}
+                    side={item.side}
+                    empty={item.empty}
+                    data={item.data}
                     key={key}
                   />
                 ))}
@@ -86,16 +138,16 @@ export const OrderBook = ({ shorts, longs, loading }: OrderBooksProps) => {
             <hr className='border-top-[1px] border-[#444650]' />
             <div className='flex-1 flex flex-col gap-[1px]'>
               {!initialLoading &&
-                longs.map((data, key) => (
+                filledLongs.map((item, key) => (
                   <OrderBookItem
-                    side={OrderSide.LONG}
-                    empty={false}
-                    data={data}
+                    side={item.side}
+                    empty={item.empty}
+                    data={item.data}
                     key={key}
                   />
                 ))}
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>
