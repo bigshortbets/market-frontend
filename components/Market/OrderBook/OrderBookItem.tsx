@@ -49,7 +49,7 @@ export const OrderBookItem = ({ empty, side, data }: OrderBookItem) => {
 
   return (
     <div
-      className={`w-full bg-opacity-[15%]  text-opacity-50 py-2   ${
+      className={`w-full bg-opacity-[15%]  text-opacity-50 h-[30px]   ${
         side === OrderSide.LONG
           ? ' bg-green-900 text-tetriary'
           : ' bg-[#C53F3A] text-tetriary'

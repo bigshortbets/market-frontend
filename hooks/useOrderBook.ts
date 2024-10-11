@@ -30,7 +30,7 @@ export const useOrderBook = (selectedMarketId: string | undefined) => {
     skip: !selectedMarketId,
     variables: {
       marketId: selectedMarketId,
-      limit: 5,
+      limit: 20,
       side: OrderSide.LONG,
     },
   });
@@ -45,7 +45,7 @@ export const useOrderBook = (selectedMarketId: string | undefined) => {
     skip: !selectedMarketId,
     variables: {
       marketId: selectedMarketId,
-      limit: 5,
+      limit: 20,
       side: OrderSide.SHORT,
     },
   });
