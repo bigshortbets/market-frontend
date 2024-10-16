@@ -173,13 +173,14 @@ export const TradingHubPositionsItem = ({
             MTM
           </button>
         </a>
-
-        <button
-          onClick={() => setIsModalOpened(true)}
-          className={`font-bold text-xs hover:underline transition ease-in-out text-[#C53F3A] duration-300`}
-        >
-          CLOSE
-        </button>
+        {!market?.isClosed && (
+          <button
+            onClick={() => setIsModalOpened(true)}
+            className={`font-bold text-xs hover:underline transition ease-in-out text-[#C53F3A] duration-300`}
+          >
+            CLOSE
+          </button>
+        )}
       </td>
       <td className='sm:hidden sm:pr-3 sm:pl-0 text-right px-6 '>
         {' '}
@@ -196,12 +197,14 @@ export const TradingHubPositionsItem = ({
         </a>
       </td>
       <td className='sm:hidden sm:pr-3 sm:pl-0 px-6  '>
-        <button
-          onClick={() => setIsModalOpened(true)}
-          className={`font-bold text-[10px] sm:text-xs hover:underline transition ease-in-out text-[#C53F3A] duration-300`}
-        >
-          CLOSE
-        </button>
+        {!market?.isClosed && (
+          <button
+            onClick={() => setIsModalOpened(true)}
+            className={`font-bold text-[10px] sm:text-xs hover:underline transition ease-in-out text-[#C53F3A] duration-300`}
+          >
+            CLOSE
+          </button>
+        )}
       </td>
       <Tooltip id='m2m-tooltip' />
       <ClosePositionModal
