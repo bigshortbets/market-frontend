@@ -103,6 +103,17 @@ export const Deposit = ({ markets }: DepositProps) => {
     }
   };
 
+  const getStatusText = (status: LiquidationStatusType) => {
+    const statusText = {
+      EverythingFine: `Everything's fine`,
+      MarginCall: 'Below required',
+      Liquidation: 'Liquidation',
+      Underwater: 'Underwater',
+    };
+
+    return statusText[status];
+  };
+
   return (
     <div className='p-2.5 pb-4 flex flex-col gap-4'>
       <div className='flex flex-col gap-2'>
@@ -293,9 +304,9 @@ export const Deposit = ({ markets }: DepositProps) => {
         selecteMarketMargin.requiredDeposit &&
         address && (
           <FinanceManagerInfo
-            value={`To change your market status from ${
+            value={`To change your market status from ${getStatusText(
               selecteMarketMargin?.liquidationStatus
-            } to Everthing fine, you need to deposit ${(
+            )} to Everthing's fine, you need to deposit ${(
               Number(selecteMarketMargin!.requiredDeposit) -
               Number(selecteMarketMargin!.margin)
             ).toFixed(2)} ${currencySymbol} to ${chosenMarket?.ticker} market.`}
