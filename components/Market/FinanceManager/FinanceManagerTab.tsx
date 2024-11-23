@@ -19,15 +19,15 @@ export const FinanceManagerTab = ({
 
   const isActive = financeManagerState === value;
 
-  const getText = () => {
+  /*  const getText = () => {
     if (value === 'claim') {
       return hasUserMinted ? 'Get Bonus' : 'Get Free 10K';
     }
     return value;
-  };
+  }; */
 
   const getButtonStyles = () => {
-    if (value === 'claim') {
+    /* if (value === 'claim') {
       if (hasUserMinted) {
         if (initialLoading) {
           return 'bg-bigsbgrey animate-pulse text-bigsbgrey';
@@ -41,7 +41,7 @@ export const FinanceManagerTab = ({
           return 'bg-[#4ECB7D] text-black';
         }
       }
-    }
+    } */
     return isActive
       ? 'bg-[#444650]'
       : 'bg-[#23252E] text-tetriary disabled:bg-[#141414]';
@@ -52,12 +52,10 @@ export const FinanceManagerTab = ({
   return (
     <button
       disabled={disabled}
-      className={`rounded-lg flex items-center justify-center text-xs font-semibold py-1.5 ${getButtonStyles()} ${
-        value === 'claim' ? `px-0 w-[90px]` : 'px-3'
-      }`}
+      className={`rounded-lg flex items-center justify-center text-xs font-semibold py-1.5 ${getButtonStyles()} px-3 `}
       onClick={() => setFinanceManagerState(value)}
     >
-      <p className='capitalize'>{getText()}</p>
+      <p className='capitalize'>{value}</p>
     </button>
   );
 };
