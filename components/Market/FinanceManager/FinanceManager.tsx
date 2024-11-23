@@ -33,24 +33,24 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
 
   const obj = { userAddress: address as string };
 
-  const { data: isMintedData, refetch: refetchIsMinted } = useQuery({
+  /*   const { data: isMintedData, refetch: refetchIsMinted } = useQuery({
     queryKey: ['isMinted'],
     queryFn: () => bridgeApi.isMinted(obj),
-  });
+  }); */
 
   function isEmpty(obj: object | undefined): boolean {
     return obj ? Object.keys(obj).length === 0 : true;
   }
 
-  const userMinted = !isEmpty(isMintedData?.data);
-
+  /*   const userMinted = !isEmpty(isMintedData?.data); */
+  /* 
   useEffect(() => {
     setHasUserMinted(userMinted);
-  }, [userMinted]);
-
+  }, [userMinted]); */
+  /* 
   useEffect(() => {
     refetchIsMinted();
-  }, [address]);
+  }, [address]); */
 
   const noMarkets = markets.length < 1;
 
