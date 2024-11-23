@@ -91,20 +91,19 @@ export const Market = ({ markets }: MarketProps) => {
         isMarketFromURLProcessed = true;
       }
     }
+
     if (!isMarketFromURLProcessed && markets && markets.length > 0) {
-      const openElectionMarkets = markets.filter((market) => {
+      const openMarkets = markets.filter((market) => {
         const { isClosed } = calculateMarketClosing(
           Number(blockHeight),
           Number(market.lifetime)
         );
-        return !isClosed && market.category === 'election';
+        return !isClosed;
       });
 
-      if (openElectionMarkets.length > 0) {
+      if (openMarkets.length > 0) {
         const randomMarket =
-          openElectionMarkets[
-            Math.floor(Math.random() * openElectionMarkets.length)
-          ];
+          openMarkets[Math.floor(Math.random() * openMarkets.length)];
         setSelectedMarketId(randomMarket.id);
 
         const marketString = `${randomMarket.ticker}-${randomMarket.id}`;

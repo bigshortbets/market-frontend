@@ -17,10 +17,14 @@ interface FinanceManagerProps {
   markets: EnrichedMarketType[];
 }
 
-const tabs = ['order', 'deposit', 'withdraw', 'claim' /*, 'bridge' */] as const;
+const tabs = [
+  'order',
+  'deposit',
+  'withdraw' /* , 'claim' */ /*, 'bridge' */,
+] as const;
 
 export type FinanceManagerTabsType = (typeof tabs)[number];
-export const financeManagerAtom = atom<FinanceManagerTabsType>('claim');
+export const financeManagerAtom = atom<FinanceManagerTabsType>('order');
 
 export const FinanceManager = ({ markets }: FinanceManagerProps) => {
   const [financeManagerState] = useAtom(financeManagerAtom);
@@ -62,7 +66,6 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
     <div
       className='h-full w-full sm:w-[360px] sm:border-r border-[#444650] overflow-auto no-scrollbar'
       style={{ maxHeight: 'calc(100vh - 227px)' }}
-      onClick={() => console.log(isMintedData)}
     >
       <div className='flex flex-col '>
         <div className='py-3 px-2.5 border-b border-[#444650] flex items-center gap-2'>
@@ -79,13 +82,13 @@ export const FinanceManager = ({ markets }: FinanceManagerProps) => {
         {financeManagerState === 'deposit' && <Deposit markets={markets} />}
         {financeManagerState === 'withdraw' && <Withdraw />}
         {/* {financeManagerState === 'bridge' && <Bridge />} */}
-        {financeManagerState === 'claim' && (
+        {/* {financeManagerState === 'claim' && (
           <Claim
             refetchIsMinted={refetchIsMinted}
             hasUserMinted={hasUserMinted}
             setHasUserMinted={handleSetUserMinted}
           />
-        )}
+        )} */}
       </div>
       {!noMarkets && showContractDetails && (
         <div className='px-[10px] pb-2'>
