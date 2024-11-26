@@ -24,7 +24,7 @@ export const Chart = ({ data, oracleData }: ChartProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
   const [chosenMarket] = useAtom(chosenMarketAtom);
-  const [isOraclePrice, setIsOraclePrice] = useState<boolean>(false);
+  const [isOraclePrice, setIsOraclePrice] = useState<boolean>(true);
   const [isMarketPrice, setIsMarketPrice] = useState<boolean>(true);
   useEffect(() => {
     const updateDimensions = () => {
