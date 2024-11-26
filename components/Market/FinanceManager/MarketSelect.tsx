@@ -22,7 +22,7 @@ interface MarketSelectProps {
 export const MarketSelect = ({ markets }: MarketSelectProps) => {
   const [activeCategory, setActiveCategory] = useState<
     MarketDataCategories | undefined
-  >('election');
+  >(undefined);
   const [currentBlock] = useAtom(currentBlockAtom);
   const [chosenMarket] = useAtom(chosenMarketAtom);
   const [initialLoading] = useAtom(initialLoadingAtom);
@@ -71,11 +71,7 @@ export const MarketSelect = ({ markets }: MarketSelectProps) => {
   const categories = getUniqueCategories(markets);
 
   const sortCategories = (categories: string[]) => {
-    const filteredCategories = categories.filter(
-      (category) => category !== 'election'
-    );
-
-    return filteredCategories.sort((a, b) => a.localeCompare(b));
+    return categories.sort((a, b) => a.localeCompare(b));
   };
 
   const sortMarketsAlphabeticly = (markets: EnrichedMarketType[]) => {
@@ -156,11 +152,6 @@ export const MarketSelect = ({ markets }: MarketSelectProps) => {
         <div className='absolute w-full bg-[#23252E] z-40'>
           <div className='p-2 border-b border-[#444650]'>
             <div className='flex items-center gap-2 flex-wrap gap-y-2 '>
-              <MarketSelectCategoryTab
-                activeCategory={activeCategory}
-                value={'election'}
-                handleSetCategory={handleSetCategory}
-              />
               <MarketSelectCategoryTab
                 activeCategory={activeCategory}
                 value={undefined}
