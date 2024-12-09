@@ -64,9 +64,9 @@ export const Navbar = () => {
         </div>
 
         <div className='flex items-center gap-4'>
-          <div className='hidden md:block'>
+          {/*  <div className='hidden md:block'>
             <Image src={banner} alt='banner' width={400} height={60} />
-          </div>
+          </div> */}
           {isConnected && address && (
             <Link
               className='p-2 rounded bg-[#191B24]'
