@@ -34,10 +34,11 @@ export default function Home() {
   return (
     <main className={`${inter.className} text-white`}>
       <Head>
-        <title>
-          BigShortBet$ P2P Market - Trade on Unique & Event-Based Markets
-          Without Intermediaries
-        </title>
+        <title>bigshortbets | Fully Decentralized P2P Futures Market</title>
+        <meta
+          name='description'
+          content='Trade futures directly peer-to-peer on unique, community-created markets. From Trump/Harris to SpaceX/USDC and contracts based on any event or asset.'
+        />
       </Head>
       <Market markets={markets} />
       <Toaster position='top-center' />
